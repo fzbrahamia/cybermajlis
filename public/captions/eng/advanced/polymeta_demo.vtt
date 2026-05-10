@@ -1,0 +1,71 @@
+WEBVTT
+
+00:00:00.166 --> 00:00:03.200
+understand how signature based antivirus work first
+
+00:00:03.200 --> 00:00:05.080
+antivirus software usually
+
+00:00:05.080 --> 00:00:07.133
+detects malware by recognising its code
+
+00:00:07.166 --> 00:00:10.200
+like recognising a face polymorphic malware
+
+00:00:10.200 --> 00:00:11.960
+avoids this by changing how it looks
+
+00:00:11.960 --> 00:00:13.300
+each time it spreads
+
+00:00:14.560 --> 00:00:18.320
+the harmful part called the day lowest stays the same
+
+00:00:18.320 --> 00:00:21.180
+but it is hidden in a different way every time
+
+00:00:21.800 --> 00:00:24.240
+each version uses a new encryption key
+
+00:00:24.240 --> 00:00:27.820
+and include extra useless code in its decryption body
+
+00:00:27.840 --> 00:00:30.400
+to avoid desection because of this
+
+00:00:30.400 --> 00:00:34.600
+it's hash the digital fingerprints changes every time
+
+00:00:34.600 --> 00:00:37.420
+so antivirus program don't recognise it
+
+00:00:46.960 --> 00:00:49.580
+polymorphic Malware changes its appearance
+
+00:00:49.600 --> 00:00:51.940
+metamorphic Malware goes further
+
+00:00:52.000 --> 00:00:54.300
+it through write its own code completely
+
+00:00:54.300 --> 00:00:57.153
+even though the code may look different
+
+00:00:57.153 --> 00:00:59.073
+it still does the same thing
+
+00:00:59.073 --> 00:01:00.753
+instructions may change
+
+00:01:00.753 --> 00:01:04.053
+names may change and extra lines may be added
+
+00:01:04.073 --> 00:01:05.933
+but the results stays the same
+
+00:01:07.673 --> 00:01:09.233
+that's what makes it dangerous
+
+00:01:09.233 --> 00:01:12.773
+it's hard to detect but it always causes the same harm
+

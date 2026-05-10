@@ -1,0 +1,102 @@
+WEBVTT
+
+1
+00:00:01.129 --> 00:00:03.843
+In the other demos we showed malware that needed the user
+
+2
+00:00:03.871 --> 00:00:06.585
+to run a malicious file in order to be active. 
+
+3
+00:00:06.785 --> 00:00:08.530
+But worms work differently.
+
+4
+00:00:08.730 --> 00:00:11.644
+In this demo, we're showing how some types of malware
+
+5
+00:00:11.844 --> 00:00:12.443
+like worms
+
+6
+00:00:12.643 --> 00:00:13.884
+ can spread on their own
+
+7
+00:00:14.084 --> 00:00:15.518
+across a network
+
+8
+00:00:15.718 --> 00:00:18.924
+without the user clicking anything or opening any program.
+
+9
+00:00:20.757 --> 00:00:22.989
+The malware starts by scanning the network.
+
+10
+00:00:23.189 --> 00:00:24.714
+It looks for active devices
+
+11
+00:00:24.914 --> 00:00:27.003
+ checks which ones are reachable
+
+12
+00:00:27.203 --> 00:00:28.762
+and then tests for open ports.
+
+13
+00:00:32.143 --> 00:00:35.410
+When it finds a device with weak or default credentials
+
+14
+00:00:35.610 --> 00:00:38.391
+the worm sends its malicious code automatically.
+
+15
+00:00:38.591 --> 00:00:40.246
+No user action is needed
+
+16
+00:00:40.446 --> 00:00:42.241
+Now we can see that the worm
+
+17
+00:00:42.271 --> 00:00:43.981
+successfully delivered the payload
+
+18
+00:00:44.300 --> 00:00:46.492
+but nothing shows up on the victim device
+
+19
+00:00:47.543 --> 00:00:49.148
+This is an important point
+
+20
+00:00:49.173 --> 00:00:52.444
+Some malware can enter your device quietly
+
+21
+00:00:52.471 --> 00:00:54.943
+and stay hidden until it is triggered
+
+22
+00:00:55.143 --> 00:00:57.121
+The trigger could be a specific action
+
+23
+00:00:57.321 --> 00:01:00.736
+a certain time, or another condition set by the attacker
+
+24
+00:01:00.936 --> 00:01:03.904
+In our simulation, the trigger is simple
+
+25
+00:01:04.104 --> 00:01:07.457
+The malware activates when the user restarts their device.
+
