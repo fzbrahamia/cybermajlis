@@ -1,0 +1,180 @@
+export const lessonsData = {
+  basic: [
+    {
+      slug: "virus",
+      title: "Virus",
+      titleKey: "basic.virus.title",
+      descKey: "basic.virus.description",
+      image: "/lessons/virusesCoverPage.jpeg",
+      videoUrl: "/lessons/vids/virus.mp4",
+      simulationUrl: "/demos/virusDemo.mp4",
+      videoCaption: "/captions/eng/basic/virus_story.vtt",
+      demoCaption: "/captions/eng/basic/virus_demo.vtt",
+      posterUrl: "/posters/virus.svg",
+      quizUrl: "",
+    },
+    {
+      slug: "worm",
+      title: "Worm", 
+      titleKey: "basic.worm.title",
+      descKey: "basic.worm.description",
+      image: "/lessons/wormsCoverPage.jpeg",
+      videoUrl: "/lessons/vids/worms.mp4",
+      simulationUrl: "/demos/finalWormDemo.mp4",
+      videoCaption: "/captions/eng/basic/worm_story.vtt",
+      demoCaption: "/captions/eng/basic/worm_demo.vtt",
+      posterUrl: "/posters/worm.svg",
+      quizUrl: "",
+    },
+    {
+      slug: "ransomware",
+      title: "Ransomware",
+      titleKey: "basic.ransomware.title",
+      descKey: "basic.ransomware.description",
+      image: "/lessons/ransomwareCoverPage.jpeg",
+      videoUrl: "/lessons/vids/ransomware.mp4",
+      simulationUrl: "/demos/ransomDemo.mp4",
+      videoCaption: "/captions/eng/basic/ransom_story.vtt",
+      demoCaption: "/captions/eng/basic/ransom_demo.vtt",
+      posterUrl: "/posters/ransomware.svg",
+      quizUrl: "",
+    },
+  ],
+
+  advanced: [
+    {
+      slug: "polymorphic-metamorphic",
+      title: "Polymorphic & Metamorphic",
+      titleKey: "advanced.polymorphic-metamorphic.title",
+      descKey: "advanced.polymorphic-metamorphic.description",
+      image: "/lessons/poly&meta.jpeg",
+      videoUrl: "/lessons/vids/poly&meta.mp4",
+      simulationUrl: "/demos/poly&meta.mp4",
+      videoCaption: "/captions/eng/advanced/polymeta_story.vtt",
+      demoCaption: "/captions/eng/advanced/polymeta_demo.vtt",
+      posterUrl: "/posters/poly&meta.svg",
+      quizUrl: "",
+    },
+    {
+      slug: "",
+      title: "",
+      titleKey: "",
+      descKey: "",
+      image: "/coming.jpeg",
+      videoUrl: "",
+      simulationUrl: "",
+      videoCaption: "",
+      demoCaption: "",
+      posterUrl: "",
+      quizUrl: "",      
+    },
+    {
+      slug: "",
+      title: "",
+      titleKey: "",
+      descKey: "",
+      image: "/coming.jpeg",
+      videoUrl: "",
+      simulationUrl: "",
+      videoCaption: "",
+      demoCaption: "",
+      posterUrl: "",
+      quizUrl: "",      
+    }
+  ],
+
+  realtime: [
+    {
+      slug: "",
+      title: "",
+      description: "",
+      image: "/coming.jpeg",
+      videoUrl: "",
+      simulationUrl: "",
+      posterUrl: "",
+      quizUrl: "",
+    },
+    {
+      slug: "",
+      title: "",
+      description: "",
+      image: "/coming.jpeg",
+      videoUrl: "",
+      simulationUrl: "",
+      posterUrl: "",
+      quizUrl: "",
+    },
+    {
+      slug: "",
+      title: "",
+      description: "",
+      image: "/coming.jpeg",
+      videoUrl: "",
+      simulationUrl: "",
+      posterUrl: "",
+      quizUrl: "",
+    },
+  ],
+};
+
+
+
+
+// export const lessonsData = {
+//   easy: [
+//     {
+//       slug: "virus",
+//       title: "Virus",
+//       difficulty: "Easy",
+//       image: "/lessons/virus.jpg",
+//       videoUrl: "",          // placeholder, can be empty
+//       simulationUrl: "",     // placeholder
+//       posterUrl: "",         // placeholder
+//       quizUrl: "",           // placeholder
+//     },
+//     {
+//       slug: "worm",
+//       title: "Worm",
+//       difficulty: "Easy",
+//       image: "/lessons/worm.jpg",
+//       videoUrl: "",
+//       simulationUrl: "",
+//       posterUrl: "",
+//       quizUrl: "",
+//     },
+//     {
+//       slug: "trojan",
+//       title: "Trojan",
+//       difficulty: "Easy",
+//       image: "/lessons/trojan.jpg",
+//       videoUrl: "",
+//       simulationUrl: "",
+//       posterUrl: "",
+//       quizUrl: "",
+//     },
+//   ],
+//   advanced: [
+//     {
+//       slug: "ransomware",
+//       title: "Ransomware",
+//       difficulty: "Medium",
+//       image: "/lessons/ransomware.jpg",
+//       videoUrl: "",
+//       simulationUrl: "",
+//       posterUrl: "",
+//       quizUrl: "",
+//     },
+//   ],
+//   realtime: [
+//     {
+//       slug: "phishing",
+//       title: "Phishing",
+//       difficulty: "Hard",
+//       image: "/lessons/phishing.jpg",
+//       videoUrl: "",
+//       simulationUrl: "",
+//       posterUrl: "",
+//       quizUrl: "",
+//     },
+//   ],
+// };
