@@ -1,0 +1,2578 @@
+{
+  "Hub": {
+    "chars": {
+      "falcon": { "name": "Saqr" },
+      "oryx":   { "name": "Oryx" },
+      "fox":    { "name": "Tha'lab" },
+      "horse":  { "name": "Hisan" }
+    },
+    "SimTags": {
+      "virus": ["Interactive", "Self-Replication"],
+      "rootkit": ["Task Manager", "Kernel-Level"],
+      "keylogger": ["Real-Time Capture", "Login Form"],
+      "worm": ["Network", "IoT", "Propagation"],
+      "polymorphic": ["Encryption", "XOR", "Evasion"],
+      "metamorphic": ["Assembly", "Mutation", "Detection"],
+      "ransomware":  ["C2", "Lock", "Extortion"]
+    },
+    "ticker": [
+      "Ahmed just stopped a phishing attack! 🎣",
+      "Fatima contained the virus in 12 seconds! 🦠",
+      "Khalid built an impenetrable defense wall! 🛡",
+      "Sara cracked the Caesar cipher! 🔓",
+      "Omar survived 5 ransomware waves! 🔐",
+      "Noura forged an unbreakable password! 🔨",
+      "Maha secured all IoT devices! 🧊",
+      "Hamad caught every phishing DM! 📱",
+      "Lina solved the forensics case! 🔍",
+      "Youssef blocked 47 malicious packets! 📡"
+    ],
+    "games": {
+      "souq":       { "mechanic": "Drag & Drop",      "skills": ["Data Protection", "Privacy"] },
+      "inbox":      { "mechanic": "Tap & Inspect",    "skills": ["Phishing Detection", "Critical Thinking"] },
+      "dm":         { "mechanic": "Swipe",             "skills": ["Social Engineering", "Online Safety"] },
+      "chatshield": { "mechanic": "Pick Response",    "skills": ["Safe Communication", "Personal Safety"] },
+      "virus":      { "mechanic": "Tap to Contain",   "skills": ["Incident Response", "Malware Awareness"] },
+      "worm":       { "mechanic": "Click to Firewall","skills": ["Network Defense", "Threat Containment"] },
+      "lockkey":    { "mechanic": "Match & Connect",  "skills": ["Encryption Basics", "Pattern Recognition"] },
+      "evidence":   { "mechanic": "Binary Choice",    "skills": ["Digital Forensics", "Evidence Handling"] },
+      "packets":    { "mechanic": "Tap & Filter",     "skills": ["Network Security", "Traffic Analysis"] },
+      "passforge":  { "mechanic": "Drag to Upgrade",  "skills": ["Password Security", "Authentication"] },
+      "ransom":     { "mechanic": "Puzzle & Restore", "skills": ["Backup Strategy", "Ransomware Response"] },
+      "builder":    { "mechanic": "Drag to Build",    "skills": ["Defense in Depth", "Security Strategy"] },
+      "hacklab":    { "mechanic": "Strategy",         "skills": ["Offensive Thinking", "Attack Vectors"] },
+      "phishcraft": { "mechanic": "Drag to Build",    "skills": ["Social Engineering", "Phishing Anatomy"] },
+      "detective":  { "mechanic": "Search & Find",    "skills": ["Digital Forensics", "OSINT"] },
+      "smarttrap":  { "mechanic": "Explore & Fix",    "skills": ["IoT Security", "Default Passwords"] }
+    },
+    "gameLearn": {
+      "souq":       ["What data is sensitive vs public", "Privacy fundamentals", "Data classification basics"],
+      "inbox":      ["Spot misspelled domains", "Recognize urgency tactics", "Verify sender identity", "Check link destinations"],
+      "dm":         ["Social media scam patterns", "Stranger danger online", "Red flags in messages"],
+      "chatshield": ["Safe responses in games/chats", "Protecting personal info online", "Recognizing social engineering"],
+      "virus":      ["How viruses self-replicate", "Quarantine as containment", "Speed of incident response"],
+      "worm":       ["Network propagation paths", "Firewall placement strategy", "Anticipating lateral movement"],
+      "lockkey":    ["Caesar cipher mechanics", "XOR binary operations", "Substitution patterns", "How encryption protects data"],
+      "evidence":   ["Volatile vs persistent evidence", "Forensic collection order", "Why RAM must come first"],
+      "packets":    ["Network traffic types", "Malware packet identification", "DDoS flood recognition"],
+      "passforge":  ["Password strength factors", "Brute force crack times", "Passphrase best practices"],
+      "ransom":     ["Never pay ransom", "3-2-1 backup rule", "Incident response steps", "Verify backups before restoring"],
+      "builder":    ["Defense in depth layers", "Cost-benefit of security controls", "Matching defenses to threats"],
+      "hacklab":    ["Attacker mindset & strategies", "Weakest link identification", "Defense from offensive perspective"],
+      "phishcraft": ["Anatomy of a phishing email", "Typosquatting domains", "Fear-based manipulation"],
+      "detective":  ["Digital breadcrumb analysis", "OSINT from social media", "Insider threat indicators"],
+      "smarttrap":  ["IoT default password risks", "Smart device attack surfaces", "WiFi Direct vulnerabilities"]
+    },
+    "lbFeats": [
+      "Stopped 3 phishing attacks",
+      "Built a max defense wall",
+      "Cracked the Caesar cipher",
+      "Contained virus in record time",
+      "Blocked 47 malicious packets",
+      "Forged an unbreakable password",
+      "Solved the forensics case",
+      "Secured all IoT devices"
+    ],
+    "brand": "Cyber Majlis",
+    "tabs": {
+      "souq": "🏪 Souq",
+      "simulations": "🧪 Simulations",
+      "rankings": "🏆 Rankings"
+    },
+    "lang_toggle": "AR",
+    "souq": {
+      "title_prefix": "The Digital ",
+      "title_highlight": "Souq",
+      "subtitle": "Where cybersecurity skills become treasures",
+      "filter_all": "All Games",
+      "quest_label": "TODAY'S QUICK QUEST",
+      "quest_title": "Spot 5 phishing emails in Inbox Inspector",
+      "quest_reward": "+50 XP & limited-edition falcon badge 🦅",
+      "quest_cta": "Play →"
+    },
+    "rankings": {
+      "title": "🏆 Rankings",
+      "you": "You",
+      "leaderboard_label": "🏆 LEADERBOARD",
+      "updated": "Updated 2 min ago"
+    },
+    "simulations": {
+      "title": "🧪 Live Simulations",
+      "subtitle": "Watch how malware works — then try it yourself",
+      "badge": "Simulation",
+      "launch": "▶ Launch",
+      "coming_soon": "Coming soon",
+      "disclaimer": "🔒 These are educational simulations — no real malware is executed.",
+      "back": "Simulations"
+    },
+    "xp_tooltip": "{xp} XP total",
+    "footer": "The Cyber Majlis · Qatar University · 2026",
+    "simList": {
+      "virus": {
+        "name": "Virus: Fork Bomb",
+        "sub": "Watch a virus replicate and crash the system",
+        "desc": "A simulated Windows 7 desktop. Click the suspicious file and watch CMD windows multiply exponentially until the system crashes."
+      },
+      "rootkit": {
+        "name": "Rootkit: Hidden Processes",
+        "sub": "Reveal what the OS is hiding from you",
+        "desc": "A realistic Task Manager showing normal system load. Toggle 'Show Hidden Processes' to expose 6 kernel-level threats invisible the whole time."
+      },
+      "keylogger": {
+        "name": "Keylogger: Every Keystroke",
+        "sub": "Type a password — watch it get captured in real time",
+        "desc": "A normal-looking login form. Toggle the attacker panel to see every character logged with timestamps."
+      },
+      "worm": {
+        "name": "Worm Propagation",
+        "sub": "Watch a worm spread across a network",
+        "desc": "See how self-replicating worms exploit open ports and default credentials to jump between devices — from routers to IoT fridges."
+      },
+      "polymorphic": {
+        "name": "Polymorphic Engine",
+        "sub": "Encrypt and mutate every generation",
+        "desc": "Watch a polymorphic virus encrypt its payload with a new XOR key each time — producing a unique hash that evades signature-based detection."
+      },
+      "metamorphic": {
+        "name": "Metamorphic Engine",
+        "sub": "Rewrite code structure, keep behavior",
+        "desc": "See how metamorphic malware rewrites its own assembly — swapping registers, substituting instructions, injecting junk — while producing identical outputs."
+      },
+      "ransomware": {
+        "name": "Ransomware C2 Demo",
+        "sub": "Remote lock and unlock victims",
+        "desc": "Simulate a Command & Control server locking and unlocking victim screens in real time — exactly how ransomware operators work."
+      }
+    },
+    "navbar": {
+      "brand": "Cyber Majlis",
+      "login": "Log In",
+      "live_soc": "Live SOC",
+      "profile": "Profile",
+      "settings": "Settings",
+      "help": "Help",
+      "logout": "Log out",
+      "logout_dialog": {
+        "title": "Logout Confirmation",
+        "message": "Are you sure you want to log out?",
+        "confirm": "Log Out",
+        "cancel": "Cancel"
+      },
+      "chatbot_loading_title": "Chatbot Loading",
+      "chatbot_loading_message": "Chatbot is loading, please try again in a moment.",
+      "logout_failed_title": "Logout Failed",
+      "logout_failed_message": "Failed to log out. Please try again."
+    }
+  },
+  "Home": {
+    "badge": "🛡 CYBERSECURITY EDUCATION",
+    "subtitle": "Join Hamad on a journey to uncover online threats and learn how to stay safe in the digital world.",
+    "new_here": "New here?",
+    "create_account": "Create a free account",
+    "track": "to track your progress.",
+    "guide": "Hamad · Your Guide"
+  },
+  "CategoryPage": {
+    "eyebrow": "Cyber Majlis · {category}",
+    "title_suffix": "Lessons",
+    "subtitle": "Choose a lesson to begin your journey",
+    "back": "← Back to Dashboard",
+    "explore": "EXPLORE LESSON →",
+    "coming_soon": "Coming Soon"
+  },
+  "Categories": {
+        "basic": "Basic",
+        "advanced": "Advanced",
+        "realtime": "Real-Time"
+    },
+  "LessonDetail": {
+    "loading": "LOADING…",
+    "progress_label": "{done} / 4 COMPLETE",
+    "back": "← Back to {category} Lessons",
+    "no_content": "No content available yet.",
+    "tabs": {
+      "Story": "Story",
+      "Demo": "Demo",
+      "Poster": "Poster",
+      "Quiz": "Quiz"
+    },
+    "story_intro": {
+      "heading": "Before we begin…",
+      "watch_btn": "Watch Story →"
+    },
+    "descriptions": {
+      "ransomware": "In this scene, a student tries to use an online tool to cheat his quiz, but instead downloads ransomware that locks the classroom computer and demands payment to restore it.",
+      "virus": "In this scene, a curious boy receives a mysterious envelope from a falcon, unaware that opening it will unleash a hidden virus spreading through his tent like a digital infection.",
+      "worm": "In this scene, a friendly match turns into chaos when a shared link spreads a hidden worm that jumps from one house to another, infecting every connected device in the neighborhood.",
+      "polymorphic-metamorphic": "In this scene, discover how advanced malware rewrites itself every generation — using encryption and code mutation to stay invisible to security systems.",
+      "default": "Get ready to discover a new cybersecurity threat with Hamad!"
+    },
+    "quiz_ui": {
+      "knowledge_check": "Knowledge Check",
+      "ready_heading": "Ready to Test Your Knowledge?",
+      "questions_count": "{count} questions await you",
+      "start": "Start Quiz",
+      "completed": "Quiz Completed",
+      "excellent": "Excellent work!",
+      "good": "Good effort!",
+      "keep_practicing": "Keep practicing!",
+      "your_answer": "Your answer:",
+      "no_answer": "No answer",
+      "correct_answer": "Correct:",
+      "retry": "Retry Quiz",
+      "question_of": "Question {current} of {total}",
+      "attempts": "{used}/2 attempts",
+      "prev": "← Prev",
+      "next": "Next →",
+      "finish": "Finish →"
+    }
+  },
+
+  "Auth": {
+    "login": {
+      "eyebrow": "Cyber Majlis · Welcome Back",
+      "title": "Login",
+      "email_placeholder": "Email",
+      "password_placeholder": "Password",
+      "submit": "Login",
+      "success": "Logged in successfully. Welcome back!",
+      "forgot": "Forgot password?",
+      "footer_text": "New here?",
+      "footer_link": "Create an account"
+    },
+    "signup": {
+      "steps": {
+        "1": "Email & Username",
+        "2": "Create a Password",
+        "3": "Choose Character"
+      },
+      "email_placeholder": "Email",
+      "username_placeholder": "Username",
+      "password_placeholder": "Password",
+      "confirm_placeholder": "Confirm Password",
+      "back_btn": "Back",
+      "continue_btn": "Continue",
+      "complete_btn": "Complete",
+      "footer_text": "Already have an account?",
+      "footer_link": "Login",
+      "errors": {
+        "invalid_email": "Invalid email format",
+        "username_short": "At least 3 characters required",
+        "passwords_no_match": "Passwords do not match"
+      },
+      "pw_checks": {
+        "length": "At least 8 characters",
+        "number": "Includes a number",
+        "upper": "Includes an uppercase letter",
+        "symbol": "Includes a special symbol (!@#$%)"
+      }
+    },
+    "modals": {
+      "missing_fields_title": "Missing Fields",
+      "missing_fields_msg": "Please enter both email and password.",
+      "account_not_found_title": "Account Not Found",
+      "account_not_found_msg": "No account found with this email. Would you like to sign up?",
+      "account_not_found_confirm": "Sign Up",
+      "login_failed_title": "Login Failed",
+      "login_failed_msg": "Invalid email or password. Please try again.",
+      "missing_email_title": "Missing Email",
+      "missing_email_msg": "Please enter your email address first.",
+      "reset_sent_title": "Email Sent",
+      "reset_sent_msg": "A password reset email has been sent to {email}.",
+      "reset_failed_title": "Failed to Send",
+      "reset_failed_msg": "Failed to send reset email. Please check your email address.",
+      "account_created_title": "Account Created!",
+      "account_created_msg": "Your account has been created! A verification email has been sent to {email}. Please verify before logging in.",
+      "account_created_confirm": "Go to Login",
+      "error_title": "Something Went Wrong",
+      "error_generic": "An unexpected error occurred. Please try again.",
+      "verify_email_title": "Email Not Verified",
+      "verify_email_msg": "Please verify your email ({email}) before logging in.",
+      "verify_email_resend": "Resend Verification Email",
+      "email_in_use_title": "Email in use",
+      "email_in_use_msg": "Account already exists. Login instead.",
+      "email_in_use_confirm": "Login"
+    }
+  },
+
+  "Modal": {
+    "default_confirm": "Yes",
+    "default_close": "Close"
+  },
+
+  "SessionTimeout": {
+    "warning_title": "Session Expiring Soon",
+    "warning_msg": "You've been inactive for 14 minutes. You'll be automatically logged out in 1 minute to protect your account on shared devices.",
+    "stay_btn": "Stay Logged In",
+    "logout_btn": "Log Out Now"
+  },
+
+  "Lessons": {
+    "basic": {
+      "virus": {
+        "title": "Virus",
+        "description": "A harmful program that copies itself and spreads to the computer files, causing problems or stealing information."
+      },
+      "worm": {
+        "title": "Worm",
+        "description": "A harmful program that spreads on its own through networks, moving from one device to another without needing anyone to open or run it."
+      },
+      "ransomware": {
+        "title": "Ransomware",
+        "description": "A malicious program that locks your files or device and demands money to unlock them."
+      }
+    },
+    "advanced": {
+      "polymorphic-metamorphic": {
+        "title": "Polymorphic & Metamorphic",
+        "description": "Advanced malware that rewrites its own code every generation — using encryption and mutation to evade antivirus detection."
+      }
+    }
+  },
+  "Dashboard": {
+    "basic": {
+      "name": "Basic",
+      "description": "Start your journey into malware awareness. Explore real examples and learn how to defend against everyday cyber attacks.",
+      "badge": "Start Here"
+    },
+    "advanced": {
+      "name": "Advanced",
+      "description": "Dive deeper into sophisticated malware techniques designed to bypass traditional defenses.",
+      "badge": "Next Level"
+    },
+    "realtime": {
+      "name": "Real-Time Scenarios",
+      "description": "Experience live simulations and real-world cybersecurity incidents.",
+      "badge": "Coming Soon"
+    },
+    "levels": {
+      "beginner": "Beginner",
+      "aware": "Aware",
+      "defender": "Defender",
+      "guardian": "Guardian"
+    },
+    "brand": "Cyber Majlis",
+    "progress": "Progress",
+    "levelProgress": "Level Progress",
+    "selectPath": "Select a Learning Path",
+    "comingSoon": "Exciting new content coming soon!",
+    "headerEyebrow": "Cyber Majlis · Learning Hub",
+    "headerTitle": "Dashboard",
+    "headerSubtitle": "Choose your learning path and start your cybersecurity journey",
+
+    "trackerTitle": "Your Progress",
+    "trackerSubtitle": "Track your malware awareness journey",
+
+    "lessonsCompleted": "Lessons Completed",
+    "totalXP": "Total Experience",
+    "badges": "Badges Earned",
+    "currentLevel": "Current Level"
+  },
+  "SOC": {
+    "back": "← Back",
+    "intro": {
+      "title": "Welcome to the SOC",
+      "body": "A Security Operations Center is where cybersecurity teams monitor a network in real-time and respond to attacks as they happen. You're about to observe one in action.",
+      "watchFor": "What to watch for:",
+      "tips": [
+        "The feed on the right lists live threats. Click any one to learn what it is.",
+        "The team chat shows how analysts coordinate during an incident.",
+        "The dashboards below track traffic, attack types, and system health."
+      ],
+      "goal": "Your goal: follow along, click on threats you don't recognize, and see how a real team handles them.",
+      "cta": "I'm ready →"
+    },
+    "title": {
+      "main": "CyberMajlis",
+      "soc": "SOC"
+    },
+    "severity": {
+      "critical": "CRITICAL",
+      "elevated": "ELEVATED",
+      "normal": "NORMAL",
+      "low": "LOW",
+      "med": "MED",
+      "high": "HIGH",
+      "crit": "CRIT"
+    },
+    "Threats": "Threats",
+    "learned": "Learned",
+    "radio": {
+      "waiting": "Monitoring frequencies..."
+    },
+    "panels": {
+      "traffic": {
+        "title": "Network Traffic",
+        "explanation": "This graph shows the volume of network packets over time. Each bar represents a time interval. Spikes indicate unusual activity — a sudden surge could mean a DDoS attack, data exfiltration, or a worm scanning the network.",
+        "why": "In a real SOC, tools like Wireshark, Zeek, and NetFlow capture and visualize network traffic. Anomaly detection algorithms flag deviations from baseline patterns automatically."
+      },
+      "attacks": {
+        "title": "Attack Types",
+        "explanation": "This chart breaks down detected threats by category. If phishing suddenly dominates, it might indicate a targeted campaign. If DDoS spikes, infrastructure is under pressure.",
+        "why": "Real SOCs use SIEM systems (Splunk, QRadar, Sentinel) to categorize and count alerts. This helps prioritize response.",
+        "collecting": "Collecting data..."
+      },
+      "severity": {
+        "title": "Severity Classification",
+        "explanation": "Every alert is classified by severity: LOW, MEDIUM, HIGH, CRITICAL. The donut chart shows the distribution. Too many CRITICAL alerts means the organization is under active attack.",
+        "why": "Severity classification follows standards like CVSS. It determines response priority — CRITICAL alerts wake people up at 3 AM."
+      },
+      "status": {
+        "title": "System Health",
+        "explanation": "This panel monitors key security infrastructure: Firewall, IDS/IPS, SIEM, and Endpoints. Green means operational. Yellow means degraded. Red means down.",
+        "why": "If the firewall goes down, attackers can walk right in. SOC teams monitor these 24/7."
+      },
+      "chat": {
+        "title": "Team Chat",
+        "explanation": "In a real SOC, analysts communicate constantly during incidents. Each team member has a role: Threat Detection, Risk Assessment, Forensics, and Incident Response.",
+        "why": "Communication is critical during incidents. Miscommunication can turn a contained threat into a full breach."
+      }
+    },
+    "status": {
+      "firewall": "Firewall",
+      "ids": "IDS/IPS",
+      "siem": "SIEM",
+      "endpoints": "Endpoints"
+    },
+    "chat": {
+      "waiting": "Waiting for activity..."
+    },
+    "feed": {
+      "title": "FEED — CLICK TO LEARN"
+    },
+    "popup": {
+      "what": "WHAT IS THIS?",
+      "real_soc": "IN A REAL SOC",
+      "how_it_works": "HOW IT WORKS",
+      "play": "▶ Play",
+      "real_world_case": "REAL-WORLD CASE",
+      "defenses": "DEFENSES",
+      "quiz": "QUIZ",
+      "correct": "✓ Correct!",
+      "wrong": "✗ Wrong"
+    },
+    "footer": {
+      "simulated": "🔒 Simulated · The Cyber Majlis · Qatar University 2026",
+      "instruction": "Listen → Follow the chat → Click feed to learn "
+    },
+    "analysts": {
+      "saqr": { "role": "Threat Detection" },
+      "oryx": { "role": "Risk Assessor" },
+      "thalab": { "role": "Forensics" },
+      "hisan": { "role": "Incident Response" }
+    },
+    "targets": {
+      "web_server": "Web Server",
+      "email_gateway": "Email Gateway",
+      "database": "Database",
+      "api_endpoint": "API Endpoint",
+      "vpn": "VPN",
+      "dns_resolver": "DNS Resolver",
+      "workstation": "Workstation",
+      "iot_segment": "IoT Segment",
+      "cloud_vm": "Cloud VM",
+      "auth_service": "Auth Service"
+    },
+    "threats": {
+      "virus": {
+        "name": "Virus",
+        "tagline": "Attaches to files, spreads when you run them",
+        "radio": {
+          "virus_radio_1": "INCOMING! A virus just tried to sneak in through an email attachment!",
+          "virus_radio_2": "We've got a self-replicator! It's copying itself across the file system!",
+          "virus_radio_3": "Virus detected disguised as a PDF! The oldest trick in the book!"
+        },
+        "chat": {
+          "saqr": {
+            "virus_saqr_1": "Threat detected! Tracking a virus signature in the email gateway.",
+            "virus_saqr_2": "Confirmed — self-replicating payload. Flagging all instances."
+          },
+          "oryx": {
+            "virus_oryx_1": "Assessing risk... this could spread to shared drives if unchecked.",
+            "virus_oryx_2": "Risk level: HIGH. Recommending immediate email quarantine."
+          },
+          "thalab": {
+            "virus_thalab_1": "Analyzing the sample... attachment hash matches a known variant.",
+            "virus_thalab_2": "Sender address is spoofed. Tracing origin now."
+          },
+          "hisan": {
+            "virus_hisan_1": "Copy that — isolating the affected workstation.",
+            "virus_hisan_2": "Containment complete. Full disk scan running. ✓"
+          }
+        },
+        "steps": {
+          "virus_step_1_s": "Attach",
+          "virus_step_1_d": "Injects code into a legitimate file",
+          "virus_step_2_s": "Execute",
+          "virus_step_2_d": "Runs when user opens infected file",
+          "virus_step_3_s": "Replicate",
+          "virus_step_3_d": "Copies itself into other files",
+          "virus_step_4_s": "Spread",
+          "virus_step_4_d": "Shared via USB, email, downloads",
+          "virus_step_5_s": "Payload",
+          "virus_step_5_d": "Deletes files, steals data, opens backdoor"
+        },
+        "real_world": "ILOVEYOU (2000) — spread via email as a VBScript worm, infected 45+ million computers in 10 days, causing an estimated $10 billion in damages.",
+        "defenses": {
+          "virus_defense_1": "Keep antivirus updated",
+          "virus_defense_2": "Don't open unexpected attachments",
+          "virus_defense_3": "Scan USB drives",
+          "virus_defense_4": "Patch OS regularly"
+        },
+        "quiz": {
+          "question": "What makes a virus different from a worm?",
+          "options": {
+            "virus_quiz_opt_1": "Needs a host file",
+            "virus_quiz_opt_2": "It's bigger",
+            "virus_quiz_opt_3": "Only targets Mac",
+            "virus_quiz_opt_4": "Spreads via WiFi"
+          },
+          "why": "Viruses attach to host files and need user action. Worms spread independently."
+        }
+      },
+      "ransomware": {
+        "name": "Ransomware",
+        "tagline": "Encrypts your files and demands payment",
+        "radio": {
+          "ransomware_radio_1": "RED ALERT! Ransomware attempt detected! Going for file encryption!",
+          "ransomware_radio_2": "NOT a drill! Phishing link clicked — ransomware deploying!",
+          "ransomware_radio_3": "CRITICAL! Ransomware intercepted — targeting the backup server!"
+        },
+        "chat": {
+          "saqr": {
+            "ransomware_saqr_1": "Ransomware signature in network traffic. Marking the source.",
+            "ransomware_saqr_2": "Payload trying to enumerate network shares — I see the scan."
+          },
+          "oryx": {
+            "ransomware_oryx_1": "Risk: CRITICAL. If this reaches backups, recovery is impossible.",
+            "ransomware_oryx_2": "Recommending emergency network segmentation NOW."
+          },
+          "thalab": {
+            "ransomware_thalab_1": "Entry point: phishing email to Finance department.",
+            "ransomware_thalab_2": "Macro downloaded from compromised WordPress site. Full chain documented."
+          },
+          "hisan": {
+            "ransomware_hisan_1": "RESPONDING. Pulling network cable on affected machines.",
+            "ransomware_hisan_2": "Contained. Starting backup restore. No lateral movement. ✓"
+          }
+        },
+        "steps": {
+          "ransomware_step_1_s": "Entry",
+          "ransomware_step_1_d": "Phishing email or RDP brute force",
+          "ransomware_step_2_s": "Escalate",
+          "ransomware_step_2_d": "Gains admin, disables antivirus",
+          "ransomware_step_3_s": "Discover",
+          "ransomware_step_3_d": "Maps files and network shares",
+          "ransomware_step_4_s": "Encrypt",
+          "ransomware_step_4_d": "Locks everything with AES-256",
+          "ransomware_step_5_s": "Ransom",
+          "ransomware_step_5_d": "Demands cryptocurrency payment"
+        },
+        "real_world": "Colonial Pipeline (2021) — largest US refined fuel pipeline, shut down for 5 days. Paid 75 BTC ($4.4M) ransom to DarkSide group. Caused fuel shortages across 17 states.",
+        "defenses": {
+          "ransomware_defense_1": "3-2-1 backup rule",
+          "ransomware_defense_2": "Never pay ransom",
+          "ransomware_defense_3": "Email filtering + training",
+          "ransomware_defense_4": "Network segmentation"
+        },
+        "quiz": {
+          "question": "First thing to do when ransomware hits?",
+          "options": {
+            "ransomware_quiz_opt_1": "Pay immediately",
+            "ransomware_quiz_opt_2": "Turn off computer",
+            "ransomware_quiz_opt_3": "Disconnect from network",
+            "ransomware_quiz_opt_4": "Delete files"
+          },
+          "why": "Disconnect to prevent spread, then assess and restore from backups."
+        }
+      },
+      "phishing": {
+        "name": "Phishing",
+        "tagline": "Fake emails/sites that steal your credentials",
+        "radio": {
+          "phishing_radio_1": "Phishing attempt! Someone's impersonating QNB with a fake domain!",
+          "phishing_radio_2": "Social engineering detected! Urgency tactics in an email!",
+          "phishing_radio_3": "Credential harvesting page found — clone of our banking portal!"
+        },
+        "chat": {
+          "saqr": {
+            "phishing_saqr_1": "Flagged suspicious email traffic. Domain mismatch detected.",
+            "phishing_saqr_2": "Link redirects through three servers before the phishing page."
+          },
+          "oryx": {
+            "phishing_oryx_1": "Risk: if credentials harvested, attacker gets VPN access.",
+            "phishing_oryx_2": "Updating email filters. Pushing domain to DNS blacklist."
+          },
+          "thalab": {
+            "phishing_thalab_1": "Classic urgency tactic — 'Account suspended in 24 hours.'",
+            "phishing_thalab_2": "Fake page on compromised site. Submitting takedown request."
+          },
+          "hisan": {
+            "phishing_hisan_1": "Checking if anyone clicked before we caught it...",
+            "phishing_hisan_2": "All clear — nobody fell for it. Sending staff reminder. ✓"
+          }
+        },
+        "steps": {
+          "phishing_step_1_s": "Craft",
+          "phishing_step_1_d": "Create convincing fake email/site",
+          "phishing_step_2_s": "Lure",
+          "phishing_step_2_d": "Use urgency, fear, curiosity",
+          "phishing_step_3_s": "Deceive",
+          "phishing_step_3_d": "Victim sees pixel-perfect fake page",
+          "phishing_step_4_s": "Harvest",
+          "phishing_step_4_d": "Credentials sent to attacker",
+          "phishing_step_5_s": "Exploit",
+          "phishing_step_5_d": "Attacker logs in as victim"
+        },
+        "real_world": "Google/Facebook BEC fraud (2013-2015) — Lithuanian man impersonated hardware supplier Quanta Computer, stealing $122M via fake invoices.",
+        "defenses": {
+          "phishing_defense_1": "Check sender address",
+          "phishing_defense_2": "Hover links before clicking",
+          "phishing_defense_3": "Enable MFA",
+          "phishing_defense_4": "Report suspicious emails"
+        },
+        "quiz": {
+          "question": "Best way to verify a suspicious email?",
+          "options": {
+            "phishing_quiz_opt_1": "Check the logo",
+            "phishing_quiz_opt_2": "Verify sender's actual address",
+            "phishing_quiz_opt_3": "See if in inbox",
+            "phishing_quiz_opt_4": "Check font"
+          },
+          "why": "Phishing spoofs display names but the actual email address reveals the fraud."
+        }
+      },
+      "ddos": {
+        "name": "DDoS",
+        "tagline": "Floods servers with fake traffic until they crash",
+        "radio": {
+          "ddos_radio_1": "MASSIVE traffic spike! 500K packets per second!",
+          "ddos_radio_2": "DDoS attack! DNS amplification — traffic multiplied 60x!",
+          "ddos_radio_3": "Web server under siege! 12,000 IPs flooding port 443!"
+        },
+        "chat": {
+          "saqr": {
+            "ddos_saqr_1": "12,000+ unique source IPs. Confirmed botnet.",
+            "ddos_saqr_2": "Mostly compromised IoT devices. Feeding to threat intel."
+          },
+          "oryx": {
+            "ddos_oryx_1": "Risk: if CDN fails, all public services go down.",
+            "ddos_oryx_2": "Rerouting through scrubbing center. Architecture holding."
+          },
+          "thalab": {
+            "ddos_thalab_1": "Traffic pattern: UDP reflection via open DNS resolvers.",
+            "ddos_thalab_2": "C2 server identified. Filing abuse reports."
+          },
+          "hisan": {
+            "ddos_hisan_1": "Response time at 8 seconds. Switching to backup CDN.",
+            "ddos_hisan_2": "Services restored. Monitoring for round 2. ✓"
+          }
+        },
+        "steps": {
+          "ddos_step_1_s": "Recruit",
+          "ddos_step_1_d": "Build/rent botnet of thousands",
+          "ddos_step_2_s": "Target",
+          "ddos_step_2_d": "Select victim server",
+          "ddos_step_3_s": "Flood",
+          "ddos_step_3_d": "All bots send traffic at once",
+          "ddos_step_4_s": "Overwhelm",
+          "ddos_step_4_d": "Server can't handle load",
+          "ddos_step_5_s": "Impact",
+          "ddos_step_5_d": "Legitimate users locked out"
+        },
+        "real_world": "GitHub DDoS (2018) — 1.35 Tbps using memcached amplification.",
+        "defenses": {
+          "ddos_defense_1": "CDN/DDoS protection",
+          "ddos_defense_2": "Rate limiting",
+          "ddos_defense_3": "Traffic scrubbing",
+          "ddos_defense_4": "Redundant infrastructure"
+        },
+        "quiz": {
+          "question": "Why is DDoS hard to stop?",
+          "options": {
+            "ddos_quiz_opt_1": "Uses encryption",
+            "ddos_quiz_opt_2": "Comes from thousands of real devices",
+            "ddos_quiz_opt_3": "Targets hardware",
+            "ddos_quiz_opt_4": "Invisible"
+          },
+          "why": "Traffic from real infected devices — hard to tell from legitimate users."
+        }
+      },
+      "rootkit": {
+        "name": "Rootkit",
+        "tagline": "Hides deep in the OS — invisible to everything",
+        "radio": {
+          "rootkit_radio_1": "GHOST ALERT! Something hiding from our monitoring!",
+          "rootkit_radio_2": "Kernel rootkit detected by EXTERNAL sensors only!",
+          "rootkit_radio_3": "CPU at 90% but processes show normal — rootkit!"
+        },
+        "chat": {
+          "saqr": {
+            "rootkit_saqr_1": "CPU at 90% but monitoring shows 8%. Rootkit suspected.",
+            "rootkit_saqr_2": "Booting from external drive to bypass kernel hooks."
+          },
+          "oryx": {
+            "rootkit_oryx_1": "Risk: bypassed ALL internal monitoring. Only external caught it.",
+            "rootkit_oryx_2": "Recommending UEFI Secure Boot across all endpoints."
+          },
+          "thalab": {
+            "rootkit_thalab_1": "Kernel hook on NtQuerySystemInformation. Classic rootkit.",
+            "rootkit_thalab_2": "Initial infection: fake Chrome update 3 weeks ago. Timeline built."
+          },
+          "hisan": {
+            "rootkit_hisan_1": "Isolating machine. Pulling network cable physically.",
+            "rootkit_hisan_2": "Full OS reinstall. All credentials rotated. ✓"
+          }
+        },
+        "steps": {
+          "rootkit_step_1_s": "Install",
+          "rootkit_step_1_d": "Dropped by another malware",
+          "rootkit_step_2_s": "Hook",
+          "rootkit_step_2_d": "Modifies OS kernel functions",
+          "rootkit_step_3_s": "Hide",
+          "rootkit_step_3_d": "Processes invisible to all tools",
+          "rootkit_step_4_s": "Control",
+          "rootkit_step_4_d": "Persistent root/admin access",
+          "rootkit_step_5_s": "Protect",
+          "rootkit_step_5_d": "Blocks antivirus, survives reboots"
+        },
+        "real_world": "Sony BMG rootkit (2005) — copy protection on millions of music CDs secretly installed a rootkit that hid itself from Windows.",
+        "defenses": {
+          "rootkit_defense_1": "Secure Boot / UEFI",
+          "rootkit_defense_2": "Boot from clean media",
+          "rootkit_defense_3": "External monitoring",
+          "rootkit_defense_4": "Full OS reinstall"
+        },
+        "quiz": {
+          "question": "Why can't antivirus detect rootkits?",
+          "options": {
+            "rootkit_quiz_opt_1": "Too small",
+            "rootkit_quiz_opt_2": "Modifies the OS itself",
+            "rootkit_quiz_opt_3": "AV only scans emails",
+            "rootkit_quiz_opt_4": "Runs remotely"
+          },
+          "why": "Rootkits hook into the kernel — they modify the functions antivirus uses."
+        }
+      }
+    }
+  },
+  "Chatbot": {
+    "tooltip": "Sign in to chat with Hamad!"
+  },
+  "CharacterSelection": {
+    "label": "Choose Your Guardian",
+    "hover_hint": "Hover to preview",
+    "selected_badge": "✓ Selected",
+    "characters": [
+      {
+        "name": "Arabian Oryx",
+        "role": "Risk Assessor / Planner",
+        "backstory": "Grew up exploring the Qatari desert, always mapping safe paths for friends."
+      },
+      {
+        "name": "Red Fox",
+        "role": "Forensics / Investigator",
+        "backstory": "Solved the mystery of the disappearing data bytes as a cub."
+      },
+      {
+        "name": "Saker Falcon",
+        "role": "Threat Detection",
+        "backstory": "Once spotted a cyber threat from miles away, saving the whole village server."
+      },
+      {
+        "name": "Arabian Horse",
+        "role": "Incident Response / Recovery",
+        "backstory": "Known as the fastest courier between desert camps, delivering safety tips."
+      }
+    ]
+  },
+  "Profile": {
+    "eyebrow": "Cyber Majlis · Account",
+    "title": "My Profile",
+    "title_highlight": "Profile",
+    "subtitle": "Manage your account and track your journey",
+    "loading": "Loading...",
+    "joined": "Joined {date}",
+    "xp_label": "XP Points",
+    "progress_title": "Progress & Experience",
+    "progress_label": "Lesson Progress",
+    "progress_completed": "{done} / {total} completed",
+    "username_title": "Username",
+    "character_title": "Character",
+    "edit": "Edit",
+    "change": "Change",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "back": "← Back"
+  },
+  "Settings": {
+    "eyebrow": "Cyber Majlis · Settings",
+    "title": "Account",
+    "title_highlight": "Settings",
+    "subtitle": "Manage your preferences and security",
+    "loading": "Loading...",
+    "password_title": "Change Password",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_password": "Confirm New Password",
+    "pw_mismatch": "Passwords do not match",
+    "pw_checks": {
+      "length": "At least 8 characters",
+      "number": "Includes a number",
+      "upper": "Includes an uppercase letter",
+      "symbol": "Includes a special symbol (!@#$%)"
+    },
+    "update_password": "Update Password",
+    "language_title": "Language Preference",
+    "save_language": "Save Language",
+    "danger_title": "Danger Zone",
+    "danger_description": "Deleting your account is permanent and cannot be undone. Please enter your password to confirm.",
+    "delete_password_placeholder": "Enter your password to confirm",
+    "delete_account": "Delete Account",
+    "saving": "Saving…",
+    "back": "← Back",
+    "modals": {
+      "missing_fields_title": "Missing Fields",
+      "missing_fields_msg": "Please fill in all password fields.",
+      "weak_password_title": "Weak Password",
+      "weak_password_msg": "Please make sure your new password meets all requirements.",
+      "pw_mismatch_title": "Password Mismatch",
+      "pw_mismatch_msg": "New passwords do not match.",
+      "pw_changed_title": "Password Changed ✅",
+      "pw_changed_msg": "Your password has been updated successfully.",
+      "wrong_password_title": "Incorrect Password",
+      "wrong_password_msg": "Your current password is incorrect.",
+      "error_title": "Something Went Wrong",
+      "pw_error_msg": "Failed to update password. Please try again.",
+      "language_saved_title": "Language Saved ✅",
+      "language_saved_msg": "Your language preference has been set to {language}.",
+      "language_error_msg": "Failed to save language. Please try again.",
+      "delete_title": "Delete Account",
+      "delete_confirm_msg": "Are you sure you want to permanently delete your account? This cannot be undone.",
+      "delete_btn": "Delete",
+      "delete_wrong_password_msg": "The password you entered is incorrect.",
+      "delete_error_msg": "Failed to delete account. Please try again."
+    }
+  },
+  "SouqSafe": {
+    "title": "Souq Safe",
+    "question": "Is this safe to share?",
+    "dragHint": "Drag to a zone below — or just tap it",
+    "correct": "✓ Correct!",
+    "wrong": "✗ Wrong spot!",
+    "next": "Next Item →",
+    "seeResults": "See Results",
+    "zones": {
+      "safe": {
+        "label": "🔒 Safe Chest",
+        "sub": "Keep it secret!"
+      },
+      "cart": {
+        "label": "🛒 Open Cart",
+        "sub": "Okay to share"
+      }
+    },
+    "intro": {
+      "title": "Souq Safe",
+      "lines": [
+        "Welcome to Souq Waqif! As a wise merchant, you know some treasures must be locked away.",
+        "Drag each item to the right place — the safe chest for secrets, or the open cart for things okay to share.",
+        "Let's see how well you can protect your data!"
+      ]
+    },
+    "result": {
+      "title": "Market Closed",
+      "excellent": "You're a wise merchant! Your treasures are well protected. +100 XP earned! 🏆",
+      "pass": "Good instincts! You passed and earned 100 XP. 🌟",
+      "fail": "Almost! You need {score}/10 to earn XP. Try again!"
+    },
+    "items": [
+      { "text": "Your password", "safe": true, "why": "Passwords should never be shared — keep them in your safe!" },
+      { "text": "Your full name", "safe": false, "why": "Your name is usually okay to share in normal conversations." },
+      { "text": "Credit card number", "safe": true, "why": "Financial data is extremely sensitive — always protect it!" },
+      { "text": "Your favorite color", "safe": false, "why": "This is harmless personal preference — safe to share." },
+      { "text": "Home address", "safe": true, "why": "Your address can be used to find you — protect it!" },
+      { "text": "Bank account details", "safe": true, "why": "Banking info can drain your account — never share publicly!" },
+      { "text": "Your phone number", "safe": true, "why": "Phone numbers can be used for scams and identity theft." },
+      { "text": "Your hobby", "safe": false, "why": "Sharing hobbies is normal and generally safe." },
+      { "text": "WiFi password", "safe": true, "why": "Sharing WiFi passwords gives network access to strangers!" },
+      { "text": "Your job title", "safe": false, "why": "Job titles are usually public professional information." },
+      { "text": "Passport photo", "safe": true, "why": "ID documents can be used for identity theft!" },
+      { "text": "Your pet's name", "safe": false, "why": "Pet names are fun to share — but don't use them as passwords!" },
+      { "text": "National ID number", "safe": true, "why": "Your ID number is a key to your identity — guard it carefully." },
+      { "text": "Two-factor auth code", "safe": true, "why": "2FA codes are one-time secrets — sharing them lets attackers in!" },
+      { "text": "Your university name", "safe": false, "why": "Where you study is usually public and okay to share." },
+      { "text": "Your date of birth", "safe": true, "why": "Birthdate combined with other info enables identity theft — keep it private!" },
+      { "text": "Your country of residence", "safe": false, "why": "General location like country is public and safe to share." },
+      { "text": "Your salary", "safe": true, "why": "Income details can be used in social engineering and fraud attacks." },
+      { "text": "Your email address", "safe": true, "why": "Sharing your email publicly leads to phishing, spam, and credential stuffing attacks." },
+      { "text": "Your favorite movie", "safe": false, "why": "Entertainment preferences are harmless to share — no sensitive info here." },
+      { "text": "PIN code", "safe": true, "why": "PINs are like passwords — sharing them gives direct access to your accounts or devices." },
+      { "text": "Your car plate number", "safe": true, "why": "Plate numbers can be used to track your movements and location patterns." },
+      { "text": "Your school grades", "safe": false, "why": "Academic results are personal but generally not a security risk to share." },
+      { "text": "Recovery email address", "safe": true, "why": "Your recovery email is a backdoor to all your accounts — guard it carefully!" },
+      { "text": "Your blood type", "safe": false, "why": "Medical info like blood type is generally safe to share and may be important in emergencies." },
+      { "text": "Security question answers", "safe": true, "why": "Security answers are essentially secondary passwords — sharing them bypasses your account protection!" },
+      { "text": "Your company name", "safe": false, "why": "Your employer is usually public professional information, visible on LinkedIn." },
+      { "text": "Location on a live photo", "safe": true, "why": "Photos with embedded GPS metadata reveal exactly where and when you were — strip metadata before sharing!" },
+      { "text": "Your childhood nickname", "safe": false, "why": "Nicknames are generally harmless — unless you use them as passwords or security answers!" },
+      { "text": "Your mother's maiden name", "safe": true, "why": "Mother's maiden name is a classic security question answer — sharing it publicly undermines account security." }
+    ]
+  },
+  "GameShell": {
+    "round": "Round",
+    "start": "Let's Go!",
+    "next": "Next →",
+    "outOf": "out of",
+    "playAgain": "Play Again",
+    "allGames": "Back to Games"
+  },
+  "DemoRootkit": {
+    "intro": {
+      "title": "Rootkit",
+      "titleAccent": "Demo",
+      "description": "You'll see a normal-looking Task Manager. Everything seems fine — low CPU, familiar processes. Then reveal what the rootkit is hiding from you.",
+      "cta": "Open Task Manager",
+      "safeBadge": "● SAFE SIMULATION",
+      "disclaimer": "🔒 No system processes are scanned. The Task Manager is a visual mockup with fake data."
+    },
+    "lesson": {
+      "title": "The Invisible Threat",
+      "warningLabel": "⚠ Lesson",
+      "body": "Rootkits operate at the <strong style=\"color:#a855f7\">kernel level</strong>, hooking into the OS to hide processes, files, and network connections from all user-mode tools — including Task Manager. Your CPU was at 86% but you only saw 8%. <strong style=\"color:#3fb950\">Defense:</strong> Use offline scanning tools, boot from clean media, enable Secure Boot and UEFI protections, and monitor from an external system.",
+      "tryAgain": "Try Again"
+    },
+    "taskman": {
+      "title": "Task Manager",
+      "tabs": [
+        "Processes",
+        "Performance",
+        "App history",
+        "Startup"
+      ],
+      "showHiddenBtn": "🔍 Show Hidden Processes",
+      "hiddenRevealedBtn": "👻 Hidden Processes REVEALED",
+      "analysisBtn": "See Full Analysis →",
+      "cpuLabel": "CPU",
+      "ramLabel": "RAM",
+      "columns": [
+        "Name",
+        "CPU",
+        "Memory",
+        "PID",
+        "User"
+      ],
+      "processCount": "Processes: {count}",
+      "hiddenCount": "{n} were hidden!",
+      "statusNormal": "✓ System appears normal",
+      "statusRevealed": "⚠ ROOTKIT DETECTED — 6 hidden processes exposed"
+    },
+    "normalProcesses": [
+      {
+        "name": "chrome.exe",
+        "cpu": 3.2,
+        "ram": 342,
+        "pid": 4128,
+        "user": "admin"
+      },
+      {
+        "name": "explorer.exe",
+        "cpu": 0.4,
+        "ram": 58,
+        "pid": 1204,
+        "user": "SYSTEM"
+      },
+      {
+        "name": "svchost.exe",
+        "cpu": 0.1,
+        "ram": 24,
+        "pid": 892,
+        "user": "SYSTEM"
+      },
+      {
+        "name": "csrss.exe",
+        "cpu": 0,
+        "ram": 12,
+        "pid": 560,
+        "user": "SYSTEM"
+      },
+      {
+        "name": "winlogon.exe",
+        "cpu": 0,
+        "ram": 8,
+        "pid": 612,
+        "user": "SYSTEM"
+      },
+      {
+        "name": "taskmgr.exe",
+        "cpu": 1.1,
+        "ram": 22,
+        "pid": 7840,
+        "user": "admin"
+      },
+      {
+        "name": "Teams.exe",
+        "cpu": 2.4,
+        "ram": 280,
+        "pid": 5560,
+        "user": "admin"
+      },
+      {
+        "name": "Spotify.exe",
+        "cpu": 0.8,
+        "ram": 156,
+        "pid": 6204,
+        "user": "admin"
+      },
+      {
+        "name": "OneDrive.exe",
+        "cpu": 0.3,
+        "ram": 44,
+        "pid": 3312,
+        "user": "admin"
+      },
+      {
+        "name": "RuntimeBroker.exe",
+        "cpu": 0.1,
+        "ram": 18,
+        "pid": 2280,
+        "user": "SYSTEM"
+      }
+    ],
+    "hiddenProcesses": [
+      {
+        "name": "xmrig_miner.exe",
+        "cpu": 78.4,
+        "ram": 512,
+        "pid": 6666,
+        "user": "SYSTEM",
+        "type": "Crypto Miner",
+        "icon": "⛏",
+        "color": "#f59e0b",
+        "desc": "Mining cryptocurrency using your CPU — 78% usage hidden from Task Manager"
+      },
+      {
+        "name": "keylogger_svc.exe",
+        "cpu": 0.3,
+        "ram": 8,
+        "pid": 6667,
+        "user": "SYSTEM",
+        "type": "Keylogger",
+        "icon": "⌨",
+        "color": "#f0883e",
+        "desc": "Recording every keystroke and sending to remote server every 30 seconds"
+      },
+      {
+        "name": "rev_shell.exe",
+        "cpu": 0.1,
+        "ram": 4,
+        "pid": 6668,
+        "user": "SYSTEM",
+        "type": "Reverse Shell",
+        "icon": "🚪",
+        "color": "#ef4444",
+        "desc": "Persistent backdoor — attacker has remote terminal access right now"
+      },
+      {
+        "name": "data_exfil.exe",
+        "cpu": 2.1,
+        "ram": 64,
+        "pid": 6669,
+        "user": "SYSTEM",
+        "type": "Data Exfiltrator",
+        "icon": "📤",
+        "color": "#dc2626",
+        "desc": "Quietly uploading Documents folder to attacker's server (3.2 GB sent so far)"
+      },
+      {
+        "name": "rootkit_drv.sys",
+        "cpu": 0,
+        "ram": 2,
+        "pid": 4,
+        "user": "KERNEL",
+        "type": "Rootkit Driver",
+        "icon": "👻",
+        "color": "#a855f7",
+        "desc": "Kernel-level driver hiding all other malicious processes from the OS"
+      },
+      {
+        "name": "dns_spoof.exe",
+        "cpu": 0.2,
+        "ram": 12,
+        "pid": 6670,
+        "user": "SYSTEM",
+        "type": "DNS Hijacker",
+        "icon": "🌐",
+        "color": "#3b82f6",
+        "desc": "Redirecting bank websites to phishing copies without changing the URL"
+      }
+    ]
+  },
+  "DemoKeylogger": {
+    "intro": {
+      "title": "Keylogger",
+      "titleAccent": "Demo",
+      "description": "You'll see what looks like a normal login page. Type your (fake) email and password. Then toggle the attacker's view to see every single keystroke — including the ones you deleted.",
+      "loginCta": "Start Login Demo",
+      "editorCta": "Notepad Demo",
+      "safeBadge": "● SAFE SIMULATION — no actual keylogging occurs"
+    },
+    "keys": {
+      "delete": "⌫ DELETE",
+      "enter": "↵ ENTER",
+      "tab": "⇥ TAB",
+      "space": "␣ SPACE"
+    },
+    "bar": {
+      "loginTitle": "login_form.html — victim's browser",
+      "editorTitle": "notepad.exe — victim's screen",
+      "attackerOn": "🔓 Attacker View ON",
+      "attackerOff": "🔒 Show Attacker View",
+      "endDemo": "End Demo →"
+    },
+    "login": {
+      "welcome": "Welcome Back",
+      "subtitle": "Sign in to your account",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "passwordLabel": "Password",
+      "signIn": "Sign In",
+      "looksNormal": "This looks normal, right? 😈"
+    },
+    "editor": {
+      "title": "Untitled - Notepad",
+      "placeholder": "Start typing anything... your thoughts, a message, a secret..."
+    },
+    "attacker": {
+      "activeLabel": "KEYLOGGER ACTIVE",
+      "recordingLabel": "Recording all keystrokes in real-time",
+      "waiting": "Waiting for keystrokes...",
+      "reconstructedLabel": "RECONSTRUCTED INPUT",
+      "emailField": "Email",
+      "passField": "Pass",
+      "typing": "(typing...)",
+      "keysCount": "Keys: {n}",
+      "deletesCount": "Deletes: {n}"
+    },
+    "reveal": {
+      "title": "Everything Was Captured",
+      "capturedLabel": "CAPTURED DATA",
+      "totalKeystrokes": "Total keystrokes",
+      "charsTyped": "Characters typed",
+      "deletionsCaptured": "Deletions captured",
+      "deletedRecovered": "Even deleted text recovered?",
+      "yes": "YES",
+      "lessonLabel": "⚠ Lesson",
+      "lessonBody": "A keylogger records <strong style=\"color:#f85149\">every single keystroke</strong> — including passwords you type, messages you delete, and corrections you make. Even if you backspace over a mistake, the original characters are already captured. <strong style=\"color:#3fb950\">Defense:</strong> Use password managers (they autofill without typing), enable 2FA, keep antivirus updated, and never install software from untrusted sources.",
+      "tryAgain": "Try Again"
+    },
+    "hint": {
+      "login": "Type something in the login form, then click <strong style=\"color:#f0883e\">\"Show Attacker View\"</strong> to see what's being captured",
+      "editor": "Type something in the notepad, then click <strong style=\"color:#f0883e\">\"Show Attacker View\"</strong> to see what's being captured"
+    }
+  },
+  "DemoVirus": {
+    "desktop": {
+      "recycleBin": "Recycle Bin",
+      "fileName": "DoNotOpen.bat",
+      "hint": "Click the file above to open it"
+    },
+    "cmd": {
+      "title": "C:\\Windows\\system32\\cmd.exe"
+    },
+    "cmdLines": [
+      "Microsoft Windows [Version 6.1.7600]",
+      "Copyright (c) 2009 Microsoft Corporation. All rights reserved.",
+      "",
+      "C:\\Users\\admin\\Desktop>",
+      "C:\\Users\\admin\\Desktop>DoNotOpen.bat",
+      "Spawning process... PID 1204",
+      "Spawning process... PID 1208",
+      "Spawning process... PID 1215",
+      "Spawning process... PID 1220",
+      "Spawning process... PID 1228",
+      "WARNING: System resources critical"
+    ],
+    "error": {
+      "title": "WinExec - Application Error",
+      "message": "The application was unable to start correctly (0xc0000142). Click OK to close the application.",
+      "ok": "OK"
+    },
+    "resources": {
+      "title": "System Resources",
+      "cpu": "CPU",
+      "ram": "RAM",
+      "processes": "Processes"
+    },
+    "crashed": {
+      "title": "System Overwhelmed",
+      "description": "The virus replicated itself by opening new processes in an infinite loop. Each process spawned more processes until the system ran out of memory — just like a real <strong style=\"color:#ef4444\">fork bomb</strong>.",
+      "howTitle": "How it works:",
+      "howBody": "1. The script opens a new command window<br/>2. Then loops back and does it again<br/>3. Each new window does the same thing<br/>4. Exponential growth: 1 → 2 → 4 → 8 → 16 → 32...<br/>5. System runs out of memory and crashes",
+      "lesson": "<strong style=\"color:#f59e0b\">Lesson:</strong> Never open suspicious files! Even a tiny script can crash an entire computer through self-replication.",
+      "reset": "Reset Desktop"
+    }
+  },
+  "DemoRansomware": {
+    "toolbar": {
+      "title": "Ransomware C2 Demo",
+      "subtitle": "Educational Simulation",
+      "splitView": "Split View",
+      "attackerOnly": "Attacker Only",
+      "victimOnly": "Victim Only"
+    },
+    "panels": {
+      "attacker": "ATTACKER — Command & Control",
+      "victim": "VICTIM"
+    },
+    "attacker": {
+      "titleBar": "I can lock you",
+      "controls": "Controls",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "refresh": "Refresh"
+    },
+    "table": {
+      "fingerprint": "FingerPrint",
+      "currentUser": "CurrentUser",
+      "status": "Status",
+      "locked": "LOCKED",
+      "unlocked": "UNLOCKED"
+    },
+    "victim": {
+      "lockedMessage": "Your computer is locked because cheating activity was detected in your last quiz!",
+      "fineMessage": "Pay QR1,000.00 fine to unlock.",
+      "lockedBy": "System locked by remote administrator"
+    },
+    "desktop": {
+      "recycleBin": "Recycle Bin",
+      "documents": "Documents",
+      "browser": "Browser"
+    },
+    "lesson": {
+      "label": "Lesson:",
+      "body": "Ransomware uses a Command & Control (C2) server to remotely lock victims' screens. The attacker can lock/unlock at will.",
+      "defenseLabel": "Defense:",
+      "defenseBody": "Regular backups, network segmentation, and endpoint detection stop ransomware before it activates."
+    }
+  },
+  "DemoPoly": {
+    "titleBar": {
+      "filename": "poly_engine.py — Polymorphic Mutation Lab",
+      "safeBadge": "SAFE SIMULATION"
+    },
+    "terminal": {
+      "label": "TERMINAL",
+      "mutateBtn": "MUTATE [Gen {gen}]",
+      "mutateHint": "New encrypted variant each click"
+    },
+    "inspector": {
+      "label": "INSPECTOR",
+      "empty": "Click MUTATE to begin",
+      "xorKey": "XOR KEY ({count} BYTES)",
+      "encryptedPayload": "ENCRYPTED PAYLOAD",
+      "decryptionStub": "DECRYPTION STUB",
+      "hash": "HASH",
+      "hashDifferent": "✓ DIFFERENT — evaded detection",
+      "hashSame": "⚠ Same hash",
+      "decrypted": "DECRYPTED",
+      "matchesOriginal": "✓ MATCHES ORIGINAL",
+      "mismatch": "✗ MISMATCH"
+    },
+    "footer": {
+      "gen": "Gen: {count}",
+      "uniqueHashes": "Unique hashes: {count}"
+    },
+    "lesson": {
+      "label": "Polymorphic malware",
+      "body": "encrypts its payload with a new key each time. The hash changes every generation, but the decrypted payload is always identical."
+    }
+  },
+
+  "DemoMeta": {
+    "titleBar": {
+      "filename": "meta_engine.py — Metamorphic Mutation Lab",
+      "safeBadge": "SAFE SIMULATION"
+    },
+    "terminal": {
+      "label": "TERMINAL",
+      "metamorphBtn": "METAMORPH [Gen {gen}]",
+      "metamorphHint": "Rewrites code structure each click"
+    },
+    "inspector": {
+      "label": "CODE INSPECTOR",
+      "empty": "Click METAMORPH to begin",
+      "transformsApplied": "TRANSFORMS APPLIED",
+      "mutatedCode": "MUTATED CODE",
+      "junkLabel": "JUNK",
+      "originalCode": "ORIGINAL CODE",
+      "hash": "HASH",
+      "hashDifferent": "✓ DIFFERENT — evaded detection",
+      "hashSame": "⚠ Same hash",
+      "behavioralProof": "BEHAVIORAL PROOF",
+      "behaviorPreserved": "BEHAVIOR PRESERVED — same inputs, same outputs"
+    },
+    "footer": {
+      "gen": "Gen: {count}",
+      "uniqueHashes": "Unique hashes: {count}"
+    },
+    "lesson": {
+      "label": "Metamorphic malware",
+      "body": "rewrites its own code — different instructions, registers, and structure — but the behavior is always identical. No encryption needed. Nearly impossible to detect with signatures."
+    }
+  },
+  "DemoWorm": {
+    "intro": {
+      "title": "Worm Propagation",
+      "titleAccent": "Demo",
+      "description": "First, watch the worm scan a network and exploit a vulnerable FTP server — just like our real demo. Then, take control and spread the worm across an interactive network map with computers, IoT devices, and servers.",
+      "watchBtn": "Watch Terminal Demo",
+      "skipBtn": "Skip to Network Map",
+      "safeBadge": "SAFE EDUCATIONAL SIMULATION"
+    },
+    "vscode": {
+      "problems": "PROBLEMS",
+      "output": "OUTPUT",
+      "debugConsole": "DEBUG CONSOLE",
+      "terminal": "TERMINAL"
+    },
+    "terminal": {
+      "transitionPrompt": "Now try it yourself on the interactive network map! →"
+    },
+    "map": {
+      "filename": "worm_propagation.py — Network Map",
+      "infected": "Infected: {count}/{total}",
+      "scanned": "Scanned: {count}",
+      "instructions": "Click a device to scan for vulnerabilities and spread the worm"
+    },
+    "device": {
+      "infected": "INFECTED"
+    },
+    "scanLog": {
+      "label": "SCAN LOG",
+      "empty": "Click a device to begin scanning"
+    },
+    "scan": {
+      "unreachable": "Cannot reach — no path from infected device",
+      "secure": "No exploitable vulnerability — host is secure"
+    },
+    "scanResult": {
+      "exploited": "EXPLOITED",
+      "method": "Method",
+      "result": "Result",
+      "secure": "Secure"
+    },
+    "complete": {
+      "badge": "PROPAGATION COMPLETE",
+      "statsTitle": "INFECTION STATISTICS:",
+      "hostsScanned": "Hosts Scanned: {count}",
+      "hostsInfected": "Hosts Infected: {count}",
+      "infectedHostsTitle": "INFECTED HOSTS:",
+      "iotDevice": "IoT Device",
+      "lessonLabel": "Lesson:",
+      "lessonBody": "The worm spread to {infected} devices by exploiting open ports, default passwords, and unpatched services. IoT devices ({iot} infected) were the easiest targets — most used default credentials. Patch your systems, change default passwords, and segment your network!",
+      "runAgain": "Run Again"
+    },
+    "lesson": {
+      "label": "Worms",
+      "body": "scan networks for open ports and vulnerabilities, then exploit them to spread.",
+      "iotLabel": "IoT devices",
+      "iotBody": "with default passwords are the easiest path into any network."
+    }
+  },
+  "dmDetector": {
+    "title": "DM Detector",
+    "directMessage": "Direct Message",
+    "intro": {
+      "line1": "Your phone is blowing up with messages! Some are from friends, some from scammers trying to trick you.",
+      "line2": "For each message: tap ✅ Safe if it's a normal message, or 🚩 Suspicious if something feels off.",
+      "line3": "Watch out — you have a timer! Trust your gut and act fast."
+    },
+    "result": {
+      "title": "DMs Cleared",
+      "excellent": "Street smart! You can spot a scam from a mile away. +100 XP earned! 🏆",
+      "passed": "Good instincts! You passed and earned 100 XP. 🌟",
+      "failed": "Almost! Score {{score}} points to earn XP. Watch for urgency and suspicious links!"
+    },
+    "btn": {
+      "suspicious": "Suspicious",
+      "safe": "Safe",
+      "seeResults": "See Results",
+      "nextDM": "Next DM →"
+    },
+    "feedback": {
+      "tooSlow": "⏰ Too slow!",
+      "goodCall": "✓ Good call!",
+      "missedIt": "✗ Missed it!",
+      "wasSuspicious": "🚩 This was SUSPICIOUS",
+      "wasSafe": "✅ This was SAFE"
+    },
+    "senders": {
+      "unknown": "Unknown",
+      "friend": "Friend",
+      "support": "Support",
+      "mom": "Mom",
+      "admin": "Admin",
+      "classmate": "Classmate",
+      "bank": "Bank",
+      "game": "Game",
+      "alexGamer": "Alex_Gamer99",
+      "prizeBot": "Prize_Bot",
+      "saraClassmate": "Sara (classmate)",
+      "cryptoKing": "CryptoKing_QA",
+      "ahmedTeamLead": "Ahmed (team lead)",
+      "techSupportOffcl": "TechSupport_Offcl",
+      "unknownNumber": "Unknown Number",
+      "nooraFriend": "Noora (friend)",
+      "adminModerator": "Admin_Moderator"
+    },
+    "messages": {
+      "claimPrize": "Click here to claim your prize!",
+      "howsItGoing": "Hey! How's it going?",
+      "verifyOrClose": "Verify your account now or it will be closed",
+      "dinnerTomorrow": "Don't forget about dinner tomorrow!",
+      "updatePayment": "Update payment method immediately",
+      "finishHomework": "Did you finish the homework?",
+      "confirmSSN": "Please confirm your SSN to unlock account",
+      "wonCoins": "You won 1000 coins! Tap to collect",
+      "fortniteClan": "Hey! Wanna join our Fortnite clan? Just click this link to sign up: bit.ly/fr33-sk1ns",
+      "pickUpBread": "Habibi, can you pick up bread on the way home? Love you!",
+      "wonPS5": "🎉 CONGRATULATIONS! You won a PS5! Send your address to claim: prize-claim.xyz/win",
+      "cmpsAssignment": "Hey, did you finish the CMPS 392 assignment? Can I see your approach?",
+      "cryptoProfit": "I turned QAR 500 into QAR 50,000 in one week! DM me for the secret method 💰🚀",
+      "meetingMoved": "Meeting moved to 3 PM. Can you update the shared doc before then?",
+      "instagramDeleted": "⚠️ Your Instagram will be DELETED in 24 hours unless you verify: verify-insta.com/urgent",
+      "foundYourPhone": "Hi, is this Khalid? I found your phone at the mall. What's your full name so I can return it?",
+      "kataraPhoto": "Check out this photo from our trip to Katara! 📸 [sends photo]",
+      "robloxFlagged": "Your Roblox account has been flagged. Send your password to verify ownership or lose your account."
+    },
+    "flags": {
+      "unsolicitedLink": "Unsolicited link",
+      "tooGoodToBeTrue": "Too good to be true",
+      "casualGreeting": "Casual greeting",
+      "knownContact": "Known contact",
+      "urgentPressure": "Urgent pressure",
+      "requestsPassword": "Requests password",
+      "personalMessage": "Personal message",
+      "expectedContact": "Expected contact",
+      "urgentDemand": "Urgent demand",
+      "suspiciousSender": "Suspicious sender",
+      "normalQuestion": "Normal question",
+      "knownPerson": "Known person",
+      "requestsSensitiveInfo": "Requests sensitive info",
+      "phishing": "Phishing",
+      "fakeReward": "Fake reward",
+      "suspiciousLink": "Suspicious link",
+      "suspiciousShortenedLink": "Suspicious shortened link",
+      "promiseFreeItems": "Promise of free items",
+      "strangerYouDontKnow": "Stranger you don't know",
+      "normalEverydayRequest": "Normal everyday request",
+      "noLinksOrUrgency": "No links or urgency",
+      "didntEnterContest": "You didn't enter any contest",
+      "asksForAddress": "Asks for your address",
+      "suspiciousXyzDomain": "Suspicious .xyz domain",
+      "knownClassmate": "Known classmate",
+      "normalSchoolQuestion": "Normal school question",
+      "noLinksOrPersonalInfo": "No links or personal info requests",
+      "pressureToAct": "Pressure to act",
+      "classicInvestmentScam": "Classic investment scam pattern",
+      "knownColleague": "Known colleague",
+      "normalWorkRequest": "Normal work request",
+      "noSuspiciousElements": "No suspicious elements",
+      "fakeUrgency": "Fake urgency",
+      "instagramNeverDMs": "Instagram never DMs like this",
+      "suspiciousVerificationLink": "Suspicious verification link",
+      "didntLosePhone": "You didn't lose your phone",
+      "askingForFullName": "Asking for full name",
+      "socialEngineering": "Social engineering",
+      "knownFriend": "Known friend",
+      "referencesSharedExperience": "References shared experience",
+      "normalPhotoSharing": "Normal photo sharing",
+      "noPlatformAsksPasswords": "No platform asks for passwords via DM",
+      "urgencyTactic": "Urgency tactic",
+      "impersonatingAuthority": "Impersonating authority"
+    }
+  },
+  "ChatShield": {
+    "title": "Chat Shield",
+    "howToRespond": "How do you respond?",
+    "smartBadge": "✓ Smart! ",
+    "riskyBadge": "✗ Risky! ",
+    "smartResponse": "✓ Smart response!",
+    "riskyResponse": "✗ That could be risky!",
+    "tooSlow": "⏰ Too slow!",
+    "seeResults": "See Results",
+    "nextChat": "Next Chat →",
+    "intro": {
+      "line1": "You're gaming, chatting, browsing — and people start asking questions. Some are friendly. Others want your personal information.",
+      "line2": "For each scenario, pick the SAFEST response. Not the rudest, not the most trusting — the smartest.",
+      "line3": "Think before you type! Your online safety depends on the choices you make in these moments."
+    },
+    "result": {
+      "title": "Chat Complete",
+      "perfect": "Street smart AND internet smart! Nobody's getting your info. +100 XP earned! 🏆",
+      "passed": "Good instincts! You passed and earned 100 XP. 🌟",
+      "failed": "Almost! Score {passingScore} to earn XP. Remember: strangers online are never who they claim to be."
+    },
+    "scenarios": [
+      {
+        "context": "🎮 Fortnite Lobby",
+        "speaker": "xDarkSlayer",
+        "msg": "Yo you're so good! What's your real name? I wanna add you on Insta",
+        "opts": [
+          { "text": "Thanks! I'm Ahmed, find me @ahmed_2010", "correct": false, "tip": "Never share your real name or personal social media with strangers in games — you don't know who they really are!" },
+          { "text": "Thanks! You can add my gaming tag: CyberFalcon22", "correct": true, "tip": "Perfect! Share gaming identities, not real ones. Keep your real life completely separate from gaming." },
+          { "text": "I don't want to talk to you", "correct": false, "tip": "Being rude isn't necessary. Just redirect to your gaming identity — friendly AND safe." }
+        ]
+      },
+      {
+        "context": "💬 WhatsApp Group",
+        "speaker": "Unknown Number",
+        "msg": "Hey everyone! I'm doing a school survey. Can you share your age, neighborhood, and school name?",
+        "opts": [
+          { "text": "Sure! I'm 15, I live in Al Wakrah, I go to...", "correct": false, "tip": "Never share personal details with unknown people — even in 'surveys'. This info can be used to locate you." },
+          { "text": "Who are you? I don't share personal info with people I don't know.", "correct": true, "tip": "Always question who's asking and why. Real surveys don't collect this via WhatsApp groups from unknown numbers." },
+          { "text": "[Leave the group silently]", "correct": false, "tip": "Leaving is okay, but it's better to warn others in the group too so they don't fall for it!" }
+        ]
+      },
+      {
+        "context": "🎮 Roblox Chat",
+        "speaker": "ProBuilder_2024",
+        "msg": "I can give you unlimited Robux! Just tell me your password and I'll add them to your account 💎",
+        "opts": [
+          { "text": "Really?! My password is Falcon123", "correct": false, "tip": "NEVER share your password! Nobody can 'add Robux' by knowing your password — this is a classic credential theft scam." },
+          { "text": "No thanks. No one needs my password to give me anything.", "correct": true, "tip": "Exactly right! Roblox says NEVER share your password. Real rewards don't require your credentials." },
+          { "text": "How about you give me your password first?", "correct": false, "tip": "Don't try to counter-scam — just refuse and report the user to Roblox support." }
+        ]
+      },
+      {
+        "context": "📱 Instagram DM",
+        "speaker": "Fashion_Brand_QA",
+        "msg": "We love your profile! We want to pay you QAR 5,000 to promote our brand. Send us your bank details for payment 🤩",
+        "opts": [
+          { "text": "OMG yes! Here's my bank info...", "correct": false, "tip": "Legitimate brands NEVER ask for bank details via DM. This is the most common influencer scam." },
+          { "text": "Sounds interesting! Send me your official website so I can verify first.", "correct": true, "tip": "Smart! Always verify the brand independently before sharing anything. Real brands have verifiable websites and official email domains." },
+          { "text": "Send me the money first as proof", "correct": false, "tip": "Don't engage with potential scammers on their terms. Verify the brand independently without giving them anything." }
+        ]
+      },
+      {
+        "context": "🎮 Minecraft Server",
+        "speaker": "Admin_Steve",
+        "msg": "Your account has been flagged for hacking. Give me your login email and password or you'll be banned.",
+        "opts": [
+          { "text": "Please don't ban me! My email is... and password is...", "correct": false, "tip": "Real admins NEVER need your password. They have server-side tools and logs. This is an authority impersonation scam." },
+          { "text": "Real admins don't need my password. I'm reporting this.", "correct": true, "tip": "Correct! Any platform's staff can act without your password. Anyone asking is impersonating authority to steal credentials." },
+          { "text": "[Ignore the message]", "correct": false, "tip": "Ignoring protects you, but reporting is better so they don't scam other players on the same server." }
+        ]
+      },
+      {
+        "context": "💬 Discord Server",
+        "speaker": "NitroGiveaway_Bot",
+        "msg": "🎉 Free Discord Nitro! Click here to claim: discord-nitro-free.xyz/claim",
+        "opts": [
+          { "text": "[Click the link excitedly]", "correct": false, "tip": "Fake Nitro links steal your Discord token — giving attackers full control of your account. Real Nitro only comes through the official Discord app." },
+          { "text": "That's a scam link. Real Nitro is only through discord.com. Reported.", "correct": true, "tip": "Perfect! The domain 'discord-nitro-free.xyz' is NOT discord.com. Always check the URL. When in doubt, go directly to the official site." },
+          { "text": "Is this real? I'll ask my friends first", "correct": false, "tip": "The safest approach is to assume external links offering free things are fake. Verify by going directly to discord.com, not clicking the link." }
+        ]
+      },
+      {
+        "context": "📱 Snapchat",
+        "speaker": "cute_stranger_94",
+        "msg": "Hey! You seem really cool 😊 Where do you go to school? What part of Doha do you live in?",
+        "opts": [
+          { "text": "I go to QU! I live near City Center Doha", "correct": false, "tip": "This combination of info — school + neighborhood — helps someone locate you in real life. Never share both with strangers." },
+          { "text": "I'm not comfortable sharing that with someone I don't know yet.", "correct": true, "tip": "Exactly right. These two pieces of info together can identify your daily location. Trust is built over time, not in first messages." },
+          { "text": "Why do you want to know? Are you a stalker? 😂", "correct": false, "tip": "Joking about it still keeps the conversation going. It's better to clearly decline and not share the information." }
+        ]
+      },
+      {
+        "context": "🎮 Among Us Voice Chat",
+        "speaker": "VoicePlayer_77",
+        "msg": "Hey add me on WhatsApp! My number is +974... and tell me yours, easier to coordinate!",
+        "opts": [
+          { "text": "Sure! Mine is +974...", "correct": false, "tip": "Never share your phone number with strangers in games. Phone numbers can be used for SIM swapping, spam, and social engineering." },
+          { "text": "Let's just use the in-game chat — no need for WhatsApp!", "correct": true, "tip": "Keep gaming on gaming platforms. In-game chat is designed for this — no need to exchange personal contact info with strangers." },
+          { "text": "[Stay silent and don't respond]", "correct": false, "tip": "Silence works, but a clear polite decline is better so there's no awkwardness and you can still play together." }
+        ]
+      },
+      {
+        "context": "📧 School Email",
+        "speaker": "IT Support <it-support@sch00l.com>",
+        "msg": "Dear Student, your account will expire. Click to verify: http://school-portal-verify.net/login — IT Department",
+        "opts": [
+          { "text": "[Click the link and enter school credentials]", "correct": false, "tip": "The sender domain is 'sch00l.com' (zeros instead of o's) and the link goes to an external site. This is a phishing email targeting students." },
+          { "text": "This looks suspicious — I'll go directly to the official school portal instead.", "correct": true, "tip": "Never click links in emails for login. Always type the official school URL directly in your browser. Real IT departments use official school domains." },
+          { "text": "Reply asking if it's legitimate", "correct": false, "tip": "Replying to a phishing email confirms your address is active. Go directly to the official portal instead of interacting with the suspicious email." }
+        ]
+      },
+      {
+        "context": "💬 Telegram Group",
+        "speaker": "Investment_Advisor_Official",
+        "msg": "Special offer for QU students! Invest QAR 200 and earn QAR 2,000 in 7 days. 100% guaranteed. Send to: QR123456",
+        "opts": [
+          { "text": "This sounds amazing! Let me send the QAR 200 now", "correct": false, "tip": "If an investment 'guarantees' 10x returns in 7 days, it is 100% a scam. No legitimate investment works this way." },
+          { "text": "This is a scam. No investment guarantees 10x returns. Reporting and leaving.", "correct": true, "tip": "Correct! Guaranteed high returns in short periods = classic Ponzi/advance fee fraud. Real investments have risk. Report and leave." },
+          { "text": "I'll invest only QAR 50 to test it first", "correct": false, "tip": "Even testing a scam sends your money to criminals. The 'small test' is designed to build your trust before taking more." }
+        ]
+      },
+      {
+        "context": "🎮 PlayStation Network",
+        "speaker": "PS_Support_Official",
+        "msg": "Your PS account has suspicious activity. Verify your credit card details here to keep your account: psn-verify.co/secure",
+        "opts": [
+          { "text": "Better safe than sorry — I'll verify my card details", "correct": false, "tip": "PlayStation Support never contacts you via chat asking for card details. The domain 'psn-verify.co' is not playstation.com." },
+          { "text": "I'll go to playstation.com directly and check my account from there.", "correct": true, "tip": "Always navigate directly to official sites for account issues. Real platform support never asks for card details via chat messages." },
+          { "text": "I'll ask my parents to deal with this", "correct": false, "tip": "That's better than clicking, but still — go directly to playstation.com. Don't click the link at all." }
+        ]
+      },
+      {
+        "context": "📱 TikTok DM",
+        "speaker": "TikTok_Verified_Team",
+        "msg": "Congratulations! Your account has been selected for Verification ✓. Send us your phone number and date of birth to proceed.",
+        "opts": [
+          { "text": "Amazing! My number is +974... and I was born on...", "correct": false, "tip": "TikTok verification is never given out via DM. This info (phone + DOB) is used for identity theft and account takeover." },
+          { "text": "TikTok never verifies accounts through DMs. This is a scam. Blocking.", "correct": true, "tip": "Correct! All legitimate platform verifications happen through official in-app processes, never via DM requests for personal info." },
+          { "text": "Can you prove you're really TikTok staff?", "correct": false, "tip": "Scammers can easily fake 'proof'. The safest response is to block and report, not engage in verification attempts." }
+        ]
+      }
+    ]
+  },
+  "InboxInspector": {
+    "title": "Inbox Inspector",
+    "clickHere": "Click here",
+    "realUrl": "Real URL",
+    "hoverHint": "💡 Hover over the link to see where it really goes!",
+    "phishingBtn": "Phishing!",
+    "phishingSub": "This is fake",
+    "safeBtn": "Safe!",
+    "safeSub": "This is real",
+    "correctBadge": "✓ Correct!",
+    "missedBadge": "✗ Missed it!",
+    "phishLabel": "🎣 This was a PHISHING email",
+    "safeLabel": "✅ This was a LEGITIMATE email",
+    "seeResults": "See Results",
+    "nextEmail": "Next Email →",
+    "intro": {
+      "line1": "Your inbox is under attack! Phishing emails pretend to be from trusted sources — your bank, university, even your boss.",
+      "line2": "Read each email carefully and hover over any links to see where they really go.",
+      "line3": "Decide: is it a legitimate email or a phishing trap?"
+    },
+    "result": {
+      "title": "Inbox Cleared",
+      "perfect": "Eagle-eyed inspector! Nothing gets past you. +100 XP earned! 🏆",
+      "passed": "Nice work! You spotted {score}/{total} correctly and earned 100 XP. 🌟",
+      "failed": "Almost! You need {passingScore}/{total} to earn XP. Watch for misspelled domains and urgency tactics!"
+    },
+    "emails": [
+      {
+        "from": "security@arnazon.com",
+        "fromD": "Amazon Security",
+        "subj": "⚠️ Account compromised!",
+        "body": "Dear Customer,\n\nWe detected unusual activity. Verify NOW or your account will be permanently suspended in 24 hours.\n\nVerify: http://arnazon-secure-verify.com/login",
+        "url": "http://arnazon-secure-verify.com/login",
+        "phish": true,
+        "flags": ["Domain is 'arnazon' not 'amazon' — misspelled!", "Urgency and threats to scare you into clicking", "Link goes to a fake website, not amazon.com", "Generic 'Dear Customer' instead of your name"]
+      },
+      {
+        "from": "ceo@company-updates.net",
+        "fromD": "Mohammed, CEO",
+        "subj": "Urgent: Wire $45,000 Now",
+        "body": "Hi,\n\nI need you to process an urgent wire transfer. I'm in a meeting and can't call. Keep this confidential.\n\nAccount: 847291038",
+        "url": null,
+        "phish": true,
+        "flags": ["CEO fraud — a classic Business Email Compromise attack", "External domain, not a company email address", "Urgency + secrecy = classic pressure tactics", "Bypasses normal approval processes"]
+      },
+      {
+        "from": "noreply@github.com",
+        "fromD": "GitHub",
+        "subj": "Your 2FA backup codes",
+        "body": "Hi HCoder,\n\nHere are your backup two-factor codes:\n1. 4f8a2-b93c1\n2. 7d2e5-a18f4\n\nIf you didn't request this, visit github.com/settings/security.",
+        "url": null,
+        "phish": false,
+        "flags": ["Official github.com domain ✓", "Personalized with your username ✓", "No suspicious links to click ✓", "Gives guidance if unexpected ✓"]
+      },
+      {
+        "from": "notifications@qu.edu.qa",
+        "fromD": "QU Portal",
+        "subj": "Grade Posted: CMPS 392",
+        "body": "Dear Student,\n\nA grade has been posted for CMPS 392 Network Security.\n\nView at: https://portal.qu.edu.qa/grades",
+        "url": "https://portal.qu.edu.qa/grades",
+        "phish": false,
+        "flags": ["Official .edu.qa domain ✓", "Specific course mentioned ✓", "Link matches official portal ✓", "No urgency or threats ✓"]
+      },
+      {
+        "from": "hr@qu-careers.com",
+        "fromD": "QU Human Resources",
+        "subj": "🎉 Paid Research Position!",
+        "body": "Congratulations! You've been selected for a $3,000/month remote position.\n\nAccept by submitting your bank details: http://qu-careers.com/accept",
+        "url": "http://qu-careers.com/accept",
+        "phish": true,
+        "flags": ["Unsolicited job offer you never applied for", "Asks for bank details immediately — huge red flag!", "Domain is qu-careers.com, NOT qu.edu.qa", "Too good to be true salary for students"]
+      },
+      {
+        "from": "noreply@google.com",
+        "fromD": "Google",
+        "subj": "New sign-in from Windows",
+        "body": "New sign-in to your Google Account.\n\nDevice: Windows 11, Chrome\nLocation: Doha, Qatar\nTime: 2:43 PM\n\nNot you? https://myaccount.google.com/security",
+        "url": "https://myaccount.google.com/security",
+        "phish": false,
+        "flags": ["Official google.com domain ✓", "Specific device, location, time details ✓", "Official myaccount.google.com link ✓", "Doesn't ask for password in the email ✓"]
+      },
+      {
+        "from": "prize@gulf-lottery.com",
+        "fromD": "Gulf Lottery",
+        "subj": "🎉 You Won QAR 500,000!",
+        "body": "CONGRATULATIONS!\n\nYour email was randomly selected! To claim QAR 500,000, send a processing fee of QAR 500.\n\nClaim within 48 hours!",
+        "url": null,
+        "phish": true,
+        "flags": ["You never entered this lottery!", "Pay money to receive money = classic advance fee fraud", "Extreme urgency (48 hours!) to prevent thinking", "No legitimate lottery contacts winners by email"]
+      },
+      {
+        "from": "noreply@microsft-365.com",
+        "fromD": "Microsoft 365",
+        "subj": "Storage 99% full!",
+        "body": "Your OneDrive is almost full. Get 50GB FREE:\nhttp://microsft-365.com/upgrade",
+        "url": "http://microsft-365.com/upgrade",
+        "phish": true,
+        "flags": ["Domain 'microsft' is misspelled — missing 'o'!", "50GB free is too good to be true", "Pressure tactic about losing files", "Link doesn't go to microsoft.com"]
+      },
+      {
+        "from": "no-reply@paypa1.com",
+        "fromD": "PayPal",
+        "subj": "Your account has been limited",
+        "body": "Dear PayPal user,\n\nWe've noticed unusual activity. Your account is limited until you confirm your identity.\n\nConfirm now: http://paypa1.com/verify-identity",
+        "url": "http://paypa1.com/verify-identity",
+        "phish": true,
+        "flags": ["'paypa1.com' uses the number 1 instead of the letter l!", "Generic greeting instead of your real name", "Creates panic with 'account limited'", "PayPal always addresses you by name"]
+      },
+      {
+        "from": "noreply@apple.com",
+        "fromD": "Apple",
+        "subj": "Your receipt from the App Store",
+        "body": "Dear Customer,\n\nThank you for your purchase.\nApp: Minecraft\nPrice: QAR 22.99\nDate: March 10, 2026\n\nIf this wasn't you, visit: https://appleid.apple.com",
+        "url": "https://appleid.apple.com",
+        "phish": false,
+        "flags": ["Official apple.com sender ✓", "Specific purchase details ✓", "Link goes to official appleid.apple.com ✓", "No request for credentials ✓"]
+      },
+      {
+        "from": "support@netf1ix-billing.com",
+        "fromD": "Netflix Support",
+        "subj": "Payment failed — update now",
+        "body": "Your Netflix payment failed. Update your billing information within 24 hours or your account will be cancelled.\n\nUpdate: http://netf1ix-billing.com/payment",
+        "url": "http://netf1ix-billing.com/payment",
+        "phish": true,
+        "flags": ["'netf1ix' uses number 1 instead of letter l!", "Fake third-party domain, not netflix.com", "24-hour urgency to stop you thinking", "Netflix always updates billing via the app itself"]
+      },
+      {
+        "from": "it-support@yourcompany.com",
+        "fromD": "IT Department",
+        "subj": "Mandatory password reset today",
+        "body": "All employees must reset passwords by EOD. Click here immediately:\nhttp://yourcompany-reset.co/reset\n\nFailure to comply will lock your account.",
+        "url": "http://yourcompany-reset.co/reset",
+        "phish": true,
+        "flags": ["Reset link goes to external domain, not company domain", "Threatening language ('failure to comply')", "IT never asks you to click external links to reset passwords", "Legitimate resets go through internal portals"]
+      },
+      {
+        "from": "alerts@stcpay.com.sa",
+        "fromD": "STC Pay",
+        "subj": "QAR 1,200 transfer received",
+        "body": "You have received QAR 1,200.00 from Ahmed Al-Rashidi.\n\nTransaction ID: STX-847291\nDate: March 10, 2026\n\nView transaction: https://stcpay.com.sa/transactions",
+        "url": "https://stcpay.com.sa/transactions",
+        "phish": false,
+        "flags": ["Official stcpay.com.sa domain ✓", "Specific amount, sender and transaction ID ✓", "Link goes to official domain ✓", "No request for credentials or fees ✓"]
+      },
+      {
+        "from": "scholarship@qf-grants.org",
+        "fromD": "Qatar Foundation",
+        "subj": "Scholarship Award — Claim Now",
+        "body": "Dear Student,\n\nYou have been awarded a QF scholarship worth QAR 15,000. To release funds, provide your IBAN and a QAR 200 admin fee.\n\nExpires in 24 hours.",
+        "url": null,
+        "phish": true,
+        "flags": ["Legitimate scholarships never require upfront payment", "QF official domain is qf.org.qa, not qf-grants.org", "Requesting your IBAN is a major red flag", "Artificial expiry creates panic to rush your decision"]
+      }
+    ]
+  },
+  "PacketRush": {
+    "title": "Packet Rush",
+    "waitingPackets": "Waiting for packets...",
+    "protectedServer": "Protected Server — {blocked} threats blocked",
+    "legend": {
+      "green": "Green flash = correct block",
+      "red": "Red flash = false block",
+      "dontTap": "Don't tap = allow through"
+    },
+    "packet": {
+      "correctFlash": "✓ +30",
+      "wrongFlash": "✗ Oops!",
+      "blockBtn": "BLOCK"
+    },
+    "intro": {
+      "line1": "You're the network firewall! Data packets stream toward your server — you decide what gets blocked.",
+      "line2": "TAP a packet to block it. Green flash = correct block. Red flash = you blocked legitimate traffic!",
+      "line3": "Careful — some threats disguise themselves as normal traffic. Read the details, not just the label!",
+      "line4": "At the end you'll see a review of every mistake so you can learn from it."
+    },
+    "review": {
+      "title": "Session Review",
+      "subtitle": "Here's what happened this round",
+      "score": "Score",
+      "threatsBlocked": "Threats Blocked",
+      "falseBlocks": "False Blocks",
+      "perfect": "No false blocks! Perfect filtering!",
+      "perfectSub": "You never blocked legitimate traffic.",
+      "mistakesHeader": "✗ {count} false block(s) — you blocked legitimate traffic:",
+      "whySafe": "Why it was safe",
+      "playAgain": "Play Again",
+      "collectXp": "Collect 100 XP →",
+      "allGames": "All Games",
+      "xpRequirement": "Need {passingScore} points to earn XP. You scored {score}."
+    },
+    "packetPool": [
+      { "label": "🦠 Trojan.exe", "sublabel": "Executable email attachment", "bad": true, "hint": "Executable files from unknown sources carry malware — never open .exe attachments." },
+      { "label": "📡 C2 Beacon", "sublabel": "Outbound to 185.43.12.9:4444", "bad": true, "hint": "Port 4444 is a classic command-and-control channel used by malware to phone home." },
+      { "label": "💉 SQL injection", "sublabel": "'; DROP TABLE users; --", "bad": true, "hint": "SQL injection attempts to destroy or steal database data by manipulating queries." },
+      { "label": "🌊 DDoS flood", "sublabel": "50,000 req/sec from single IP", "bad": true, "hint": "No legitimate user sends 50,000 requests per second — this is a denial-of-service attack." },
+      { "label": "🔍 Port scan", "sublabel": "All 65535 ports probed", "bad": true, "hint": "Scanning all ports is reconnaissance — the attacker is mapping your attack surface." },
+      { "label": "📄 File download", "sublabel": "GET /report.pdf HTTP/2", "bad": false, "hint": "Normal HTTP file request from an authenticated user." },
+      { "label": "📧 Email send", "sublabel": "SMTP to mail.qu.edu.qa:587", "bad": false, "hint": "Authenticated email via the official company mail server on the correct port." },
+      { "label": "🌐 DNS query", "sublabel": "Lookup: google.com", "bad": false, "hint": "Normal domain name resolution — looking up a well-known legitimate domain." },
+      { "label": "🔑 Login request", "sublabel": "POST /auth — valid credentials", "bad": false, "hint": "Normal authentication attempt with correct credentials from a known IP." },
+      { "label": "📦 Windows Update", "sublabel": "From: update.microsoft.com", "bad": false, "hint": "Official Microsoft update server on the real microsoft.com domain." },
+      { "label": "📄 Invoice.pdf.exe", "sublabel": "Email attachment — double extension", "bad": true, "hint": "Double extension trick — Windows hides the .exe part. This is malware disguised as a PDF!" },
+      { "label": "🌐 DNS query", "sublabel": "Lookup: g00gle.com", "bad": true, "hint": "Typosquatted domain — 'g00gle' uses the number zero, not the letter O. Leads to a fake site!" },
+      { "label": "🔑 Login request", "sublabel": "POST /auth — attempt #4,847", "bad": true, "hint": "Attempt #4,847 is a brute-force attack, not a real user. Real users don't fail thousands of times." },
+      { "label": "📦 Software update", "sublabel": "From: updates-microsoft.co", "bad": true, "hint": "Fake update server! Real Microsoft updates come from microsoft.com, not microsft.co or similar." },
+      { "label": "📧 System email", "sublabel": "From: admin@c0mpany.com", "bad": true, "hint": "Zero instead of 'o' — a spoofed sender domain designed to look legitimate at a glance." },
+      { "label": "🌐 API call", "sublabel": "GET /api/data?id=1 OR 1=1", "bad": true, "hint": "SQL injection hiding inside an API request parameter — the 'OR 1=1' is the attack." },
+      { "label": "🔐 Encrypted traffic", "sublabel": "TLS 1.3 to internal.company.com", "bad": false, "hint": "Encrypted internal traffic is normal and expected — encryption protects legitimate data too." },
+      { "label": "📡 Large upload", "sublabel": "120MB to backup.company.com", "bad": false, "hint": "Large uploads to an internal backup server are completely legitimate maintenance." },
+      { "label": "🕐 Late-night login", "sublabel": "2AM login — from known trusted IP", "bad": false, "hint": "Known IP address means it's the same authorized person, just working late." },
+      { "label": "🔧 Admin command", "sublabel": "sudo apt-get update — IT dept IP", "bad": false, "hint": "IT department running system updates from their known IP is normal maintenance." }
+    ]
+  },
+  "DefenseBuilder": {
+    "title": "Defense Builder",
+    "incomingThreats": "⚠ INCOMING THREATS — WAVE {wave}",
+    "blockedBadge": "✓ BLOCKED",
+    "breachBadge": "✗ BREACH!",
+    "selectDefenses": "🛡 SELECT DEFENSES",
+    "budget": "Budget: {used}/{budget}",
+    "costLabel": "Cost: {cost}",
+    "yourWall": "Your Security Wall:",
+    "emptyWall": "Tap defenses above to add them",
+    "deployButton": "DEPLOY WALL",
+    "allBlocked": "🛡 ALL THREATS BLOCKED!",
+    "breaches": "💥 {count} BREACH(ES)!",
+    "analysis": "🦌 Analysis:",
+    "wasNotBlocked": "was NOT blocked. It needed:",
+    "perfectDefense": "Perfect defense! Every threat matched to a defense layer.",
+    "seeResults": "See Results",
+    "nextWave": "Next Wave →",
+    "intro": {
+      "line1": "You're the head of cybersecurity! Build a defense wall by selecting security layers.",
+      "line2": "Each layer costs budget points and blocks specific types of attacks. Choose wisely!",
+      "line3": "Remember: no single defense stops everything. You need layers — that's called 'Defense in Depth'!"
+    },
+    "result": {
+      "wallStands": "Wall Stands!",
+      "wallBreached": "Wall Breached",
+      "perfect": "Master architect! Your defense-in-depth strategy is impenetrable. +100 XP earned! 🏆",
+      "passed": "Solid wall! You passed and earned 100 XP. 🌟",
+      "failed": "Almost! Score {passingScore} points to earn XP. Mix firewalls, training, backups and monitoring."
+    },
+    "defenseLayers": [
+      { "id": "firewall", "name": "Firewall", "icon": "🧱", "desc": "Blocks unauthorized network traffic", "beats": ["port_scan","ddos"], "cost": 1 },
+      { "id": "antivirus", "name": "Antivirus", "icon": "🛡", "desc": "Detects known malware signatures", "beats": ["known_virus","trojan","worm"], "cost": 1 },
+      { "id": "training", "name": "Security Training", "icon": "📚", "desc": "Teaches employees to spot threats", "beats": ["phishing","social_eng","usb_drop"], "cost": 2 },
+      { "id": "backup", "name": "Backup System", "icon": "💾", "desc": "Recovers data after attacks", "beats": ["ransomware","data_loss"], "cost": 2 },
+      { "id": "encryption", "name": "Encryption", "icon": "🔐", "desc": "Protects data even if stolen", "beats": ["data_theft","eavesdrop","mitm"], "cost": 2 },
+      { "id": "mfa", "name": "Multi-Factor Auth", "icon": "📱", "desc": "Requires 2+ proofs to log in", "beats": ["password_crack","credential_theft"], "cost": 1 },
+      { "id": "updates", "name": "Software Updates", "icon": "🔄", "desc": "Patches known vulnerabilities", "beats": ["exploit","zero_day_partial","worm"], "cost": 1 },
+      { "id": "monitor", "name": "24/7 Monitoring", "icon": "👁", "desc": "Watches for suspicious activity", "beats": ["insider_threat","lateral_movement"], "cost": 3 },
+      { "id": "waf", "name": "Web App Firewall", "icon": "🌐", "desc": "Filters malicious web requests", "beats": ["sql_inject","xss"], "cost": 2 },
+      { "id": "dlp", "name": "Data Loss Prevention", "icon": "🚫", "desc": "Stops sensitive data leaving the network", "beats": ["data_theft","insider_threat"], "cost": 2 },
+      { "id": "vpn", "name": "VPN", "icon": "🔒", "desc": "Encrypts all network traffic", "beats": ["eavesdrop","mitm"], "cost": 1 },
+      { "id": "sandbox", "name": "Sandbox", "icon": "📦", "desc": "Runs suspicious files in isolation", "beats": ["zero_day_partial","trojan","worm"], "cost": 3 }
+    ],
+    "defenseThreats": [
+      { "id": "phishing", "name": "Phishing Email", "icon": "🎣", "blocked_by": ["training"] },
+      { "id": "known_virus", "name": "Known Virus", "icon": "🦠", "blocked_by": ["antivirus"] },
+      { "id": "ransomware", "name": "Ransomware", "icon": "🔐", "blocked_by": ["backup","antivirus"] },
+      { "id": "port_scan", "name": "Port Scanner", "icon": "🔍", "blocked_by": ["firewall"] },
+      { "id": "password_crack", "name": "Password Attack", "icon": "🔓", "blocked_by": ["mfa"] },
+      { "id": "data_theft", "name": "Data Theft", "icon": "📤", "blocked_by": ["encryption","dlp"] },
+      { "id": "social_eng", "name": "Social Engineering", "icon": "🎭", "blocked_by": ["training"] },
+      { "id": "exploit", "name": "Software Exploit", "icon": "💥", "blocked_by": ["updates"] },
+      { "id": "ddos", "name": "DDoS Attack", "icon": "🌊", "blocked_by": ["firewall","monitor"] },
+      { "id": "insider_threat", "name": "Insider Threat", "icon": "🕵", "blocked_by": ["monitor","dlp"] },
+      { "id": "trojan", "name": "Trojan Horse", "icon": "🐴", "blocked_by": ["antivirus","sandbox"] },
+      { "id": "credential_theft", "name": "Credential Theft", "icon": "🗝", "blocked_by": ["mfa","encryption"] },
+      { "id": "sql_inject", "name": "SQL Injection", "icon": "💉", "blocked_by": ["waf","updates"] },
+      { "id": "xss", "name": "Cross-Site Scripting", "icon": "📝", "blocked_by": ["waf"] },
+      { "id": "mitm", "name": "Man-in-the-Middle", "icon": "👤", "blocked_by": ["encryption","vpn"] },
+      { "id": "eavesdrop", "name": "Network Eavesdropping", "icon": "📡", "blocked_by": ["encryption","vpn"] },
+      { "id": "worm", "name": "Network Worm", "icon": "🪱", "blocked_by": ["antivirus","updates","sandbox"] },
+      { "id": "usb_drop", "name": "USB Drop Attack", "icon": "🔌", "blocked_by": ["training"] },
+      { "id": "lateral_movement", "name": "Lateral Movement", "icon": "↔️", "blocked_by": ["monitor","firewall"] },
+      { "id": "zero_day_partial", "name": "Zero-Day Exploit", "icon": "🕳", "blocked_by": ["sandbox","monitor"] }
+    ]
+  },
+  "RansomRescue": {
+    "title": "Ransom Rescue",
+    "scenarioLabel": "Scenario:",
+    "stepLabel": "STEP {current} OF {total}",
+    "correctBadge": "✓ Correct! ",
+    "incorrectBadge": "✗ Not ideal. ",
+    "intro": {
+      "line1": "Ransomware has struck! Your files are held hostage by attackers demanding Bitcoin.",
+      "line2": "You'll face a real-world scenario — hospital, university, small business, or home — and make decisions at each step.",
+      "line3": "Every choice matters. The right decisions save your data. The wrong ones make things worse. Don't panic — think!"
+    },
+    "result": {
+      "restored": "System Restored! 🎉",
+      "review": "Incident Review",
+      "correctDecisions": "Correct Decisions",
+      "wrongDecisions": "Wrong Decisions",
+      "outOf": "Out of",
+      "xpEarned": "Great incident response! +100 XP earned 🏆",
+      "xpNeeded": "Need {passingScore}/5 correct decisions to earn XP. You got {score}/5.",
+      "reconsiderHeader": "✗ Decisions to reconsider:",
+      "stepLabel": "Step {step} — You chose:",
+      "whyWrong": "Why this was wrong: ",
+      "betterAnswer": "✓ Better answer:",
+      "perfect": "🎉 Perfect incident response!",
+      "perfectSub": "Every decision was correct. You're ready for the real thing.",
+      "tryAgain": "Try Another Scenario",
+      "collectXp": "Collect 100 XP →",
+      "allGames": "All Games"
+    },
+    "scenarios": [
+      {
+        "title": "Hospital Ransomware Attack",
+        "icon": "🏥",
+        "banner": "CRITICAL: Patient records encrypted! Pay 10 BTC within 72 hours or data will be deleted.",
+        "steps": [
+          {
+            "q": "Your hospital's screens show a ransomware message. Patient records are inaccessible. What's your FIRST action?",
+            "opts": [
+              { "text": "Disconnect infected systems from the network immediately", "correct": true, "tip": "Correct! Isolation prevents the ransomware from spreading to other hospital systems — including life-critical equipment." },
+              { "text": "Pay the 10 BTC ransom to restore access quickly", "correct": false, "tip": "Never pay first! There's no guarantee attackers will restore access, and it funds more attacks." },
+              { "text": "Reboot all computers to clear the ransomware", "correct": false, "tip": "Rebooting doesn't remove ransomware and may trigger additional encryption or delete recovery evidence." }
+            ]
+          },
+          {
+            "q": "Systems isolated. The attackers claim to have stolen patient data too. What do you do?",
+            "opts": [
+              { "text": "Notify authorities and your legal/compliance team immediately", "correct": true, "tip": "Data breaches involving patient records legally require notification. Authorities can also assist with investigation and may have decryption keys from previous cases." },
+              { "text": "Keep it quiet to avoid bad press", "correct": false, "tip": "Hiding a data breach is illegal in most jurisdictions and causes far worse reputational damage when discovered later." },
+              { "text": "Negotiate with attackers to prevent data release", "correct": false, "tip": "Negotiating often escalates demands. Authorities must be involved for patient data breaches regardless." }
+            ]
+          },
+          {
+            "q": "IT found offline backups from 2 days ago. How should you restore?",
+            "opts": [
+              { "text": "Scan and verify backups are clean, then restore to fresh systems", "correct": true, "tip": "Always verify backups before restoring! Restoring to a clean system prevents reinfection from any lingering malware." },
+              { "text": "Restore directly to the infected machines to save time", "correct": false, "tip": "Restoring to infected machines risks reinfection. Always restore to freshly imaged systems." },
+              { "text": "Just pay the ransom — restoring takes too long", "correct": false, "tip": "Restoration from clean backups, though slower, is always safer and doesn't fund criminals." }
+            ]
+          },
+          {
+            "q": "After recovery, your CEO asks: 'How did they get in?' Investigation shows a phishing email opened 3 weeks ago. What do you implement?",
+            "opts": [
+              { "text": "Mandatory phishing awareness training + email filtering + MFA on all systems", "correct": true, "tip": "The triple defense: trained staff catch phishing, email filters block it, and MFA ensures one compromised password can't compromise systems." },
+              { "text": "Just buy a more expensive antivirus", "correct": false, "tip": "Antivirus alone doesn't stop phishing-based attacks. Human training is equally critical." },
+              { "text": "Ban all external emails", "correct": false, "tip": "Blocking all external email cripples operations. Filtering and training are the practical solutions." }
+            ]
+          },
+          {
+            "q": "For future ransomware prevention, what backup strategy should the hospital adopt?",
+            "opts": [
+              { "text": "3-2-1 rule: 3 copies, 2 different media, 1 offsite air-gapped backup", "correct": true, "tip": "The 3-2-1 rule is the gold standard! Air-gapped (offline) backups are immune to ransomware because they can't be reached over the network." },
+              { "text": "Sync everything to cloud storage automatically", "correct": false, "tip": "Cloud sync can sync the encrypted files too! You need versioned backups with rollback capability, not just sync." },
+              { "text": "Back up weekly — that's enough", "correct": false, "tip": "Weekly backups mean up to 7 days of patient data lost. Critical systems should back up daily or more frequently." }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "University Student Ransomware",
+        "icon": "🎓",
+        "banner": "YOUR FILES ARE ENCRYPTED! Pay 0.5 BTC to recover your thesis and all assignments.",
+        "steps": [
+          {
+            "q": "Your laptop screen shows a ransom note. Your thesis is due in 2 days. What do you do first?",
+            "opts": [
+              { "text": "Disconnect from WiFi and unplug any USB drives", "correct": true, "tip": "Disconnect immediately! This stops the ransomware from spreading to shared university network drives or backing up its own files." },
+              { "text": "Pay 0.5 BTC — it's cheaper than redoing the thesis", "correct": false, "tip": "Don't pay! Many victims pay and receive nothing. Check backups first." },
+              { "text": "Email your supervisor for an extension", "correct": false, "tip": "That can come later — first priority is containing the damage, not explaining it." }
+            ]
+          },
+          {
+            "q": "You're disconnected. Where's the first place you should look for your thesis?",
+            "opts": [
+              { "text": "OneDrive / Google Drive — cloud-synced copies", "correct": true, "tip": "Cloud drives with version history often have copies of files before encryption! Check version history immediately." },
+              { "text": "The Downloads folder on the infected laptop", "correct": false, "tip": "Downloaded files on the infected machine are likely encrypted too." },
+              { "text": "Ask a classmate if they have a copy", "correct": false, "tip": "That's a last resort — check your own cloud backups first." }
+            ]
+          },
+          {
+            "q": "OneDrive has a version from yesterday! But the ransomware note warns: 'Do NOT restore or we delete your data.' What do you do?",
+            "opts": [
+              { "text": "Restore from OneDrive version history — the threat is a bluff", "correct": true, "tip": "Ransomware notes often threaten to prevent you from restoring. In most cases it's a bluff — restore your backups immediately!" },
+              { "text": "Pay first, then restore", "correct": false, "tip": "Paying doesn't guarantee decryption. You have a clean backup — use it!" },
+              { "text": "Wait and think about it for a few days", "correct": false, "tip": "Waiting gives attackers more time to delete or sell your data. Act fast." }
+            ]
+          },
+          {
+            "q": "Thesis recovered! How did the ransomware get in? You remember clicking a Discord link from a stranger that said 'check out my game mod'. What should you have done?",
+            "opts": [
+              { "text": "Never click unsolicited links, especially for downloads from strangers", "correct": true, "tip": "Game mods and cracked software are one of the top ransomware delivery methods. Only download from official sources." },
+              { "text": "It's fine as long as you have antivirus", "correct": false, "tip": "Antivirus doesn't catch everything. New ransomware strains often bypass AV for days after release." },
+              { "text": "Discord is safe, the problem was something else", "correct": false, "tip": "Discord is a common ransomware delivery channel — attackers pose as gamers sharing files." }
+            ]
+          },
+          {
+            "q": "Going forward, what's the smartest setup to protect your university work?",
+            "opts": [
+              { "text": "Auto-save to cloud + regular USB backups kept unplugged when not in use", "correct": true, "tip": "Unplugged USB drives can't be encrypted by ransomware. Cloud versioning provides a second layer. Both together = strong protection." },
+              { "text": "Just remember to copy files manually sometimes", "correct": false, "tip": "Manual copying gets forgotten. Automated backups are the only reliable approach." },
+              { "text": "Store everything on the university network drive only", "correct": false, "tip": "If ransomware reaches the university network (common!), those files get encrypted too." }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Small Business Ransomware",
+        "icon": "🏪",
+        "banner": "ALL BUSINESS DATA ENCRYPTED! Pay 5 BTC within 48 hours. Counter: 47:58:12",
+        "steps": [
+          {
+            "q": "Your small business's point-of-sale system and customer database are encrypted. It's Friday afternoon. First move?",
+            "opts": [
+              { "text": "Pull the network cable / disconnect all systems from the internet", "correct": true, "tip": "Physical disconnection is the fastest way to stop spread. Even if one system is lost, you can protect the others." },
+              { "text": "Call your bank to transfer Bitcoin", "correct": false, "tip": "Never pay without exhausting other options. Check for backups and contact authorities first." },
+              { "text": "Post about it on social media to warn customers", "correct": false, "tip": "Don't post publicly yet — notify only required authorities and legal counsel first to avoid legal liability." }
+            ]
+          },
+          {
+            "q": "You find a backup hard drive your IT person set up last month. It was kept in a drawer, unplugged. Is this backup safe to use?",
+            "opts": [
+              { "text": "Yes — unplugged drives can't be reached by ransomware", "correct": true, "tip": "This is exactly why air-gapped (physically disconnected) backups are so valuable. Ransomware can't encrypt what it can't reach!" },
+              { "text": "No — all backups get infected automatically", "correct": false, "tip": "Only connected storage gets encrypted. An unplugged drive is safe from network-based ransomware." },
+              { "text": "Maybe — scan it with the infected computer to check", "correct": false, "tip": "Never scan a potentially clean backup with an infected machine! Use a known-clean device instead." }
+            ]
+          },
+          {
+            "q": "While restoring, your employee admits they clicked an email attachment labeled 'Invoice_Final.pdf.exe' two weeks ago. How long was the ransomware lurking?",
+            "opts": [
+              { "text": "Likely 2 weeks — ransomware often waits before activating to maximize damage", "correct": true, "tip": "Modern ransomware can sit dormant for weeks, quietly spreading through systems and deleting backup copies before activating. This is why monitoring is critical!" },
+              { "text": "Just a few hours — it would have activated immediately", "correct": false, "tip": "Immediate activation is old-style ransomware. Modern variants wait to maximize infected systems and corrupt more backups." },
+              { "text": "It started the moment they opened the file", "correct": false, "tip": "The initial infection may have happened then, but activation (encryption) is often delayed strategically." }
+            ]
+          },
+          {
+            "q": "Customer payment data may have been stolen. What's your legal obligation?",
+            "opts": [
+              { "text": "Notify affected customers and relevant data protection authorities", "correct": true, "tip": "Data breach notification is legally required in most countries. Customers have a right to know so they can protect their payment cards." },
+              { "text": "Only tell customers if you're sure data was stolen", "correct": false, "tip": "If there's reasonable suspicion of data theft, notification is typically required regardless of certainty." },
+              { "text": "Wait until you have full details before notifying anyone", "correct": false, "tip": "Waiting too long to notify violates most data protection laws and increases your legal liability." }
+            ]
+          },
+          {
+            "q": "After this incident, what's the most cost-effective security improvement for a small business?",
+            "opts": [
+              { "text": "Automated daily backups + staff phishing training + MFA on all accounts", "correct": true, "tip": "These three measures prevent and survive the vast majority of ransomware attacks — and they're relatively affordable for small businesses." },
+              { "text": "Hire a full-time security team", "correct": false, "tip": "A full-time team is expensive for small businesses. The basics — backups, training, MFA — provide the most protection per dollar." },
+              { "text": "Just buy cyber insurance and accept the risk", "correct": false, "tip": "Insurance pays after the damage. Prevention is always cheaper — cyber insurance premiums also decrease with better security practices." }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Home User Ransomware",
+        "icon": "🏠",
+        "banner": "YOUR PHOTOS & DOCUMENTS ARE LOCKED! Pay 0.2 BTC. Your files will be deleted in 72 hours.",
+        "steps": [
+          {
+            "q": "Your home PC is hit. Family photos and tax documents are encrypted. What do you do first?",
+            "opts": [
+              { "text": "Turn off WiFi and disconnect any external drives", "correct": true, "tip": "Disconnect now! Family photos stored on a connected external drive or NAS can still be saved if you act fast." },
+              { "text": "Google 'how to pay ransom' and pay immediately", "correct": false, "tip": "Don't rush to pay. Many home ransomware variants have free decryption tools available — check first." },
+              { "text": "Turn the computer off and leave it for a few days", "correct": false, "tip": "Turning off may help stop active encryption, but 'waiting' loses valuable time for free decryption options." }
+            ]
+          },
+          {
+            "q": "You check nomoreransom.org — the official free decryption tool site. They have a tool for your ransomware variant! What do you do?",
+            "opts": [
+              { "text": "Download and run the official decryption tool on the infected PC", "correct": true, "tip": "nomoreransom.org is run by Europol and law enforcement — completely legitimate. Free decryption tools work on many common ransomware variants!" },
+              { "text": "It's probably a scam — pay the ransom instead", "correct": false, "tip": "nomoreransom.org is run by Europol! It's one of the most trusted cybersecurity resources available to the public." },
+              { "text": "Search for random decryption tools on Google instead", "correct": false, "tip": "Random tools from Google searches may be fake and install more malware. Always use nomoreransom.org first." }
+            ]
+          },
+          {
+            "q": "The tool works! Files are restored. You realize the ransomware came from a cracked game download. What do you tell your family?",
+            "opts": [
+              { "text": "Only download software from official stores or verified official websites", "correct": true, "tip": "Cracked software is one of the top infection vectors. The 'free' game cost your family's memories. Official sources protect everyone." },
+              { "text": "Just don't download games anymore", "correct": false, "tip": "Games from official sources (Steam, App Store, etc.) are safe. The lesson is about source quality, not avoiding games." },
+              { "text": "It was just bad luck — these things happen", "correct": false, "tip": "It wasn't luck — cracked software knowingly bundles malware. Behavior change prevents recurrence." }
+            ]
+          },
+          {
+            "q": "Your family photos weren't backed up. How devastated would you have been without the free tool? What do you set up now?",
+            "opts": [
+              { "text": "Automatic photo backup to Google Photos / iCloud + a yearly external drive backup", "correct": true, "tip": "Cloud auto-backup means photos are safe the moment they're taken. Yearly external backup covers documents. Two layers beat any ransomware." },
+              { "text": "Just be more careful about what you download", "correct": false, "tip": "Behavior change helps, but accidents happen. Backups ensure photos survive no matter what." },
+              { "text": "Print out important photos", "correct": false, "tip": "Physical prints help for some photos, but don't protect documents, and don't scale. Digital backups are essential." }
+            ]
+          },
+          {
+            "q": "What free tool should EVERYONE know about for ransomware help?",
+            "opts": [
+              { "text": "nomoreransom.org — free decryption tools from Europol and law enforcement", "correct": true, "tip": "Share this with everyone! nomoreransom.org has helped millions of victims worldwide recover files for free. Bookmark it now!" },
+              { "text": "Just search 'ransomware removal' on Google", "correct": false, "tip": "Google results include scam tools that charge money or install more malware. nomoreransom.org is the trusted official resource." },
+              { "text": "There's no help available — you have to pay or lose files", "correct": false, "tip": "This is exactly what attackers want you to believe! nomoreransom.org has decryption keys for hundreds of ransomware variants." }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "DigitalDetective": {
+    "title": "Digital Detective",
+    "caseLabel": "📁 CASE {num}",
+    "clueCounter": "Click each evidence source to investigate ({revealed}/{total} examined)",
+    "tapToInvestigate": "Tap to investigate...",
+    "needMoreClues": "🔍 Examine at least 3 clues to unlock the question ({needed} more needed)",
+    "caseSolved": "🔍 Case Solved!",
+    "wrongConclusion": "✗ Wrong conclusion!",
+    "lessonLabel": "🦊 Lesson:",
+    "seeResults": "See Results",
+    "nextCase": "Next Case →",
+    "intro": {
+      "line1": "A data breach has been reported! You're the forensic investigator.",
+      "line2": "Click on evidence sources to reveal clues — each one gives you a piece of the puzzle.",
+      "line3": "Once you've gathered enough evidence, pick the correct cause of the breach. Read carefully!"
+    },
+    "result": {
+      "title": "Cases Closed",
+      "perfect": "Master investigator! Every case solved. +100 XP earned! 🏆",
+      "passed": "Good detective work! You passed and earned 100 XP. 🌟",
+      "failed": "Almost! Solve at least 2 cases correctly to earn XP. Every clue matters!"
+    },
+    "cases": [
+      {
+        "title": "The CEO's Leaked Photos",
+        "intro": "The CEO's private photos appeared online. HOW did the attacker get in?",
+        "clues": [
+          { "icon": "📱", "type": "Social Media", "text": "CEO posted birthday party. Caption mentions pet 'Buddy' and shows birthday cake with candles." },
+          { "icon": "🔑", "type": "Password Check", "text": "CEO's email password was 'Buddy2024' — pet name + birth year." },
+          { "icon": "📋", "type": "Login Log", "text": "Login from foreign IP at 3 AM. CEO was asleep in Doha." },
+          { "icon": "📱", "type": "MFA Status", "text": "Two-factor authentication was DISABLED on CEO's email." }
+        ],
+        "question": "What was the ROOT CAUSE of this breach?",
+        "options": [
+          { "text": "Weak password based on public social media info + no MFA", "correct": true },
+          { "text": "The company's firewall was misconfigured", "correct": false },
+          { "text": "An employee shared the password deliberately", "correct": false }
+        ],
+        "lesson": "The attacker found the pet name and birthday on social media, guessed the password, and logged in without any second factor. Never use personal info as passwords, and ALWAYS enable MFA!"
+      },
+      {
+        "title": "The Insider Data Leak",
+        "intro": "Classified files appeared on a competitor's website. WHO leaked them?",
+        "clues": [
+          { "icon": "📋", "type": "Access Log", "text": "User 'sara.m' accessed classified folder 127 times in 2 weeks — 10x above normal." },
+          { "icon": "🔌", "type": "USB Log", "text": "Personal phone connected via USB to sara.m's PC with file transfer 23 times." },
+          { "icon": "📧", "type": "Email Log", "text": "sara.m sent 3 emails to personal Gmail with large attachments before the leak." },
+          { "icon": "👤", "type": "HR Record", "text": "sara.m resigned 5 days after the leak. She's joining the competitor." }
+        ],
+        "question": "What's the most likely explanation?",
+        "options": [
+          { "text": "Sara copied files to personal devices before joining a competitor", "correct": true },
+          { "text": "An external hacker broke into the network", "correct": false },
+          { "text": "The files were accidentally made public", "correct": false }
+        ],
+        "lesson": "Insider threats are real! Companies need access monitoring, USB device policies, and Data Loss Prevention tools. Watch for unusual access spikes from departing employees."
+      },
+      {
+        "title": "The Phishing Finance Attack",
+        "intro": "QAR 200,000 was transferred to an unknown account. How did this happen?",
+        "clues": [
+          { "icon": "📧", "type": "Email Header", "text": "Finance team received email from 'ceo@cornpany.com' (note the 'rn' instead of 'm')." },
+          { "icon": "💸", "type": "Transfer Log", "text": "Finance officer initiated urgent transfer within 20 minutes of receiving the email." },
+          { "icon": "📞", "type": "Call Log", "text": "No phone verification was made with the CEO before the transfer." },
+          { "icon": "🌐", "type": "Domain Check", "text": "cornpany.com was registered 3 days before the attack from an anonymous registrar." }
+        ],
+        "question": "What type of attack was this?",
+        "options": [
+          { "text": "Business Email Compromise (BEC) — fake CEO email with a lookalike domain", "correct": true },
+          { "text": "The CEO's account was hacked and used directly", "correct": false },
+          { "text": "An insider in finance stole the money", "correct": false }
+        ],
+        "lesson": "BEC attacks use lookalike domains to impersonate executives. Always verify large transfers by phone, check sender domains carefully, and implement a dual-approval policy for wire transfers."
+      },
+      {
+        "title": "The Ransomware Hospital Attack",
+        "intro": "A hospital's systems are locked and patient records are inaccessible. What happened?",
+        "clues": [
+          { "icon": "📧", "type": "Email Log", "text": "IT staff member opened an attachment named 'Invoice_March.exe' from an unknown sender." },
+          { "icon": "🖥", "type": "System Log", "text": "Within 10 minutes of opening the file, 47,000 files were encrypted across the network." },
+          { "icon": "💾", "type": "Backup Status", "text": "Last backup was 6 months ago. Backup system was on the same network segment." },
+          { "icon": "📢", "type": "Ransom Note", "text": "Attackers demand 50 Bitcoin within 72 hours or files will be permanently deleted." }
+        ],
+        "question": "What combination of failures made this attack so devastating?",
+        "options": [
+          { "text": "Phishing email opened + outdated backups on same network = full encryption with no recovery", "correct": true },
+          { "text": "The hospital's firewall was too expensive to maintain", "correct": false },
+          { "text": "A former employee planted the malware physically", "correct": false }
+        ],
+        "lesson": "Ransomware spreads fast once inside. The real damage came from stale backups on the same network. Backups must be isolated (air-gapped), tested regularly, and staff must be trained to never open executable attachments."
+      },
+      {
+        "title": "The Student Account Takeover",
+        "intro": "A university student's account was used to submit fake assignment extensions and access exam papers early. How?",
+        "clues": [
+          { "icon": "📧", "type": "Email Log", "text": "Student received an email from 'portal-qu.support.com' asking to re-verify login credentials." },
+          { "icon": "🖱", "type": "Click Log", "text": "Student clicked the link and entered their username and password on the fake page." },
+          { "icon": "🌐", "type": "Domain Check", "text": "portal-qu.support.com is NOT the official university domain (qu.edu.qa). Registered yesterday." },
+          { "icon": "📍", "type": "Login Location", "text": "Account was accessed from an IP in Eastern Europe 4 minutes after the student entered credentials." }
+        ],
+        "question": "What attack technique was used?",
+        "options": [
+          { "text": "Spear phishing — a targeted fake login page designed to steal student credentials", "correct": true },
+          { "text": "The university's database was hacked directly", "correct": false },
+          { "text": "The student's roommate guessed the password", "correct": false }
+        ],
+        "lesson": "Spear phishing targets specific individuals with convincing fake pages. Always check the URL before entering credentials — official portals use .edu.qa domains, never third-party domains. Enable MFA on all academic accounts!"
+      },
+      {
+        "title": "The Supply Chain Attack",
+        "intro": "Thousands of companies were breached simultaneously through software they all use. How?",
+        "clues": [
+          { "icon": "📦", "type": "Update Log", "text": "All affected companies installed a routine update for 'NetManager Pro' on the same day." },
+          { "icon": "🔍", "type": "Code Analysis", "text": "The update package contained a hidden backdoor that contacted external servers after installation." },
+          { "icon": "✍️", "type": "Certificate", "text": "The update was digitally signed with the vendor's legitimate certificate — it looked authentic." },
+          { "icon": "🏢", "type": "Vendor Report", "text": "Investigation revealed the software vendor's build server was compromised 3 months earlier." }
+        ],
+        "question": "What type of attack affected thousands of companies at once?",
+        "options": [
+          { "text": "Supply chain attack — malware injected into a legitimate software update", "correct": true },
+          { "text": "Each company was individually targeted by the same hacker group", "correct": false },
+          { "text": "A zero-day vulnerability in all companies' firewalls was exploited", "correct": false }
+        ],
+        "lesson": "Supply chain attacks are devastating because victims trust legitimate vendors. The SolarWinds attack used exactly this method. Verify software integrity with checksums, monitor network behavior after updates, and use zero-trust architecture."
+      },
+      {
+        "title": "The WiFi Café Attack",
+        "intro": "Several café customers had their banking sessions hijacked. What happened?",
+        "clues": [
+          { "icon": "📶", "type": "WiFi Scan", "text": "Two networks named 'CaféWiFi_Free' existed — one legitimate, one set up by an attacker at a nearby table." },
+          { "icon": "💻", "type": "Traffic Log", "text": "Victims' devices automatically connected to the stronger (fake) signal without prompting." },
+          { "icon": "🔓", "type": "Session Log", "text": "Victims' banking session tokens were captured and replayed by the attacker's device." },
+          { "icon": "📍", "type": "Device Found", "text": "A laptop running Kali Linux with a WiFi adapter was found abandoned at a corner table." }
+        ],
+        "question": "What attack technique was used at the café?",
+        "options": [
+          { "text": "Evil Twin attack — a rogue WiFi hotspot intercepting traffic via man-in-the-middle", "correct": true },
+          { "text": "The café's router was hacked remotely from the internet", "correct": false },
+          { "text": "Customers' devices had pre-installed spyware", "correct": false }
+        ],
+        "lesson": "Evil Twin attacks create fake hotspots with familiar names. Always use a VPN on public WiFi, verify network names with staff, and ensure websites use HTTPS before entering credentials."
+      },
+      {
+        "title": "The Cloud Storage Breach",
+        "intro": "A company's confidential documents were found publicly accessible online. How were they exposed?",
+        "clues": [
+          { "icon": "☁️", "type": "Cloud Audit", "text": "An S3 bucket named 'company-internal-docs' was configured as 'Public' instead of 'Private'." },
+          { "icon": "🔍", "type": "Access Log", "text": "The bucket had been publicly accessible for 47 days. 2,300 unique IPs accessed it." },
+          { "icon": "👷", "type": "Change Log", "text": "A developer changed permissions to 'Public' while testing and forgot to revert the setting." },
+          { "icon": "📢", "type": "Discovery", "text": "A security researcher found the bucket via a tool that automatically scans for misconfigured cloud storage." }
+        ],
+        "question": "What was the root cause of this cloud data exposure?",
+        "options": [
+          { "text": "Misconfigured cloud storage permissions left public by accident", "correct": true },
+          { "text": "A hacker exploited a vulnerability in Amazon's servers", "correct": false },
+          { "text": "An employee intentionally published the documents", "correct": false }
+        ],
+        "lesson": "Misconfigured cloud storage is one of the most common breach causes. Use automated configuration scanning, enforce least-privilege access, and audit permissions regularly."
+      },
+      {
+        "title": "The Password Spray Attack",
+        "intro": "Dozens of employee accounts were compromised in one morning with no alert triggering. How?",
+        "clues": [
+          { "icon": "📋", "type": "Login Log", "text": "Each compromised account had exactly 3 failed attempts before success — just under the 5-attempt lockout threshold." },
+          { "icon": "⏱", "type": "Timing Log", "text": "Failed attempts were spread across 6 hours, one attempt per account every 12 minutes." },
+          { "icon": "🔑", "type": "Password List", "text": "All compromised accounts used one of the top 10 most common passwords: 'Company2024', 'Welcome1!'." },
+          { "icon": "🌍", "type": "IP Analysis", "text": "Attempts came from 47 different IP addresses across multiple countries — a botnet." }
+        ],
+        "question": "What attack technique bypassed the lockout policy?",
+        "options": [
+          { "text": "Password spraying — trying common passwords slowly across many accounts to avoid lockouts", "correct": true },
+          { "text": "Brute force — rapidly trying all combinations on one account", "correct": false },
+          { "text": "Credential stuffing — using passwords leaked from another site", "correct": false }
+        ],
+        "lesson": "Password spraying tries a FEW common passwords across MANY accounts slowly to evade lockouts. Defenses: ban common passwords, use MFA, monitor for distributed low-rate login attempts, and implement IP reputation filtering."
+      }
+    ]
+  },
+  "HackLab": {
+    "title": "Hack Lab",
+    "missionBriefing": "MISSION BRIEFING",
+    "targetLabel": "Target:",
+    "weaknessLabel": "Weakness:",
+    "questionLabel": "What attack would a real hacker choose?",
+    "defenseLesson": "💡 Defense lesson: ",
+    "missionExpired": "⏰ Mission expired!",
+    "perfectAttack": "✓ Perfect attack vector!",
+    "wrongApproach": "✗ Not the best approach.",
+    "seeResults": "See Results",
+    "nextMission": "Next Mission →",
+    "timeoutLesson": "Time's up! In real attacks, speed matters.",
+    "intro": {
+      "line1": "Time to think like an attacker! Understanding how hackers think is the BEST way to build stronger defenses.",
+      "line2": "You'll see a target with a specific weakness. Choose the attack a real hacker would use.",
+      "line3": "Each correct answer teaches you what defense would have prevented it. Know your enemy!"
+    },
+    "result": {
+      "title": "Lab Complete",
+      "perfect": "You think like a pro hacker — which makes you a pro defender! +100 XP earned! 🏆",
+      "passed": "Good offensive instincts! You passed and earned 100 XP. 🌟",
+      "failed": "Almost! Score {passingScore} points to earn XP. Understanding attackers is key to defense."
+    },
+    "missions": [
+      {
+        "target": "A company employee who loves clicking email links",
+        "icon": "👩‍💼",
+        "defense": "No security training",
+        "opts": [
+          { "text": "Send a phishing email with a fake invoice", "correct": true, "lesson": "Phishing targets human behavior. Without training, employees click dangerous links. Security awareness training is critical!" },
+          { "text": "Brute force their password", "correct": false, "lesson": "Brute forcing takes time and triggers alerts. Phishing is faster and exploits the weakest link: human trust." },
+          { "text": "DDoS the company website", "correct": false, "lesson": "DDoS disrupts service but doesn't steal data. Phishing gives you direct access to the network." }
+        ]
+      },
+      {
+        "target": "A server running software from 2019 (never updated)",
+        "icon": "🖥",
+        "defense": "No patch management",
+        "opts": [
+          { "text": "Exploit a known vulnerability (CVE)", "correct": true, "lesson": "Unpatched software has known exploits. This is why updates are critical — attackers scan for exactly these gaps!" },
+          { "text": "Social engineer the admin", "correct": false, "lesson": "Why bother when there's a known exploit? Attackers always take the path of least resistance." },
+          { "text": "Physically break into the server room", "correct": false, "lesson": "Physical attacks are risky when remote exploits for unpatched systems already exist." }
+        ]
+      },
+      {
+        "target": "A user whose password is 'password123'",
+        "icon": "🔑",
+        "defense": "No MFA, weak password policy",
+        "opts": [
+          { "text": "Credential stuffing / brute force", "correct": true, "lesson": "Weak passwords fall to automated attacks in seconds. 'password123' is in every breach database. MFA + strong passwords are essential!" },
+          { "text": "Phishing for their password", "correct": false, "lesson": "With such a weak password, automated cracking is faster and doesn't require the victim's interaction." },
+          { "text": "Encrypt their files with ransomware", "correct": false, "lesson": "You need access first! Ransomware comes AFTER initial access. Start with the weak password." }
+        ]
+      },
+      {
+        "target": "A company with no backups",
+        "icon": "🏢",
+        "defense": "No backup system, no DR plan",
+        "opts": [
+          { "text": "Deploy ransomware after gaining access", "correct": true, "lesson": "No backups means the victim MUST pay to recover data. This is why the 3-2-1 backup rule exists!" },
+          { "text": "Steal data and sell it", "correct": false, "lesson": "Data theft works, but ransomware against a backup-less company guarantees payment." },
+          { "text": "Deface their website", "correct": false, "lesson": "Website defacement is embarrassing but low-profit. Ransomware is devastating." }
+        ]
+      },
+      {
+        "target": "Open WiFi at a popular café in Souq Waqif",
+        "icon": "📶",
+        "defense": "No encryption, no VPN",
+        "opts": [
+          { "text": "Set up a fake WiFi hotspot (Evil Twin)", "correct": true, "lesson": "Evil Twin attacks create a fake network. When people connect, all traffic flows through you. Always use VPN on public WiFi!" },
+          { "text": "Hack the café's router", "correct": false, "lesson": "Why hack the router when you can create your own fake network? Evil Twin is easier and invisible." },
+          { "text": "Physically steal someone's laptop", "correct": false, "lesson": "Physical theft is obvious and risky. Digital WiFi attacks are invisible and scalable." }
+        ]
+      },
+      {
+        "target": "A network with no monitoring or logging",
+        "icon": "🕳",
+        "defense": "No SIEM, no alerts",
+        "opts": [
+          { "text": "Move laterally through the network slowly", "correct": true, "lesson": "Without monitoring, attackers can explore undetected for months. 24/7 monitoring detects this 'living off the land' behavior!" },
+          { "text": "Launch a loud, fast attack", "correct": false, "lesson": "Even without monitoring, loud attacks can trigger other defenses. Smart attackers are patient." },
+          { "text": "Attack from outside the network", "correct": false, "lesson": "If you're already inside via phishing, lateral movement is far more valuable than external attacks." }
+        ]
+      },
+      {
+        "target": "A hospital with patient records on an old Windows XP machine",
+        "icon": "🏥",
+        "defense": "Legacy OS, no isolation",
+        "opts": [
+          { "text": "Exploit EternalBlue (MS17-010) to spread ransomware", "correct": true, "lesson": "WannaCry devastated hospitals using exactly this exploit. Legacy systems MUST be air-gapped or upgraded — they're ticking time bombs!" },
+          { "text": "Phish a nurse for her credentials", "correct": false, "lesson": "Phishing works, but a known remote exploit on an unpatched OS is faster and requires no victim interaction." },
+          { "text": "Bribe an IT employee", "correct": false, "lesson": "Insider threats exist, but a public exploit is more reliable and leaves less evidence." }
+        ]
+      },
+      {
+        "target": "A login page with no rate limiting",
+        "icon": "🔐",
+        "defense": "No brute-force protection",
+        "opts": [
+          { "text": "Automate thousands of password attempts", "correct": true, "lesson": "Without rate limiting or lockouts, attackers can try millions of passwords per second. Always implement account lockout and CAPTCHA!" },
+          { "text": "Try social engineering the help desk", "correct": false, "lesson": "Social engineering works, but automation is faster when there's no rate limiting in place." },
+          { "text": "Intercept the login traffic", "correct": false, "lesson": "Traffic interception requires a man-in-the-middle position. Brute force is simpler here." }
+        ]
+      },
+      {
+        "target": "A developer who committed API keys to a public GitHub repo",
+        "icon": "👨‍💻",
+        "defense": "No secrets management",
+        "opts": [
+          { "text": "Scan GitHub for leaked keys and use them immediately", "correct": true, "lesson": "Bots scan GitHub 24/7 for API keys. A leaked key can be exploited within minutes of being pushed. Use environment variables and secrets managers!" },
+          { "text": "Hack the developer's laptop", "correct": false, "lesson": "Why hack a laptop when the keys are already public? Attackers always take the easiest path." },
+          { "text": "DDoS the company API", "correct": false, "lesson": "DDoS denies service but doesn't give you access. A leaked API key gives full authenticated access." }
+        ]
+      },
+      {
+        "target": "An IoT security camera with default credentials",
+        "icon": "📷",
+        "defense": "Factory default password never changed",
+        "opts": [
+          { "text": "Try admin/admin or admin/password to log in", "correct": true, "lesson": "Millions of IoT devices ship with default credentials that users never change. Always change defaults immediately — attackers use automated scanners to find them!" },
+          { "text": "Exploit a buffer overflow in the firmware", "correct": false, "lesson": "Firmware exploits exist, but trying default credentials takes 5 seconds. Attackers always try the easy path first." },
+          { "text": "Intercept the camera's video stream", "correct": false, "lesson": "Intercepting requires network access you don't have yet. Default credentials give you direct admin access." }
+        ]
+      },
+      {
+        "target": "An executive who reuses the same password everywhere",
+        "icon": "👔",
+        "defense": "No password manager, no MFA",
+        "opts": [
+          { "text": "Find their password in a previous data breach dump", "correct": true, "lesson": "Credential reuse is rampant. Attackers buy breach databases and test credentials across multiple services. A password manager prevents this!" },
+          { "text": "Physically watch them type their password", "correct": false, "lesson": "Shoulder surfing is risky and impractical. Breach databases give you the password without being anywhere near the victim." },
+          { "text": "Send them a malware attachment", "correct": false, "lesson": "Malware works, but if you already know their reused password from a breach, you don't need malware." }
+        ]
+      },
+      {
+        "target": "A company that allows USB drives from anywhere",
+        "icon": "🔌",
+        "defense": "No USB policy, no endpoint protection",
+        "opts": [
+          { "text": "Drop a malware-infected USB in the parking lot", "correct": true, "lesson": "The 'USB drop attack' works because curious people plug in found drives. Organizations must block unknown USB devices and train employees!" },
+          { "text": "Email a phishing link to all employees", "correct": false, "lesson": "Phishing works, but physical USB drops have historically high success rates — people are naturally curious." },
+          { "text": "Remotely exploit their VPN", "correct": false, "lesson": "VPN exploits require a known vulnerability. A USB drop attack bypasses all network defenses completely." }
+        ]
+      }
+    ]
+  },
+  "SmartTrap": {
+    "title": "Smart Trap",
+    "correctBadge": "✓ Correct! ",
+    "incorrectBadge": "✗ Not the best fix. ",
+    "tooSlow": "⏰ Too slow!",
+    "deviceSecured": "✓ Device secured!",
+    "stillVulnerable": "✗ Still vulnerable!",
+    "seeResults": "See Results",
+    "nextRoom": "Next Room →",
+    "timeoutTip": "Time's up! In a real attack, hesitation costs you.",
+    "intro": {
+      "line1": "Welcome to the smartest apartment in Doha! Fridge, speaker, camera, door lock, printer — everything is connected.",
+      "line2": "The previous tenant left every IoT device with its default settings. Your job: move room to room and fix each vulnerability.",
+      "line3": "Read the situation carefully — there's always a best fix, not just any fix. Speed earns bonus points!"
+    },
+    "result": {
+      "title": "Apartment Secured",
+      "perfect": "IoT expert! Every device in your smart home is locked down. +100 XP earned! 🏆",
+      "passed": "Good work! Most devices secured. You passed and earned 100 XP. 🌟",
+      "failed": "Almost! Score {passingScore} points to earn XP. Default passwords and open access are the biggest IoT risks!"
+    },
+    "rooms": [
+      {
+        "room": "Kitchen",
+        "device": "Smart Fridge",
+        "icon": "🧊",
+        "puzzle": "The smart fridge display shows: 'Admin login — Password: admin'. What's the risk and what do you do?",
+        "opts": [
+          { "text": "Change the default password to something strong and unique", "correct": true, "tip": "Default passwords like 'admin' are the #1 IoT vulnerability. Attackers scan the internet for these automatically — millions of devices are compromised this way!" },
+          { "text": "It's just a fridge, no sensitive data is at risk", "correct": false, "tip": "A hacked fridge can be a gateway to your ENTIRE home network! Attackers use it as a stepping stone to reach laptops, phones, and cameras." },
+          { "text": "Disconnect it from WiFi entirely", "correct": false, "tip": "Disconnecting stops the immediate risk but loses all smart features. The right fix is securing it with a strong password." }
+        ]
+      },
+      {
+        "room": "Living Room",
+        "device": "Smart Speaker",
+        "icon": "🔊",
+        "puzzle": "Your smart speaker responds to ANY voice — including from outside through the window, from TV ads, and from guests. What's the best fix?",
+        "opts": [
+          { "text": "Enable voice recognition so it only responds to registered voices", "correct": true, "tip": "Voice matching prevents strangers, recordings, and even YouTube videos from controlling your devices or accessing your calendar and smart home!" },
+          { "text": "Turn it off whenever you leave home", "correct": false, "tip": "This helps when you're away but doesn't fix the vulnerability when you're home. Anyone in the room can still issue commands." },
+          { "text": "Move it away from windows", "correct": false, "tip": "WiFi and Bluetooth aren't affected by window placement, and voice commands can come from TV, guests, or anyone in earshot." }
+        ]
+      },
+      {
+        "room": "Bedroom",
+        "device": "Smart Camera",
+        "icon": "📹",
+        "puzzle": "You discover your bedroom security camera is accessible from the internet with no password — it even appears on Shodan.io, a search engine for exposed devices. What do you do?",
+        "opts": [
+          { "text": "Set a strong password AND disable remote access unless you specifically need it", "correct": true, "tip": "Unsecured cameras are indexed by Shodan and can be watched by anyone in the world. Strong password + disabled remote access = private again. Only enable remote access when needed." },
+          { "text": "Point the camera at the wall so nothing sensitive is visible", "correct": false, "tip": "The camera is still fully accessible on the internet! An attacker can also use its microphone, or pivot through it to attack other devices on your network." },
+          { "text": "Cover the lens with tape", "correct": false, "tip": "Tape blocks the video but not the microphone, and the camera remains a live entry point into your home network. Secure it properly!" }
+        ]
+      },
+      {
+        "room": "Entrance",
+        "device": "Smart Door Lock",
+        "icon": "🚪",
+        "puzzle": "Your smart lock unlocks via Bluetooth from up to 30 meters away — meaning an attacker standing on the street could potentially unlock your door. What's the fix?",
+        "opts": [
+          { "text": "Reduce Bluetooth range in settings and require a PIN code to unlock", "correct": true, "tip": "Shorter range (under 5m) + mandatory PIN = two-factor security for your physical door. Bluetooth alone can be relayed and spoofed — always add a second factor!" },
+          { "text": "Keep a traditional key as backup and stop using the smart features", "correct": false, "tip": "A physical key backup is wise, but it doesn't fix the Bluetooth vulnerability. The smart lock still responds to relay attacks from the street." },
+          { "text": "Disable the smart features entirely and use it as a regular lock", "correct": false, "tip": "That solves the problem but loses all smart features. It's better to configure it securely — range limits + PIN authentication gives you both security and convenience." }
+        ]
+      },
+      {
+        "room": "Office",
+        "device": "Smart Printer",
+        "icon": "🖨",
+        "puzzle": "Your network printer has WiFi Direct enabled, creating its own open hotspot. Anyone nearby can connect directly to it, print documents, and potentially use it as a network entry point.",
+        "opts": [
+          { "text": "Disable WiFi Direct and connect the printer via your secure home network only", "correct": true, "tip": "WiFi Direct creates an unprotected second entry point into your environment. Disabling it and using your secured home network closes this gap completely!" },
+          { "text": "The printer only has paper — there's no real security risk", "correct": false, "tip": "Printers store copies of EVERYTHING you print in their memory. They can also be used as network pivots to attack other devices. Printers are a serious attack vector!" },
+          { "text": "Hide the printer in a closet or cabinet", "correct": false, "tip": "WiFi signals pass through walls with ease! Physical hiding does nothing to stop a digital WiFi attack from a neighbor or someone parked outside." }
+        ]
+      },
+      {
+        "room": "Garden",
+        "device": "Smart Irrigation System",
+        "icon": "🌿",
+        "puzzle": "Your garden's smart irrigation app hasn't been updated in 2 years and uses HTTP (not HTTPS) to send commands. What should you fix?",
+        "opts": [
+          { "text": "Update the app and firmware, and only use the system via HTTPS or a VPN", "correct": true, "tip": "HTTP traffic is unencrypted — anyone on your WiFi or ISP can see and modify commands. Updates patch known vulnerabilities. Always prefer HTTPS for IoT apps!" },
+          { "text": "It controls water — worst case the garden gets overwatered", "correct": false, "tip": "An attacker who owns your irrigation controller also has a foothold on your home network. Plus, overwatering can cause real property damage!" },
+          { "text": "Switch back to manual watering to avoid the risk", "correct": false, "tip": "That avoids the issue but at the cost of the feature. The right approach is to secure the system — update it and use encrypted communications." }
+        ]
+      },
+      {
+        "room": "Baby Room",
+        "device": "Smart Baby Monitor",
+        "icon": "👶",
+        "puzzle": "Your baby monitor streams video over the internet using the manufacturer's cloud. You've never changed the default PIN '0000'. Who else might be watching?",
+        "opts": [
+          { "text": "Change the PIN immediately and enable two-factor authentication on the account", "correct": true, "tip": "Baby monitors with default PINs are actively targeted — there are websites that stream stolen baby monitor feeds. Change default credentials on ANY camera immediately!" },
+          { "text": "The baby monitor is encrypted — default PIN is fine", "correct": false, "tip": "Encryption protects data in transit, but a default PIN means anyone who finds your device online can authenticate and watch. Encryption ≠ authentication security!" },
+          { "text": "Disconnect it from the internet and only use local viewing", "correct": false, "tip": "Local-only viewing is safe but loses remote monitoring features. A better balance is securing the account properly with a strong PIN + 2FA." }
+        ]
+      },
+      {
+        "room": "Garage",
+        "device": "Smart Garage Door",
+        "icon": "🚗",
+        "puzzle": "Your smart garage door opener app logs show 3 failed login attempts from an IP in another country at 2AM. What do you do?",
+        "opts": [
+          { "text": "Change the password, enable 2FA, and review which devices have access", "correct": true, "tip": "Failed login attempts from foreign IPs are a clear sign of a brute-force attack in progress. Changing password + 2FA stops it cold. Reviewing connected devices ensures no unauthorized access already exists." },
+          { "text": "It's probably just a glitch — ignore it", "correct": false, "tip": "Three failed attempts from an overseas IP at 2AM is NOT a glitch. It's a textbook brute-force attack. Ignoring it means they keep trying until they succeed." },
+          { "text": "Disconnect the garage from smart features", "correct": false, "tip": "That stops the attack but loses your smart features. Securing the account with 2FA is the better approach — it makes brute force practically impossible." }
+        ]
+      }
+    ]
+  }
+}
