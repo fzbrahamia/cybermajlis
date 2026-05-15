@@ -632,27 +632,463 @@ function ResultPhase({ scores, onBack }: { scores: Record<string, number>; onBac
   );
 }
 
+
+// ── WHATSAPP data ──────────────────────────────────────────────────────────────
+const WHATSAPP_ALERTS = [
+  { id:1, time:"10:14", type:"Successful login from new country",   src:"h.alqatari → VPN (Amsterdam)", sev:"high",   correct:"real", why:"Hamad's account just logged in from the Netherlands — he's in Doha. This is the attacker using stolen credentials." },
+  { id:2, time:"10:15", type:"MFA bypass attempt flagged",          src:"Auth service — h.alqatari",    sev:"high",   correct:"real", why:"The attacker tried to bypass MFA. Confirms the credentials were stolen and attacker is trying to escalate access." },
+  { id:3, time:"10:08", type:"Scheduled backup completed OK",       src:"BACKUP-SRV-01",                sev:"info",   correct:"fp",   why:"Routine backup, completed before the incident. Nothing to do here." },
+  { id:4, time:"10:16", type:"File access: /HR/salary/ (10 files)", src:"h.alqatari (Amsterdam)",       sev:"medium", correct:"real", why:"Attacker is accessing sensitive HR files using Hamad's credentials. Active data exfiltration in progress." },
+  { id:5, time:"10:12", type:"AV scan completed — no threats",      src:"WKSTN-14",                     sev:"info",   correct:"fp",   why:"Routine AV scan on Hamad's work laptop. The attack here is credential-based, not device-based. False lead." },
+];
+
+// ── USB data ───────────────────────────────────────────────────────────────────
+const USB_EVIDENCE = [
+  { id:1, icon:"💾", title:"Unknown USB device mounted — WKSTN-14",             relevant:true,  label:"The USB was plugged in. Confirms physical access attack (baiting) as the infection vector." },
+  { id:2, icon:"⚙️", title:"autorun.exe executed silently on USB mount",          relevant:true,  label:"Malware auto-executed the moment the USB was inserted — no user interaction beyond plugging it in." },
+  { id:3, icon:"🌐", title:"Outbound connection: 45.142.x.x — port 443",        relevant:true,  label:"Malware established a covert C2 channel. Reporting to attacker daily for 14 days without detection." },
+  { id:4, icon:"📸", title:"Keylogger active: 14 days of keystrokes captured",   relevant:true,  label:"Every password, message, and document Hamad typed for 14 days was exfiltrated to the attacker." },
+  { id:5, icon:"🗂", title:"Routine file access: daily work documents",           relevant:false, label:"Normal file access patterns before the USB incident. Not relevant to the investigation." },
+  { id:6, icon:"🔑", title:"Registry persistence: HKCU\\Run — svchost32.exe",  relevant:true,  label:"Malware added itself to startup. Survives reboots — has been running silently for 14 days." },
+  { id:7, icon:"📅", title:"Meeting calendar: weekly team sync — recurring",      relevant:false, label:"Normal calendar activity, predates the attack. Irrelevant." },
+  { id:8, icon:"📡", title:"DNS queries to update-checker.info — 14 days",      relevant:true,  label:"Consistent daily beaconing over 14 days — the C2 pattern. High-confidence indicator of persistent infection." },
+];
+
+// ── Scenario list ──────────────────────────────────────────────────────────────
+const SCENARIO_LIST = [
+  { id:"phishing", icon:"📧", title:"The Phishing Email",   tiers:"Hamad + All 3 Tiers", color:"#D5B893", desc:"Hamad clicks a malicious link on his work laptop. Full SOC escalation — from the first alert to the risk decision." },
+  { id:"whatsapp", icon:"📱", title:"The WhatsApp Vishing", tiers:"Hamad + Tier 1 Only", color:"#60a5fa", desc:"Hamad gives his password to a fake IT caller. Credential-based attack contained at Tier 1 — no malware, no escalation." },
+  { id:"usb",      icon:"💾", title:"The USB Drop",          tiers:"Hamad + Tiers 2 & 3", color:"#f59e0b", desc:"Hamad plugs in a USB found in the car park. 14 days of undetected access — discovered in a forensic sweep, not a SIEM alert." },
+];
+
+// ── WhatsApp Hamad phase ───────────────────────────────────────────────────────
+function WhatsappHamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
+  const FLAGS = [
+    { id:"number",  tip:"Unknown number — IT never calls via personal WhatsApp. Always verify through official channels.", clickText:"unknown number" },
+    { id:"request", tip:"Real IT staff NEVER ask for passwords over any channel, ever. This is the core red flag.", clickText:"need your password" },
+    { id:"urgency", tip:"'Within 10 minutes' is manufactured urgency, designed to stop you thinking carefully.", clickText:"within 10 minutes" },
+  ];
+  const [flagged,setFlagged]=useState<Set<string>>(new Set());
+  const [revealed,setRevealed]=useState(false);
+  const toggle=(id:string)=>setFlagged(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);return n;});
+  return (
+    <div style={{maxWidth:680,margin:"0 auto",padding:"24px 20px"}}>
+      <CharBubble charId="hamad" message="I got a WhatsApp from someone saying they're from IT. They said my account was compromised and needed my password urgently. I didn't think — I gave it to them." />
+      <div style={{background:"#0a1628",borderRadius:14,overflow:"hidden",border:"1px solid rgba(96,165,250,0.2)",marginBottom:16}}>
+        <div style={{background:"#0d2137",padding:"10px 16px",display:"flex",alignItems:"center",gap:8,borderBottom:"1px solid rgba(96,165,250,0.1)"}}>
+          <div style={{width:32,height:32,borderRadius:"50%",background:"rgba(96,165,250,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>👤</div>
+          <div>
+            <div style={{fontSize:12,fontWeight:700,color:"#f5ede0"}}>
+              <span onClick={()=>toggle("number")} style={{cursor:"pointer",background:flagged.has("number")?"rgba(239,68,68,0.15)":"transparent",padding:"1px 3px",borderRadius:3,border:flagged.has("number")?"1px solid #ef444440":"1px solid transparent"}}>
+                +974 5566 XXXX (Unknown)
+              </span>{flagged.has("number")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}
+            </div>
+            <div style={{fontSize:10,color:"rgba(96,165,250,0.5)"}}>WhatsApp · Unknown number</div>
+          </div>
+        </div>
+        <div style={{padding:"16px",display:"flex",flexDirection:"column",gap:10}}>
+          <div style={{background:"#1a2d45",borderRadius:"12px 12px 12px 2px",padding:"10px 14px",maxWidth:"80%",fontSize:13,color:"#f5ede0",lineHeight:1.6}}>
+            Hello, this is Ahmed from IT Support. We detected suspicious activity. Account must be reset{" "}
+            <span onClick={()=>toggle("urgency")} style={{cursor:"pointer",background:flagged.has("urgency")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.1)",padding:"1px 3px",borderRadius:3}}>
+              within 10 minutes
+            </span>
+            {flagged.has("urgency")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}
+            {" "}or your access will be locked.
+          </div>
+          <div style={{background:"#1a2d45",borderRadius:"12px 12px 12px 2px",padding:"10px 14px",maxWidth:"80%",fontSize:13,color:"#f5ede0",lineHeight:1.6}}>
+            Please share your current password — we{" "}
+            <span onClick={()=>toggle("request")} style={{cursor:"pointer",background:flagged.has("request")?"rgba(239,68,68,0.15)":"rgba(239,68,68,0.08)",padding:"1px 3px",borderRadius:3,fontWeight:700}}>
+              need your password
+            </span>
+            {flagged.has("request")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}
+            {" "}to verify before resetting.
+          </div>
+          <div style={{background:"#1e3a52",borderRadius:"12px 12px 12px 2px",padding:"10px 14px",maxWidth:"80%",fontSize:12,color:"rgba(255,255,255,0.5)"}}>Hamad replied: "My password is Hamad@2024"</div>
+        </div>
+      </div>
+      <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginBottom:12,fontFamily:"'JetBrains Mono'"}}>{flagged.size}/3 red flags spotted</div>
+      {flagged.size>0&&!revealed&&(
+        <div style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:10,padding:"10px 14px",marginBottom:14,fontSize:12,color:"#f87171",lineHeight:1.6}}>
+          {FLAGS.filter(f=>flagged.has(f.id)).map(f=><div key={f.id}>🚩 <strong>{f.clickText}:</strong> {f.tip}</div>)}
+        </div>
+      )}
+      {!revealed&&(
+        <button onClick={()=>{setRevealed(true);setTimeout(()=>onComplete(flagged.size),2000);}}
+          style={{padding:"9px 24px",borderRadius:8,border:"1.5px solid rgba(197,165,126,0.4)",background:"transparent",color:"#D5B893",fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",fontFamily:"'JetBrains Mono'"}}>
+          Continue →
+        </button>
+      )}
+      {revealed&&(
+        <div style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.25)",borderRadius:12,padding:"14px 16px"}}>
+          <div style={{fontSize:12,fontWeight:700,color:"#f87171",marginBottom:6}}>🔑 Password stolen. Attacker now has full access to Hamad's account.</div>
+          <div style={{fontSize:13,color:"#f5ede0aa",lineHeight:1.7}}>The attacker is already logging in from Amsterdam. A SIEM alert just fired. Saqr needs to act before more damage is done.</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── WhatsApp Saqr phase ────────────────────────────────────────────────────────
+function WhatsappSaqrPhase({ onComplete }: { onComplete: (score: number) => void }) {
+  const [assignments,setAssignments]=useState<Record<number,string>>({});
+  const [revealed,setRevealed]=useState<Set<number>>(new Set());
+  const [timer,setTimer]=useState(60);
+  const [done,setDone]=useState(false);
+  const timerRef=useRef<NodeJS.Timeout|null>(null);
+  useEffect(()=>{
+    timerRef.current=setInterval(()=>setTimer(t=>{if(t<=1){clearInterval(timerRef.current!);handleFinish();return 0;}return t-1;}),1000);
+    return ()=>{if(timerRef.current)clearInterval(timerRef.current);};
+  },[]);
+  const assign=(id:number,val:string)=>{
+    if(assignments[id]||done)return;
+    setAssignments(p=>({...p,[id]:val}));
+    setRevealed(p=>new Set([...p,id]));
+  };
+  const handleFinish=()=>{
+    if(timerRef.current)clearInterval(timerRef.current);
+    setDone(true);
+    const s=WHATSAPP_ALERTS.reduce((acc,a)=>acc+(assignments[a.id]===a.correct?1:0),0);
+    setTimeout(()=>onComplete(s),2500);
+  };
+  const allDone=Object.keys(assignments).length===WHATSAPP_ALERTS.length;
+  const timerColor=timer<15?"#ef4444":timer<30?"#f59e0b":"#22c55e";
+  const btnS=(alertId:number,val:string):React.CSSProperties=>{
+    const a=assignments[alertId];const isThis=a===val;const correct=WHATSAPP_ALERTS.find(x=>x.id===alertId)?.correct===val;
+    if(!a)return{padding:"4px 9px",borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.03)",color:"#f5ede0aa",fontSize:9,fontWeight:700,cursor:"pointer",letterSpacing:"0.06em"};
+    if(isThis&&correct)return{padding:"4px 9px",borderRadius:5,border:"1px solid rgba(34,197,94,0.4)",background:"rgba(34,197,94,0.1)",color:"#22c55e",fontSize:9,fontWeight:700,cursor:"default",letterSpacing:"0.06em"};
+    if(isThis&&!correct)return{padding:"4px 9px",borderRadius:5,border:"1px solid rgba(239,68,68,0.4)",background:"rgba(239,68,68,0.1)",color:"#f87171",fontSize:9,fontWeight:700,cursor:"default",letterSpacing:"0.06em"};
+    if(!isThis&&correct&&revealed.has(alertId))return{padding:"4px 9px",borderRadius:5,border:"1px solid rgba(34,197,94,0.25)",background:"rgba(34,197,94,0.05)",color:"rgba(34,197,94,0.5)",fontSize:9,fontWeight:700,cursor:"default",letterSpacing:"0.06em"};
+    return{padding:"4px 9px",borderRadius:5,border:"1px solid rgba(255,255,255,0.06)",background:"transparent",color:"rgba(255,255,255,0.2)",fontSize:9,fontWeight:700,cursor:"default",letterSpacing:"0.06em"};
+  };
+  return(
+    <div style={{maxWidth:700,margin:"0 auto",padding:"24px 20px"}}>
+      <CharBubble charId="saqr" message="Credential attack — no malware. If we move fast we can contain this at Tier 1. Triage these alerts, identify the real threats, and we stop it here." />
+      <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
+        <div style={{flex:1,height:5,background:"rgba(255,255,255,0.06)",borderRadius:3,overflow:"hidden"}}>
+          <div style={{height:"100%",width:`${(timer/60)*100}%`,background:timerColor,borderRadius:3,transition:"width 1s linear"}}/>
+        </div>
+        <span style={{fontSize:12,fontFamily:"'JetBrains Mono'",color:timerColor,fontWeight:700,minWidth:36}}>{timer}s</span>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+        {WHATSAPP_ALERTS.map(alert=>{
+          const [sc,sb]=SEV_COLOR[alert.sev]??["#aaa","rgba(170,170,170,0.1)"];
+          return(
+            <div key={alert.id} style={{background:"rgba(255,255,255,0.02)",borderRadius:10,border:"1px solid rgba(255,255,255,0.06)",padding:"11px 13px"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:assignments[alert.id]?6:0}}>
+                <div style={{flex:1}}>
+                  <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:2}}>
+                    <span style={{fontFamily:"'JetBrains Mono'",fontSize:9,color:"rgba(255,255,255,0.3)"}}>{alert.time}</span>
+                    <span style={{fontSize:8,fontWeight:700,padding:"1px 6px",borderRadius:3,background:sb,color:sc,letterSpacing:"0.06em"}}>{alert.sev.toUpperCase()}</span>
+                  </div>
+                  <div style={{fontSize:12,color:"#f5ede0",fontWeight:600,marginBottom:2}}>{alert.type}</div>
+                  <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:"'JetBrains Mono'"}}>{alert.src}</div>
+                </div>
+                <div style={{display:"flex",gap:4,flexShrink:0,marginLeft:8}}>
+                  <button style={btnS(alert.id,"real")} onClick={()=>assign(alert.id,"real")}>⚠ REAL</button>
+                  <button style={btnS(alert.id,"fp")} onClick={()=>assign(alert.id,"fp")}>✓ FALSE POS</button>
+                  <button style={btnS(alert.id,"inv")} onClick={()=>assign(alert.id,"inv")}>? INVESTIGATE</button>
+                </div>
+              </div>
+              {revealed.has(alert.id)&&(
+                <div style={{fontSize:11,color:assignments[alert.id]===alert.correct?"rgba(34,197,94,0.8)":"rgba(239,68,68,0.8)",lineHeight:1.6,paddingTop:6,borderTop:"1px solid rgba(255,255,255,0.05)"}}>
+                  {assignments[alert.id]===alert.correct?"✓":"✗"} {alert.why}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {(allDone||done)&&!done&&(
+        <button onClick={handleFinish} style={{padding:"10px 28px",borderRadius:8,border:"1.5px solid rgba(213,184,147,0.4)",background:"transparent",color:"#D5B893",fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",fontFamily:"'JetBrains Mono'"}}
+          onMouseEnter={e=>(e.currentTarget.style.background="rgba(197,165,126,0.1)")} onMouseLeave={e=>(e.currentTarget.style.background="transparent")}>
+          Contain at Tier 1 →
+        </button>
+      )}
+      {done&&<div style={{textAlign:"center",fontSize:13,color:"rgba(197,165,126,0.5)",padding:"10px 0"}}>Incident contained. No escalation needed.</div>}
+    </div>
+  );
+}
+
+// ── USB Hamad phase ────────────────────────────────────────────────────────────
+function UsbHamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
+  const FLAGS=[
+    {id:"found",  tip:"Never plug in USB drives you find — 'baiting' attacks work by planting enticing USB drives deliberately.",clickText:"found in the car park"},
+    {id:"label",  tip:"'Salary Bonuses' is engineered curiosity bait. The more tempting the label, the more suspicious you should be.",clickText:"SALARY BONUSES Q2"},
+    {id:"plugged",tip:"Plugging an unknown USB into a work device can silently install malware before you see any files.",clickText:"plugged it into his work laptop"},
+  ];
+  const [flagged,setFlagged]=useState<Set<string>>(new Set());
+  const [revealed,setRevealed]=useState(false);
+  const toggle=(id:string)=>setFlagged(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);return n;});
+  return(
+    <div style={{maxWidth:680,margin:"0 auto",padding:"24px 20px"}}>
+      <CharBubble charId="hamad" message="Two weeks ago I found a USB drive in the car park. It said 'SALARY BONUSES Q2 — CONFIDENTIAL'. I thought someone dropped it. I plugged it into my work laptop. Nothing seemed to happen. I forgot about it. Then Tha'lab found something." />
+      <div style={{background:"rgba(245,158,11,0.05)",borderRadius:14,border:"1px solid rgba(245,158,11,0.2)",padding:"20px 22px",marginBottom:16,lineHeight:1.8,fontSize:13,color:"#f5ede0cc"}}>
+        <div style={{fontSize:10,color:"rgba(245,158,11,0.6)",fontFamily:"'JetBrains Mono'",letterSpacing:"0.1em",marginBottom:10}}>INCIDENT NARRATIVE — CLICK SUSPICIOUS ELEMENTS</div>
+        <p>
+          Hamad arrived at the car park and noticed a USB drive near his car. It was{" "}
+          <span onClick={()=>toggle("found")} style={{cursor:"pointer",background:flagged.has("found")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.08)",padding:"1px 4px",borderRadius:3,border:flagged.has("found")?"1px solid #ef444440":"1px solid rgba(245,158,11,0.2)"}}>
+            found in the car park
+          </span>
+          {flagged.has("found")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}. Label read:{" "}
+          <span onClick={()=>toggle("label")} style={{cursor:"pointer",fontWeight:700,background:flagged.has("label")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.08)",padding:"1px 4px",borderRadius:3,border:flagged.has("label")?"1px solid #ef444440":"1px solid rgba(245,158,11,0.2)"}}>
+            "SALARY BONUSES Q2 — CONFIDENTIAL"
+          </span>
+          {flagged.has("label")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}. He assumed a colleague dropped it. He{" "}
+          <span onClick={()=>toggle("plugged")} style={{cursor:"pointer",background:flagged.has("plugged")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.08)",padding:"1px 4px",borderRadius:3,border:flagged.has("plugged")?"1px solid #ef444440":"1px solid rgba(245,158,11,0.2)"}}>
+            plugged it into his work laptop
+          </span>
+          {flagged.has("plugged")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}. No files appeared. He forgot about it. Fourteen days later, a routine forensic sweep found something very wrong.
+        </p>
+      </div>
+      {flagged.size>0&&(
+        <div style={{background:"rgba(239,68,68,0.07)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:10,padding:"10px 14px",marginBottom:14,fontSize:12,color:"#f87171",lineHeight:1.7}}>
+          {FLAGS.filter(f=>flagged.has(f.id)).map(f=><div key={f.id} style={{marginBottom:3}}>🚩 <strong>{f.clickText}:</strong> {f.tip}</div>)}
+        </div>
+      )}
+      {!revealed&&(
+        <button onClick={()=>{setRevealed(true);setTimeout(()=>onComplete(flagged.size),2000);}}
+          style={{padding:"9px 24px",borderRadius:8,border:"1.5px solid rgba(197,165,126,0.4)",background:"transparent",color:"#D5B893",fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",fontFamily:"'JetBrains Mono'"}}>
+          Continue →
+        </button>
+      )}
+      {revealed&&(
+        <div style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.25)",borderRadius:12,padding:"14px 16px",animation:"slideIn .3s ease"}}>
+          <div style={{fontSize:12,fontWeight:700,color:"#f87171",marginBottom:6}}>⚠️ 14 days of undetected access. Keylogger active. C2 communication confirmed.</div>
+          <div style={{fontSize:13,color:"#f5ede0aa",lineHeight:1.7}}>No SIEM alert fired — malware evaded detection entirely. Tha'lab found it during a routine sweep. This is a far more serious attack than it initially appeared.</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Scenario selector ──────────────────────────────────────────────────────────
+function ScenarioSelector({ onSelect }: { onSelect: (id: string) => void }) {
+  return(
+    <div style={{maxWidth:620,margin:"0 auto",padding:"48px 20px",textAlign:"center"}}>
+      <div style={{fontSize:9,color:"rgba(197,165,126,0.5)",letterSpacing:"0.3em",fontFamily:"'JetBrains Mono'",marginBottom:14,textTransform:"uppercase"}}>Choose an Incident</div>
+      <h1 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:34,color:"#f5ede0",margin:"0 0 8px",fontWeight:600}}>Live Scenarios</h1>
+      <div style={{width:48,height:1,background:"rgba(197,165,126,0.3)",margin:"18px auto 12px"}}/>
+      <p style={{fontSize:13,color:"#f5ede0bb",lineHeight:1.8,maxWidth:440,margin:"0 auto 30px"}}>Each scenario starts with Hamad and escalates through the SOC layers based on how serious the incident is. Different entry point, different response path.</p>
+      <div style={{display:"flex",flexDirection:"column",gap:12,textAlign:"left"}}>
+        {SCENARIO_LIST.map(sc=>(
+          <button key={sc.id} onClick={()=>onSelect(sc.id)}
+            style={{padding:"18px 22px",borderRadius:14,border:`1.5px solid ${sc.color}25`,background:"rgba(255,255,255,0.03)",cursor:"pointer",textAlign:"left",transition:"all .2s",width:"100%"}}
+            onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.borderColor=`${sc.color}60`;(e.currentTarget as HTMLElement).style.background="rgba(255,255,255,0.05)";}}
+            onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.borderColor=`${sc.color}25`;(e.currentTarget as HTMLElement).style.background="rgba(255,255,255,0.03)";}}
+          >
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
+              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                <span style={{fontSize:22}}>{sc.icon}</span>
+                <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,color:"#f5ede0",fontWeight:600}}>{sc.title}</span>
+              </div>
+              <span style={{fontSize:9,fontWeight:700,padding:"2px 9px",borderRadius:10,background:`${sc.color}12`,color:sc.color,border:`1px solid ${sc.color}30`,letterSpacing:"0.06em",flexShrink:0,marginLeft:8}}>{sc.tiers}</span>
+            </div>
+            <p style={{fontSize:13,color:"#f5ede0aa",lineHeight:1.65,margin:0}}>{sc.desc}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
+// ── USB Tha'lab phase (uses USB_EVIDENCE) ─────────────────────────────────────
+function UsbThalabPhase({ onComplete }: { onComplete: (score: number) => void }) {
+  const [collected, setCollected] = useState<Set<number>>(new Set());
+  const [showTimeline, setShowTimeline] = useState(false);
+  const relevantCount = USB_EVIDENCE.filter(e => e.relevant).length;
+  const collectedRelevant = [...collected].filter(id => USB_EVIDENCE.find(e => e.id === id)?.relevant).length;
+  const USB_TIMELINE = [
+    "💾 Attacker placed USB in the car park (deliberate bait)",
+    "🔌 Hamad plugged it in — malware auto-executed silently",
+    "⚙️ Keylogger installed + persistence via registry",
+    "📡 Daily beaconing to C2 server for 14 days",
+    "🔑 All credentials captured — passwords, MFA codes, emails",
+    "📸 Tha'lab discovers the infection during routine forensic sweep",
+  ];
+  return (
+    <div style={{ maxWidth:700, margin:"0 auto", padding:"24px 20px" }}>
+      <CharBubble charId="thalab" message="This one was hiding for 14 days. Routine sweep, nothing triggered — I found it manually. The evidence is all there if you look for the right things. Go through each artifact." />
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
+        <span style={{ fontSize:10, color:"rgba(245,158,11,0.6)", fontFamily:"'JetBrains Mono'", letterSpacing:"0.1em" }}>FORENSIC ARTIFACTS — {collected.size} COLLECTED</span>
+        <span style={{ fontSize:10, color:"rgba(255,255,255,0.3)", fontFamily:"'JetBrains Mono'" }}>{collectedRelevant}/{relevantCount} relevant</span>
+      </div>
+      {!showTimeline ? (
+        <>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0.7rem", marginBottom:16 }}>
+            {USB_EVIDENCE.map(ev => {
+              const isC = collected.has(ev.id);
+              return (
+                <div key={ev.id} onClick={() => !isC && setCollected(p => new Set([...p, ev.id]))}
+                  style={{ padding:"12px 14px", borderRadius:10, border:`1.5px solid ${isC?(ev.relevant?"rgba(245,158,11,0.5)":"rgba(239,68,68,0.3)"):"rgba(255,255,255,0.08)"}`, background:isC?(ev.relevant?"rgba(245,158,11,0.08)":"rgba(239,68,68,0.06)"):"rgba(255,255,255,0.02)", cursor:isC?"default":"pointer", transition:"all .2s" }}
+                  onMouseEnter={e => { if (!isC) (e.currentTarget as HTMLElement).style.borderColor="rgba(245,158,11,0.4)"; }}
+                  onMouseLeave={e => { if (!isC) (e.currentTarget as HTMLElement).style.borderColor="rgba(255,255,255,0.08)"; }}
+                >
+                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+                    <span style={{ fontSize:20, marginBottom:6, display:"block" }}>{ev.icon}</span>
+                    {isC && <span style={{ fontSize:11, color:ev.relevant?"#f59e0b":"#ef4444" }}>{ev.relevant?"✓ Evidence":"✗ Irrelevant"}</span>}
+                  </div>
+                  <div style={{ fontSize:12, fontWeight:600, color:"#f5ede0", marginBottom:3 }}>{ev.title}</div>
+                  {isC && <div style={{ fontSize:11, color:ev.relevant?"rgba(245,158,11,0.8)":"rgba(239,68,68,0.6)", marginTop:6, lineHeight:1.5 }}>{ev.label}</div>}
+                </div>
+              );
+            })}
+          </div>
+          {collectedRelevant >= 4 && (
+            <button onClick={() => { setShowTimeline(true); setTimeout(() => onComplete(collectedRelevant), 4000); }}
+              style={{ padding:"11px 32px", borderRadius:8, border:"1.5px solid rgba(245,158,11,0.5)", background:"transparent", color:"#f59e0b", fontSize:11, fontWeight:700, letterSpacing:"0.15em", textTransform:"uppercase", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}
+              onMouseEnter={e=>(e.currentTarget.style.background="rgba(245,158,11,0.08)")} onMouseLeave={e=>(e.currentTarget.style.background="transparent")}
+            >Build Attack Timeline →</button>
+          )}
+        </>
+      ) : (
+        <div>
+          <div style={{ fontSize:10, color:"rgba(245,158,11,0.6)", fontFamily:"'JetBrains Mono'", letterSpacing:"0.1em", marginBottom:14 }}>14-DAY ATTACK TIMELINE RECONSTRUCTED</div>
+          {USB_TIMELINE.map((step, i) => (
+            <div key={i} style={{ display:"flex", gap:12, marginBottom:10, animation:`fadeIn 0.4s ease ${i*0.35}s both` }}>
+              <div style={{ display:"flex", flexDirection:"column", alignItems:"center" }}>
+                <div style={{ width:10, height:10, borderRadius:"50%", background:"#f59e0b", flexShrink:0 }} />
+                {i < USB_TIMELINE.length-1 && <div style={{ width:2, height:24, background:"rgba(245,158,11,0.3)" }} />}
+              </div>
+              <div style={{ fontSize:13, color:"#f5ede0cc", lineHeight:1.6 }}>{step}</div>
+            </div>
+          ))}
+          <div style={{ marginTop:12, padding:"12px 14px", background:"rgba(245,158,11,0.06)", borderRadius:10, border:"1px solid rgba(245,158,11,0.2)", fontSize:12, color:"rgba(245,158,11,0.8)" }}>
+            14 days of full access confirmed. Credential reset needed. Escalating to IR and Risk teams.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ══════════════════════════════════════════════════════════════════════════════
-// MAIN SCENARIO COMPONENT
+// MAIN SCENARIO COMPONENT — handles all 3 scenarios
 // ══════════════════════════════════════════════════════════════════════════════
-const PHASES: Phase[] = ["intro","hamad","saqr","thalab","hisan","oryx","result"];
-const PHASE_LABELS: Record<Phase, string> = {
-  intro:"Briefing", hamad:"Hamad", saqr:"Tier 1", thalab:"Tier 2A", hisan:"Tier 2B", oryx:"Tier 3", result:"Debrief"
+type ScenarioId = "phishing" | "whatsapp" | "usb";
+
+// Which phases each scenario runs
+const SCENARIO_PHASES: Record<ScenarioId, string[]> = {
+  phishing: ["selector","intro","hamad","saqr","thalab","hisan","oryx","result"],
+  whatsapp: ["selector","intro","hamad","saqr","result"],
+  usb:      ["selector","intro","hamad","thalab_usb","hisan","oryx","result"],
+};
+
+const SCENARIO_LABELS: Record<string, string> = {
+  selector:"", intro:"Briefing", hamad:"Hamad",
+  saqr:"Tier 1", thalab:"Tier 2A", thalab_usb:"Tier 2A",
+  hisan:"Tier 2B", oryx:"Tier 3", result:"Debrief"
+};
+
+const SCENARIO_META: Record<ScenarioId, { icon:string; title:string; color:string }> = {
+  phishing: { icon:"📧", title:"The Phishing Email",   color:"#D5B893" },
+  whatsapp: { icon:"📱", title:"The WhatsApp Vishing", color:"#60a5fa" },
+  usb:      { icon:"💾", title:"The USB Drop",          color:"#f59e0b" },
 };
 
 export default function Scenario() {
   const router = useRouter();
-  const [phase, setPhase] = useState<Phase>("intro");
+  const [scenarioId, setScenarioId] = useState<ScenarioId | null>(null);
+  const [phaseIdx, setPhaseIdx] = useState(0);
   const [scores, setScores] = useState<Record<string, number>>({});
+
+  const phases = scenarioId ? SCENARIO_PHASES[scenarioId] : ["selector"];
+  const currentPhase = phases[phaseIdx] ?? "selector";
+  const meta = scenarioId ? SCENARIO_META[scenarioId] : null;
 
   const advance = (fromPhase: string, score?: number) => {
     if (score !== undefined) setScores(prev => ({...prev, [fromPhase]: score}));
-    const idx = PHASES.indexOf(fromPhase as Phase);
-    setPhase(PHASES[idx+1] ?? "result");
+    setPhaseIdx(i => i + 1);
+  };
+
+  const handleScenarioSelect = (id: string) => {
+    setScenarioId(id as ScenarioId);
+    setPhaseIdx(1); // skip "selector", go to "intro"
+    setScores({});
+  };
+
+  // Active tier indicators (skip selector/intro/result)
+  const tierPhases = scenarioId
+    ? SCENARIO_PHASES[scenarioId].filter(p => !["selector","intro","result"].includes(p))
+    : [];
+  const activeTiers = phases.slice(0, phaseIdx + 1);
+
+  const ResultWithScenario = () => {
+    const layers = [
+      { key:"hamad",      char:CHARS.hamad,  label:"Red Flag Detection", max:3 },
+      ...(scenarioId === "phishing" ? [
+        { key:"saqr",   char:CHARS.saqr,   label:"Alert Triage",        max:6 },
+        { key:"thalab", char:CHARS.thalab, label:"Evidence Collection", max:6 },
+        { key:"hisan",  char:CHARS.hisan,  label:"Containment",         max:4 },
+        { key:"oryx",   char:CHARS.oryx,   label:"Risk Assessment",     max:3 },
+      ] : scenarioId === "whatsapp" ? [
+        { key:"saqr",   char:CHARS.saqr,   label:"Alert Triage",        max:5 },
+      ] : [
+        { key:"thalab_usb", char:CHARS.thalab, label:"Evidence Collection", max:6 },
+        { key:"hisan",      char:CHARS.hisan,  label:"Containment",         max:4 },
+        { key:"oryx",       char:CHARS.oryx,   label:"Risk Assessment",     max:3 },
+      ]),
+    ];
+    const total = layers.reduce((acc,l) => acc + (scores[l.key] ?? 0), 0);
+    const maxTotal = layers.reduce((acc,l) => acc + l.max, 0);
+    const pct = Math.round((total / maxTotal) * 100);
+    const grade = pct>=85?"Outstanding Analyst":pct>=65?"Competent Responder":pct>=40?"Developing Analyst":"Keep Practising";
+    const gradeColor = pct>=85?"#22c55e":pct>=65?"#f59e0b":pct>=40?"#60a5fa":"#f87171";
+    const handleDone = () => {
+      // Award scenario completion badge
+      try { const ex=new Set(JSON.parse(localStorage.getItem("cm-badges")||"[]")); ex.add("scenario"); localStorage.setItem("cm-badges",JSON.stringify([...ex])); localStorage.setItem("cm-scenario-done","1"); } catch {}
+      router.back();
+    };
+    return (
+      <div style={{ maxWidth:580, margin:"0 auto", padding:"32px 20px", textAlign:"center" }}>
+        <div style={{ fontSize:52, marginBottom:16 }}>{pct>=85?"🎖":pct>=65?"🥈":pct>=40?"📋":"📚"}</div>
+        <div style={{ fontSize:9, color:`${meta?.color ?? "#D5B893"}70`, letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:10, textTransform:"uppercase" }}>
+          {meta?.icon} Scenario Complete — {meta?.title}
+        </div>
+        <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:32, color:"#f5ede0", margin:"0 0 8px", fontWeight:600 }}>{grade}</h1>
+        <div style={{ fontSize:48, fontWeight:700, color:gradeColor, margin:"16px 0 6px", fontFamily:"'JetBrains Mono'" }}>
+          {total}<span style={{ fontSize:22, color:`${gradeColor}70` }}>/{maxTotal}</span>
+        </div>
+        <div style={{ fontSize:13, color:"#f5ede0aa", marginBottom:28 }}>{pct}% across all layers</div>
+        <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:28, textAlign:"left" }}>
+          {layers.map(l => {
+            const s = scores[l.key] ?? 0;
+            const p = Math.round((s/l.max)*100);
+            return (
+              <div key={l.key} style={{ display:"flex", alignItems:"center", gap:12, padding:"10px 14px", background:"rgba(255,255,255,0.03)", borderRadius:10, border:"1px solid rgba(255,255,255,0.07)" }}>
+                <img src={l.char.img} alt={l.char.name} style={{ width:28, height:28, borderRadius:"50%", objectFit:"cover", border:`2px solid ${l.char.color}40` }} />
+                <div style={{ flex:1 }}>
+                  <div style={{ fontSize:11, fontWeight:600, color:"#f5ede0", marginBottom:3 }}>{l.char.name} — {l.label}</div>
+                  <div style={{ width:"100%", height:4, background:"rgba(255,255,255,0.06)", borderRadius:2 }}>
+                    <div style={{ height:"100%", width:`${p}%`, background:l.char.color, borderRadius:2, transition:"width 1s ease" }} />
+                  </div>
+                </div>
+                <span style={{ fontSize:12, fontWeight:700, color:l.char.color, fontFamily:"'JetBrains Mono'", minWidth:40, textAlign:"right" }}>{s}/{l.max}</span>
+              </div>
+            );
+          })}
+        </div>
+        {pct >= 50 && (
+          <div style={{ background:"rgba(34,197,94,0.07)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:12, padding:"10px 14px", marginBottom:20, fontSize:12, color:"rgba(34,197,94,0.8)" }}>
+            🎖 Scenario badge awarded — analyst training tracks unlocked
+          </div>
+        )}
+        <div style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap" }}>
+          <button onClick={() => { setPhaseIdx(0); setScenarioId(null); setScores({}); }}
+            style={{ padding:"11px 24px", borderRadius:8, border:`1.5px solid ${meta?.color ?? "#D5B893"}45`, background:"transparent", color:meta?.color ?? "#D5B893", fontSize:11, fontWeight:700, letterSpacing:"0.15em", textTransform:"uppercase", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}
+            onMouseEnter={e=>(e.currentTarget.style.background=`${meta?.color ?? "#D5B893"}12`)} onMouseLeave={e=>(e.currentTarget.style.background="transparent")}
+          >Try Another →</button>
+          <button onClick={handleDone}
+            style={{ padding:"11px 24px", borderRadius:8, border:"1.5px solid rgba(197,165,126,0.35)", background:"transparent", color:"rgba(197,165,126,0.7)", fontSize:11, fontWeight:700, letterSpacing:"0.15em", textTransform:"uppercase", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}
+            onMouseEnter={e=>(e.currentTarget.style.background="rgba(197,165,126,0.08)")} onMouseLeave={e=>(e.currentTarget.style.background="transparent")}
+          >← Back to SOC</button>
+        </div>
+      </div>
+    );
   };
 
   return (
-    <div style={{ minHeight:"100vh", background:"linear-gradient(160deg,#100408,#1c0810,#1a0a0b)", fontFamily:"'DM Sans', sans-serif", color:"#f5ede0" }}>
+    <div style={{ minHeight:"100vh", background:"linear-gradient(160deg,#100408,#1c0810,#1a0a0b)", fontFamily:"'DM Sans',sans-serif", color:"#f5ede0" }}>
       <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
       <style>{`
         @keyframes slideIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
@@ -661,47 +1097,72 @@ export default function Scenario() {
 
       {/* Header */}
       <div style={{ position:"sticky", top:0, zIndex:50, background:"rgba(0,0,0,0.5)", backdropFilter:"blur(10px)", borderBottom:"1px solid rgba(255,255,255,0.06)", height:58, display:"flex", alignItems:"center", padding:"0 24px", gap:16 }}>
-        <button onClick={() => router.back()} style={{ background:"none", border:"none", color:"rgba(255,255,255,0.4)", fontSize:12, cursor:"pointer", fontFamily:"'JetBrains Mono'", letterSpacing:"0.1em" }}>← Back</button>
+        <button onClick={() => { if (currentPhase === "selector") router.back(); else { setPhaseIdx(0); setScenarioId(null); } }}
+          style={{ background:"none", border:"none", color:"rgba(255,255,255,0.4)", fontSize:12, cursor:"pointer", fontFamily:"'JetBrains Mono'", letterSpacing:"0.1em" }}>
+          ← {currentPhase === "selector" ? "Back" : "Scenarios"}
+        </button>
         <div style={{ width:1, height:20, background:"rgba(255,255,255,0.1)" }} />
-        <span style={{ fontSize:11, color:"#D5B893", fontFamily:"'JetBrains Mono'", letterSpacing:"0.15em" }}>SCENARIO — PHISHING INCIDENT</span>
-        <div style={{ marginLeft:"auto", display:"flex", gap:16 }}>
-          {(["hamad","saqr","thalab","hisan","oryx"] as const).map(p => (
-            <LayerBadge key={p} layer={PHASE_LABELS[p]} active={PHASES.indexOf(phase) >= PHASES.indexOf(p)} />
-          ))}
-        </div>
-      </div>
-
-      {/* Intro */}
-      {phase === "intro" && (
-        <div style={{ maxWidth:620, margin:"0 auto", padding:"48px 20px", textAlign:"center" }}>
-          <div style={{ fontSize:9, color:"rgba(197,165,126,0.5)", letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:14, textTransform:"uppercase" }}>Live Incident — In Progress</div>
-          <h1 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:38, color:"#f5ede0", margin:"0 0 8px", fontWeight:600 }}>The Phishing Incident</h1>
-          <div style={{ width:48, height:1, background:"rgba(197,165,126,0.3)", margin:"20px auto" }} />
-          <p style={{ fontSize:14, color:"#f5ede0bb", lineHeight:1.85, maxWidth:480, margin:"0 auto 28px" }}>
-            An incident is unfolding right now. You'll work through each layer of the SOC response — from the moment Hamad receives the email to the final risk decision. Each layer unlocks based on what you find in the previous one.
-          </p>
-          <div style={{ display:"flex", justifyContent:"center", gap:10, marginBottom:36, flexWrap:"wrap" }}>
-            {(["hamad","saqr","thalab","hisan","oryx"] as const).map(id => (
-              <div key={id} style={{ display:"flex", alignItems:"center", gap:6, padding:"6px 12px", background:"rgba(255,255,255,0.04)", borderRadius:20, border:"1px solid rgba(255,255,255,0.08)" }}>
-                <img src={CHARS[id].img} alt={CHARS[id].name} style={{ width:18, height:18, borderRadius:"50%", objectFit:"cover", border:`1px solid ${CHARS[id].color}50` }} />
-                <span style={{ fontSize:10, color:CHARS[id].color, fontFamily:"'JetBrains Mono'", letterSpacing:"0.08em" }}>{CHARS[id].name}</span>
-              </div>
+        <span style={{ fontSize:11, color: meta?.color ?? "#D5B893", fontFamily:"'JetBrains Mono'", letterSpacing:"0.15em" }}>
+          {meta ? `${meta.icon} ${meta.title.toUpperCase()}` : "SCENARIOS"}
+        </span>
+        {/* Layer progress dots */}
+        {tierPhases.length > 0 && (
+          <div style={{ marginLeft:"auto", display:"flex", gap:14 }}>
+            {tierPhases.map(p => (
+              <LayerBadge key={p} layer={SCENARIO_LABELS[p]} active={activeTiers.includes(p)} />
             ))}
           </div>
-          <button onClick={() => setPhase("hamad")}
-            style={{ padding:"13px 42px", borderRadius:8, border:"1.5px solid rgba(197,165,126,0.5)", background:"transparent", color:"#D5B893", fontSize:11, fontWeight:700, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}
-            onMouseEnter={e=>(e.currentTarget.style.background="rgba(197,165,126,0.1)")}
-            onMouseLeave={e=>(e.currentTarget.style.background="transparent")}
+        )}
+      </div>
+
+      {/* Phases */}
+      {currentPhase === "selector" && <ScenarioSelector onSelect={handleScenarioSelect} />}
+
+      {currentPhase === "intro" && scenarioId && (
+        <div style={{ maxWidth:600, margin:"0 auto", padding:"48px 20px", textAlign:"center" }}>
+          <div style={{ fontSize:9, color:`${meta?.color ?? "#D5B893"}60`, letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:14, textTransform:"uppercase" }}>Live Incident — In Progress</div>
+          <div style={{ fontSize:48, marginBottom:16 }}>{meta?.icon}</div>
+          <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:36, color:"#f5ede0", margin:"0 0 10px", fontWeight:600 }}>{meta?.title}</h1>
+          <div style={{ width:48, height:1, background:`${meta?.color ?? "#D5B893"}40`, margin:"18px auto" }} />
+          <div style={{ display:"flex", justifyContent:"center", gap:8, marginBottom:28, flexWrap:"wrap" }}>
+            {tierPhases.map(p => {
+              const charMap: Record<string, keyof typeof CHARS> = { saqr:"saqr", thalab:"thalab", thalab_usb:"thalab", hisan:"hisan", oryx:"oryx" };
+              const cId = charMap[p];
+              if (!cId) return null;
+              return (
+                <div key={p} style={{ display:"flex", alignItems:"center", gap:5, padding:"5px 11px", background:"rgba(255,255,255,0.04)", borderRadius:20, border:"1px solid rgba(255,255,255,0.08)" }}>
+                  <img src={CHARS[cId].img} alt={CHARS[cId].name} style={{ width:16, height:16, borderRadius:"50%", objectFit:"cover" }} />
+                  <span style={{ fontSize:9, color:CHARS[cId].color, fontFamily:"'JetBrains Mono'" }}>{CHARS[cId].name}</span>
+                </div>
+              );
+            })}
+          </div>
+          <button onClick={() => advance("intro")}
+            style={{ padding:"13px 42px", borderRadius:8, border:`1.5px solid ${meta?.color ?? "#D5B893"}50`, background:"transparent", color:meta?.color ?? "#D5B893", fontSize:11, fontWeight:700, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}
+            onMouseEnter={e=>(e.currentTarget.style.background=`${meta?.color ?? "#D5B893"}12`)} onMouseLeave={e=>(e.currentTarget.style.background="transparent")}
           >Begin Scenario →</button>
         </div>
       )}
 
-      {phase === "hamad"  && <HamadPhase  onComplete={s => advance("hamad", s)} />}
-      {phase === "saqr"   && <SaqrPhase   onComplete={s => advance("saqr", s)}  />}
-      {phase === "thalab" && <ThalabPhase onComplete={s => advance("thalab", s)}/>}
-      {phase === "hisan"  && <HisanPhase  onComplete={s => advance("hisan", s)} />}
-      {phase === "oryx"   && <OryxPhase   onComplete={s => advance("oryx", s)}  />}
-      {phase === "result" && <ResultPhase scores={scores} onBack={() => router.back()} />}
+      {/* Hamad phases */}
+      {currentPhase === "hamad" && scenarioId === "phishing"  && <HamadPhase         onComplete={s => advance("hamad", s)} />}
+      {currentPhase === "hamad" && scenarioId === "whatsapp"  && <WhatsappHamadPhase  onComplete={s => advance("hamad", s)} />}
+      {currentPhase === "hamad" && scenarioId === "usb"       && <UsbHamadPhase       onComplete={s => advance("hamad", s)} />}
+
+      {/* Tier 1 */}
+      {currentPhase === "saqr" && scenarioId === "phishing" && <SaqrPhase          onComplete={s => advance("saqr", s)} />}
+      {currentPhase === "saqr" && scenarioId === "whatsapp" && <WhatsappSaqrPhase  onComplete={s => advance("saqr", s)} />}
+
+      {/* Tier 2 */}
+      {currentPhase === "thalab"     && <ThalabPhase    onComplete={s => advance("thalab", s)}     />}
+      {currentPhase === "thalab_usb" && <UsbThalabPhase onComplete={s => advance("thalab_usb", s)} />}
+      {currentPhase === "hisan"      && <HisanPhase     onComplete={s => advance("hisan", s)}      />}
+
+      {/* Tier 3 */}
+      {currentPhase === "oryx" && <OryxPhase onComplete={s => advance("oryx", s)} />}
+
+      {/* Result */}
+      {currentPhase === "result" && <ResultWithScenario />}
     </div>
   );
 }

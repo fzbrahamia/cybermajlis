@@ -1,9 +1,13 @@
 // app/soc/page.tsx
 "use client";
 
-import LiveSoc from "@/components/live_soc";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+
+// Disable SSR — LiveSoc reads sessionStorage/localStorage on init,
+// which causes hydration mismatches if server-rendered.
+const LiveSoc = dynamic(() => import("@/components/live_soc"), { ssr: false });
 
 export default function SocPage() {
   const router = useRouter();
@@ -11,7 +15,6 @@ export default function SocPage() {
 
   return (
     <>
-      {/* Push content up to cover the navbar area */}
       <style>{`
         nav { display: none !important; }
         body { padding-top: 0 !important; }

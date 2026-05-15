@@ -657,6 +657,7 @@ export default function ThreatAcademy() {
   const [popupThreats, setPopupThreats] = useState<Array<{loc: LocalizedThreat; activeStep: number; animating: boolean; quizAnswer: number | null}>>([]);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [panelPopups, setPanelPopups] = useState<string[]>([]);
+  const [showQatarMap, setShowQatarMap] = useState(true);
   const [tourStep, setTourStep] = useState<number>(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem("cm-tour-done") === "1") return -1;
     return 0;
@@ -665,6 +666,9 @@ export default function ThreatAcademy() {
   const [showDebrief, setShowDebrief] = useState(false);
   const [seenThreats, setSeenThreats] = useState<Set<string>>(new Set());
   const [persistedQuizAnswers, setPersistedQuizAnswers] = useState<Record<string, number | null>>({});
+  const scenarioDone = typeof window !== "undefined" && localStorage.getItem("cm-scenario-done") === "1";
+  const isCharUnlocked = (charId: string): boolean => { if (charId === "hamad") return true; return scenarioDone; };
+  const unlockHint = () => "Complete the Live Scenario to unlock";
   const [trainingBadges, setTrainingBadges] = useState<Set<string>>(() => {
     if (typeof window !== "undefined") {
       try { return new Set(JSON.parse(localStorage.getItem("cm-badges") || "[]")); } catch { return new Set(); }
@@ -677,23 +681,6 @@ export default function ThreatAcademy() {
     return next;
   });
   const seenThreatsRef = useRef<Set<string>>(new Set());
-
-  const isCharUnlocked = (charId: string): boolean => {
-    if (charId === "hamad") return true;          // always — entry point
-    if (charId === "saqr")   return seenThreats.size >= 1;
-    if (charId === "thalab") return seenThreats.size >= 2;
-    if (charId === "hisan")  return seenThreats.size >= 3;
-    if (charId === "oryx")   return seenThreats.size >= 4;
-    return false;
-  };
-
-  const unlockHint = (charId: string): string => {
-    if (charId === "saqr")   return "Observe your first attack to unlock";
-    if (charId === "thalab") return "Observe 2 attacks to unlock";
-    if (charId === "hisan")  return "Observe 3 attacks to unlock";
-    if (charId === "oryx")   return "Observe 4 attacks to unlock";
-    return "";
-  };
   const [attackState, setAttackState] = useState<AttackState | null>(null);
   const [clickedStep, setClickedStep] = useState<number | null>(null);
   const [replayStep, setReplayStep] = useState<number | null>(null);
@@ -811,14 +798,14 @@ export default function ThreatAcademy() {
           setTimeout(() => {
             if (cancelled) return;
             setChatMsgs(prev => [...prev, { id: Date.now() + Math.random(), from: a1, textKey: chat1, time: getTime() }].slice(-25));
-                }, 2000);
+          }, 2000);
         }
         // Second analyst only on steps 0 and 4, with a longer gap
         if (a2 && chat2 && !cancelled && (i === 0 || i === 4)) {
           setTimeout(() => {
             if (cancelled) return;
             setChatMsgs(prev => [...prev, { id: Date.now() + Math.random() + 1, from: a2, textKey: chat2, time: getTime() }].slice(-25));
-                }, rand(7000, 9000));
+          }, rand(7000, 9000));
         }
 
         // Hamad's distress message fires at his designated step for this threat
@@ -955,7 +942,12 @@ export default function ThreatAcademy() {
               {/* Panel header */}
               <div style={{ padding: "9px 16px", display: "flex", alignItems: "center", gap: 9, borderBottom: "1px solid rgba(197,165,126,0.1)" }}>
                 <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#e03040", display: "inline-block", flexShrink: 0, animation: "blink 1.4s ease-in-out infinite", boxShadow: "0 0 6px #e03040" }} />
-                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "rgba(197,165,126,0.6)", textTransform: "uppercase", flex: 1 }}>XDR · Attack Graph</span>
+                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "rgba(197,165,126,0.6)", textTransform: "uppercase", flex: 1 }}>
+                  {showQatarMap ? "Qatar · Threat Map" : "XDR · Attack Graph"}
+                </span>
+                <button onClick={() => setShowQatarMap(m => !m)} style={{ fontSize: 9, fontWeight: 700, padding: "2px 9px", borderRadius: 5, border: "1px solid rgba(197,165,126,0.3)", background: "rgba(197,165,126,0.06)", color: "rgba(197,165,126,0.7)", cursor: "pointer", letterSpacing: "0.1em", fontFamily: "'JetBrains Mono'", flexShrink: 0 }}>
+                  {showQatarMap ? "XDR VIEW →" : "← MAP VIEW"}
+                </button>
                 {attackState && (
                   <span style={{ fontSize: 9, color: attackState.def.color, fontWeight: 700, letterSpacing: "0.12em", background: `${attackState.def.color}12`, border: `1px solid ${attackState.def.color}30`, padding: "2px 10px", borderRadius: 5 }}>
                     {attackState.loc.icon} {attackState.loc.type.toUpperCase()}
@@ -966,7 +958,7 @@ export default function ThreatAcademy() {
                     ✓ CONTAINED
                   </span>
                 )}
-                {attackState && (
+                {attackState && !showQatarMap && (
                   <button
                     onClick={() => setReplayStep(prev => prev !== null ? null : 0)}
                     style={{ background: replayStep !== null ? "rgba(197,165,126,0.18)" : "rgba(197,165,126,0.08)", border: "1px solid rgba(197,165,126,0.3)", borderRadius: 6, color: "#D5B893", fontSize: 9, fontWeight: 700, cursor: "pointer", padding: "3px 10px", letterSpacing: "0.1em", flexShrink: 0 }}
@@ -977,7 +969,9 @@ export default function ThreatAcademy() {
               </div>
 
               <div style={{ padding: "12px 14px 14px" }}>
-                {attackState ? (() => {
+                {showQatarMap ? (
+                  <QatarMap attackState={attackState ? { def: attackState.def, loc: attackState.loc, step: attackState.step, done: attackState.done } : null} />
+                ) : attackState ? (() => {
                   const { def, loc, step, done, victimAffected, variantIdx } = attackState;
                   const color = def.color;
                   const n = loc.steps.length;
@@ -1243,9 +1237,7 @@ export default function ThreatAcademy() {
                             {trainingBadges.has(a.id) && <span style={{ fontSize:11 }}>🎖</span>}
                           </>
                         ) : (
-                          <span style={{ fontSize: 9, color: "rgba(197,165,126,0.3)", letterSpacing: "0.1em" }}>
-                            🔒 {unlockHint(a.id)}
-                          </span>
+                          <span style={{ fontSize: 9, color: "rgba(197,165,126,0.3)", letterSpacing: "0.1em" }}>🔒 Complete the Live Scenario</span>
                         )}
                       </div>
                     </div>
@@ -1370,8 +1362,8 @@ export default function ThreatAcademy() {
                 style={{ background:"rgba(96,165,250,0.1)", border:"1px solid rgba(96,165,250,0.3)", borderRadius:5, color:"#60a5fa", fontSize:8, fontWeight:700, cursor:"pointer", padding:"2px 7px", letterSpacing:"0.1em", marginLeft:4 }}>
                 {trainingBadges.has("hamad") ? "🎖" : "👤"} Hamad
               </button>
-              <button onClick={e => { e.stopPropagation(); router.push("/soc/scenario"); }}
-                style={{ background:"rgba(239,68,68,0.1)", border:"1px solid rgba(239,68,68,0.3)", borderRadius:5, color:"#f87171", fontSize:8, fontWeight:700, cursor:"pointer", padding:"2px 7px", letterSpacing:"0.1em", animation:"blink 2s ease-in-out infinite" }}>
+              <button onClick={e => { e.stopPropagation(); router.push("/soc/scenario"); }} title="Run a Live Scenario"
+                style={{ background:"rgba(239,68,68,0.1)", border:"1px solid rgba(239,68,68,0.35)", borderRadius:5, color:"#f87171", fontSize:8, fontWeight:700, cursor:"pointer", padding:"2px 7px", letterSpacing:"0.1em", animation:"blink 2s ease-in-out infinite" }}>
                 ▶ LIVE
               </button>
             </div>
@@ -1612,6 +1604,125 @@ export default function ThreatAcademy() {
         </div>
       )}
     </div>
+  );
+}
+
+
+// ── Qatar Threat Map Component ────────────────────────────────────────────────
+function QatarMap({ attackState }: {
+  attackState: { def: { typeKey: string; color: string; icon: string }; loc: { type: string }; step: number; done: Set<number> } | null;
+}) {
+  const CITIES = [
+    { name: "Ras Laffan", x: 226, y: 46,  capital: false },
+    { name: "Al Khor",    x: 220, y: 70,  capital: false },
+    { name: "Lusail",     x: 222, y: 94,  capital: false },
+    { name: "Doha",       x: 222, y: 112, capital: true  },
+    { name: "Al Wakrah",  x: 212, y: 134, capital: false },
+    { name: "Mesaieed",   x: 198, y: 156, capital: false },
+    { name: "Dukhan",     x: 128, y: 106, capital: false },
+  ];
+  const ATTACK_TARGETS: Record<string, [number, number, string]> = {
+    phishing:   [222, 112, "Doha"],
+    virus:      [222, 94,  "Lusail"],
+    ransomware: [216, 118, "West Bay"],
+    rootkit:    [212, 134, "Al Wakrah"],
+    ddos:       [226, 46,  "Ras Laffan"],
+  };
+  const tgt = attackState ? ATTACK_TARGETS[attackState.def.typeKey] ?? [222, 112, "Doha"] : null;
+  const contained = !!(attackState?.step === -1 && attackState?.done.size === 5);
+
+  return (
+    <svg viewBox="0 0 320 180" style={{ width: "100%", height: "214px", display: "block" }}>
+      <defs>
+        <pattern id="qg" width="18" height="18" patternUnits="userSpaceOnUse">
+          <path d="M 18 0 L 0 0 0 18" fill="none" stroke="rgba(197,165,126,0.035)" strokeWidth="0.5"/>
+        </pattern>
+      </defs>
+
+      {/* Background grid */}
+      <rect x="0" y="0" width="320" height="180" fill="url(#qg)" />
+
+      {/* Gulf label */}
+      <text x="68" y="96" textAnchor="middle" fill="rgba(197,165,126,0.1)" fontSize="7"
+        fontFamily="'JetBrains Mono'" letterSpacing="1.5">ARABIAN GULF</text>
+
+      {/* Qatar outline — recognisable thumb shape in landscape space */}
+      <path
+        d="M 170,20 C 182,18 202,30 218,48 L 232,68 L 236,90 L 234,110 L 228,130 L 214,154 L 194,168 L 170,172 L 148,168 L 132,152 L 122,128 L 118,106 L 120,84 L 126,62 L 142,44 C 156,28 162,20 170,20 Z"
+        fill="rgba(197,165,126,0.06)"
+        stroke="rgba(197,165,126,0.22)"
+        strokeWidth="1.2"
+      />
+
+      {/* City dots */}
+      {CITIES.map(c => (
+        <g key={c.name}>
+          <circle cx={c.x} cy={c.y} r={c.capital ? 2.8 : 1.8}
+            fill={c.capital ? "rgba(197,165,126,0.75)" : "rgba(197,165,126,0.35)"} />
+          <text x={c.x + 5} y={c.y + 3.5} fill="rgba(197,165,126,0.42)"
+            fontSize="5.5" fontFamily="'JetBrains Mono'">{c.name}</text>
+        </g>
+      ))}
+
+      {/* Attack marker — clean single ring + badge */}
+      {tgt && attackState && (
+        <g>
+          {/* Single subtle ring */}
+          <circle cx={tgt[0]} cy={tgt[1]} r={14} fill="none"
+            stroke={contained ? "#22c55e" : attackState.def.color}
+            strokeWidth="1" opacity="0.35"
+            style={{ animation: contained ? "none" : "pulse 2s ease-in-out infinite" }}
+          />
+          {/* Main dot */}
+          <circle cx={tgt[0]} cy={tgt[1]} r={6}
+            fill={contained ? "rgba(34,197,94,0.18)" : `${attackState.def.color}22`}
+            stroke={contained ? "#22c55e" : attackState.def.color}
+            strokeWidth="1.8"
+            style={{ animation: contained ? "none" : "blink 1.4s ease-in-out infinite" }}
+          />
+          {/* Icon */}
+          <text x={tgt[0]} y={tgt[1] + 4} textAnchor="middle" fontSize="8">
+            {contained ? "✓" : attackState.def.icon}
+          </text>
+          {/* Attack badge — pill label to the right */}
+          <rect x={tgt[0] + 12} y={tgt[1] - 10} width="62" height="18" rx="4"
+            fill={contained ? "rgba(34,197,94,0.12)" : `${attackState.def.color}15`}
+            stroke={contained ? "rgba(34,197,94,0.4)" : `${attackState.def.color}50`}
+            strokeWidth="0.8"
+          />
+          <text x={tgt[0] + 43} y={tgt[1] - 3} textAnchor="middle"
+            fill={contained ? "#22c55e" : attackState.def.color}
+            fontSize="5.5" fontWeight="700" fontFamily="'JetBrains Mono'">
+            {contained ? "CONTAINED" : attackState.loc.type.toUpperCase()}
+          </text>
+          <text x={tgt[0] + 43} y={tgt[1] + 5} textAnchor="middle"
+            fill={contained ? "rgba(34,197,94,0.6)" : `${attackState.def.color}80`}
+            fontSize="5" fontFamily="'JetBrains Mono'">
+            {contained ? "" : tgt[2]}
+          </text>
+        </g>
+      )}
+
+      {/* Idle state */}
+      {!attackState && (
+        <text x="180" y="92" textAnchor="middle"
+          fill="rgba(197,165,126,0.18)" fontSize="7" fontFamily="'JetBrains Mono'">
+          MONITORING...
+        </text>
+      )}
+
+      {/* Footer label */}
+      <text x="180" y="176" textAnchor="middle"
+        fill="rgba(197,165,126,0.1)" fontSize="6" fontFamily="'JetBrains Mono'" letterSpacing="3">
+        STATE OF QATAR
+      </text>
+
+      {/* North indicator */}
+      <text x="296" y="18" textAnchor="middle"
+        fill="rgba(197,165,126,0.28)" fontSize="6" fontFamily="'JetBrains Mono'">N</text>
+      <line x1="296" y1="20" x2="296" y2="28"
+        stroke="rgba(197,165,126,0.28)" strokeWidth="0.8"/>
+    </svg>
   );
 }
 
