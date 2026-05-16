@@ -447,7 +447,7 @@ export default function CommunityPage() {
               </div>
             </div>
             <p style={{fontFamily:"'Crimson Pro',serif",fontSize:"0.9rem",color:"#5C4033",lineHeight:1.7,margin:"0 0 1.2rem",fontWeight:300}}>
-              A verified database of phishing sites, scam numbers, and threats reported by the Qatar community.
+              Be part of our community awareness. Report any incidents that you have faced to help others avoid it.
             </p>
             <button onClick={()=>setShowSubmit(true)}
               style={{width:"100%",padding:"0.8rem",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3e1316,#632024)",color:"#E8D4BC",fontFamily:"'Cinzel',serif",fontSize:"0.65rem",letterSpacing:"0.18em",textTransform:"uppercase",fontWeight:700,cursor:"pointer",boxShadow:"0 4px 16px rgba(62,19,22,0.2)",transition:"all .2s"}}
