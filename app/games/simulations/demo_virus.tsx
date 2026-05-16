@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import HamadCommentary from "@/components/HamadCommentary";
 import { useTranslations } from "next-intl";
 
 const rand = (a: number, b: number) => Math.floor(Math.random() * (b - a + 1)) + a;
@@ -20,13 +21,25 @@ export default function VirusForkBomb() {
   const [ramUsage, setRamUsage] = useState(22);
   const [typing, setTyping] = useState(false);
   const [typedLines, setTypedLines] = useState<string[]>([]);
+  const [commentTrigger, setCommentTrigger] = useState<string|null>(null);
+  const [attempts, setAttempts] = useState(1);
+  const [prediction, setPrediction] = useState<string|null>(null);
+  const [showPrediction, setShowPrediction] = useState(false);
   const spawnRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const idRef = useRef(0);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("cm-game-virus");
+    const count = saved ? (JSON.parse(saved).attempts || 0) : 0;
+    setAttempts(count + 1);
+    if (count >= 1) setShowPrediction(true); // Return visitor: ask for prediction
+  }, []);
 
   const CMD_LINES = t.raw("cmdLines") as string[];
 
   const openFile = () => {
     setPhase("running");
+    setCommentTrigger("start");
     setTyping(true);
     setTypedLines([]);
     let lineIdx = 0;
@@ -54,11 +67,12 @@ export default function VirusForkBomb() {
           setTimeout(() => setPhase("crashed"), 3000);
           return prev;
         }
-        return [...prev, { id, x: 30 + Math.min(count * 18, 500), y: 20 + Math.min(count * 14, 350), w: rand(280, 380), h: rand(180, 260), lines: count < 5 ? CMD_LINES.slice(0, rand(3, 8)) : CMD_LINES.slice(0, 4) }];
+        const next = [...prev, { id, x: 30 + Math.min(count * 18, 500), y: 20 + Math.min(count * 14, 350), w: rand(280, 380), h: rand(180, 260), lines: count < 5 ? CMD_LINES.slice(0, rand(3, 8)) : CMD_LINES.slice(0, 4) }]; if(next.length === 3) setCommentTrigger("first_windows"); return next;
       });
-      setCpuUsage(prev => Math.min(prev + rand(3, 8), 100));
+      setCpuUsage(prev => { const next = Math.min(prev + rand(3, 8), 100); if(next > 60 && prev <= 60) setCommentTrigger("cpu_high"); return next; });
       setRamUsage(prev => Math.min(prev + rand(2, 5), 98));
       if (count > 10) {
+        setCommentTrigger("cascade");
         clearInterval(spawnRef.current!);
         spawnRef.current = setInterval(() => {
           const id2 = ++idRef.current;
@@ -106,7 +120,19 @@ export default function VirusForkBomb() {
           <div style={{ fontSize: 11, color: "#fff", textShadow: "1px 1px 3px rgba(0,0,0,.8)", marginTop: 2 }}>{t("desktop.recycleBin")}</div>
         </div>
 
-        <div onClick={openFile} style={{ position: "absolute", top: 100, left: 20, textAlign: "center", width: 80, cursor: "pointer" }}
+        {showPrediction && !prediction && (
+          <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", background:"rgba(0,0,0,0.85)", border:"1px solid #d2992250", borderRadius:12, padding:"20px 24px", zIndex:50, maxWidth:360, textAlign:"center" }}>
+            <div style={{ fontSize:11, color:"#d29922", fontWeight:700, letterSpacing:"0.15em", marginBottom:10 }}>RETURN VISITOR — PREDICT THE OUTCOME</div>
+            <p style={{ fontSize:12, color:"#c9d1d9", lineHeight:1.7, marginBottom:14 }}>You've seen this before. Before you click the file — what do you think will happen first?</p>
+            {["CPU hits 100% and the system freezes", "Multiple CMD windows start opening rapidly", "The file deletes itself to hide evidence", "An error message appears immediately"].map((opt,i) => (
+              <button key={i} onClick={() => setPrediction(opt)}
+                style={{ display:"block", width:"100%", margin:"4px 0", padding:"8px 12px", borderRadius:7, border:"1px solid rgba(255,255,255,0.1)", background:"rgba(255,255,255,0.03)", color:"#8b949e", fontSize:11, textAlign:"left", cursor:"pointer" }}>
+                {opt}
+              </button>
+            ))}
+          </div>
+        )}
+        <div onClick={showPrediction && !prediction ? undefined : openFile} style={{ position: "absolute", top: 100, left: 20, textAlign: "center", width: 80, cursor: showPrediction && !prediction ? "not-allowed" : "pointer", opacity: showPrediction && !prediction ? 0.4 : 1 }}
           onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = "rgba(255,255,255,.15)"}
           onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = "transparent"}>
           <div style={{ fontSize: 36, filter: "drop-shadow(1px 1px 2px rgba(0,0,0,.5))" }}>📄</div>
@@ -229,7 +255,8 @@ export default function VirusForkBomb() {
             </div>
             <div style={{ fontSize: 11, color: "#888", lineHeight: 1.7, marginBottom: 18 }}
               dangerouslySetInnerHTML={{ __html: t.raw("crashed.lesson") as string }} />
-            <button onClick={reset} style={{ padding: "10px 24px", background: "#632024", border: "1px solid #ffffff20", borderRadius: 10, color: "#f5ede0", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+            <button onClick={() => { reset(); const cur = JSON.parse(localStorage.getItem("cm-game-virus")||"{}"); localStorage.setItem("cm-game-virus", JSON.stringify({attempts:(cur.attempts||0)+1})); setAttempts(a=>a+1); }}
+              style={{ padding: "10px 24px", background: "#632024", border: "1px solid #ffffff20", borderRadius: 10, color: "#f5ede0", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
               {t("crashed.reset")}
             </button>
           </div>

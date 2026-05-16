@@ -3,7 +3,7 @@
 // Each playthrough picks a random scenario
 // ============================================================
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CHARS } from "@/app/lib/characters";
 import { GameShell, GameHeader, Intro, Result } from "@/components/GameShell";
 import { useTranslations } from "next-intl";
@@ -38,12 +38,44 @@ export default function RansomRescue({ onHome }: { onHome: (xp?: number) => void
     return scenariosData;
   };
 
-  const start = () => {
+  const [generating, setGenerating] = useState(false);
+  const [attempts, setAttempts] = useState(1);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("cm-game-ransom");
+    if (saved) try { setAttempts(JSON.parse(saved).attempts + 1); } catch {}
+  }, []);
+
+  const start = async () => {
+    const saved = localStorage.getItem("cm-game-ransom");
+    const pastAttempts = saved ? (JSON.parse(saved).attempts || 0) : 0;
+    if (pastAttempts >= 1) {
+      setGenerating(true);
+      try {
+        const res = await fetch("/api/games/generate", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ gameId: "ransom", attempts: pastAttempts + 1 }),
+        });
+        const data = await res.json();
+        if (data.content?.steps) {
+          const sc = data.content;
+          setScenario({ ...sc, steps: sc.steps.map((s: any) => ({ ...s, opts: shuffle([...s.opts]) })) });
+          setStepIdx(0); setScore(0); setChoices([]); setLastChoice(null);
+          setGenerating(false); setPhase("play");
+          const cv = JSON.parse(localStorage.getItem("cm-game-ransom")||"{}");
+          localStorage.setItem("cm-game-ransom", JSON.stringify({attempts:(cv.attempts||0)+1}));
+          return;
+        }
+      } catch {}
+      setGenerating(false);
+    }
     const allScenarios = getScenarios();
     const picked = allScenarios[Math.floor(Math.random() * allScenarios.length)];
     const shuffledSteps = picked.steps.map(s => ({ ...s, opts: shuffle([...s.opts]) }));
     setScenario({ ...picked, steps: shuffledSteps });
     setStepIdx(0); setScore(0); setChoices([]); setLastChoice(null);
+    const cv = JSON.parse(localStorage.getItem("cm-game-ransom")||"{}");
+    localStorage.setItem("cm-game-ransom", JSON.stringify({attempts:(cv.attempts||0)+1}));
     setPhase("play");
   };
 
@@ -60,6 +92,17 @@ export default function RansomRescue({ onHome }: { onHome: (xp?: number) => void
     }, 2000);
   };
 
+  if (generating) return (
+    <GameShell>
+      <div style={{ textAlign:"center", padding:60, display:"flex", flexDirection:"column", alignItems:"center", gap:16 }}>
+        <img src="/avatar.png" alt="Hamad" style={{ width:64, height:64, borderRadius:"50%", border:"2px solid rgba(245,158,11,0.4)" }} />
+        <div style={{ fontSize:14, color:"#d97706", fontFamily:"'JetBrains Mono',monospace" }}>Hamad is writing a new incident for you…</div>
+        <div style={{ fontSize:11, color:"rgba(217,119,6,0.5)" }}>New scenario based on your play history · ~15 seconds</div>
+        <div style={{ display:"flex", gap:5 }}>{[0,1,2].map(i=><div key={i} style={{ width:8, height:8, borderRadius:"50%", background:"#d97706", opacity:0.3, animation:`blink 1.2s ease-in-out ${i*0.3}s infinite` }}/>)}</div>
+      </div>
+    </GameShell>
+  );
+
   if (phase === "intro") return (
     <GameShell>
       <Intro
@@ -70,7 +113,7 @@ export default function RansomRescue({ onHome }: { onHome: (xp?: number) => void
           t('intro.line2'),
           t('intro.line3'),
         ]}
-        onStart={start}
+        onStart={() => start()}
       />
     </GameShell>
   );

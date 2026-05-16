@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 // ── Character config ─────────────────────────────────────────────────────────
@@ -321,10 +321,11 @@ function ResultPhase({ char, score, total, onBack }: { char: CharConfig; score: 
 }
 
 // ── SAQR: Alert Triage ────────────────────────────────────────────────────────
-function SaqrTraining({ char, onComplete }: { char: CharConfig; onComplete: (s: number) => void }) {
+function SaqrTraining({ char, onComplete, overrideAlerts }: { char: CharConfig; onComplete: (s: number) => void; overrideAlerts?: any[] }) {
+  const ALERTS_DATA = overrideAlerts ?? SAQR_ALERTS;
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
-  const a = SAQR_ALERTS[idx];
+  const a = ALERTS_DATA[idx];
   const chosen = answers[idx];
   const isCorrect = chosen === a.correct;
   const btnStyle = (id: string): React.CSSProperties => {
@@ -341,18 +342,18 @@ function SaqrTraining({ char, onComplete }: { char: CharConfig; onComplete: (s: 
     setAnswers(prev => { const n = [...prev]; n[idx] = id; return n; });
   };
   const handleNext = () => {
-    if (idx + 1 >= SAQR_ALERTS.length) {
+    if (idx + 1 >= ALERTS_DATA.length) {
       const finalAnswers = [...answers];
-      const s = SAQR_ALERTS.reduce((acc, al, i) => acc + (finalAnswers[i] === al.correct ? 1 : 0), 0);
+      const s = ALERTS_DATA.reduce((acc: number, al: any, i: number) => acc + (finalAnswers[i] === al.correct ? 1 : 0), 0);
       onComplete(s);
     } else { setIdx(i => i + 1); }
   };
   return (
     <div style={{ maxWidth:680, margin:"0 auto", padding:"32px 20px" }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
-        <span style={{ fontSize:10, color:`${char.color}70`, fontFamily:"'JetBrains Mono'", letterSpacing:"0.15em" }}>ALERT {idx + 1} OF {SAQR_ALERTS.length}</span>
+        <span style={{ fontSize:10, color:`${char.color}70`, fontFamily:"'JetBrains Mono'", letterSpacing:"0.15em" }}>{overrideAlerts ? "🎯 ADAPTIVE" : "ALERT"} {idx + 1} OF {ALERTS_DATA.length}</span>
         <div style={{ display:"flex", gap:4 }}>
-          {SAQR_ALERTS.map((_, i) => (
+          {ALERTS_DATA.map((_: any, i: number) => (
             <div key={i} style={{ width:20, height:4, borderRadius:2, background: i < idx ? (answers[i] === SAQR_ALERTS[i].correct ? "#22c55e" : "#ef4444") : i === idx ? char.color : "rgba(255,255,255,0.1)" }} />
           ))}
         </div>
@@ -398,7 +399,8 @@ function SaqrTraining({ char, onComplete }: { char: CharConfig; onComplete: (s: 
 }
 
 // ── ORYX: Risk Assessment ─────────────────────────────────────────────────────
-function OryxTraining({ char, onComplete }: { char: CharConfig; onComplete: (s: number) => void }) {
+function OryxTraining({ char, onComplete, overrideScenarios }: { char: CharConfig; onComplete: (s: number) => void; overrideScenarios?: any[] }) {
+  const SCENARIOS_DATA = overrideScenarios ?? ORYX_SCENARIOS;
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Array<{l:number;i:number;c:string}>>([]);
   const [likelihood, setLikelihood] = useState(0);
@@ -646,7 +648,8 @@ function HisanTraining({ char, onComplete }: { char: CharConfig; onComplete: (s:
 }
 
 // ── HAMAD: Social Engineering Awareness ──────────────────────────────────────
-function HamadTraining({ char, onComplete }: { char: CharConfig; onComplete: (s: number) => void }) {
+function HamadTraining({ char, onComplete, overrideScenarios }: { char: CharConfig; onComplete: (s: number) => void; overrideScenarios?: any[] }) {
+  const HAMAD_DATA = overrideScenarios ?? HAMAD_SCENARIOS;
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
   const sc = HAMAD_SCENARIOS[idx];
@@ -736,14 +739,61 @@ export default function Training({ characterId }: { characterId: string }) {
   const id = characterId as CharId;
   const char = CHARS[id];
   const router = useRouter();
-  const [phase, setPhase] = useState<"intro" | "training" | "result">("intro");
+  const [phase, setPhase] = useState<"intro" | "training" | "result" | "adaptive_loading">("intro");
   const [score, setScore] = useState(0);
+  const [adaptiveData, setAdaptiveData] = useState<any[] | null>(null);
+  const [userHistory, setUserHistory] = useState<any>(null);
+
+  // Load performance history from localStorage
+  useEffect(() => {
+    const key = `cm-training-${id}`;
+    const saved = localStorage.getItem(key);
+    if (saved) {
+      try { setUserHistory(JSON.parse(saved)); } catch {}
+    }
+  }, [id]);
+
+  // Save performance after completion
+  const saveHistory = (finalScore: number, total: number) => {
+    const key = `cm-training-${id}`;
+    const existing = userHistory || { attempts: 0, scores: [], wrongIds: [] };
+    const updated = {
+      attempts: existing.attempts + 1,
+      lastScore: finalScore,
+      scores: [...(existing.scores || []), finalScore],
+      avgScore: Math.round(([...existing.scores, finalScore].reduce((a:number,b:number)=>a+b,0) / (existing.attempts + 1)) * 10) / 10,
+    };
+    localStorage.setItem(key, JSON.stringify(updated));
+    setUserHistory(updated);
+  };
+
+  // Fetch adaptive questions from Claude
+  const loadAdaptive = async () => {
+    setPhase("adaptive_loading");
+    try {
+      const res = await fetch("/api/training/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ characterId: id, history: userHistory }),
+      });
+      const data = await res.json();
+      if (data.success && data.questions) {
+        setAdaptiveData(data.questions);
+        setPhase("training");
+      } else {
+        setPhase("training"); // fallback to static
+      }
+    } catch {
+      setPhase("training"); // fallback to static
+    }
+  };
 
   const handleComplete = (s: number) => {
+    const total = id === "saqr" ? SAQR_ALERTS.length : id === "oryx" ? ORYX_SCENARIOS.length : id === "thalab" ? THALAB_ENTRIES.length : id === "hamad" ? HAMAD_SCENARIOS.length : HISAN_STEPS.length;
+    saveHistory(s, total);
     setScore(s);
     setPhase("result");
     // Award badge if passed (>50%)
-    const total = id === "saqr" ? SAQR_ALERTS.length : id === "oryx" ? ORYX_SCENARIOS.length : id === "thalab" ? THALAB_ENTRIES.length : id === "hamad" ? HAMAD_SCENARIOS.length : HISAN_STEPS.length;
     if (s / total >= 0.5) {
       try {
         const existing = new Set(JSON.parse(localStorage.getItem("cm-badges") || "[]"));
@@ -777,12 +827,65 @@ export default function Training({ characterId }: { characterId: string }) {
         {phase !== "training" && <div style={{ width:100 }} />}
       </div>
       {/* Content */}
-      {phase === "intro"    && <IntroPhase char={char} onBegin={() => setPhase("training")} />}
-      {phase === "training" && id === "saqr"   && <SaqrTraining   char={char} onComplete={handleComplete} />}
-      {phase === "training" && id === "oryx"   && <OryxTraining   char={char} onComplete={handleComplete} />}
+      {phase === "intro" && (
+        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"calc(100vh - 62px)", padding:"40px 20px", textAlign:"center" }}>
+          <img src={char.img} alt={char.name} style={{ width:140, height:140, objectFit:"cover", borderRadius:16, marginBottom:24, border:`2px solid ${char.color}35` }} />
+          <div style={{ fontSize:9, color:`${char.color}70`, letterSpacing:"0.28em", textTransform:"uppercase", marginBottom:8, fontFamily:"'JetBrains Mono'" }}>{char.role}</div>
+          <h1 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:36, color:"#f5ede0", margin:"0 0 6px", fontWeight:600 }}>{char.name}</h1>
+          <div style={{ fontSize:12, color:char.color, fontWeight:700, marginBottom:28, letterSpacing:"0.1em" }}>{char.title}</div>
+          <div style={{ maxWidth:520, background:"rgba(255,255,255,0.03)", borderRadius:12, padding:"20px 24px", border:`1px solid ${char.color}15`, marginBottom:userHistory ? 20 : 36 }}>
+            <p style={{ fontSize:14, color:"#f5ede0bb", lineHeight:1.85, margin:0 }}>{char.welcome}</p>
+          </div>
+          {/* Returning user — offer adaptive mode */}
+          {userHistory && (["saqr","oryx","hamad"].includes(id)) && (
+            <div style={{ maxWidth:520, background:`${char.color}08`, borderRadius:12, padding:"16px 20px", border:`1px solid ${char.color}25`, marginBottom:24, width:"100%" }}>
+              <div style={{ fontSize:11, color:char.color, fontWeight:700, marginBottom:6, letterSpacing:"0.1em" }}>
+                🎯 Welcome back — {userHistory.attempts} attempt{userHistory.attempts!==1?"s":""} · Last score: {userHistory.lastScore}
+              </div>
+              <p style={{ fontSize:13, color:"#f5ede0aa", lineHeight:1.6, margin:"0 0 14px" }}>
+                Want a personalised set of questions based on your previous performance? Claude will generate fresh challenges targeting your weak areas.
+              </p>
+              <div style={{ display:"flex", gap:8, justifyContent:"center" }}>
+                <button onClick={loadAdaptive}
+                  style={{ padding:"9px 22px", borderRadius:8, border:`1.5px solid ${char.color}70`, background:`${char.color}15`, color:char.color, fontSize:11, fontWeight:700, letterSpacing:"0.15em", textTransform:"uppercase", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}>
+                  🎯 Adaptive Mode
+                </button>
+                <button onClick={() => setPhase("training")}
+                  style={{ padding:"9px 22px", borderRadius:8, border:"1.5px solid rgba(255,255,255,0.12)", background:"transparent", color:"rgba(255,255,255,0.4)", fontSize:11, letterSpacing:"0.1em", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}>
+                  Use Standard
+                </button>
+              </div>
+            </div>
+          )}
+          {(!userHistory || !["saqr","oryx","hamad"].includes(id)) && (
+            <button onClick={() => setPhase("training")}
+              style={{ padding:"13px 42px", borderRadius:8, border:`1.5px solid ${char.color}55`, background:"transparent", color:char.color, fontSize:11, fontWeight:700, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}
+              onMouseEnter={e => (e.currentTarget.style.background = `${char.color}12`)}
+              onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+            >Begin Training →</button>
+          )}
+        </div>
+      )}
+
+      {phase === "adaptive_loading" && (
+        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"calc(100vh - 62px)", gap:20, textAlign:"center", padding:"40px 20px" }}>
+          <div style={{ fontSize:48, animation:"pulse 2s ease-in-out infinite" }}>🎯</div>
+          <h2 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:28, color:"#f5ede0", margin:0, fontWeight:600 }}>Generating Your Training</h2>
+          <p style={{ fontSize:13, color:"#f5ede0aa", maxWidth:400, lineHeight:1.8 }}>
+            Claude is analysing your previous performance and creating personalised challenges targeting your weak areas. This takes about 15 seconds.
+          </p>
+          <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+            {[0,1,2].map(i=>(
+              <div key={i} style={{ width:8, height:8, borderRadius:"50%", background:char.color, opacity:0.4, animation:`blink 1.2s ease-in-out ${i*0.3}s infinite` }}/>
+            ))}
+          </div>
+        </div>
+      )}
+      {phase === "training" && id === "saqr"   && <SaqrTraining   char={char} onComplete={handleComplete} overrideAlerts={adaptiveData ?? undefined} />}
+      {phase === "training" && id === "oryx"   && <OryxTraining   char={char} onComplete={handleComplete} overrideScenarios={adaptiveData ?? undefined} />}
       {phase === "training" && id === "thalab" && <ThalabTraining char={char} onComplete={handleComplete} />}
       {phase === "training" && id === "hisan"  && <HisanTraining  char={char} onComplete={handleComplete} />}
-  {phase === "training" && id === "hamad"  && <HamadTraining  char={char} onComplete={handleComplete} />}
+  {phase === "training" && id === "hamad"  && <HamadTraining  char={char} onComplete={handleComplete} overrideScenarios={adaptiveData ?? undefined} />}
       {phase === "result"   && <ResultPhase char={char} score={score} total={total} onBack={() => router.back()} />}
     </div>
   );

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import HamadCommentary from "@/components/HamadCommentary";
 import { useTranslations } from "next-intl";
 
 const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
@@ -51,8 +52,31 @@ const VULN_DETAILS = {
   open_port: { name: "Unprotected Service", method: "Direct service access", exploit: "Injected payload via open port" },
 };
 
+function randomiseVulns() {
+  const devices = NETWORK_DEVICES.map(d => ({ ...d }));
+  const medium = devices.filter(d => d.difficulty === "medium");
+  const hard = devices.filter(d => d.difficulty === "hard");
+  medium.forEach(d => { d.vuln = null; });
+  medium.sort(() => Math.random() - 0.5).slice(0, 2).forEach(d => { d.vuln = pick(["ftp","open_port"]); });
+  hard.forEach(d => { d.vuln = null; });
+  if (Math.random() > 0.5 && hard.length) hard[0].vuln = "ftp";
+  return devices;
+}
+
+
 export default function WormDemo() {
   const  t  = useTranslations();
+  const [activeDevices, setActiveDevices] = useState(NETWORK_DEVICES);
+  const [commentTrigger, setCommentTrigger] = useState(null);
+  const [attempts, setAttempts] = useState(1);
+
+  useEffect(() => {
+    setActiveDevices(randomiseVulns());
+    const saved = localStorage.getItem("cm-game-worm");
+    if (saved) try { setAttempts(JSON.parse(saved).attempts + 1); } catch {}
+    const cv = JSON.parse(localStorage.getItem("cm-game-worm")||"{}");
+    localStorage.setItem("cm-game-worm", JSON.stringify({attempts:(cv.attempts||0)+1}));
+  }, []);
   const [phase, setPhase] = useState("intro"); // intro | terminal | map | complete
   const [termLines, setTermLines] = useState([]);
   const [scanning, setScanning] = useState(false);
@@ -69,6 +93,7 @@ export default function WormDemo() {
   // Terminal phase — auto-plays the worm scanning sequence
   const startTerminal = async () => {
     setPhase("terminal");
+    setTimeout(() => setCommentTrigger("start"), 1000);
     setTermLines([]);
     const addLine = (text, color = "#c9d1d9", delay = 0) => {
       return new Promise(r => setTimeout(() => {
@@ -172,7 +197,14 @@ export default function WormDemo() {
         newLog.push({ text: `  🐛 HOST INFECTED: ${device.ip}`, color: "#4caf50" });
 
         setScanResult({ success: true, vuln: v, device });
-        setInfected(prev => new Set([...prev, device.id]));
+        setInfected(prev => {
+        const next = new Set([...prev, device.id]);
+        if (device.type === "iot") setCommentTrigger("iot_infected");
+        else if (device.vuln === "ftp") setCommentTrigger("ftp_exploit");
+        else if (device.vuln === "default_pw") setCommentTrigger("default_pw");
+        if (next.size >= Math.floor(activeDevices.length / 2)) setCommentTrigger("half_network");
+        return next;
+      });
         setWormPos(device.id);
         setTotalScanned(t => t + 1);
 
@@ -299,8 +331,8 @@ export default function WormDemo() {
           {/* Network cables (SVG lines) */}
           <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 1 }}>
             {CONNECTIONS.map(([a, b], i) => {
-              const da = NETWORK_DEVICES.find(d => d.id === a);
-              const db = NETWORK_DEVICES.find(d => d.id === b);
+              const da = activeDevices.find(d => d.id === a);
+              const db = activeDevices.find(d => d.id === b);
               const bothInf = infected.has(a) && infected.has(b);
               const oneInf = infected.has(a) || infected.has(b);
               return <line key={i} x1={`${da.x}%`} y1={`${da.y}%`} x2={`${db.x}%`} y2={`${db.y}%`}
@@ -310,7 +342,7 @@ export default function WormDemo() {
           </svg>
 
           {/* Devices */}
-          {NETWORK_DEVICES.map(device => {
+          {activeDevices.map(device => {
             const isInf = infected.has(device.id);
             const isScanning = scanning_device === device.id;
             const isSelected = selectedDevice?.id === device.id;
@@ -344,8 +376,8 @@ export default function WormDemo() {
           {/* Worm position indicator */}
           <div style={{
             position: "absolute",
-            left: `${NETWORK_DEVICES.find(d => d.id === wormPos)?.x || 50}%`,
-            top: `${(NETWORK_DEVICES.find(d => d.id === wormPos)?.y || 15) - 8}%`,
+            left: `${activeDevices.find(d => d.id === wormPos)?.x || 50}%`,
+            top: `${(activeDevices.find(d => d.id === wormPos)?.y || 15) - 8}%`,
             transform: "translate(-50%,-50%)", zIndex: 15, fontSize: 20,
             transition: "all .5s ease", pointerEvents: "none",
           }}>🐛</div>
@@ -384,6 +416,7 @@ export default function WormDemo() {
         </span>
       </div>
 
+      <HamadCommentary simId="worm" trigger={commentTrigger} accentColor="#00bcd4" />
       <style>{`@keyframes pulse { 0%,100%{transform:scale(1);opacity:.8} 50%{transform:scale(1.05);opacity:1} }`}</style>
     </div>
   );

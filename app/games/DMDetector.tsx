@@ -58,7 +58,15 @@ export default function DMDetector({ onHome }: { onHome: (xp?: number) => void }
   const [lives, setLives]       = useState(MAX_LIVES);
   const [timer, setTimer]       = useState(TIMER);
   const [feedback, setFeedback] = useState<JudgeFeedback | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const [attempts, setAttempts] = useState(1);
+  const [wrongCount, setWrongCount] = useState(0);
   const tRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("cm-game-dm");
+    if (saved) try { setAttempts(JSON.parse(saved).attempts + 1); } catch {}
+  }, []);
 
   const startTimer = () => {
     let t = TIMER; setTimer(TIMER);
@@ -69,9 +77,36 @@ export default function DMDetector({ onHome }: { onHome: (xp?: number) => void }
     }, 1000);
   };
 
-  const start = () => {
+  const start = async () => {
+    const saved = localStorage.getItem("cm-game-dm");
+    const past = saved ? (JSON.parse(saved).attempts || 0) : 0;
+    if (past >= 1) {
+      setGenerating(true);
+      try {
+        const res = await fetch("/api/games/generate", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ gameId: "dm", attempts: past + 1 }),
+        });
+        const data = await res.json();
+        if (data.content && Array.isArray(data.content)) {
+          const generated = data.content.slice(0, TOTAL).map((d: any) => ({
+            from: d.from, msg: d.msg, sus: d.sus,
+            flagKeys: d.flags || [], isGenerated: true,
+          }));
+          setMsgs(shuffle(generated as any));
+          setIdx(0); setScore(0); setLives(MAX_LIVES); setFeedback(null); setWrongCount(0);
+          setGenerating(false); setPhase("play"); setTimeout(startTimer, 100);
+          const cv = JSON.parse(localStorage.getItem("cm-game-dm")||"{}");
+          localStorage.setItem("cm-game-dm", JSON.stringify({attempts:(cv.attempts||0)+1}));
+          return;
+        }
+      } catch {}
+      setGenerating(false);
+    }
     setMsgs(shuffle([...DMS]).slice(0, TOTAL));
-    setIdx(0); setScore(0); setLives(MAX_LIVES); setFeedback(null);
+    setIdx(0); setScore(0); setLives(MAX_LIVES); setFeedback(null); setWrongCount(0);
+    const cv = JSON.parse(localStorage.getItem("cm-game-dm")||"{}");
+    localStorage.setItem("cm-game-dm", JSON.stringify({attempts:(cv.attempts||0)+1}));
     setPhase("play"); setTimeout(startTimer, 100);
   };
 
@@ -80,7 +115,7 @@ export default function DMDetector({ onHome }: { onHome: (xp?: number) => void }
     const dm = msgs[idx];
     const correct = answer !== "timeout" && ((answer === "sus" && dm.sus) || (answer === "safe" && !dm.sus));
     if (correct) setScore(s => s + 100 + timer * 3);
-    else setLives(l => l - 1);
+    else { setLives(l => l - 1); setWrongCount(w => w + 1); }
     setFeedback({ correct, dm, timeout: answer === "timeout" });
   };
 
@@ -99,6 +134,17 @@ export default function DMDetector({ onHome }: { onHome: (xp?: number) => void }
     else { setIdx(i => i + 1); startTimer(); }
   };
 
+  if (generating) return (
+    <GameShell>
+      <div style={{ textAlign:"center", padding:60, display:"flex", flexDirection:"column", alignItems:"center", gap:16 }}>
+        <img src="/avatar.png" alt="Hamad" style={{ width:64, height:64, borderRadius:"50%", border:"2px solid rgba(123,104,238,0.4)" }} />
+        <div style={{ fontSize:14, color:"#7b68ee", fontFamily:"'JetBrains Mono',monospace" }}>Hamad is writing new DMs for you…</div>
+        <div style={{ fontSize:11, color:"rgba(123,104,238,0.5)" }}>Based on your weak spots · ~10 seconds</div>
+        <div style={{ display:"flex", gap:5 }}>{[0,1,2].map(i=><div key={i} style={{ width:8, height:8, borderRadius:"50%", background:"#7b68ee", opacity:0.3, animation:`blink 1.2s ease-in-out ${i*0.3}s infinite` }}/>)}</div>
+      </div>
+    </GameShell>
+  );
+
   if (phase === "intro") return (
     <GameShell>
       <Intro
@@ -109,7 +155,7 @@ export default function DMDetector({ onHome }: { onHome: (xp?: number) => void }
           t("dmDetector.intro.line2"),
           t("dmDetector.intro.line3"),
         ]}
-        onStart={start}
+        onStart={() => start()}
       />
     </GameShell>
   );
@@ -211,7 +257,7 @@ export default function DMDetector({ onHome }: { onHome: (xp?: number) => void }
                 {dm.flagKeys.map((fk, i) => (
                   <div key={i} style={{ fontSize: 13, color: "#5a4a3e", display: "flex", gap: 8, marginBottom: 6, lineHeight: 1.5 }}>
                     <span style={{ color: dm.sus ? "#c0392b" : "#27ae60", flexShrink: 0 }}>{dm.sus ? "⚠" : "✓"}</span>
-                    {t(fk)}
+                    {(dm as any).isGenerated ? fk : t(fk)}
                   </div>
                 ))}
               </div>

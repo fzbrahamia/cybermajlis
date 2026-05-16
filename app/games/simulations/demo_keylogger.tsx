@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import HamadCommentary from "@/components/HamadCommentary";
 import { useTranslations } from "next-intl";
 
 // ============================================================
@@ -15,6 +16,15 @@ interface KeyLog {
   type: "char" | "special" | "delete";
 }
 
+// Rotate scenario context on each visit
+const SCENARIOS = [
+  { id:"bank",    label:"QNB Online Banking",   icon:"🏦", color:"#1a56db", fakeDomain:"qnb-secure-portal.net" },
+  { id:"work",    label:"Corporate Email Login", icon:"💼", color:"#7c3aed", fakeDomain:"mail.qatarenergy-hr.com" },
+  { id:"health",  label:"SEHA Health Portal",    icon:"🏥", color:"#059669", fakeDomain:"seha-patient.gov-qa.net" },
+  { id:"gov",     label:"Metrash2 Government",   icon:"🏛", color:"#b45309", fakeDomain:"metrash2-verify.com" },
+];
+
+
 export default function DemoKeylogger() {
   const t = useTranslations("DemoKeylogger");
   const [view, setView] = useState<"intro" | "login" | "editor" | "reveal">("intro");
@@ -24,7 +34,17 @@ export default function DemoKeylogger() {
   const [keyLog, setKeyLog] = useState<KeyLog[]>([]);
   const [showAttacker, setShowAttacker] = useState(false);
   const [activeField, setActiveField] = useState<"email" | "password" | "editor">("email");
+  const [commentTrigger, setCommentTrigger] = useState<string|null>(null);
+  const [attempts, setAttempts] = useState(1);
+  const [scenario, setScenario] = useState(SCENARIOS[0]);
   const logEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("cm-game-keylogger");
+    const count = saved ? (JSON.parse(saved).attempts || 0) : 0;
+    setAttempts(count + 1);
+    setScenario(SCENARIOS[count % SCENARIOS.length]);
+  }, []);
 
   const getTime = () => {
     const d = new Date();
@@ -45,7 +65,7 @@ export default function DemoKeylogger() {
       else if (["Shift","Control","Alt","Meta"].includes(e.key)) { type = "special"; displayKey = `[${e.key.toUpperCase()}]`; }
       else if (e.key === " ") { displayKey = t("keys.space"); }
       else if (e.key.length > 1) { type = "special"; displayKey = `[${e.key}]`; }
-      setKeyLog(prev => [...prev, { key: displayKey, code: e.code, time: getTime(), type }]);
+      setKeyLog(prev => { const next = [...prev, { key: displayKey, code: e.code, time: getTime(), type }]; if(next.length === 10) setCommentTrigger("ten_keystrokes"); if(type==="delete" && next.filter(k=>k.type==="delete").length===1) setCommentTrigger("backspace_used"); return next; });
     };
 
     window.addEventListener("keydown", handler);
@@ -112,8 +132,8 @@ export default function DemoKeylogger() {
             <div style={{ color: "#8b949e", fontSize: 11, lineHeight: 1.7 }}
               dangerouslySetInnerHTML={{ __html: t.raw("reveal.lessonBody") as string }} />
           </div>
-          <div style={{ display: "flex", gap: 10, justifyContent: "center" }}>
-            <button onClick={() => { setView("intro"); setKeyLog([]); setInputEmail(""); setInputPass(""); setEditorText(""); setShowAttacker(false); }}
+          <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap:"wrap" }}>
+            <button onClick={() => { setView("intro"); setKeyLog([]); setInputEmail(""); setInputPass(""); setEditorText(""); setShowAttacker(false); const cur = JSON.parse(localStorage.getItem("cm-game-keylogger")||"{}"); localStorage.setItem("cm-game-keylogger", JSON.stringify({attempts:(cur.attempts||0)+1})); setAttempts(a=>a+1); setScenario(SCENARIOS[(attempts)%SCENARIOS.length]); }}
               style={{ padding: "10px 24px", background: "#632024", border: "1px solid #ffffff20", borderRadius: 10, color: "#f5ede0", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
               {t("reveal.tryAgain")}
             </button>
@@ -135,8 +155,7 @@ export default function DemoKeylogger() {
           <span style={{ fontSize: 12, color: "#8b949e" }}>{isLogin ? t("bar.loginTitle") : t("bar.editorTitle")}</span>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={() => setShowAttacker(!showAttacker)}
-            style={{ padding: "5px 14px", borderRadius: 6, border: `1px solid ${showAttacker ? "#f0883e" : "#30363d"}`, background: showAttacker ? "#f0883e15" : "transparent", color: showAttacker ? "#f0883e" : "#8b949e", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+          <button onClick={() => { setShowAttacker(!showAttacker); if(!showAttacker) setCommentTrigger("attacker_panel_open"); }} style={{ padding: "5px 14px", borderRadius: 6, border: `1px solid ${showAttacker ? "#f0883e" : "#30363d"}`, background: showAttacker ? "#f0883e15" : "transparent", color: showAttacker ? "#f0883e" : "#8b949e", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
             {showAttacker ? t("bar.attackerOn") : t("bar.attackerOff")}
           </button>
           <button onClick={() => setView("reveal")}
@@ -153,9 +172,9 @@ export default function DemoKeylogger() {
             /* Login form — looks like a normal website */
             <div style={{ width: 380, background: "#fff", borderRadius: 12, padding: 32, boxShadow: "0 4px 24px rgba(0,0,0,.1)" }}>
               <div style={{ textAlign: "center", marginBottom: 24 }}>
-                <div style={{ fontSize: 32, marginBottom: 8 }}>🏦</div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: "#333" }}>{t("login.welcome")}</div>
-                <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>{t("login.subtitle")}</div>
+                <div style={{ fontSize: 32, marginBottom: 8 }}>{scenario.icon}</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#333" }}>{scenario.label}</div>
+                <div style={{ fontSize: 12, color: "#e44", marginTop: 4 }}>⚠ {scenario.fakeDomain}</div>
               </div>
               <div style={{ marginBottom: 16 }}>
                 <label style={{ fontSize: 12, color: "#555", fontWeight: 600, display: "block", marginBottom: 4 }}>{t("login.emailLabel")}</label>
@@ -165,7 +184,7 @@ export default function DemoKeylogger() {
               </div>
               <div style={{ marginBottom: 20 }}>
                 <label style={{ fontSize: 12, color: "#555", fontWeight: 600, display: "block", marginBottom: 4 }}>{t("login.passwordLabel")}</label>
-                <input type="password" value={inputPass} onChange={e => setInputPass(e.target.value)} onFocus={() => setActiveField("password")}
+                <input type="password" value={inputPass} onChange={e => setInputPass(e.target.value)} onFocus={() => { setActiveField("password"); setCommentTrigger("password_field"); }}
                   placeholder="••••••••"
                   style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #ddd", fontSize: 14, outline: "none", boxSizing: "border-box" }} />
               </div>
@@ -246,6 +265,7 @@ export default function DemoKeylogger() {
         </div>
       )}
 
+      <HamadCommentary simId="keylogger" trigger={commentTrigger} accentColor="#f0883e" />
       <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }`}</style>
     </div>
   );

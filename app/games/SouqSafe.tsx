@@ -3,7 +3,7 @@
 // SOUQ SAFE — Drag & Drop Data Protection Game
 // ============================================================
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { shuffle } from "../utils/helpers";
 import { CHARS } from "../lib/characters";
@@ -31,6 +31,12 @@ export default function SouqSafe({ onHome }: { onHome: (xp?: number) => void }) 
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [chest, setChest]       = useState<(SouqItem & { correct: boolean })[]>([]);
   const [cart, setCart]         = useState<(SouqItem & { correct: boolean })[]>([]);
+  const [attempts, setAttempts] = useState(1);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("cm-game-souq");
+    if (saved) try { setAttempts(JSON.parse(saved).attempts + 1); } catch {}
+  }, []);
 
   const start = () => {
     setItems(shuffle([...SOUQ_ITEMS]).slice(0, TOTAL_ROUNDS));
@@ -55,7 +61,11 @@ export default function SouqSafe({ onHome }: { onHome: (xp?: number) => void }) 
 
   const next = () => {
     setFeedback(null);
-    if (current + 1 >= TOTAL_ROUNDS) setPhase("done");
+    if (current + 1 >= TOTAL_ROUNDS) {
+      const cv = JSON.parse(localStorage.getItem("cm-game-souq")||"{}");
+      localStorage.setItem("cm-game-souq", JSON.stringify({attempts:(cv.attempts||0)+1}));
+      setPhase("done");
+    }
     else setCurrent((c) => c + 1);
   };
 

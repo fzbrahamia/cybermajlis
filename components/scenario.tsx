@@ -8,7 +8,7 @@ interface PhaseScore { score: number; max: number; detail: string }
 
 // ── Character config ──────────────────────────────────────────────────────────
 const CHARS = {
-  hamad:  { name:"Hamad",    role:"Finance Employee",   color:"#60a5fa", img:"/avatar.png",   emoji:"👤" },
+  hamad:  { name:"Hamad",    role:"Employee",   color:"#60a5fa", img:"/avatar.png",   emoji:"👤" },
   saqr:   { name:"Saqr",     role:"Tier 1 — Alert Triage",   color:"#D5B893", img:"/characters/saqr.GIF",    emoji:"🦅" },
   thalab: { name:"Tha'lab",  role:"Tier 2 — Forensics",      color:"#f59e0b", img:"/characters/fox.GIF",     emoji:"🦊" },
   hisan:  { name:"Hisan",    role:"Tier 2 — Incident Response", color:"#f87171", img:"/characters/hisan.GIF",   emoji:"🐎" },

@@ -18,7 +18,7 @@ const ANALYSTS_BASE = [
 // Hamad — the victim employee. Add /characters/hamad.GIF + /characters/hamad.jpeg to your assets.
 const HAMAD = {
   id: "hamad", emoji: "🧑‍💻",
-  img: "/characters/hamad.GIF",
+  img: "/avatar.png",
   profile: "/avatar.png",
   name: "Hamad", full: "Employee", roleKey: "hamad", color: "#60a5fa",
 };
@@ -591,6 +591,10 @@ export default function ThreatAcademy() {
   }, [t]);
   
   // Memoize localized threats to prevent recreation on every render
+  const [socAttempts, setSocAttempts] = useState(1);
+  const [generatedVariants, setGeneratedVariants] = useState<Record<string, {radio:string[];stepChat:[string,string][];quiz:{q:string;opts:string[];ans:number;why:string}}>>({});
+  const [generatingVariant, setGeneratingVariant] = useState(false);
+
   const localizedThreatsMap = useMemo(() => {
     const threats: Record<string, LocalizedThreat> = {};
     Object.entries(THREATS).forEach(([key, threatDef]) => {
@@ -724,6 +728,36 @@ export default function ThreatAcademy() {
     type();
   }, []);
 
+
+  // ── SOC adaptive: load attempt count and pre-generate variant for returning users ──
+  useEffect(() => {
+    const saved = localStorage.getItem("cm-soc-sessions");
+    const count = saved ? (JSON.parse(saved).attempts || 0) : 0;
+    setSocAttempts(count + 1);
+    if (count >= 1) {
+      // Pick a random threat to generate a fresh variant for
+      const threats = ["phishing", "virus", "ransomware", "rootkit", "ddos"];
+      const target = threats[Math.floor(Math.random() * threats.length)];
+      setGeneratingVariant(true);
+      fetch("/api/soc/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ threat: target, attempts: count + 1 }),
+      })
+        .then(r => r.json())
+        .then(d => {
+          if (d.success && d.variant) {
+            setGeneratedVariants(prev => ({ ...prev, [target]: d.variant }));
+          }
+        })
+        .catch(() => {})
+        .finally(() => setGeneratingVariant(false));
+    }
+    // Save this session
+    const cv = JSON.parse(localStorage.getItem("cm-soc-sessions") || "{}");
+    localStorage.setItem("cm-soc-sessions", JSON.stringify({ attempts: (cv.attempts || 0) + 1 }));
+  }, []);
+
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [chatMsgs]);
 
   useEffect(() => {
@@ -763,9 +797,17 @@ export default function ThreatAcademy() {
       setThreatLevel(prev => Math.min(100, prev + def.sev * 4));
       setTrafficHist(prev => [...prev.slice(1), prev[prev.length - 1] + rand(2, 6)]);
       // Pick a variant that wasn't used last time for this threat
-      const variants = SCRIPT_VARIANTS[threatKey] || [];
+      // Merge generated variant if available for this threat
+      const genVariant = generatedVariants[threatKey];
+      const baseVariants = SCRIPT_VARIANTS[threatKey] || [];
+      const variants = genVariant ? [...baseVariants, genVariant] : baseVariants;
       const lastIdx = lastVariant[threatKey] ?? -1;
-      const available = variants.map((_, i) => i).filter(i => i !== lastIdx);
+      // Prefer the generated variant (last index) on return visits
+      const preferGenerated = !!genVariant && socAttempts > 1;
+      const genIdx = variants.length - 1;
+      const available = preferGenerated
+        ? [genIdx]  // Force generated variant
+        : variants.map((_, i) => i).filter(i => i !== lastIdx);
       const variantIdx = available.length > 0 ? pick(available) : rand(0, variants.length - 1);
       lastVariant[threatKey] = variantIdx;
       const variant = variants[variantIdx] || null;
@@ -951,6 +993,7 @@ export default function ThreatAcademy() {
                 {attackState && (
                   <span style={{ fontSize: 9, color: attackState.def.color, fontWeight: 700, letterSpacing: "0.12em", background: `${attackState.def.color}12`, border: `1px solid ${attackState.def.color}30`, padding: "2px 10px", borderRadius: 5 }}>
                     {attackState.loc.icon} {attackState.loc.type.toUpperCase()}
+                    {generatedVariants[attackState.def.typeKey] && <span style={{ marginLeft: 6, color: "#22c55e", fontSize: 8 }}>✦ AI</span>}
                   </span>
                 )}
                 {attackState && attackState.step === -1 && attackState.done.size === 5 && (

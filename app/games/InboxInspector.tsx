@@ -34,6 +34,15 @@ export default function InboxInspector({ onHome }: { onHome: (xp?: number) => vo
   const [hover, setHover]       = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [totalRounds, setTotalRounds] = useState(DEFAULT_TOTAL);
+  const [generating, setGenerating] = useState(false);
+  const [attempts, setAttempts] = useState(1);
+  const [missedPhish, setMissedPhish] = useState(0);
+  const [wrongSafe, setWrongSafe] = useState(0);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("cm-game-inbox");
+    if (saved) try { setAttempts(JSON.parse(saved).attempts + 1); } catch {}
+  }, []);
 
   // Load emails from translations
   const loadEmails = (): Email[] => {
@@ -58,24 +67,33 @@ export default function InboxInspector({ onHome }: { onHome: (xp?: number) => vo
     }
   };
 
-  const start = () => {
-    const allEmails = loadEmails();
-    if (allEmails.length === 0) {
-      console.error('No emails loaded');
-      return;
+  const start = async () => {
+    const saved = localStorage.getItem("cm-game-inbox");
+    const past = saved ? (JSON.parse(saved).attempts || 0) : 0;
+    if (past >= 1) {
+      setGenerating(true); setPhase("play");
+      try {
+        const res = await fetch("/api/games/generate", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ gameId: "inbox", attempts: past + 1 }),
+        });
+        const data = await res.json();
+        if (data.content && Array.isArray(data.content)) {
+          const emails = data.content.slice(0, DEFAULT_TOTAL);
+          setEmails(emails); setTotalRounds(emails.length);
+          setIdx(0); setScore(0); setFeedback(null); setMissedPhish(0); setWrongSafe(0);
+          setGenerating(false); return;
+        }
+      } catch {}
+      setGenerating(false);
     }
-    
-    // Use available emails, up to DEFAULT_TOTAL
-    const availableCount = Math.min(DEFAULT_TOTAL, allEmails.length);
-    setTotalRounds(availableCount);
-    
-    const shuffledEmails = shuffle([...allEmails]).slice(0, availableCount);
-    setEmails(shuffledEmails);
-    setIdx(0); 
-    setScore(0); 
-    setFeedback(null);
-    setIsLoading(false);
-    setPhase("play");
+    const allEmails = loadEmails();
+    if (allEmails.length === 0) return;
+    const count = Math.min(DEFAULT_TOTAL, allEmails.length);
+    setTotalRounds(count);
+    setEmails(shuffle([...allEmails]).slice(0, count));
+    setIdx(0); setScore(0); setFeedback(null); setMissedPhish(0); setWrongSafe(0);
+    setIsLoading(false); setPhase("play");
   };
 
   const judge = (answer: "phish" | "safe") => {
@@ -83,6 +101,8 @@ export default function InboxInspector({ onHome }: { onHome: (xp?: number) => vo
     if (!email) return;
     const correct = (answer === "phish" && email.phish) || (answer === "safe" && !email.phish);
     if (correct) setScore(s => s + 1);
+    else if (answer === "safe" && email.phish) setMissedPhish(m => m + 1);
+    else if (answer === "phish" && !email.phish) setWrongSafe(w => w + 1);
     setFeedback({ correct, email }); 
     setHover(false);
   };
@@ -90,6 +110,8 @@ export default function InboxInspector({ onHome }: { onHome: (xp?: number) => vo
   const next = () => {
     setFeedback(null);
     if (idx + 1 >= totalRounds) {
+      const cv = JSON.parse(localStorage.getItem("cm-game-inbox")||"{}");
+      localStorage.setItem("cm-game-inbox", JSON.stringify({attempts:(cv.attempts||0)+1}));
       setPhase("done");
     } else {
       setIdx(i => i + 1);
@@ -116,7 +138,7 @@ export default function InboxInspector({ onHome }: { onHome: (xp?: number) => vo
           t('intro.line2'),
           t('intro.line3'),
         ]}
-        onStart={start}
+        onStart={() => start()}
       />
     </GameShell>
   );
@@ -141,6 +163,17 @@ export default function InboxInspector({ onHome }: { onHome: (xp?: number) => vo
     </GameShell>
   );
 
+  if (generating) return (
+    <GameShell>
+      <div style={{ textAlign:"center", padding:60, display:"flex", flexDirection:"column", alignItems:"center", gap:16 }}>
+        <img src="/avatar.png" alt="Hamad" style={{ width:64, height:64, borderRadius:"50%", border:"2px solid rgba(99,32,36,0.3)" }} />
+        <div style={{ fontSize:14, color:"#632024", fontFamily:"'JetBrains Mono',monospace" }}>Hamad is writing fresh phishing emails for you…</div>
+        <div style={{ fontSize:11, color:"rgba(99,32,36,0.4)" }}>Based on your previous performance · ~10 seconds</div>
+        <div style={{ display:"flex", gap:5 }}>{[0,1,2].map(i=><div key={i} style={{ width:8, height:8, borderRadius:"50%", background:"#632024", opacity:0.3, animation:`blink 1.2s ease-in-out ${i*0.3}s infinite` }}/>)}</div>
+      </div>
+    </GameShell>
+  );
+
   // Show loading state or empty state
   if (isLoading || emails.length === 0) {
     return (
@@ -162,7 +195,7 @@ export default function InboxInspector({ onHome }: { onHome: (xp?: number) => vo
           <div style={{ fontSize: 24, marginBottom: 16 }}>⚠️</div>
           <div style={{ fontSize: 16, color: "#632024" }}>Error loading email. Please restart the game.</div>
           <button 
-            onClick={start}
+            onClick={() => start()}
             style={{ marginTop: 20, padding: "12px 24px", background: "#632024", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer" }}
           >
             Restart Game
