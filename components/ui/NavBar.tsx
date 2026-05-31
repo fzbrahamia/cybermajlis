@@ -14,6 +14,23 @@
 // ─────────────────────────────────────────────────────────────
 
 import { useState, useEffect } from "react";
+
+// ── CyberMajlis hexagonal brand mark ─────────────────────────
+function Mark({ size = 24 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden>
+      <defs>
+        <linearGradient id="markGradNav" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#3e1316" />
+          <stop offset="1" stopColor="#8B2635" />
+        </linearGradient>
+      </defs>
+      <polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="url(#markGradNav)" />
+      <polygon points="32,14 48,23 48,41 32,50 16,41 16,23" fill="none" stroke="#c5a57e" strokeWidth="1.2" />
+      <circle cx="32" cy="32" r="5" fill="#c5a57e" />
+    </svg>
+  );
+}
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -128,6 +145,116 @@ export default function Navbar() {
     { icon: Settings,    label: t("settings"), action: () => router.push("/settings") },
     { icon: HelpCircle,  label: t("help"),     action: handleHelpClick                },
   ];
+
+  // ── Landing-page nav variant ──────────────────────────────
+  // Shown only on "/" — glassmorphic cream style matching the design.
+  if (pathname === "/") {
+    const landingNavLink: React.CSSProperties = {
+      fontFamily: "'Cinzel', serif", fontSize: 11, letterSpacing: 2,
+      fontWeight: 600, color: "rgba(227,218,201,0.85)", textDecoration: "none", cursor: "pointer",
+    };
+    const landingBtnSm: React.CSSProperties = {
+      fontFamily: "'Cinzel', serif", fontSize: 11, fontWeight: 700, letterSpacing: 1.2,
+      padding: "9px 18px", borderRadius: 8, border: "none", cursor: "pointer",
+      color: "#3e1316", background: "linear-gradient(135deg, #e8d4bc, #c5a57e)",
+      boxShadow: "0 2px 12px rgba(197,165,126,.35)", transition: "all .25s ease",
+    };
+
+    return (
+      <>
+        <nav style={{
+          position: "fixed", top: 0, left: 0, right: 0, width: "100%", zIndex: 50,
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "20px 56px",
+          borderBottom: "1px solid rgba(197,165,126,.15)",
+          background: "linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%)",
+          backdropFilter: "blur(8px)",
+          boxShadow: "0 2px 20px rgba(62,19,22,.4)",
+        }}>
+          {/* Brand */}
+          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }} aria-label="CyberMajlis home">
+            <img
+              src={isArabic ? "/logoAr.png" : "/logoEn.png"}
+              alt="CyberMajlis"
+              style={{ height: 40, width: "auto" }}
+            />
+          </a>
+
+          {/* Nav links */}
+          <div style={{ display: "flex", gap: 40 }}>
+            {[
+              { label: "About",     href: "#about"     },
+              { label: "Majlis",    href: "#majlis"    },
+              { label: "SOC",       href: "/soc"       },
+              { label: "Community", href: "#community" },
+            ].map(({ label, href }) => (
+              <a key={label} href={href} style={{
+                ...landingNavLink,
+                ...(label === "About" ? { color: "#E8D4BC", borderBottom: "1.5px solid rgba(197,165,126,.7)", paddingBottom: 4 } : {}),
+              }}>
+                {label}
+              </a>
+            ))}
+          </div>
+
+          {/* Auth + locale */}
+          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+            {/* EN / AR toggle */}
+            <button
+              onClick={() => setLocaleCookie(isArabic ? "en" : "ar")}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                padding: "6px 12px", borderRadius: 99, cursor: "pointer",
+                background: "rgba(197,165,126,.08)", border: "1px solid rgba(197,165,126,.25)",
+                fontFamily: "'Cinzel', serif", fontSize: 10, letterSpacing: 1.5, fontWeight: 700,
+              }}
+              aria-label="Toggle language"
+            >
+              <span style={{ color: isArabic ? "rgba(227,218,201,.35)" : "rgba(227,218,201,.9)" }}>EN</span>
+              <span style={{ display: "inline-block", width: 1, height: 10, background: "rgba(197,165,126,.3)" }} />
+              <span style={{ color: isArabic ? "rgba(227,218,201,.9)" : "rgba(227,218,201,.35)" }}>AR</span>
+            </button>
+
+            {/* Auth: Log In + Sign Up (unauthenticated) or profile dropdown (authenticated) */}
+            {!currentUser ? (
+              <>
+                <a
+                  href="/auth"
+                  style={{ ...landingNavLink }}
+                >
+                  Log In
+                </a>
+                <button
+                  onClick={() => router.push("/auth?signup=true")}
+                  style={landingBtnSm}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 6px 18px rgba(99,32,36,.35)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 2px 10px rgba(99,32,36,.25)"; }}
+                >
+                  Sign Up
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => router.push("/dashboard")}
+                style={landingBtnSm}
+              >
+                Dashboard
+              </button>
+            )}
+          </div>
+        </nav>
+
+        <Modal
+          isOpen={modal.isOpen}
+          title={modal.title}
+          message={modal.message}
+          onClose={closeModal}
+          onConfirm={modal.onConfirm}
+          confirmText={modal.confirmText}
+        />
+      </>
+    );
+  }
 
   return (
     <>
