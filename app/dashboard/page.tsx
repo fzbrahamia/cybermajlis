@@ -78,11 +78,12 @@ export default function DashboardPage() {
       progress: `${advancedCompleted}/3`,
     },
     {
-      nameKey: "realtime.name",
-      descKey: "realtime.description",
-      badgeKey: "realtime.badge",
+      nameKey: "diy.name",
+      descKey: "diy.description",
+      href: "/dashboard/do-it-yourself",
+      badgeKey: "diy.badge",
       icon: "/icons/lock.gif",
-      locked: true,
+      progress: "0/5",
     },
   ];
 

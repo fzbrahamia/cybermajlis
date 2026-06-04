@@ -345,6 +345,11 @@
       "description": "Experience live simulations and real-world cybersecurity incidents.",
       "badge": "Coming Soon"
     },
+    "diy": {
+      "name": "Do It Yourself",
+      "description": "Explore the CyberMajlis room and click on each smart device to learn how to protect it.",
+      "badge": "Interactive"
+    },
     "levels": {
       "beginner": "Beginner",
       "aware": "Aware",
