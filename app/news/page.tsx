@@ -30,8 +30,6 @@ const SEV: Record<Severity, { label: string; color: string; bg: string; dot: str
   low:      { label: "Low",      color: "#16a34a", bg: "rgba(22,163,74,0.07)",  dot: "#16a34a" },
 };
 
-const SEED: NewsItem[] = [];
-
 // ── Helpers ────────────────────────────────────────────────────────────────────
 const timeAgo = (d: Date) => {
   const h = Math.floor((Date.now()-d.getTime())/3600000);
@@ -124,54 +122,74 @@ export default function NewsPage() {
     return unsub;
   }, []);
 
-  const loadNews = useCallback(async () => {
+  const [fetching, setFetching] = useState(false);
+
+  // ── Main load: Firestore first, then always refresh from RSS ────────────────
+  // Displays immediately from Firestore cache, then merges in fresh articles.
+  // Does NOT depend on Firestore writes succeeding — fresh items go straight
+  // into local state so users always see up-to-date content.
+  const loadAndRefresh = useCallback(async () => {
     setLoading(true);
+
+    // 1. Load what's already in Firestore (instant cache)
+    let cached: NewsItem[] = [];
     try {
       const q = query(collection(db, "securityNews"), orderBy("createdAt", "desc"));
       const snap = await getDocs(q);
-      const real = snap.docs.map(d => ({ id: d.id, ...d.data() } as NewsItem));
-      setItems(real.length > 0 ? real : SEED);
-      setLastUpdated(new Date());
-    } catch {
-      setItems(SEED);
-    }
+      cached = snap.docs.map(d => ({ id: d.id, ...d.data() } as NewsItem));
+      if (cached.length > 0) { setItems(cached); setLoading(false); }
+    } catch { /* Firestore unavailable — carry on */ }
+
+    // 2. Always fetch fresh articles from RSS/Claude
+    setFetching(true);
+    const existingUrls = new Set(cached.map(i => (i as any).source_url).filter(Boolean));
+    try {
+      const res = await fetch(`/api/news/fetch?existing=${encodeURIComponent([...existingUrls].join(","))}`);
+      const data = await res.json();
+      if (data.success && (data.summaries || []).length > 0) {
+        const now = new Date();
+        const fresh: NewsItem[] = (data.summaries as any[]).map((s, i) => ({
+          id: `fresh-${i}-${Date.now()}`,
+          ...s,
+          createdAt: { toDate: () => now } as any,
+        }));
+
+        // Merge fresh + cached, deduplicate by source_url
+        const seen = new Set<string>();
+        const merged = [...fresh, ...cached].filter(item => {
+          const url = (item as any).source_url || item.id;
+          if (seen.has(url)) return false;
+          seen.add(url);
+          return true;
+        });
+        setItems(merged);
+        setLastUpdated(now);
+
+        // Write to Firestore in background (best-effort cache)
+        for (const s of data.summaries as any[]) {
+          if (!existingUrls.has(s.source_url)) {
+            addDoc(collection(db, "securityNews"), {
+              ...s, createdAt: serverTimestamp(), auto_generated: true,
+            }).catch(() => { /* silent — display already updated */ });
+          }
+        }
+      }
+    } catch { /* RSS fetch failed — Firestore cache shown */ }
+
+    setFetching(false);
     setLoading(false);
   }, []);
 
-  useEffect(() => { loadNews().then(() => autoFetch()); }, [loadNews]);
+  useEffect(() => { loadAndRefresh(); }, [loadAndRefresh]);
 
-  // Auto-fetch: runs silently on load if feed is stale (>2h since last fetch)
-  const autoFetch = async () => {
-    const lastFetch = typeof window !== "undefined" ? localStorage.getItem("lastNewsFetch") : null;
-    const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
-    if (lastFetch && parseInt(lastFetch) > twoHoursAgo) return; // fresh enough
-
-    const existingParam = items.map(i => (i as any).source_url).filter(Boolean).join(",");
-    try {
-      const res = await fetch(`/api/news/fetch?existing=${encodeURIComponent(existingParam)}`);
-      const data = await res.json();
-      if (!data.success) return;
-      // Only write if we have permission (user logged in or rules allow public write)
-      try {
-        for (const summary of (data.summaries || [])) {
-          await addDoc(collection(db, "securityNews"), {
-            ...summary, createdAt: serverTimestamp(), auto_generated: true,
-          });
-        }
-      } catch { /* write failed — Firestore rules may require login */ }
-      if ((data.summaries || []).length > 0) await loadNews();
-      if (typeof window !== "undefined") localStorage.setItem("lastNewsFetch", Date.now().toString());
-    } catch { /* silent fail — news will load from cache */ }
-  };
-
-    // Sort by severity then date, cap at 15 most relevant articles
-  const sevOrder: Record<string, number> = { critical:0, high:1, medium:2, low:3 };
+    const sevOrder: Record<string, number> = { critical:0, high:1, medium:2, low:3 };
   const sorted = [...items].sort((a,b) => {
-    const sd = (sevOrder[a.severity]??4) - (sevOrder[b.severity]??4);
-    if (sd !== 0) return sd;
+    // Date first — newest always on top
     const at = a.createdAt ? a.createdAt.toDate().getTime() : 0;
     const bt = b.createdAt ? b.createdAt.toDate().getTime() : 0;
-    return bt - at;
+    if (bt !== at) return bt - at;
+    // Severity as tiebreaker only
+    return (sevOrder[a.severity]??4) - (sevOrder[b.severity]??4);
   }).slice(0, 15);
   const filtered = filter === "all" ? sorted : sorted.filter(i => i.severity === filter);
   const counts = Object.fromEntries((["critical","high","medium","low"] as Severity[]).map(s => [s, sorted.filter(i=>i.severity===s).length]));
@@ -199,7 +217,7 @@ export default function NewsPage() {
             </p>
             <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:"1.2rem" }}>
               <span style={{ width:7, height:7, borderRadius:"50%", background:"#22c55e", display:"inline-block", boxShadow:"0 0 6px #22c55e", animation:"blink 2s ease-in-out infinite" }}/>
-              <span style={{ fontSize:10, color:"rgba(99,32,36,0.45)", fontFamily:"'Cinzel',serif", letterSpacing:"0.1em" }}>Live feed · {timeAgo(lastUpdated)}</span>
+              <span style={{ fontSize:10, color:"rgba(99,32,36,0.45)", fontFamily:"'Cinzel',serif", letterSpacing:"0.1em" }}>{fetching ? "Updating feed…" : `Live feed · ${timeAgo(lastUpdated)}`}</span>
             </div>
           </div>
 
