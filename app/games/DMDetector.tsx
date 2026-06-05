@@ -3,7 +3,7 @@
 // ============================================================
 
 import { useState, useEffect, useRef } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { CHARS } from "@/app/lib/characters";
 import { GameShell, GameHeader, Intro, Result } from "@/components/GameShell";
 
@@ -51,6 +51,7 @@ interface JudgeFeedback {
 
 export default function DMDetector({ onHome }: { onHome: (xp?: number) => void }) {
   const  t  = useTranslations();
+  const locale = useLocale();
   const [phase, setPhase]       = useState<"intro"|"play"|"done">("intro");
   const [msgs, setMsgs]         = useState<DMMessage[]>([]);
   const [idx, setIdx]           = useState(0);
@@ -85,7 +86,7 @@ export default function DMDetector({ onHome }: { onHome: (xp?: number) => void }
       try {
         const res = await fetch("/api/games/generate", {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ gameId: "dm", attempts: past + 1 }),
+          body: JSON.stringify({ gameId: "dm", attempts: past + 1, locale }),
         });
         const data = await res.json();
         if (data.content && Array.isArray(data.content)) {

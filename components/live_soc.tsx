@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 const rand = (a: number, b: number): number => Math.floor(Math.random() * (b - a + 1)) + a;
 const pick = <T,>(a: T[]): T => a[Math.floor(Math.random() * a.length)];
@@ -18,7 +18,7 @@ const ANALYSTS_BASE = [
 // Hamad — the victim employee. Add /characters/hamad.GIF + /characters/hamad.jpeg to your assets.
 const HAMAD = {
   id: "hamad", emoji: "🧑‍💻",
-  img: "/avatar.png",
+  img: "/characters/hamad.GIF",
   profile: "/avatar.png",
   name: "Hamad", full: "Employee", roleKey: "hamad", color: "#60a5fa",
 };
@@ -591,6 +591,7 @@ export default function ThreatAcademy() {
   }, [t]);
   
   // Memoize localized threats to prevent recreation on every render
+  const locale = useLocale();
   const [socAttempts, setSocAttempts] = useState(1);
   const [generatedVariants, setGeneratedVariants] = useState<Record<string, {radio:string[];stepChat:[string,string][];quiz:{q:string;opts:string[];ans:number;why:string}}>>({});
   const [generatingVariant, setGeneratingVariant] = useState(false);
@@ -729,34 +730,35 @@ export default function ThreatAcademy() {
   }, []);
 
 
-  // ── SOC adaptive: load attempt count and pre-generate variant for returning users ──
+  // ── SOC adaptive: load attempt count on mount ────────────────────────────────
   useEffect(() => {
     const saved = localStorage.getItem("cm-soc-sessions");
     const count = saved ? (JSON.parse(saved).attempts || 0) : 0;
     setSocAttempts(count + 1);
-    if (count >= 1) {
-      // Pick a random threat to generate a fresh variant for
-      const threats = ["phishing", "virus", "ransomware", "rootkit", "ddos"];
-      const target = threats[Math.floor(Math.random() * threats.length)];
-      setGeneratingVariant(true);
-      fetch("/api/soc/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ threat: target, attempts: count + 1 }),
-      })
-        .then(r => r.json())
-        .then(d => {
-          if (d.success && d.variant) {
-            setGeneratedVariants(prev => ({ ...prev, [target]: d.variant }));
-          }
-        })
-        .catch(() => {})
-        .finally(() => setGeneratingVariant(false));
-    }
-    // Save this session
     const cv = JSON.parse(localStorage.getItem("cm-soc-sessions") || "{}");
     localStorage.setItem("cm-soc-sessions", JSON.stringify({ attempts: (cv.attempts || 0) + 1 }));
   }, []);
+
+  // Generate Arabic/adaptive variant for a SPECIFIC threat when it actually runs
+  const generateVariantForThreat = async (threatKey: string): Promise<void> => {
+    if (generatedVariants[threatKey]) return; // already have one
+    const saved = localStorage.getItem("cm-soc-sessions");
+    const count = saved ? (JSON.parse(saved).attempts || 0) : 0;
+    if (count < 1) return; // first visit — use static content
+    setGeneratingVariant(true);
+    try {
+      const res = await fetch("/api/soc/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ threat: threatKey, attempts: count + 1, locale }),
+      });
+      const d = await res.json();
+      if (d.success && d.variant) {
+        setGeneratedVariants(prev => ({ ...prev, [threatKey]: d.variant }));
+      }
+    } catch {}
+    setGeneratingVariant(false);
+  };
 
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [chatMsgs]);
 
@@ -783,6 +785,11 @@ export default function ThreatAcademy() {
     const runAttack = async (threatKey: string, lastVariant: Record<string, number>) => {
       const def = THREATS[threatKey];
       const loc = localizedThreatsMap[threatKey];
+      // Generate locale-aware variant for THIS specific threat when it runs
+      // Fire generation immediately, then wait up to 18s for it to complete
+      // so Arabic content is ready before step 1 dialogue appears
+      const genPromise = generateVariantForThreat(threatKey);
+      await Promise.race([genPromise, new Promise(r => setTimeout(r, 18000))]);
       if (!loc || cancelled) return;
 
       alertIdCounter.current += 1;

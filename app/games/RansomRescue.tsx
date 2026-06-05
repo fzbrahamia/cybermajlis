@@ -6,7 +6,7 @@
 import { useState, useEffect } from "react";
 import { CHARS } from "@/app/lib/characters";
 import { GameShell, GameHeader, Intro, Result } from "@/components/GameShell";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 const shuffle = <T,>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
 
@@ -20,6 +20,7 @@ interface Choice  extends Option { stepIdx: number; }
 
 export default function RansomRescue({ onHome }: { onHome: (xp?: number) => void }) {
   const t = useTranslations('RansomRescue');
+  const locale = useLocale();
   
   const [phase, setPhase]       = useState<"intro"|"play"|"done">("intro");
   const [scenario, setScenario] = useState<Scenario | null>(null);
@@ -54,7 +55,7 @@ export default function RansomRescue({ onHome }: { onHome: (xp?: number) => void
       try {
         const res = await fetch("/api/games/generate", {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ gameId: "ransom", attempts: pastAttempts + 1 }),
+          body: JSON.stringify({ gameId: "ransom", attempts: pastAttempts + 1, locale }),
         });
         const data = await res.json();
         if (data.content?.steps) {

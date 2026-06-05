@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import { CHARS } from "@/app/lib/characters";
 import { GameShell, GameHeader, Intro, Result } from "@/components/GameShell";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 const shuffle = <T,>(arr: T[]): T[] => [...arr].sort(() => Math.random() - 0.5);
 
@@ -25,6 +25,7 @@ interface Email {
 
 export default function InboxInspector({ onHome }: { onHome: (xp?: number) => void }) {
   const t = useTranslations('InboxInspector');
+  const locale = useLocale();
   
   const [phase, setPhase]       = useState<"intro"|"play"|"done">("intro");
   const [emails, setEmails]     = useState<Email[]>([]);
@@ -75,7 +76,7 @@ export default function InboxInspector({ onHome }: { onHome: (xp?: number) => vo
       try {
         const res = await fetch("/api/games/generate", {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ gameId: "inbox", attempts: past + 1 }),
+          body: JSON.stringify({ gameId: "inbox", attempts: past + 1, locale }),
         });
         const data = await res.json();
         if (data.content && Array.isArray(data.content)) {
