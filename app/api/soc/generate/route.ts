@@ -19,35 +19,17 @@ function buildPrompt(threat: string, attempts: number, locale: string): string {
   const isAr = locale === "ar";
 
   if (isAr) {
+    // Short Arabic prompt — prevents token overflow and JSON truncation
+    const orgs = ["بنك قطر الوطني", "وزارة الداخلية", "أوريدو", "قطر للطاقة"];
+    const org = orgs[attempts % orgs.length];
     return (
-      "أنت تكتب محتوى محاكاة مركز عمليات الأمن السيبراني لمنصة CyberMajlis القطرية.\n\n" +
-      "اكتب متغيراً جديداً لهجوم " + threat + " (" + ctx.ar + ") على مؤسسة قطرية.\n" +
-      (attempts > 1 ? "هذه زيارة رقم " + attempts + " للمستخدم — اجعل المحتوى أكثر تعقيداً تقنياً.\n" : "") +
-      "فريق مركز العمليات: صقر (كشف التهديدات)، أوركس (تقييم المخاطر)، ثعلب (التحليل الجنائي)، حصان (الاستجابة للحوادث).\n" +
-      "استخدم سياقاً قطرياً: بنوك، جهات حكومية، شركات اتصالات، شركات طاقة.\n\n" +
-      "أعد فقط JSON صحيحاً — بدون markdown:\n" +
-      "{\n" +
-      "  \"radio\": [\n" +
-      "    \"تنبيه SIEM 1 — الكشف الأولي (موجز، تقني، واقعي بالعربية)\",\n" +
-      "    \"تنبيه SIEM 2 — تصعيد\",\n" +
-      "    \"تنبيه SIEM 3 — إجراء المهاجم\",\n" +
-      "    \"تنبيه SIEM 4 — الانتشار أو التأثير\",\n" +
-      "    \"تنبيه SIEM 5 — الاحتواء\"\n" +
-      "  ],\n" +
-      "  \"stepChat\": [\n" +
-      "    [\"صقر: سطر للخطوة 1\", \"أوركس: سطر للخطوة 1\"],\n" +
-      "    [\"ثعلب: سطر للخطوة 2\", \"حصان: سطر للخطوة 2\"],\n" +
-      "    [\"ثعلب: سطر للخطوة 3\", \"أوركس: سطر للخطوة 3\"],\n" +
-      "    [\"حصان: سطر للخطوة 4\", \"صقر: سطر للخطوة 4\"],\n" +
-      "    [\"أي محلل — سطر الحل للخطوة 5\", \"أي محلل — الدرس المستفاد\"]\n" +
-      "  ],\n" +
-      "  \"quiz\": {\n" +
-      "    \"q\": \"سؤال باللغة العربية البسيطة عن هذا النوع من الهجوم (20 كلمة كحد أقصى)\",\n" +
-      "    \"opts\": [\"خيار خاطئ\", \"الإجابة الصحيحة\", \"خيار خاطئ\", \"خيار خاطئ\"],\n" +
-      "    \"ans\": 1,\n" +
-      "    \"why\": \"جملة واحدة تشرح لماذا الإجابة الصحيحة صحيحة (بالعربية البسيطة)\"\n" +
-      "  }\n" +
-      "}"
+      "Generate SOC simulation JSON in Arabic for CyberMajlis Qatar.\n" +
+      "Attack: " + threat + " on " + org + ".\n" +
+      "CRITICAL: Every string value max 10 Arabic words. No newlines in strings. Return pure JSON only.\n\n" +
+      '{"radio":["تنبيه قصير 1","تنبيه قصير 2","تنبيه قصير 3","تنبيه قصير 4","تنبيه قصير 5"],' +
+      '"stepChat":[["صقر: جملة قصيرة","أوركس: جملة قصيرة"],["ثعلب: جملة","حصان: جملة"],["ثعلب: جملة","أوركس: جملة"],["حصان: جملة","صقر: جملة"],["محلل: خلاصة","محلل: درس"]],' +
+      '"quiz":{"q":"سؤال قصير","opts":["خطأ","صحيح","خطأ","خطأ"],"ans":1,"why":"سبب موجز"}}\n\n' +
+      "Fill each value with relevant Arabic content for the " + threat + " attack on " + org + "."
     );
   }
 
@@ -95,9 +77,10 @@ export async function POST(req: NextRequest) {
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
       },
+      signal: AbortSignal.timeout(30000),
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 1500,
+        max_tokens: 1000,
         messages: [{ role: "user", content: buildPrompt(threat, attempts, locale) }],
       }),
     });
@@ -107,18 +90,49 @@ export async function POST(req: NextRequest) {
       throw new Error("Claude API " + res.status + ": " + errBody.slice(0, 200));
     }
     const data = await res.json();
-    const raw = (data.content?.[0]?.text || "")
-      .replace(/```json[\s\S]*?```/g, (m: string) => m.slice(7, -3))
-      .replace(/```/g, "")
-      .trim();
+    const text = data.content?.[0]?.text || "";
 
-    // Find the JSON object in the response (Claude sometimes adds preamble)
-    const jsonStart = raw.indexOf("{");
-    const jsonEnd   = raw.lastIndexOf("}");
-    if (jsonStart === -1 || jsonEnd === -1) {
-      throw new Error("No JSON object in response. Raw: " + raw.slice(0, 300));
+    // Try multiple parse strategies — Claude's output format varies
+    let variant: any = null;
+    const parseAttempts = [
+      // 1. Direct parse (Claude returned pure JSON)
+      () => JSON.parse(text),
+      // 2. Extract between first { and last }
+      () => {
+        const s = text.indexOf("{"), e = text.lastIndexOf("}");
+        if (s === -1 || e === -1) throw new Error("no braces");
+        return JSON.parse(text.slice(s, e + 1));
+      },
+      // 3. Strip markdown fences then extract
+      () => {
+        const cleaned = text.replace(/```json|```/g, "").trim();
+        const s = cleaned.indexOf("{"), e = cleaned.lastIndexOf("}");
+        if (s === -1 || e === -1) throw new Error("no braces after strip");
+        return JSON.parse(cleaned.slice(s, e + 1));
+      },
+      // 4. Replace literal newlines inside string values (Arabic content)
+      () => {
+        const s = text.indexOf("{"), e = text.lastIndexOf("}");
+        if (s === -1 || e === -1) throw new Error("no braces");
+        let inStr = false; let result = "";
+        for (const ch of text.slice(s, e + 1)) {
+          if (ch === '"') inStr = !inStr;
+          result += (inStr && (ch === "\n" || ch === "\r")) ? " " : ch;
+        }
+        return JSON.parse(result);
+      },
+    ];
+
+    const strategyErrors: string[] = [];
+    for (let i = 0; i < parseAttempts.length; i++) {
+      try { variant = parseAttempts[i](); if (variant) break; }
+      catch (e) { strategyErrors.push("S" + (i+1) + ": " + String(e).slice(0, 60)); }
     }
-    const variant = JSON.parse(raw.slice(jsonStart, jsonEnd + 1));
+
+    if (!variant) {
+      console.error("[soc/generate] All strategies failed:", strategyErrors);
+      throw new Error("Could not parse JSON. Strategies: " + strategyErrors.join(" | ") + " Raw: " + text.slice(0, 200));
+    }
 
     return NextResponse.json({ success: true, variant, locale });
   } catch (err) {
