@@ -85,7 +85,6 @@ export default function DeviceLessonPage() {
               className="lesson-card"
               style={{ background: "#fdf8f4", color: "#3e1316" }}
             >
-              <div style={{ fontSize: "2.4rem", marginBottom: "0.7rem" }}>🎥</div>
               <h3
                 style={{
                   fontFamily: "'Cinzel', serif",
@@ -105,7 +104,7 @@ export default function DeviceLessonPage() {
               className="lesson-card"
               style={{ background: "#fffaf6", color: "#3e1316" }}
             >
-              <div style={{ fontSize: "2.4rem", marginBottom: "0.7rem" }}>📖</div>
+
               <h3
                 style={{
                   fontFamily: "'Cinzel', serif",
@@ -128,7 +127,6 @@ export default function DeviceLessonPage() {
                 color: "#E8D4BC",
               }}
             >
-              <div style={{ fontSize: "2.4rem", marginBottom: "0.7rem" }}>✅</div>
               <h3
                 style={{
                   fontFamily: "'Cinzel', serif",
