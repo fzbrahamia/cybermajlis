@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { Volume2, VolumeX, ChevronDown, Compass, Swords, Trophy } from "lucide-react";
 import { useLocale } from "next-intl";
+import Footer from "@/components/ui/Footer";
 
 /* ── Fonts ───────────────────────────────────────────────── */
 const cinzel  = '"Cinzel", "Trajan Pro", Georgia, serif';
@@ -95,35 +96,6 @@ const HOW_IT_WORKS = [
   },
 ];
 
-const FOOTER_COLS = [
-  {
-    title: "LEARN",
-    items: [
-      { label: "Curriculum",  href: "/dashboard" },
-      { label: "Missions",    href: "/games"     },
-      { label: "SOC Sim",     href: "/soc"       },
-      { label: "Glossary",    href: "/dashboard" },
-    ],
-  },
-  {
-    title: "COMMUNITY",
-    items: [
-      { label: "Majlis",      href: "/dashboard" },
-      { label: "Duels",       href: "/games"     },
-      { label: "Tournaments", href: "/games"     },
-      { label: "Leaderboard", href: "/profile"   },
-    ],
-  },
-  {
-    title: "ACCOUNT",
-    items: [
-      { label: "Log In",      href: "/auth"             },
-      { label: "Sign Up",     href: "/auth?signup=true"  },
-      { label: "Cohort 03",   href: "/auth?signup=true"  },
-      { label: "Support",     href: "/"                  },
-    ],
-  },
-];
 
 /* ── Hooks ───────────────────────────────────────────────── */
 
@@ -155,21 +127,6 @@ function useScrollY() {
 
 /* ── SVG components ──────────────────────────────────────── */
 
-function Mark({ size = 24 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden>
-      <defs>
-        <linearGradient id="markGrad" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor="#3e1316" />
-          <stop offset="1" stopColor="#8B2635" />
-        </linearGradient>
-      </defs>
-      <polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="url(#markGrad)" />
-      <polygon points="32,14 48,23 48,41 32,50 16,41 16,23" fill="none" stroke="#c5a57e" strokeWidth="1.2" />
-      <circle cx="32" cy="32" r="5" fill="#c5a57e" />
-    </svg>
-  );
-}
 
 function DesignWatermark({ size = 600 }: { size?: number }) {
   return (
@@ -822,11 +779,6 @@ export default function HomePage() {
             {isAR ? "قطر تحتاج جيلها القادم من المدافعين." : "Qatar needs its next generation of defenders."}
           </h2>
           <CenterDivider />
-          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "#5a2428", marginTop: 18, lineHeight: 1.55 }}>
-            {isAR
-              ? "يُغلق التسجيل في الفوج الثالث خلال 14 يوماً. احجز مقعدك في المجلس."
-              : "Cohort 03 enrollment closes in 14 days. Claim your seat at the Majlis."}
-          </p>
           <div style={{ display: "flex", gap: 14, marginTop: 28, justifyContent: "center", flexWrap: "wrap" }}>
             <button
               onClick={() => router.push("/auth?signup=true")}
@@ -848,93 +800,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════
-          § 6  FOOTER  (dark maroon)
-          ════════════════════════════════════════ */}
-      <footer style={{
-        position: "relative", zIndex: 1,
-        padding: "80px 4rem 0",
-        background: "linear-gradient(180deg, #3e1316 0%, #2a0c0e 100%)",
-        color: "#E8D4BC",
-        borderTop: "1px solid rgba(197,165,126,.25)",
-      }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-
-          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: "3rem" }}>
-
-            {/* Brand column */}
-            <div style={{ maxWidth: 320 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
-                <Mark size={48} />
-              </div>
-              {isAR && (
-                <div style={{ fontFamily: crimson, fontSize: 16, color: "rgba(232,212,188,.55)", direction: "rtl", marginTop: 8 }}>
-                  المجلس السيبراني
-                </div>
-              )}
-              <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 14, color: "rgba(232,212,188,.72)", lineHeight: 1.55, marginTop: 18, maxWidth: 280 }}>
-                {isAR
-                  ? "أكاديمية قطر في الأمن السيبراني. تأسست في الدوحة، بُنيت للمنطقة، كُتبت للعالم."
-                  : "Qatar's gamified cybersecurity academy. Founded in Doha, built for the region, written for the world."}
-              </p>
-              <div style={{ height: 1, width: 60, background: "#c5a57e", margin: "20px 0 14px" }} />
-              <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 2, color: "#c5a57e", fontWeight: 600 }}>
-                QATAR · CYBERSECURITY EDUCATION
-              </div>
-            </div>
-
-            {/* Link columns */}
-            {FOOTER_COLS.map(({ title, items }) => (
-              <div key={title}>
-                <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: 11, letterSpacing: 2.5, color: "#c5a57e", marginBottom: 18 }}>
-                  {title}
-                </div>
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 12 }}>
-                  {items.map(({ label, href }) => (
-                    <li key={label}>
-                      <a
-                        onClick={() => router.push(href)}
-                        style={{ fontFamily: crimson, fontSize: "0.95rem", color: "rgba(232,212,188,.78)", textDecoration: "none", cursor: "pointer", transition: "color .2s ease" }}
-                        onMouseEnter={e => { (e.target as HTMLElement).style.color = "#E8D4BC"; }}
-                        onMouseLeave={e => { (e.target as HTMLElement).style.color = "rgba(232,212,188,.78)"; }}
-                      >
-                        {label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom bar */}
-          <div style={{
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-            padding: "24px 0", marginTop: 56,
-            borderTop: "1px solid rgba(197,165,126,.18)",
-            flexWrap: "wrap", gap: 12,
-          }}>
-            <span style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "0.82rem", color: "rgba(232,212,188,.55)" }}>
-              © {new Date().getFullYear()} CyberMajlis · Founded in Doha
-            </span>
-            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-              {["Privacy Policy", "Terms of Use", "Accessibility"].map((label, i) => (
-                <span key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  {i > 0 && <span style={{ color: "rgba(232,212,188,.3)" }}>·</span>}
-                  <a
-                    href="#"
-                    style={{ fontFamily: crimson, fontSize: "0.82rem", color: "rgba(232,212,188,.5)", textDecoration: "none", transition: "color .2s ease" }}
-                    onMouseEnter={e => { (e.target as HTMLElement).style.color = "rgba(232,212,188,.85)"; }}
-                    onMouseLeave={e => { (e.target as HTMLElement).style.color = "rgba(232,212,188,.5)"; }}
-                  >
-                    {label}
-                  </a>
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
     </div>
   );

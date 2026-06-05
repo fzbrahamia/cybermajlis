@@ -1,36 +1,6 @@
 "use client";
 
-// ─────────────────────────────────────────────────────────────
-// Navbar — fully migrated to next-intl
-//
-// LANGUAGE TOGGLE:
-//   Writes a "locale" cookie and reloads. The server reads it
-//   in src/i18n/request.ts → serves the correct JSON.
-//   layout.tsx sets <html dir="rtl"> automatically for Arabic.
-//
-// KEYS TO ADD to your messages/en.json and messages/ar.json:
-//   See the en.navbar.json / ar.navbar.json files provided.
-//   Merge the "Hub.navbar" block into your existing JSON files.
-// ─────────────────────────────────────────────────────────────
-
 import { useState, useEffect } from "react";
-
-// ── CyberMajlis hexagonal brand mark ─────────────────────────
-function Mark({ size = 24 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden>
-      <defs>
-        <linearGradient id="markGradNav" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor="#3e1316" />
-          <stop offset="1" stopColor="#8B2635" />
-        </linearGradient>
-      </defs>
-      <polygon points="32,4 56,18 56,46 32,60 8,46 8,18" fill="url(#markGradNav)" />
-      <polygon points="32,14 48,23 48,41 32,50 16,41 16,23" fill="none" stroke="#c5a57e" strokeWidth="1.2" />
-      <circle cx="32" cy="32" r="5" fill="#c5a57e" />
-    </svg>
-  );
-}
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -49,20 +19,27 @@ declare global {
   interface Window { chatbase: any; }
 }
 
-// ── Cookie helper (same as Hub.tsx) ──────────────────────────
 function setLocaleCookie(locale: string) {
   document.cookie = `locale=${locale}; path=/; max-age=31536000`;
   window.location.reload();
 }
 
+const NAV_LINKS = [
+  { label: "Community", href: "/community" },
+  { label: "Games",     href: "/games"     },
+  { label: "News",      href: "/news"      },
+  { label: "Scanner",      href: "/scan"      },
+  { label: "SOC",       href: "/soc"       },
+];
+
 export default function Navbar() {
   const t = useTranslations("Hub.navbar");
-  const locale = useLocale();           // 'en' | 'ar'
+  const locale = useLocale();
   const isArabic = locale === "ar";
 
   const pathname = usePathname();
   const router = useRouter();
-  const isMainOrAuthPage = pathname === "/" || pathname.startsWith("/auth");
+  const isAuthPage = pathname.startsWith("/auth");
 
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [username, setUsername] = useState<string>("");
@@ -78,7 +55,6 @@ export default function Navbar() {
     setModal({ isOpen: true, title, message, onConfirm, confirmText });
   const closeModal = () => setModal((prev) => ({ ...prev, isOpen: false }));
 
-  // ── Auth listener ─────────────────────────────────────────
   useEffect(() => {
     let unsubscribeDoc: (() => void) | null = null;
 
@@ -139,256 +115,148 @@ export default function Navbar() {
     }
   };
 
-  // ── Dropdown menu items ───────────────────────────────────
   const menuItems = [
-    { icon: User,        label: t("profile"),  action: () => router.push("/profile")  },
-    { icon: Settings,    label: t("settings"), action: () => router.push("/settings") },
-    { icon: HelpCircle,  label: t("help"),     action: handleHelpClick                },
+    { icon: User,       label: t("profile"),  action: () => router.push("/profile")  },
+    { icon: Settings,   label: t("settings"), action: () => router.push("/settings") },
+    { icon: HelpCircle, label: t("help"),     action: handleHelpClick                },
   ];
 
-  // ── Landing-page nav variant ──────────────────────────────
-  // Shown only on "/" — glassmorphic cream style matching the design.
-  if (pathname === "/") {
-    const landingNavLink: React.CSSProperties = {
-      fontFamily: "'Cinzel', serif", fontSize: 11, letterSpacing: 2,
-      fontWeight: 600, color: "rgba(227,218,201,0.85)", textDecoration: "none", cursor: "pointer",
-    };
-    const landingBtnSm: React.CSSProperties = {
-      fontFamily: "'Cinzel', serif", fontSize: 11, fontWeight: 700, letterSpacing: 1.2,
-      padding: "9px 18px", borderRadius: 8, border: "none", cursor: "pointer",
-      color: "#3e1316", background: "linear-gradient(135deg, #e8d4bc, #c5a57e)",
-      boxShadow: "0 2px 12px rgba(197,165,126,.35)", transition: "all .25s ease",
-    };
+  const navLinkStyle: React.CSSProperties = {
+    fontFamily: "'Cinzel', serif",
+    fontSize: 11,
+    letterSpacing: 2,
+    fontWeight: 600,
+    color: "rgba(227,218,201,0.85)",
+    textDecoration: "none",
+    cursor: "pointer",
+  };
 
-    return (
-      <>
-        <nav style={{
-          position: "fixed", top: 0, left: 0, right: 0, width: "100%", zIndex: 50,
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "20px 56px",
-          borderBottom: "1px solid rgba(197,165,126,.15)",
-          background: "linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%)",
-          backdropFilter: "blur(8px)",
-          boxShadow: "0 2px 20px rgba(62,19,22,.4)",
-        }}>
-          {/* Brand */}
-          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }} aria-label="CyberMajlis home">
-            <img
-              src={isArabic ? "/logoAr.png" : "/logoEn.png"}
-              alt="CyberMajlis"
-              style={{ height: 40, width: "auto" }}
-            />
-          </a>
-
-          {/* Nav links */}
-          <div style={{ display: "flex", gap: 40 }}>
-            {[
-              { label: "About",     href: "#about"     },
-              { label: "Majlis",    href: "#majlis"    },
-              { label: "SOC",       href: "/soc"       },
-              { label: "Community", href: "#community" },
-            ].map(({ label, href }) => (
-              <a key={label} href={href} style={{
-                ...landingNavLink,
-                ...(label === "About" ? { color: "#E8D4BC", borderBottom: "1.5px solid rgba(197,165,126,.7)", paddingBottom: 4 } : {}),
-              }}>
-                {label}
-              </a>
-            ))}
-          </div>
-
-          {/* Auth + locale */}
-          <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-            {/* EN / AR toggle */}
-            <button
-              onClick={() => setLocaleCookie(isArabic ? "en" : "ar")}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                padding: "6px 12px", borderRadius: 99, cursor: "pointer",
-                background: "rgba(197,165,126,.08)", border: "1px solid rgba(197,165,126,.25)",
-                fontFamily: "'Cinzel', serif", fontSize: 10, letterSpacing: 1.5, fontWeight: 700,
-              }}
-              aria-label="Toggle language"
-            >
-              <span style={{ color: isArabic ? "rgba(227,218,201,.35)" : "rgba(227,218,201,.9)" }}>EN</span>
-              <span style={{ display: "inline-block", width: 1, height: 10, background: "rgba(197,165,126,.3)" }} />
-              <span style={{ color: isArabic ? "rgba(227,218,201,.9)" : "rgba(227,218,201,.35)" }}>AR</span>
-            </button>
-
-            {/* Auth: Log In + Sign Up (unauthenticated) or profile dropdown (authenticated) */}
-            {!currentUser ? (
-              <>
-                <a
-                  href="/auth"
-                  style={{ ...landingNavLink }}
-                >
-                  Log In
-                </a>
-                <button
-                  onClick={() => router.push("/auth?signup=true")}
-                  style={landingBtnSm}
-                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 6px 18px rgba(99,32,36,.35)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 2px 10px rgba(99,32,36,.25)"; }}
-                >
-                  Sign Up
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => router.push("/dashboard")}
-                style={landingBtnSm}
-              >
-                Dashboard
-              </button>
-            )}
-          </div>
-        </nav>
-
-        <Modal
-          isOpen={modal.isOpen}
-          title={modal.title}
-          message={modal.message}
-          onClose={closeModal}
-          onConfirm={modal.onConfirm}
-          confirmText={modal.confirmText}
-        />
-      </>
-    );
-  }
+  const btnSmStyle: React.CSSProperties = {
+    fontFamily: "'Cinzel', serif",
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: 1.2,
+    padding: "9px 18px",
+    borderRadius: 8,
+    border: "none",
+    cursor: "pointer",
+    color: "#3e1316",
+    background: "linear-gradient(135deg, #e8d4bc, #c5a57e)",
+    boxShadow: "0 2px 12px rgba(197,165,126,.35)",
+    transition: "all .25s ease",
+  };
 
   return (
     <>
-      <nav
-        className="fixed top-0 left-0 w-full z-50 shadow-md"
-        style={{
-          background: "linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%)",
-          borderBottom: "1px solid rgba(197,165,126,0.15)",
-          boxShadow: "0 2px 20px rgba(62,19,22,0.4)",
-        }}
-      >
-        <div className="w-full px-5 flex justify-between items-center">
-
-
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-          <Link
-            href={currentUser ? "/dashboard" : "/"}
-            style={{
-              fontFamily: "system-ui, sans-serif",
-              fontSize: "1.1rem", fontWeight: 600,
-              color: "#E3DAC9", letterSpacing: "0.01em",
-              textDecoration: "none",
-            }}
-          >
+      <nav style={{
+        position: "fixed", top: 0, left: 0, right: 0, width: "100%", zIndex: 50,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "20px 56px",
+        borderBottom: "1px solid rgba(197,165,126,.15)",
+        background: "linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%)",
+        backdropFilter: "blur(8px)",
+        boxShadow: "0 2px 20px rgba(62,19,22,.4)",
+      }}>
+        {/* Brand */}
+        <a
+          href={currentUser ? "/dashboard" : "/"}
+          style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
+          aria-label="CyberMajlis home"
+        >
           <img
             src={isArabic ? "/logoAr.png" : "/logoEn.png"}
-            alt="Logo"
-            className="w-38 h-20 object-contain"
+            alt="CyberMajlis"
+            style={{ height: 40, width: "auto" }}
           />
-            {/* {t("brand")} */}
-          </Link>
+        </a>
+
+        {/* Nav links */}
+        <div style={{ display: "flex", gap: 40 }}>
+          {NAV_LINKS.map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              style={{
+                ...navLinkStyle,
+                ...(pathname.startsWith(href)
+                  ? { color: "#E8D4BC", borderBottom: "1.5px solid rgba(197,165,126,.7)", paddingBottom: 4 }
+                  : {}),
+              }}
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+
+        {/* Auth + locale */}
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          {/* EN / AR sliding toggle */}
+          <div
+            className="relative flex rounded-[10px] p-[3px]"
+            style={{ background: "rgba(255,255,255,0.12)", width: 110, direction: "ltr" }}
+          >
+            <div
+              className="absolute top-[3px] bottom-[3px] rounded-[8px] transition-transform duration-300 ease-in-out"
+              style={{
+                background: "#E3DAC9",
+                width: "calc(50% - 3px)",
+                left: "3px",
+                transform: isArabic ? "translateX(100%)" : "translateX(0)",
+              }}
+            />
+            <button
+              onClick={() => !isArabic || setLocaleCookie("en")}
+              className="relative z-10 w-1/2 py-[7px] rounded-[8px] transition-all duration-300"
+              style={{
+                fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 600,
+                color: !isArabic ? "#632024" : "rgba(227,218,201,0.7)",
+                cursor: !isArabic ? "default" : "pointer",
+                border: "none", background: "transparent",
+              }}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => isArabic || setLocaleCookie("ar")}
+              className="relative z-10 w-1/2 py-[7px] rounded-[8px] transition-all duration-300"
+              style={{
+                fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 600,
+                color: isArabic ? "#632024" : "rgba(227,218,201,0.7)",
+                cursor: isArabic ? "default" : "pointer",
+                border: "none", background: "transparent",
+              }}
+            >
+              عربي
+            </button>
           </div>
 
-          {/* Right section */}
-          <div className="flex items-center gap-5">
-
-            {/* Games icon */}
-            {!isMainOrAuthPage && (
-              <div className="cursor-pointer" onClick={() => router.push("/games")} title="Games">
-                <img
-                  src="/icons/games.gif"
-                  className="w-8 h-8 object-contain opacity-90 hover:opacity-100 transition-opacity"
-                />
-              </div>
-            )}
-
-            {/* Live SOC */}
-            {!isMainOrAuthPage && (
+          {/* Auth section */}
+          {!currentUser ? (
+            <>
+              <a href="/auth" style={{ ...navLinkStyle }}>
+                Log In
+              </a>
               <button
-                onClick={() => router.push("/soc")}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200"
-                style={{
-                  fontFamily: "'Cinzel', serif", fontSize: "0.95rem", fontWeight: 600,
-                  color: "#E3DAC9", border: "1px solid rgba(227,218,201,0.2)",
-                  background: "rgba(255,255,255,0.06)",
+                onClick={() => router.push("/auth?signup=true")}
+                style={btnSmStyle}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 6px 18px rgba(99,32,36,.35)";
                 }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = "";
+                  e.currentTarget.style.boxShadow = "0 2px 12px rgba(197,165,126,.35)";
+                }}
               >
-                <span style={{
-                  width: 7, height: 7, borderRadius: "50%",
-                  background: "#4ade80", flexShrink: 0, display: "inline-block",
-                  boxShadow: "0 0 6px #4ade80",
-                  animation: "navSocPulse 1.8s ease-in-out infinite",
-                }} />
-                {t("live_soc")}
+                Sign Up
               </button>
-            )}
-
-            {/* ── EN / AR toggle ── */}
-            {/*
-              direction:"ltr" locks the track’s internal layout so EN is
-              always on the left and AR on the right, regardless of the
-              page-level RTL mode set by layout.tsx.
-              The pill uses translateX instead of `left` so it is immune
-              to the browser mirroring `left` in RTL context.
-            */}
-            <div
-              className="relative flex rounded-[10px] p-[3px]"
-              style={{ background: "rgba(255,255,255,0.12)", width: 110, direction: "ltr"}}
-            >
-              {/* Sliding pill — translateX(0)=EN side, translateX(100%)=AR side */}
-              <div
-                className="absolute top-[3px] bottom-[3px] rounded-[8px] transition-transform duration-300 ease-in-out"
-                style={{
-                  background: "#E3DAC9",
-                  width: "calc(50% - 3px)",
-                  left: "3px",
-                  transform: isArabic ? "translateX(100%)" : "translateX(0)",
-                }}
-              />
-              <button
-                onClick={() => !isArabic || setLocaleCookie("en")}
-                className="relative z-10 w-1/2 py-[7px] rounded-[8px] transition-all duration-300"
-                style={{
-                  fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 600,
-                  color: !isArabic ? "#632024" : "rgba(227,218,201,0.7)",
-                  cursor: !isArabic ? "default" : "pointer",
-                  border: "none", background: "transparent",
-                }}
-              >
-                EN
-              </button>
-              <button
-                onClick={() => isArabic || setLocaleCookie("ar")}
-                className="relative z-10 w-1/2 py-[7px] rounded-[8px] transition-all duration-300"
-                style={{
-                  fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 600,
-                  color: isArabic ? "#632024" : "rgba(227,218,201,0.7)",
-                  cursor: isArabic ? "default" : "pointer",
-                  border: "none", background: "transparent",
-                }}
-              >
-                عربي
-              </button>
-            </div>
-
-            {/* Login or profile dropdown */}
-            {isMainOrAuthPage || !currentUser ? (
-              <Link
-                href="/auth"
-                style={{
-                  fontFamily: "inherit", fontSize: "0.9rem", fontWeight: 600,
-                  background: "#E3DAC9", color: "#632024",
-                  padding: "9px 20px", borderRadius: 8, textDecoration: "none",
-                }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = "#c5a57e")}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = "#E3DAC9")}
-              >
-                {t("login")}
-              </Link>
-            ) : (
-              <DirectionProvider dir={isArabic ? "rtl" : "ltr"}>
+            </>
+          ) : isAuthPage ? (
+            <button onClick={() => router.push("/dashboard")} style={btnSmStyle}>
+              Dashboard
+            </button>
+          ) : (
+            <DirectionProvider dir={isArabic ? "rtl" : "ltr"}>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="flex items-center gap-3 cursor-pointer">
@@ -428,10 +296,8 @@ export default function Navbar() {
                     zIndex: 9999,
                   }}
                 >
-                  {/* Gold top stripe */}
                   <div style={{ height: 2, background: "linear-gradient(90deg, #c5a57e, rgba(197,165,126,0.1))" }} />
 
-                  {/* User info */}
                   <DropdownMenuLabel className="font-normal" style={{ padding: "12px 18px" }}>
                     <div className="flex flex-col gap-0.5">
                       <p style={{ fontFamily: "'Cinzel', serif", fontSize: "0.8rem", fontWeight: 700, color: "#E8D4BC", letterSpacing: "0.04em" }}>
@@ -491,20 +357,12 @@ export default function Navbar() {
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
-              </DirectionProvider>
-            )}
-          </div>
+            </DirectionProvider>
+          )}
         </div>
-
-        <style>{`
-          @keyframes navSocPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(74,222,128,.5); }
-            50%       { box-shadow: 0 0 0 4px rgba(74,222,128,0); }
-          }
-        `}</style>
       </nav>
 
-      {/* ── Logout confirmation dialog ── */}
+      {/* Logout confirmation dialog */}
       {openDialog && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
@@ -518,9 +376,7 @@ export default function Navbar() {
             boxShadow: "0 24px 64px rgba(62,19,22,0.45), inset 0 2px 0 rgba(255,255,255,0.07)",
             border: "1px solid rgba(197,165,126,0.15)",
           }}>
-            {/* Top stripe */}
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, #c5a57e, rgba(197,165,126,0.2))" }} />
-            {/* Ornament */}
             <div style={{ position: "absolute", top: -50, right: -50, width: 140, height: 140, borderRadius: "50%", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", pointerEvents: "none" }} />
 
             <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: "1rem", fontWeight: 700, color: "#E8D4BC", letterSpacing: "0.05em", marginBottom: "0.8rem", position: "relative", zIndex: 1 }}>

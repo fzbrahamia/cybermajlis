@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import Chatbot from "@/components/Chatbot";
 import Navbar from "@/components/ui/NavBar";
+import Footer from "@/components/ui/Footer";
 import Modal from "@/components/Modal";
 import { useSessionTimeout } from "@/hooks/useSessionTimeout";
 import { useTranslations } from "next-intl";
@@ -15,6 +16,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const isMainOrAuthPage = pathname === "/" || pathname.startsWith("/auth");
   const isGamesPage = pathname.startsWith("/games");
   const isSocPage = pathname.startsWith("/soc");
+  const showFooter = !isMainOrAuthPage && !isGamesPage && !isSocPage;
   const hideChatbot = isGamesPage || isSocPage;
 
   const isLoggedIn = !isMainOrAuthPage && !hideChatbot;
@@ -45,6 +47,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {!isGamesPage && !isSocPage && <Navbar />}
       {!hideChatbot && <Chatbot isLoggedIn={isLoggedIn} />}
       <div>{children}</div>
+      {showFooter && <Footer />}
       <Modal
         isOpen={showWarning}
         title={t("warning_title")}

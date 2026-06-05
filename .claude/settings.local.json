@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\fzbra\\\\Documents\\\\GitHub\\\\fzbrhamia\\\\cybermajlis\" -Force)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\fzbra\\\\Documents\\\\GitHub\\\\fzbrhamia\\\\cybermajlis\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\fzbra\\\\Documents\\\\GitHub\\\\fzbrhamia\\\\cybermajlis\" -Depth 0 -Force)",
+      "Bash(Select-Object -ExpandProperty Name)"
     ]
   }
 }
