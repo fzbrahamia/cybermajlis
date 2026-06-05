@@ -19,17 +19,35 @@ function buildPrompt(threat: string, attempts: number, locale: string): string {
   const isAr = locale === "ar";
 
   if (isAr) {
-    // Short Arabic prompt — prevents token overflow and JSON truncation
-    const orgs = ["بنك قطر الوطني", "وزارة الداخلية", "أوريدو", "قطر للطاقة"];
-    const org = orgs[attempts % orgs.length];
     return (
-      "Generate SOC simulation JSON in Arabic for CyberMajlis Qatar.\n" +
-      "Attack: " + threat + " on " + org + ".\n" +
-      "CRITICAL: Every string value max 10 Arabic words. No newlines in strings. Return pure JSON only.\n\n" +
-      '{"radio":["تنبيه قصير 1","تنبيه قصير 2","تنبيه قصير 3","تنبيه قصير 4","تنبيه قصير 5"],' +
-      '"stepChat":[["صقر: جملة قصيرة","أوركس: جملة قصيرة"],["ثعلب: جملة","حصان: جملة"],["ثعلب: جملة","أوركس: جملة"],["حصان: جملة","صقر: جملة"],["محلل: خلاصة","محلل: درس"]],' +
-      '"quiz":{"q":"سؤال قصير","opts":["خطأ","صحيح","خطأ","خطأ"],"ans":1,"why":"سبب موجز"}}\n\n' +
-      "Fill each value with relevant Arabic content for the " + threat + " attack on " + org + "."
+      "أنت تكتب محتوى محاكاة مركز عمليات الأمن السيبراني لمنصة CyberMajlis القطرية.\n\n" +
+      "اكتب متغيراً جديداً لهجوم " + threat + " (" + ctx.ar + ") على مؤسسة قطرية.\n" +
+      (attempts > 1 ? "هذه زيارة رقم " + attempts + " للمستخدم — اجعل المحتوى أكثر تعقيداً تقنياً.\n" : "") +
+      "فريق مركز العمليات: صقر (كشف التهديدات)، أوركس (تقييم المخاطر)، ثعلب (التحليل الجنائي)، حصان (الاستجابة للحوادث).\n" +
+      "استخدم سياقاً قطرياً: بنوك، جهات حكومية، شركات اتصالات، شركات طاقة.\n\n" +
+      "أعد فقط JSON صحيحاً — بدون markdown:\n" +
+      "{\n" +
+      "  \"radio\": [\n" +
+      "    \"تنبيه SIEM 1 — الكشف الأولي (موجز، تقني، واقعي بالعربية)\",\n" +
+      "    \"تنبيه SIEM 2 — تصعيد\",\n" +
+      "    \"تنبيه SIEM 3 — إجراء المهاجم\",\n" +
+      "    \"تنبيه SIEM 4 — الانتشار أو التأثير\",\n" +
+      "    \"تنبيه SIEM 5 — الاحتواء\"\n" +
+      "  ],\n" +
+      "  \"stepChat\": [\n" +
+      "    [\"صقر: سطر للخطوة 1\", \"أوركس: سطر للخطوة 1\"],\n" +
+      "    [\"ثعلب: سطر للخطوة 2\", \"حصان: سطر للخطوة 2\"],\n" +
+      "    [\"ثعلب: سطر للخطوة 3\", \"أوركس: سطر للخطوة 3\"],\n" +
+      "    [\"حصان: سطر للخطوة 4\", \"صقر: سطر للخطوة 4\"],\n" +
+      "    [\"أي محلل — سطر الحل للخطوة 5\", \"أي محلل — الدرس المستفاد\"]\n" +
+      "  ],\n" +
+      "  \"quiz\": {\n" +
+      "    \"q\": \"سؤال باللغة العربية البسيطة عن هذا النوع من الهجوم (20 كلمة كحد أقصى)\",\n" +
+      "    \"opts\": [\"خيار خاطئ\", \"الإجابة الصحيحة\", \"خيار خاطئ\", \"خيار خاطئ\"],\n" +
+      "    \"ans\": 1,\n" +
+      "    \"why\": \"جملة واحدة تشرح لماذا الإجابة الصحيحة صحيحة (بالعربية البسيطة)\"\n" +
+      "  }\n" +
+      "}"
     );
   }
 
@@ -77,10 +95,9 @@ export async function POST(req: NextRequest) {
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
       },
-      signal: AbortSignal.timeout(30000),
       body: JSON.stringify({
         model: "claude-sonnet-4-6",
-        max_tokens: 1000,
+        max_tokens: 2500,
         messages: [{ role: "user", content: buildPrompt(threat, attempts, locale) }],
       }),
     });

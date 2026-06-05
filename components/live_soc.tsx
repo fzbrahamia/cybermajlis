@@ -741,10 +741,23 @@ export default function ThreatAcademy() {
 
   // Generate Arabic/adaptive variant for a SPECIFIC threat when it actually runs
   const generateVariantForThreat = async (threatKey: string): Promise<void> => {
-    if (generatedVariants[threatKey]) return; // already have one
+    // 1. Check React state — already generated this session
+    if (generatedVariants[threatKey]) return;
+
+    // 2. Check localStorage — use cached variant from a previous session
+    const cacheKey = "cm-soc-variant-" + threatKey + "-" + locale;
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        const variant = JSON.parse(cached);
+        setGeneratedVariants(prev => ({ ...prev, [threatKey]: variant }));
+        return;
+      } catch { /* cache corrupt — regenerate */ }
+    }
+
+    // 3. Generate fresh (first time or cache miss)
     const saved = localStorage.getItem("cm-soc-sessions");
     const count = saved ? (JSON.parse(saved).attempts || 0) : 0;
-    if (count < 1) return; // first visit — use static content
     setGeneratingVariant(true);
     try {
       const res = await fetch("/api/soc/generate", {
@@ -755,6 +768,8 @@ export default function ThreatAcademy() {
       const d = await res.json();
       if (d.success && d.variant) {
         setGeneratedVariants(prev => ({ ...prev, [threatKey]: d.variant }));
+        // Persist so return visits are instant
+        localStorage.setItem(cacheKey, JSON.stringify(d.variant));
       }
     } catch {}
     setGeneratingVariant(false);
