@@ -231,6 +231,14 @@ export default function StepperFlow() {
               {t("login.footer_link")}
             </button>
           </div>
+
+          <div style={{ textAlign: "center", marginTop: "0.9rem" }}>
+            <button type="button" className="btn-auth-ghost"
+              style={{ color: "rgba(197,165,126,0.45)", fontSize: "0.82rem", fontStyle: "italic" }}
+              onClick={() => router.push("/dashboard")}>
+              {t("login.guest_link")}
+            </button>
+          </div>
         </div>
 
         <Modal isOpen={modal.isOpen} title={modal.title} message={modal.message}
@@ -405,6 +413,14 @@ export default function StepperFlow() {
             <button className="btn-auth-ghost" style={{ color: "rgba(197,165,126,0.85)", textDecoration: "underline" }}
               onClick={() => { setShowSignUp(false); setShowPassword(false); router.push("/auth"); }}>
               {t("signup.footer_link")}
+            </button>
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: "0.9rem" }}>
+            <button type="button" className="btn-auth-ghost"
+              style={{ color: "rgba(197,165,126,0.45)", fontSize: "0.82rem", fontStyle: "italic" }}
+              onClick={() => router.push("/dashboard")}>
+              {t("signup.guest_link")}
             </button>
           </div>
         </div>

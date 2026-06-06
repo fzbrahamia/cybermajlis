@@ -165,6 +165,7 @@
       "logout_failed_title": "فشل تسجيل الخروج",
       "logout_failed_message": "تعذّر تسجيل الخروج. يرجى المحاولة مجددًا.",
       "nav_links": {
+        "dashboard": "لوحة التحكم",
         "community": "المجتمع",
         "games": "الألعاب",
         "news": "الأخبار",
@@ -256,7 +257,8 @@
       "success": "تم تسجيل الدخول بنجاح. مرحباً بعودتك!",
       "forgot": "هل نسيت كلمة المرور؟",
       "footer_text": "جديد هنا؟",
-      "footer_link": "إنشاء حساب"
+      "footer_link": "إنشاء حساب",
+      "guest_link": "تصفّح كضيف"
     },
     "signup": {
       "steps": {
@@ -273,6 +275,7 @@
       "complete_btn": "إتمام التسجيل",
       "footer_text": "لديك حساب بالفعل؟",
       "footer_link": "تسجيل الدخول",
+      "guest_link": "تصفّح كضيف",
       "errors": {
         "invalid_email": "صيغة البريد الإلكتروني غير صحيحة",
         "username_short": "يجب أن يتكون من 3 أحرف على الأقل",

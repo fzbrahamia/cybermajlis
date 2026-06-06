@@ -353,11 +353,6 @@ export default function HomePage() {
           borderRadius: "50%", background: "radial-gradient(circle, rgba(197,165,126,.14), transparent 65%)",
           filter: "blur(40px)", transform: `translateY(${scrollY * -0.05}px)`, transition: "transform .1s linear",
         }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "repeating-linear-gradient(45deg, rgba(99,32,36,.04) 0 1px, transparent 1px 22px)",
-          animation: "gridMove 18s linear infinite",
-        }} />
         <div style={{ position: "absolute", right: -120, top: 60, opacity: 0.04 }}>
           <DesignWatermark size={600} />
         </div>
@@ -417,34 +412,49 @@ export default function HomePage() {
               : "Qatar's first gamified cybersecurity academy. Master international frameworks through scenarios drawn from our critical national infrastructure and defend the realm alongside fellow Majlis members."}
           </p>
 
-          <div style={{ ...enter(3, 0.25), display: "flex", gap: 14, marginTop: 28 }}>
+          <div style={{ ...enter(3, 0.25), marginTop: 28 }}>
+            {/* 3 section-jump pills */}
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {[
+                { label: isAR ? "تعلّم" : "LEARN",           id: "about"        },
+                { label: isAR ? "كيف يعمل" : "HOW IT WORKS", id: "how-it-works" },
+                { label: isAR ? "الحراس" : "GUARDIANS",      id: "majlis"       },
+              ].map(({ label, id }) => (
+                <button
+                  key={id}
+                  onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}
+                  style={{
+                    fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 1.5,
+                    padding: "9px 18px", borderRadius: 8, cursor: "pointer",
+                    color: "#632024", background: "rgba(99,32,36,.06)",
+                    border: "1.5px solid rgba(99,32,36,.28)", transition: "all .25s ease",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.14)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; e.currentTarget.style.transform = ""; }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* CTA button — same row width as pills above */}
             <button
               onClick={() => router.push("/auth?signup=true")}
-              style={btnPrimary}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(99,32,36,.4), inset 0 1px 0 rgba(255,255,255,.1)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 20px rgba(99,32,36,.35), inset 0 1px 0 rgba(255,255,255,.1)"; }}
+              style={{
+                fontFamily: cinzel, fontSize: 13, fontWeight: 700, letterSpacing: 1.8,
+                padding: "13px 28px", borderRadius: 10, border: "none", cursor: "pointer",
+                color: "#f5ede0",
+                background: "linear-gradient(135deg, #632024 0%, #8B2635 60%, #a03040 100%)",
+                boxShadow: "0 4px 16px rgba(99,32,36,.35), inset 0 1px 0 rgba(255,255,255,.1)",
+                transition: "all .25s ease",
+                marginTop: 10, whiteSpace: "nowrap",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(99,32,36,.48), inset 0 1px 0 rgba(255,255,255,.12)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 16px rgba(99,32,36,.35), inset 0 1px 0 rgba(255,255,255,.1)"; }}
             >
-              {isAR ? "إنشاء حساب" : "SIGN UP"}
+              {isAR ? "انضم إلى سايبر مجلس" : "JOIN CYBER MAJLIS"}
             </button>
-            <button
-              onClick={() => router.push("/auth")}
-              style={btnSecondary}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.13)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; e.currentTarget.style.transform = ""; }}
-            >
-              {isAR ? "تسجيل الدخول" : "LOG IN"}
-            </button>
-          </div>
-
-          <div style={{ ...enter(4, 0.3), marginTop: 14 }}>
-            <a
-              onClick={() => router.push("/games")}
-              style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 13, color: "rgba(90,36,40,.6)", textDecoration: "underline", textUnderlineOffset: 3, cursor: "pointer" }}
-              onMouseEnter={e => { (e.target as HTMLElement).style.color = "#632024"; }}
-              onMouseLeave={e => { (e.target as HTMLElement).style.color = "rgba(90,36,40,.6)"; }}
-            >
-              {isAR ? "تصفّح كضيف" : "Join as a Guest"}
-            </a>
           </div>
         </div>
 
@@ -542,20 +552,20 @@ export default function HomePage() {
         style={{
           position: "relative", zIndex: 1,
           padding: "96px 4rem",
-          background: "rgba(62,19,22,.03)",
-          borderTop: "1px solid rgba(197,165,126,.3)",
-          borderBottom: "1px solid rgba(197,165,126,.3)",
+          background: "#3e1316",
+          borderTop: "1px solid rgba(197,165,126,.2)",
+          borderBottom: "1px solid rgba(197,165,126,.2)",
         }}
       >
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 56px" }}>
           <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>
             {isAR ? "ما هو المجلس السيبراني؟" : "WHAT IS CYBERMAJLIS?"}
           </div>
-          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: 0 }}>
+          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#E8D4BC", margin: 0 }}>
             {isAR ? "أربع طرق للتعلم" : "Four ways to learn"}
           </h2>
           <CenterDivider />
-          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "#5a2428", marginTop: 18, lineHeight: 1.55 }}>
+          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "rgba(227,218,201,.78)", marginTop: 18, lineHeight: 1.55 }}>
             {isAR
               ? "منهج مبني على أربعة ركائز — كل منها مستند إلى سيناريوهات قطرية واقعية والمعايير الدولية التي تحكمها."
               : "A curriculum built on four pillars each grounded in real Qatari scenarios and the international standards that govern them."}
@@ -566,9 +576,9 @@ export default function HomePage() {
           {FEATURES.map((f, i) => (
             <div key={i} style={{
               ...reveal(featInView, i),
-              background: "rgba(255,255,255,.45)", border: "1.5px solid rgba(197,165,126,.2)",
+              background: "rgba(255,255,255,.16)", border: "1.5px solid rgba(197,165,126,.25)",
               borderRadius: 16, padding: 28, backdropFilter: "blur(8px)",
-              boxShadow: "0 2px 12px rgba(99,32,36,.06)",
+              boxShadow: "0 2px 16px rgba(0,0,0,.22)",
             }}>
               {/* Glyph icon container */}
               <div style={{
@@ -578,11 +588,11 @@ export default function HomePage() {
               }}>
                 {GLYPH_MAP[f.Glyph]}
               </div>
-              <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: 14, letterSpacing: 1.5, color: "#3e1316" }}>
+              <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: 14, letterSpacing: 1.5, color: "#E8D4BC" }}>
                 {isAR ? f.titleAr : f.title}
               </div>
               <div style={{ height: 1, background: "linear-gradient(90deg, #c5a57e, transparent)", margin: "12px 0 14px" }} />
-              <p style={{ fontFamily: crimson, fontSize: 14, color: "#5a2428", lineHeight: 1.55, margin: 0 }}>
+              <p style={{ fontFamily: crimson, fontSize: 14, color: "rgba(197,165,126,.85)", lineHeight: 1.55, margin: 0 }}>
                 {isAR ? f.descAr : f.desc}
               </p>
             </div>
@@ -594,6 +604,7 @@ export default function HomePage() {
           § 3  HOW IT WORKS
           ════════════════════════════════════════ */}
       <section
+        id="how-it-works"
         ref={howRef as React.RefObject<HTMLElement>}
         style={{
           position: "relative", zIndex: 1,
@@ -672,7 +683,7 @@ export default function HomePage() {
       <section
         id="majlis"
         ref={charRef as React.RefObject<HTMLElement>}
-        style={{ position: "relative", zIndex: 1, padding: "96px 4rem", overflow: "hidden" }}
+        style={{ position: "relative", zIndex: 1, padding: "96px 4rem", overflow: "hidden", background: "#3e1316" }}
       >
         <div style={{ position: "absolute", left: -140, top: "50%", transform: "translateY(-50%)", opacity: 0.04 }}>
           <DesignWatermark size={420} />
@@ -680,9 +691,9 @@ export default function HomePage() {
 
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 56px" }}>
           <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>{isAR ? "أدلاؤك" : "YOUR GUIDES"}</div>
-          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: 0 }}>{isAR ? "تعرف على الحراس" : "Meet the Guardians"}</h2>
+          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#E8D4BC", margin: 0 }}>{isAR ? "تعرف على الحراس" : "Meet the Guardians"}</h2>
           <CenterDivider />
-          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "#5a2428", marginTop: 18, lineHeight: 1.55 }}>
+          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "rgba(227,218,201,.78)", marginTop: 18, lineHeight: 1.55 }}>
             {isAR
               ? "أربعة حرّاس قطريون — كل منهم متخصص في مجال مختلف من الأمن السيبراني."
               : "Four mentors lead your training. Each represents a discipline of the craft — pick the one whose path speaks to you first."}
@@ -699,9 +710,8 @@ export default function HomePage() {
                 style={{
                   ...reveal(charInView, i),
                   borderRadius: 18, padding: 20,
-                  backdropFilter: "blur(8px)",
-                  background: hovered ? `rgba(${c.rgb},0.07)` : "rgba(255,255,255,.45)",
-                  border:     hovered ? `1.5px solid ${c.accent}55` : "1.5px solid rgba(197,165,126,.2)",
+                  background: hovered ? `#f0e6d8` : "#EDE0CE",
+                  border:     hovered ? `1.5px solid ${c.accent}88` : "1.5px solid rgba(197,165,126,.35)",
                   transform:  charInView ? (hovered ? "translateY(-8px) scale(1.01)" : "translateY(0) scale(1)") : "translateY(28px)",
                   boxShadow:  hovered
                     ? `0 0 0 2.5px ${c.accent}55, 0 0 28px rgba(${c.rgb},.25), 0 20px 56px rgba(${c.rgb},.2)`
@@ -724,7 +734,7 @@ export default function HomePage() {
                     src={c.img}
                     alt={c.name}
                     style={{
-                      width: "100%", height: "100%", objectFit: "contain", padding: 10,
+                      width: "100%", height: "100%", objectFit: "cover",
                       transition: "transform .4s cubic-bezier(.34,1.2,.64,1)",
                       transform: hovered ? "scale(1.08)" : "scale(1)",
                     }}
@@ -761,7 +771,7 @@ export default function HomePage() {
           padding: "96px 4rem", textAlign: "center",
           borderTop: "1px solid rgba(197,165,126,.3)",
           borderBottom: "1px solid rgba(197,165,126,.3)",
-          background: "rgba(62,19,22,.04)",
+          background: "#E3DAC9",
           overflow: "hidden",
         }}
       >

@@ -165,6 +165,7 @@
       "logout_failed_title": "Logout Failed",
       "logout_failed_message": "Failed to log out. Please try again.",
       "nav_links": {
+        "dashboard": "Dashboard",
         "community": "Community",
         "games": "Games",
         "news": "News",
@@ -256,7 +257,8 @@
       "success": "Logged in successfully. Welcome back!",
       "forgot": "Forgot password?",
       "footer_text": "New here?",
-      "footer_link": "Create an account"
+      "footer_link": "Create an account",
+      "guest_link": "Continue as Guest"
     },
     "signup": {
       "steps": {
@@ -273,6 +275,7 @@
       "complete_btn": "Complete",
       "footer_text": "Already have an account?",
       "footer_link": "Login",
+      "guest_link": "Continue as Guest",
       "errors": {
         "invalid_email": "Invalid email format",
         "username_short": "At least 3 characters required",

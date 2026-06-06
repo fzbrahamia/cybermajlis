@@ -25,6 +25,7 @@ function setLocaleCookie(locale: string) {
 }
 
 const NAV_LINK_KEYS = [
+  { key: "dashboard", href: "/dashboard" },
   { key: "community", href: "/community" },
   { key: "games",     href: "/games"     },
   { key: "news",      href: "/news"      },
@@ -172,20 +173,23 @@ export default function Navbar() {
 
         {/* Nav links */}
         <div style={{ display: "flex", gap: 40 }}>
-          {NAV_LINK_KEYS.map(({ key, href }) => (
-            <a
-              key={key}
-              href={href}
-              style={{
-                ...navLinkStyle,
-                ...(pathname.startsWith(href)
-                  ? { color: "#E8D4BC", borderBottom: "1.5px solid rgba(197,165,126,.7)", paddingBottom: 4 }
-                  : {}),
-              }}
-            >
-              {t(`nav_links.${key}`)}
-            </a>
-          ))}
+          {NAV_LINK_KEYS.map(({ key, href }) => {
+            const resolvedHref = key === "dashboard" && !currentUser ? "/auth" : href;
+            return (
+              <a
+                key={key}
+                href={resolvedHref}
+                style={{
+                  ...navLinkStyle,
+                  ...(pathname.startsWith(href)
+                    ? { color: "#E8D4BC", borderBottom: "1.5px solid rgba(197,165,126,.7)", paddingBottom: 4 }
+                    : {}),
+                }}
+              >
+                {t(`nav_links.${key}`)}
+              </a>
+            );
+          })}
         </div>
 
         {/* Auth + locale */}

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useLessonProgress } from "@/hooks/useLessonProgress";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { seedLessonsData } from "@/app/lib/seedLessons";
 
 type Category = {
@@ -20,6 +20,8 @@ export default function DashboardPage() {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const t = useTranslations("Dashboard");
   const tAuth = useTranslations("Auth");
+  const locale = useLocale();
+  const isRtl = locale === "ar";
 
   const [showLoginToast, setShowLoginToast] = useState(false);
 
@@ -474,7 +476,7 @@ export default function DashboardPage() {
       .card:not(.card--locked):hover .card-arrow { opacity: 1; transform: translateX(0); }
 
       .card-number {
-        position: absolute; top: 1.4rem; right: 1.6rem;
+        position: absolute; top: 1.4rem;
         font-family: 'Cinzel', serif; font-size: 7rem; font-weight: 900;
         line-height: 1; pointer-events: none; user-select: none;
       }
@@ -504,7 +506,7 @@ export default function DashboardPage() {
     >
       <div className="card-stripe" />
       <div className="card-inner">
-        <span className="card-number">{index + 1}</span>
+        <span className="card-number" style={isRtl ? { left: "1.6rem" } : { right: "1.6rem" }}>{index + 1}</span>
         {cat.badgeKey && <span className="card-badge">{t(cat.badgeKey)}</span>}
         <div className="card-icon-wrap">
           <img src={cat.icon} alt={t(cat.nameKey)} />
