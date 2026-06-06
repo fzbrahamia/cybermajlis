@@ -24,12 +24,12 @@ function setLocaleCookie(locale: string) {
   window.location.reload();
 }
 
-const NAV_LINKS = [
-  { label: "Community", href: "/community" },
-  { label: "Games",     href: "/games"     },
-  { label: "News",      href: "/news"      },
-  { label: "Scanner",      href: "/scan"      },
-  { label: "SOC",       href: "/soc"       },
+const NAV_LINK_KEYS = [
+  { key: "community", href: "/community" },
+  { key: "games",     href: "/games"     },
+  { key: "news",      href: "/news"      },
+  { key: "scanner",   href: "/scan"      },
+  { key: "soc",       href: "/soc"       },
 ];
 
 export default function Navbar() {
@@ -172,9 +172,9 @@ export default function Navbar() {
 
         {/* Nav links */}
         <div style={{ display: "flex", gap: 40 }}>
-          {NAV_LINKS.map(({ label, href }) => (
+          {NAV_LINK_KEYS.map(({ key, href }) => (
             <a
-              key={label}
+              key={key}
               href={href}
               style={{
                 ...navLinkStyle,
@@ -183,7 +183,7 @@ export default function Navbar() {
                   : {}),
               }}
             >
-              {label}
+              {t(`nav_links.${key}`)}
             </a>
           ))}
         </div>
@@ -206,6 +206,7 @@ export default function Navbar() {
             />
             <button
               onClick={() => !isArabic || setLocaleCookie("en")}
+              suppressHydrationWarning
               className="relative z-10 w-1/2 py-[7px] rounded-[8px] transition-all duration-300"
               style={{
                 fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 600,
@@ -218,6 +219,7 @@ export default function Navbar() {
             </button>
             <button
               onClick={() => isArabic || setLocaleCookie("ar")}
+              suppressHydrationWarning
               className="relative z-10 w-1/2 py-[7px] rounded-[8px] transition-all duration-300"
               style={{
                 fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 600,
@@ -234,7 +236,7 @@ export default function Navbar() {
           {!currentUser ? (
             <>
               <a href="/auth" style={{ ...navLinkStyle }}>
-                Log In
+                {t("login")}
               </a>
               <button
                 onClick={() => router.push("/auth?signup=true")}
@@ -248,12 +250,12 @@ export default function Navbar() {
                   e.currentTarget.style.boxShadow = "0 2px 12px rgba(197,165,126,.35)";
                 }}
               >
-                Sign Up
+                {t("signup")}
               </button>
             </>
           ) : isAuthPage ? (
             <button onClick={() => router.push("/dashboard")} style={btnSmStyle}>
-              Dashboard
+              {t("dashboard")}
             </button>
           ) : (
             <DirectionProvider dir={isArabic ? "rtl" : "ltr"}>

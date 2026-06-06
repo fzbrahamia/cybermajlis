@@ -385,7 +385,7 @@ export default function HomePage() {
             marginBottom: 0,
           }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#8B2635", animation: "dotPulse 2s ease-in-out infinite" }} />
-            Cybersecurity Awareness
+            {isAR ? "توعية أمن المعلومات" : "Cybersecurity Awareness"}
           </div>
 
           {/* H1 */}
@@ -424,7 +424,7 @@ export default function HomePage() {
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(99,32,36,.4), inset 0 1px 0 rgba(255,255,255,.1)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 20px rgba(99,32,36,.35), inset 0 1px 0 rgba(255,255,255,.1)"; }}
             >
-              SIGN UP
+              {isAR ? "إنشاء حساب" : "SIGN UP"}
             </button>
             <button
               onClick={() => router.push("/auth")}
@@ -432,7 +432,7 @@ export default function HomePage() {
               onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.13)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; e.currentTarget.style.transform = ""; }}
             >
-              LOG IN
+              {isAR ? "تسجيل الدخول" : "LOG IN"}
             </button>
           </div>
 
@@ -443,7 +443,7 @@ export default function HomePage() {
               onMouseEnter={e => { (e.target as HTMLElement).style.color = "#632024"; }}
               onMouseLeave={e => { (e.target as HTMLElement).style.color = "rgba(90,36,40,.6)"; }}
             >
-              Join as a Guest
+              {isAR ? "تصفّح كضيف" : "Join as a Guest"}
             </a>
           </div>
         </div>
@@ -497,13 +497,13 @@ export default function HomePage() {
                 }}>
                   <div style={{ width: 0, height: 0, marginLeft: 5, borderLeft: "16px solid #E8D4BC", borderTop: "10px solid transparent", borderBottom: "10px solid transparent" }} />
                 </div>
-                <div style={{ fontFamily: cinzel, fontSize: 11, letterSpacing: 4, color: "#E8D4BC", fontWeight: 700 }}>WATCH INTRO</div>
+                <div style={{ fontFamily: cinzel, fontSize: 11, letterSpacing: 4, color: "#E8D4BC", fontWeight: 700 }}>{isAR ? "شاهد المقدمة" : "WATCH INTRO"}</div>
               </div>
             )}
 
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: "linear-gradient(to top, rgba(62,19,22,.82), transparent)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: 20, left: 20, right: 20, display: "flex", flexDirection: "column", gap: 4 }}>
-              <span style={{ fontFamily: cinzel, fontSize: 8.5, letterSpacing: "0.15em", color: "rgba(232,212,188,.65)", fontWeight: 600 }}>YOUR GUIDE</span>
+              <span style={{ fontFamily: cinzel, fontSize: 8.5, letterSpacing: "0.15em", color: "rgba(232,212,188,.65)", fontWeight: 600 }}>{isAR ? "دليلك" : "YOUR GUIDE"}</span>
               <span style={{ fontFamily: cinzel, fontSize: 14, letterSpacing: 1.4, color: "#E8D4BC", fontWeight: 700 }}>HAMAD</span>
             </div>
 
@@ -528,7 +528,7 @@ export default function HomePage() {
           position: "absolute", bottom: 28, left: "50%", transform: "translateX(-50%)",
           display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
         }}>
-          <span style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "rgba(99,32,36,.5)", fontWeight: 600 }}>SCROLL</span>
+          <span style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "rgba(99,32,36,.5)", fontWeight: 600 }}>{isAR ? "مرر للأسفل" : "SCROLL"}</span>
           <ChevronDown size={14} color="#c5a57e" style={{ animation: "scrollBnce 1.6s ease-in-out infinite", opacity: 0.7 }} />
         </div>
       </section>
@@ -549,10 +549,10 @@ export default function HomePage() {
       >
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 56px" }}>
           <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>
-            WHAT IS CYBERMAJLIS?
+            {isAR ? "ما هو المجلس السيبراني؟" : "WHAT IS CYBERMAJLIS?"}
           </div>
           <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: 0 }}>
-            Four ways to learn
+            {isAR ? "أربع طرق للتعلم" : "Four ways to learn"}
           </h2>
           <CenterDivider />
           <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "#5a2428", marginTop: 18, lineHeight: 1.55 }}>
@@ -608,8 +608,8 @@ export default function HomePage() {
         </div>
 
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 72px" }}>
-          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>HOW IT WORKS</div>
-          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: 0 }}>Your Path to Mastery</h2>
+          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>{isAR ? "كيف يعمل" : "HOW IT WORKS"}</div>
+          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: 0 }}>{isAR ? "مسارك نحو الاحتراف" : "Your Path to Mastery"}</h2>
           <CenterDivider />
           <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "#5a2428", marginTop: 18, lineHeight: 1.55 }}>
             {isAR
@@ -679,8 +679,8 @@ export default function HomePage() {
         </div>
 
         <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 56px" }}>
-          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>YOUR GUIDES</div>
-          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: 0 }}>Meet the Guardians</h2>
+          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>{isAR ? "أدلاؤك" : "YOUR GUIDES"}</div>
+          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: 0 }}>{isAR ? "تعرف على الحراس" : "Meet the Guardians"}</h2>
           <CenterDivider />
           <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "#5a2428", marginTop: 18, lineHeight: 1.55 }}>
             {isAR
@@ -774,7 +774,7 @@ export default function HomePage() {
           transition: "opacity .8s ease, transform .8s ease",
           maxWidth: 720, margin: "0 auto",
         }}>
-          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>JOIN THE MAJLIS</div>
+          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>{isAR ? "انضم إلى المجلس" : "JOIN THE MAJLIS"}</div>
           <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: "8px 0 0" }}>
             {isAR ? "قطر تحتاج جيلها القادم من المدافعين." : "Qatar needs its next generation of defenders."}
           </h2>
@@ -786,7 +786,7 @@ export default function HomePage() {
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(99,32,36,.45), inset 0 1px 0 rgba(255,255,255,.15)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 20px rgba(99,32,36,.35), inset 0 1px 0 rgba(255,255,255,.1)"; }}
             >
-              BEGIN YOUR TRAINING
+              {isAR ? "ابدأ تدريبك" : "BEGIN YOUR TRAINING"}
             </button>
             <button
               onClick={() => router.push("/dashboard")}
@@ -794,7 +794,7 @@ export default function HomePage() {
               onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.13)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; e.currentTarget.style.transform = ""; }}
             >
-              EXPLORE THE CURRICULUM
+              {isAR ? "استكشف المنهج" : "EXPLORE THE CURRICULUM"}
             </button>
           </div>
         </div>

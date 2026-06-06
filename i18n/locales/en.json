@@ -147,6 +147,8 @@
     "navbar": {
       "brand": "Cyber Majlis",
       "login": "Log In",
+      "signup": "Sign Up",
+      "dashboard": "Dashboard",
       "live_soc": "Live SOC",
       "profile": "Profile",
       "settings": "Settings",
@@ -161,7 +163,23 @@
       "chatbot_loading_title": "Chatbot Loading",
       "chatbot_loading_message": "Chatbot is loading, please try again in a moment.",
       "logout_failed_title": "Logout Failed",
-      "logout_failed_message": "Failed to log out. Please try again."
+      "logout_failed_message": "Failed to log out. Please try again.",
+      "nav_links": {
+        "community": "Community",
+        "games": "Games",
+        "news": "News",
+        "scanner": "Scanner",
+        "soc": "SOC"
+      },
+      "footer_links": {
+        "play": "Play",
+        "learn": "Learn",
+        "connect": "Connect",
+        "scan": "Scan",
+        "news": "News",
+        "soc": "SOC"
+      },
+      "footer_tagline": "Qatar's gamified cybersecurity academy. Founded in Doha, built for the region."
     }
   },
   "Home": {
@@ -454,17 +472,46 @@
       "defenses": "DEFENSES",
       "quiz": "QUIZ",
       "correct": "✓ Correct!",
-      "wrong": "✗ Wrong"
+      "wrong": "✗ Wrong",
+      "imagine_label": "💭 Imagine if…"
     },
     "footer": {
       "simulated": "🔒 Simulated · The Cyber Majlis · Qatar University 2026",
       "instruction": "Listen → Follow the chat → Click feed to learn "
     },
     "analysts": {
-      "saqr": { "role": "Threat Detection" },
-      "oryx": { "role": "Risk Assessor" },
-      "thalab": { "role": "Forensics" },
-      "hisan": { "role": "Incident Response" }
+      "saqr":   { "role": "Threat Detection",   "name": "Saqr"    },
+      "oryx":   { "role": "Risk Assessor",       "name": "Oryx"    },
+      "thalab": { "role": "Forensics",           "name": "Tha'lab" },
+      "hisan":  { "role": "Incident Response",   "name": "Hisan"   },
+      "hamad":  { "name": "Hamad" }
+    },
+    "hamad_scenarios": {
+      "phishing": {
+        "msg": "I think I made a mistake 😰 An email from 'IT Support' asked me to verify my login. I entered my credentials before I realised it looked off... what do I do?",
+        "analyst_reply": "Hamad — stop touching the keyboard. Change your password RIGHT NOW from your phone, not the laptop. We're isolating your machine from the network.",
+        "recovery": "Password changed, machine is clean. Thank you for acting so fast. I'll never enter credentials from an email link again — lesson absolutely learned."
+      },
+      "virus": {
+        "msg": "My antivirus just went off like an alarm and now everything is crawling. I didn't open anything weird... should I restart it?",
+        "analyst_reply": "Hamad — do NOT restart. Leave it exactly as is, we need the memory state. Disconnect from WiFi physically if you can. IT is on the way to you now.",
+        "recovery": "Reimaged from yesterday's backup. Lost maybe 15 minutes of work. You all responded in under 4 minutes — really impressive."
+      },
+      "ransomware": {
+        "msg": "🚨 MY FILES. Everything in my documents folder is gone — replaced with something called README_DECRYPT.txt. There's a Bitcoin address on my screen. My entire project is encrypted.",
+        "analyst_reply": "Hamad — do NOT pay. Hard shutdown your machine right now, hold the power button. We have a 6am backup of everything. Your data is safe. Do not touch it.",
+        "recovery": "6am backup fully restored. Lost about 3 hours of work but everything is recoverable. Hard lesson on attachments. Thank you all — this was terrifying."
+      },
+      "rootkit": {
+        "msg": "This is strange — my antivirus icon disappeared from the taskbar and I can't reinstall it. Also getting an unusual login prompt I've never seen before.",
+        "analyst_reply": "Hamad, that's a rootkit masking itself. Stop everything immediately. We'll need to reimage your machine — do not save or copy any files, they may be compromised.",
+        "recovery": "Fresh OS image deployed, network drive backup restored. Rootkits are nasty — really glad the team caught the signature early."
+      },
+      "ddos": {
+        "msg": "I'm on a live client call and all our web apps are down — they can't access anything. Getting a lot of pressure. Any idea on restoration ETA? What do I tell them?",
+        "analyst_reply": "Hamad — tell them we're experiencing a service disruption and estimate 15-20 minutes to full restoration. Don't mention DDoS. We're rerouting traffic now.",
+        "recovery": "Services back up. Client stayed on the call — 18 minutes was acceptable to them. They didn't lose confidence. Thanks for handling it calmly."
+      }
     },
     "targets": {
       "web_server": "Web Server",
@@ -759,6 +806,127 @@
           "why": "Rootkits hook into the kernel — they modify the functions antivirus uses."
         }
       }
+    },
+    "stage_labels": {
+      "0": "INITIAL ACCESS",
+      "1": "EXECUTION",
+      "2": "ESCALATION",
+      "3": "LATERAL MOVE",
+      "4": "IMPACT"
+    },
+    "stage_why": {
+      "0": "Humans bypass firewalls",
+      "1": "Foothold established",
+      "2": "Credentials = master key",
+      "3": "Reach multiplies",
+      "4": "Objective achieved"
+    },
+    "stage_education_labels": {
+      "why": "Why attackers do this:",
+      "watch": "Watch for:"
+    },
+    "stage_education": {
+      "0": {
+        "why": "Attackers target people because social engineering defeats technical controls instantly. One click bypasses the firewall, EDR, email filters, and network monitoring simultaneously — no vulnerability needed.",
+        "watch": "Unexpected attachments, mismatched sender domains, login pages linked from email, urgent language pressuring fast action."
+      },
+      "1": {
+        "why": "Execution gives the attacker a process running inside your environment under a legitimate user identity. It looks like normal activity to most monitoring tools, making detection difficult.",
+        "watch": "Office applications spawning command shells, encoded PowerShell commands, new processes writing files to temp directories."
+      },
+      "2": {
+        "why": "Credentials are master keys. With valid passwords, the attacker moves through the network as a trusted user — no further exploitation required. This is why password hygiene and MFA matter so much.",
+        "watch": "LSASS process access from unexpected parents, credential dumping tool signatures, unusual authentication volume spikes."
+      },
+      "3": {
+        "why": "A single compromised workstation has limited value. Reaching Active Directory or key servers multiplies the attacker's control across every account in the organisation simultaneously.",
+        "watch": "Unusual machine-to-machine connections, admin tools running on non-admin systems, service creation on remote hosts."
+      },
+      "4": {
+        "why": "This is the payoff — data theft, ransomware deployment, or service disruption. Everything before this step was preparation for this moment. Defenders who detect early prevent reaching this stage.",
+        "watch": "Large outbound data transfers, file encryption activity across shares, DNS queries with unusually long or encoded domain names."
+      }
+    },
+    "threat_stories": {
+      "phishing": {
+        "summary": "An attacker impersonates a trusted source — your bank, IT team, or a colleague — to trick you into handing over credentials or clicking a malicious link. No system is broken; you open the door yourself.",
+        "imagine": "Imagine you get a call from someone who sounds exactly like your bank. They know your name, your last transaction, even your branch. They ask you to confirm your PIN for 'security reasons' — and you do. You just handed over your keys without them ever touching a single lock."
+      },
+      "virus": {
+        "summary": "Malicious code hidden inside a normal-looking file silently copies itself across your system and every network drive it can reach the moment it is opened.",
+        "imagine": "Imagine a colleague hands you a USB drive with 'Q3 report.pdf' on it. You open it, nothing seems wrong. But in the background it quietly copies itself to every shared folder in the office. Three days later, 400 files are infected and nobody knows which machine started it."
+      },
+      "ransomware": {
+        "summary": "Malware that encrypts everything it can find — files, backups, shared drives — then demands payment for the decryption key. Without a clean off-site backup, recovery is nearly impossible.",
+        "imagine": "Imagine waking up and every door in your house has been replaced with a vault lock overnight — your bedroom, your office, your safe. There's a note on the table: '4.5 Bitcoin and you get the combinations. You have 72 hours.' Your files are still there. You just can't touch them."
+      },
+      "rootkit": {
+        "summary": "Software that embeds itself at the kernel level, hiding from antivirus and the operating system itself while giving the attacker persistent, invisible access to the machine.",
+        "imagine": "Imagine an intruder breaks into your house, replaces every security camera with their own fake feed showing an empty room — then lives inside your walls. You check the cameras every day. Everything looks fine. But they've been watching you for months, completely invisible because they control what you're allowed to see."
+      },
+      "ddos": {
+        "summary": "Thousands of hijacked devices flood a server with fake traffic simultaneously until it cannot respond to any real users — no vulnerability exploited, just pure volume.",
+        "imagine": "Imagine 80,000 people all try to call your phone at the exact same moment. Every real call — your family, your clients, your doctor — can't get through because the line is completely jammed. Nobody broke anything. They just made sure nobody else could use it either."
+      }
+    },
+    "map": {
+      "qatar_label": "Qatar · Threat Map",
+      "xdr_label": "XDR · Attack Graph",
+      "xdr_view": "XDR VIEW →",
+      "map_view": "← MAP VIEW"
+    },
+    "attack": {
+      "contained": "✓ CONTAINED",
+      "exit_story": "✕ EXIT",
+      "watch_story": "▶ WATCH STORY",
+      "hint": "Tap any stage to read · ▶ Watch Story for real alert investigation",
+      "why_label": "Why attackers do this:",
+      "watch_label": "Watch for:",
+      "browse_mode": "Browse mode · ▶ Watch Story to see live progression",
+      "all_contained": "Attack contained — all stages logged. Monitoring for next incident.",
+      "initialising": "Initialising threat detection…",
+      "back": "◀ Back",
+      "next": "Next ▶",
+      "step_indicator": "Step {step} / {total}",
+      "live_badge": "● LIVE",
+      "passed_badge": "✓ PASSED",
+      "step_badge": "STEP {n}"
+    },
+    "legend": {
+      "active": "Active",
+      "complete": "Complete",
+      "pending": "Pending",
+      "correlated": "Correlated"
+    },
+    "analyst": {
+      "trained": "✓ TRAINED",
+      "click_to_train": "CLICK TO TRAIN",
+      "locked": "🔒 Complete the Live Scenario"
+    },
+    "tour": {
+      "0": { "label": "CyberMajlis SOC", "title": "Security Operations Center", "body": "You're about to observe a live SOC — real threats, real analysts, real response decisions. Let's walk you through each section before you dive in.", "cta": "Take a quick tour →" },
+      "1": { "label": "1 of 5", "title": "XDR Attack Graph", "body": "The graph in the center maps each attack's kill chain — every stage from initial access to final impact. Hit ▶ Watch Story to step through it with real alert data: which entity was hit, the MITRE technique, the IOC, and what action to take.", "cta": "Next →" },
+      "2": { "label": "2 of 5", "title": "Analyst Team Chat", "body": "Your four analysts coordinate here in real time. Each has a distinct role — threat detection, risk assessment, forensics, incident response. Watch how they divide the problem as each attack unfolds.", "cta": "Next →" },
+      "3": { "label": "3 of 5", "title": "Threat Feed", "body": "Every active threat appears in the feed on the right. Click any entry to open a lesson — read what the attack is, see a real-world case, and take a short quiz. Answering correctly marks it as learned and updates your progress.", "cta": "Next →" },
+      "4": { "label": "4 of 5", "title": "Live Dashboards", "body": "The four panels at the bottom update in real time — network traffic volume, attack frequency by type, severity levels, and system health across firewall, IDS/IPS, SIEM, and endpoints.", "cta": "Next →" },
+      "5": { "label": "5 of 5", "title": "You're all set", "body": "The simulation is already running behind this screen. Threats will appear and analysts will respond. Click anything you're curious about. Your goal: understand all five threat types and answer each quiz correctly.", "cta": "Enter the SOC →" },
+      "skip": "Skip tour"
+    },
+    "debrief": {
+      "session_complete": "Session Complete",
+      "title": "Threat Debrief",
+      "all_observed": "All five threats observed.",
+      "mastered_count": "You mastered {count} of {total} —",
+      "grade": {
+        "flawless": "flawless.",
+        "solid": "solid work.",
+        "practice": "keep practising."
+      },
+      "contained": "Contained",
+      "mastered": "✓ MASTERED",
+      "review": "REVIEW",
+      "continue": "Continue Monitoring",
+      "run_again": "Run Again →"
     }
   },
   "Chatbot": {
