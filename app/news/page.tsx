@@ -29,15 +29,6 @@ interface NewsItem {
   createdAt?: { toDate: () => Date };
 }
 
-// ── Who-affected translations ─────────────────────────────────────────────────
-const WHO_AR: Record<string, string> = {
-  "Regular Users": "المستخدمون العاديون",
-  "Businesses":    "الشركات",
-  "Both":          "الأفراد والشركات",
-  "Government":    "الحكومات",
-  "Everyone":      "الجميع",
-};
-
 // ── Severity config ───────────────────────────────────────────────────────────
 const SEV: Record<Severity, { color: string; bg: string; dot: string; label: string; label_ar: string }> = {
   critical: { color:"#dc2626", bg:"rgba(220,38,38,0.07)",  dot:"#dc2626", label:"Critical", label_ar:"حرج"    },
@@ -46,23 +37,18 @@ const SEV: Record<Severity, { color: string; bg: string; dot: string; label: str
   low:      { color:"#16a34a", bg:"rgba(22,163,74,0.07)",  dot:"#22c55e", label:"Low",      label_ar:"منخفض"  },
 };
 
-function timeAgo(d?: Date | null, isAr = false): string {
+function timeAgo(d?: Date | null): string {
   if (!d) return "";
   const s = Math.floor((Date.now() - d.getTime()) / 1000);
-  if (isAr) {
-    if (s < 60)    return "الآن";
-    if (s < 3600)  return "منذ " + Math.floor(s/60) + " د";
-    if (s < 86400) return "منذ " + Math.floor(s/3600) + " س";
-    return "منذ " + Math.floor(s/86400) + " ي";
-  }
-  if (s < 60)    return "Just now";
-  if (s < 3600)  return Math.floor(s/60) + "m ago";
+  if (s < 60)  return "Just now";
+  if (s < 3600) return Math.floor(s/60) + "m ago";
   if (s < 86400) return Math.floor(s/3600) + "h ago";
   return Math.floor(s/86400) + "d ago";
 }
 
 // ── News Card ─────────────────────────────────────────────────────────────────
 function NewsCard({ item }: { item: NewsItem }) {
+  const [expanded, setExpanded] = useState(false);
   const locale  = useLocale();
   const isAr    = locale === "ar";
   const s       = SEV[item.severity] || SEV.low;
@@ -81,7 +67,7 @@ function NewsCard({ item }: { item: NewsItem }) {
       boxShadow:"0 2px 14px rgba(99,32,36,0.06)",
       overflow:"hidden", marginBottom:"1rem",
     }}>
-      <div style={{ padding:"1.2rem 1.4rem" }}>
+      <div style={{ padding:"0.9rem 1.1rem" }}>
 
         {/* Meta row */}
         <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10, flexWrap:"wrap",
@@ -92,14 +78,13 @@ function NewsCard({ item }: { item: NewsItem }) {
           </span>
           <span style={{ fontSize:10, color:"rgba(99,32,36,0.5)", padding:"2px 8px",
             border:"1px solid rgba(99,32,36,0.12)", borderRadius:10 }}>
-            {isAr ? (WHO_AR[item.who_affected] ?? item.who_affected) : item.who_affected}
+            {item.who_affected}
           </span>
           {item.qatar_relevant && (
-            <span style={{ fontSize:10, color:"#632024", fontWeight:600 }}>{isAr ? "🇶🇦 تنبيه قطر" : "🇶🇦 Qatar Alert"}</span>
+            <span style={{ fontSize:10, color:"#632024", fontWeight:600 }}>🇶🇦 Qatar Alert</span>
           )}
-          <span style={{ marginLeft: dir === "ltr" ? "auto" : undefined, marginRight: dir === "rtl" ? "auto" : undefined,
-            fontSize:10, color:"rgba(99,32,36,0.35)", fontFamily:"'Cinzel',serif" }}>
-            {item.createdAt ? timeAgo(item.createdAt.toDate(), isAr) : ""}
+          <span style={{ marginLeft:"auto", fontSize:10, color:"rgba(99,32,36,0.35)", fontFamily:"'Cinzel',serif" }}>
+            {item.createdAt ? timeAgo(item.createdAt.toDate()) : ""}
           </span>
         </div>
 
@@ -110,14 +95,18 @@ function NewsCard({ item }: { item: NewsItem }) {
           {headline}
         </h2>
 
-        {/* Body */}
-        <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.95rem", color:"#5C4033",
-          lineHeight:1.72, margin:"0 0 10px", textAlign: dir === "rtl" ? "right" : "left" }}>
+        {/* Body — truncated, expand on click */}
+        <p onClick={() => setExpanded(!expanded)}
+          style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.9rem", color:"#5C4033",
+            lineHeight:1.65, margin:"0 0 8px", textAlign: dir === "rtl" ? "right" : "left",
+            cursor:"pointer",
+            display:"-webkit-box", WebkitLineClamp: expanded ? undefined : 2,
+            WebkitBoxOrient:"vertical" as any, overflow: expanded ? "visible" : "hidden" }}>
           {body}
         </p>
 
         {/* Qatar note */}
-        {qnote && (
+        {(qnote && (expanded || item.qatar_relevant)) && (
           <div style={{ background:"rgba(99,32,36,0.05)", borderRadius:8, padding:"8px 12px",
             border:"1px solid rgba(99,32,36,0.12)", marginBottom:10, fontSize:12,
             color:"#632024", fontStyle:"italic", fontFamily:"'Crimson Pro',serif",
@@ -126,27 +115,26 @@ function NewsCard({ item }: { item: NewsItem }) {
           </div>
         )}
 
-        {/* Action steps */}
-        {steps && steps.length > 0 && (
+        {/* Action steps — only when expanded */}
+        {expanded && steps && steps.length > 0 && (
           <div style={{ background:s.bg, borderRadius:9, padding:"10px 12px",
             border:"1px solid " + s.color + "30" }}>
             <div style={{ fontSize:9, letterSpacing:"0.2em", color:s.color, fontWeight:700,
               fontFamily:"'Cinzel',serif", marginBottom:8,
-              textAlign: isAr ? "right" : "left" }}>
+              textAlign: dir === "rtl" ? "right" : "left" }}>
               {isAr ? "ماذا تفعل الآن" : "WHAT TO DO NOW"}
             </div>
             {steps.map((step, i) => (
               <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start",
                 marginBottom: i < steps.length - 1 ? 5 : 0,
-                flexDirection: isAr ? "row-reverse" : "row" }}>
+                flexDirection: dir === "rtl" ? "row-reverse" : "row" }}>
                 <span style={{ width:20, height:20, borderRadius:"50%", background:s.color,
                   color:"white", fontSize:10, fontWeight:700, display:"flex",
                   alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                   {i + 1}
                 </span>
                 <span style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.9rem",
-                  color:"#3e1316", lineHeight:1.6, flex:1,
-                  textAlign: isAr ? "right" : "left" }}>{step}</span>
+                  color:"#3e1316", lineHeight:1.6 }}>{step}</span>
               </div>
             ))}
           </div>
@@ -293,12 +281,7 @@ export default function NewsPage() {
               CyberMajlis
             </div>
             <h1 style={{ fontFamily:"'Cinzel',serif", fontSize:"1.1rem", fontWeight:700,
-              color:"#3e1316", margin:"0 0 8px",
-              borderLeft: isAr ? undefined : "3px solid #632024",
-              borderRight: isAr ? "3px solid #632024" : undefined,
-              paddingLeft: isAr ? undefined : 10,
-              paddingRight: isAr ? 10 : undefined,
-              textAlign: isAr ? "right" : "left" }}>
+              color:"#3e1316", margin:"0 0 8px", borderLeft:"3px solid #632024", paddingLeft:10 }}>
               {isAr ? "نشرات الأمن" : "Security Briefings"}
             </h1>
             <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.88rem", color:"#5C4033",
@@ -316,7 +299,7 @@ export default function NewsPage() {
                 fontFamily:"'Cinzel',serif", letterSpacing:"0.1em" }}>
                 {fetching
                   ? (isAr ? "جارٍ التحديث…" : "Updating…")
-                  : (isAr ? "مباشر · " : "Live feed · ") + timeAgo(lastUpdated, isAr)}
+                  : (isAr ? "مباشر · " : "Live feed · ") + timeAgo(lastUpdated)}
               </span>
             </div>
             <div style={{ display:"flex", gap:6 }}>

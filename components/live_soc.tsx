@@ -265,7 +265,6 @@ const STAGE_EDUCATION = [
     watch: "Large outbound data transfers, file encryption activity across shares, DNS queries with unusually long or encoded domain names.",
   },
 ];
-// NOTE: STAGE_LABELS, STAGE_WHY, STAGE_EDUCATION are superseded at runtime by memoized localized versions in the component
 
 // TARGETS - localized - localized
 const TARGETS_BASE = ["web_server", "email_gateway", "database", "api_endpoint", "vpn", "dns_resolver", "workstation", "iot_segment", "cloud_vm", "auth_service"];
@@ -587,34 +586,15 @@ export default function ThreatAcademy() {
   const ANALYSTS = useMemo(() => {
     return ANALYSTS_BASE.map(a => ({
       ...a,
-      name: t(`analysts.${a.roleKey}.name`),
       role: t(`analysts.${a.roleKey}.role`)
     }));
-  }, [t]);
-
-  const hamadLocalized = useMemo(() => ({
-    ...HAMAD,
-    name: t('analysts.hamad.name'),
-  }), [t]);
-
-  const localizedHamadScenarios = useMemo(() => {
-    const keys = ["phishing", "virus", "ransomware", "rootkit", "ddos"] as const;
-    const result: Record<string, { step: number; msg: string; analystId: string; analystReply: string; recovery: string }> = {};
-    keys.forEach(k => {
-      result[k] = {
-        ...HAMAD_SCENARIOS[k],
-        msg: t(`hamad_scenarios.${k}.msg`),
-        analystReply: t(`hamad_scenarios.${k}.analyst_reply`),
-        recovery: t(`hamad_scenarios.${k}.recovery`),
-      };
-    });
-    return result;
   }, [t]);
   
   // Memoize localized threats to prevent recreation on every render
   const locale = useLocale();
+  const isAr = locale === "ar";
   const [socAttempts, setSocAttempts] = useState(1);
-  const [generatedVariants, setGeneratedVariants] = useState<Record<string, {radio:string[];stepChat:[string,string][];quiz:{q:string;opts:string[];ans:number;why:string}}>>({});
+  const [generatedVariants, setGeneratedVariants] = useState<Record<string, {radio:string[];stepChat:[string,string][];quiz:{q:string;opts:string[];ans:number;why:string};hamadChat?:{msg:string;analystReply:string;recovery:string}}>>({});
   const [generatingVariant, setGeneratingVariant] = useState(false);
 
   const localizedThreatsMap = useMemo(() => {
@@ -658,32 +638,6 @@ export default function ThreatAcademy() {
     });
     return targets;
   }, [t]);
-
-  // Memoize localized stage labels, education, and threat stories
-  const stageLabels = useMemo(() => [0,1,2,3,4].map(i => t(`stage_labels.${i}`)), [t]);
-  const stageEducation = useMemo(() => [0,1,2,3,4].map(i => ({
-    why: t(`stage_education.${i}.why`),
-    watch: t(`stage_education.${i}.watch`),
-  })), [t]);
-  const threatStoriesLocalized = useMemo(() => {
-    const keys = ["phishing","virus","ransomware","rootkit","ddos"];
-    const result: Record<string, {summary:string;imagine:string}> = {};
-    keys.forEach(k => {
-      result[k] = {
-        summary: t(`threat_stories.${k}.summary`),
-        imagine: t(`threat_stories.${k}.imagine`),
-      };
-    });
-    return result;
-  }, [t]);
-
-  // Memoize localized tour steps
-  const tourSteps = useMemo(() => [0,1,2,3,4,5].map(i => ({
-    label: t(`tour.${i}.label`),
-    title: t(`tour.${i}.title`),
-    body: t(`tour.${i}.body`),
-    cta: t(`tour.${i}.cta`),
-  })), [t]);
   
   // Helper function to get localized threat (now just returns from memoized object)
   const getLocalizedThreat = useCallback((threatDef: ThreatDef): LocalizedThreat => {
@@ -718,18 +672,25 @@ export default function ThreatAcademy() {
   const [showDebrief, setShowDebrief] = useState(false);
   const [seenThreats, setSeenThreats] = useState<Set<string>>(new Set());
   const [persistedQuizAnswers, setPersistedQuizAnswers] = useState<Record<string, number | null>>({});
-  const scenarioDone = typeof window !== "undefined" && localStorage.getItem("cm-scenario-done") === "1";
+  const scenarioDone = typeof window !== "undefined" && parseInt(localStorage.getItem("cm-attacks-mitigated") || "0") >= 1;
   const isCharUnlocked = (charId: string): boolean => { if (charId === "hamad") return true; return scenarioDone; };
   const unlockHint = () => "Complete the Live Scenario to unlock";
   const [trainingBadges, setTrainingBadges] = useState<Set<string>>(() => {
+    // Only load saved badges if user is authenticated
     if (typeof window !== "undefined") {
-      try { return new Set(JSON.parse(localStorage.getItem("cm-badges") || "[]")); } catch { return new Set(); }
+      try {
+        // cm-uid is set in sessionStorage by the auth handler when user logs in
+        const uid = window.sessionStorage.getItem("cm-uid");
+        if (!uid) return new Set<string>();
+        return new Set<string>(JSON.parse(localStorage.getItem("cm-badges-" + uid) || "[]"));
+      } catch { return new Set<string>(); }
     }
     return new Set();
   });
   const awardBadge = (id: string) => setTrainingBadges(prev => {
     const next = new Set([...prev, id]);
-    try { localStorage.setItem("cm-badges", JSON.stringify([...next])); } catch {}
+    try { const uid = window.sessionStorage.getItem("cm-uid");
+      if (uid) localStorage.setItem("cm-badges-" + uid, JSON.stringify([...next])); } catch {}
     return next;
   });
   const seenThreatsRef = useRef<Set<string>>(new Set());
@@ -787,18 +748,18 @@ export default function ThreatAcademy() {
   }, []);
 
   // Generate Arabic/adaptive variant for a SPECIFIC threat when it actually runs
-  const generateVariantForThreat = async (threatKey: string): Promise<void> => {
+  const generateVariantForThreat = async (threatKey: string): Promise<any> => {
     // 1. Check React state — already generated this session
     if (generatedVariants[threatKey]) return;
 
     // 2. Check localStorage — use cached variant from a previous session
-    const cacheKey = "cm-soc-variant-" + threatKey + "-" + locale;
+    const cacheKey = "cm-soc-variant-v2-" + threatKey + "-" + locale;
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
       try {
         const variant = JSON.parse(cached);
         setGeneratedVariants(prev => ({ ...prev, [threatKey]: variant }));
-        return;
+        return variant;
       } catch { /* cache corrupt — regenerate */ }
     }
 
@@ -815,8 +776,9 @@ export default function ThreatAcademy() {
       const d = await res.json();
       if (d.success && d.variant) {
         setGeneratedVariants(prev => ({ ...prev, [threatKey]: d.variant }));
-        // Persist so return visits are instant
         localStorage.setItem(cacheKey, JSON.stringify(d.variant));
+        setGeneratingVariant(false);
+        return d.variant;
       }
     } catch {}
     setGeneratingVariant(false);
@@ -851,7 +813,7 @@ export default function ThreatAcademy() {
       // Fire generation immediately, then wait up to 18s for it to complete
       // so Arabic content is ready before step 1 dialogue appears
       const genPromise = generateVariantForThreat(threatKey);
-      await Promise.race([genPromise, new Promise(r => setTimeout(r, 18000))]);
+      const freshVariant = await Promise.race([genPromise, new Promise<any>(r => setTimeout(r, 18000))]);
       if (!loc || cancelled) return;
 
       alertIdCounter.current += 1;
@@ -866,46 +828,20 @@ export default function ThreatAcademy() {
       setThreatLevel(prev => Math.min(100, prev + def.sev * 4));
       setTrafficHist(prev => [...prev.slice(1), prev[prev.length - 1] + rand(2, 6)]);
       // Pick a variant that wasn't used last time for this threat
-      // Merge generated variant if available for this threat
-      const genVariant = generatedVariants[threatKey];
-
-      // For non-English locales without an AI variant, build a fallback from the
-      // already-translated loc.chat messages so the chat is never shown in English.
-      // Mapping follows CHAT_PLAN: saqr/oryx, oryx/thalab, thalab/hisan, hisan/saqr, saqr/oryx
-      // (a2 only speaks at steps 0 and 4).
-      const locChatFallback: { stepChat: [string, string][] } = {
-        stepChat: [
-          [loc.chat.saqr?.[0] ?? "", loc.chat.oryx?.[0] ?? ""],
-          [loc.chat.oryx?.[1] ?? "", ""],
-          [loc.chat.thalab?.[0] ?? "", ""],
-          [loc.chat.hisan?.[0] ?? "", ""],
-          [loc.chat.saqr?.[1] ?? "", ""],
-        ],
-      };
-
-      const isNonEn = locale !== "en";
-      // When locale is non-English and no AI variant is ready, use the loc.chat fallback
-      // so the chat is immediately in the correct language.
-      const useLocFallback = isNonEn && !genVariant;
-
-      let variant: { stepChat: [string, string][] } | null;
-      let variantIdx = 0;
-      if (useLocFallback) {
-        variant = locChatFallback;
-      } else {
-        const baseVariants = SCRIPT_VARIANTS[threatKey] || [];
-        const variants = genVariant ? [...baseVariants, genVariant] : baseVariants;
-        const lastIdx = lastVariant[threatKey] ?? -1;
-        // Prefer AI-generated variant immediately for non-English, only on return visits for English
-        const preferGenerated = !!genVariant && (isNonEn || socAttempts > 1);
-        const genIdx = variants.length - 1;
-        const available = preferGenerated
-          ? [genIdx]
-          : variants.map((_, i) => i).filter(i => i !== lastIdx);
-        variantIdx = available.length > 0 ? pick(available) : rand(0, variants.length - 1);
-        lastVariant[threatKey] = variantIdx;
-        variant = variants[variantIdx] || null;
-      }
+      // Use freshVariant (from awaited generation) to avoid stale closure issue
+      const genVariant = freshVariant || generatedVariants[threatKey];
+      const baseVariants = SCRIPT_VARIANTS[threatKey] || [];
+      const variants = genVariant ? [...baseVariants, genVariant] : baseVariants;
+      const lastIdx = lastVariant[threatKey] ?? -1;
+      // Always prefer the generated variant when available
+      const preferGenerated = !!genVariant;
+      const genIdx = variants.length - 1;
+      const available = preferGenerated
+        ? [genIdx]
+        : variants.map((_, i) => i).filter(i => i !== lastIdx);
+      const variantIdx = available.length > 0 ? pick(available) : rand(0, variants.length - 1);
+      lastVariant[threatKey] = variantIdx;
+      const variant = variants[variantIdx] || null;
 
       setClickedStep(null);
       setReplayStep(null);
@@ -946,13 +882,15 @@ export default function ThreatAcademy() {
         }
 
         // Hamad's distress message fires at his designated step for this threat
-        const hamadScene = localizedHamadScenarios[threatKey];
+        const genHamad = freshVariant?.hamadChat || generatedVariants[threatKey]?.hamadChat;
+        const baseScene = HAMAD_SCENARIOS[threatKey];
+        const hamadScene = genHamad && baseScene ? { ...baseScene, msg: genHamad.msg, analystReply: genHamad.analystReply, recovery: genHamad.recovery } : baseScene;
         if (hamadScene && i === hamadScene.step && !cancelled) {
           setTimeout(() => {
             if (cancelled) return;
             setChatMsgs(prev => [...prev, {
               id: Date.now() + Math.random() + 5,
-              from: hamadLocalized as typeof ANALYSTS_BASE[number],
+              from: HAMAD as typeof ANALYSTS_BASE[number],
               textKey: hamadScene.msg,
               time: getTime(),
             }].slice(-25));
@@ -978,12 +916,14 @@ export default function ThreatAcademy() {
       }
 
       // Hamad recovery message — fires after all steps finish
-      const hamadScene = localizedHamadScenarios[threatKey];
+      const genHamad = freshVariant?.hamadChat || generatedVariants[threatKey]?.hamadChat;
+        const baseScene = HAMAD_SCENARIOS[threatKey];
+        const hamadScene = genHamad && baseScene ? { ...baseScene, msg: genHamad.msg, analystReply: genHamad.analystReply, recovery: genHamad.recovery } : baseScene;
       if (hamadScene && !cancelled) {
         await sleep(2200);
         setChatMsgs(prev => [...prev, {
           id: Date.now() + Math.random() + 10,
-          from: hamadLocalized as typeof ANALYSTS_BASE[number],
+          from: HAMAD as typeof ANALYSTS_BASE[number],
           textKey: hamadScene.recovery,
           time: getTime(),
         }].slice(-25));
@@ -1013,7 +953,7 @@ export default function ThreatAcademy() {
 
     loop();
     return () => { cancelled = true; chatTimersRef.current.forEach(clearTimeout); };
-  }, [localizedThreatsMap, typeRadio, ANALYSTS, hamadLocalized, localizedHamadScenarios, locale]);
+  }, [localizedThreatsMap, typeRadio, ANALYSTS]);
 
   useEffect(() => { 
     const i = setInterval(() => setThreatLevel(t => Math.max(0, t - 1)), 600); 
@@ -1080,10 +1020,10 @@ export default function ThreatAcademy() {
               <div style={{ padding: "9px 16px", display: "flex", alignItems: "center", gap: 9, borderBottom: "1px solid rgba(197,165,126,0.1)" }}>
                 <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#e03040", display: "inline-block", flexShrink: 0, animation: "blink 1.4s ease-in-out infinite", boxShadow: "0 0 6px #e03040" }} />
                 <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", color: "rgba(197,165,126,0.6)", textTransform: "uppercase", flex: 1 }}>
-                  {showQatarMap ? t('map.qatar_label') : t('map.xdr_label')}
+                  {showQatarMap ? "Qatar · Threat Map" : "XDR · Attack Graph"}
                 </span>
                 <button onClick={() => setShowQatarMap(m => !m)} style={{ fontSize: 9, fontWeight: 700, padding: "2px 9px", borderRadius: 5, border: "1px solid rgba(197,165,126,0.3)", background: "rgba(197,165,126,0.06)", color: "rgba(197,165,126,0.7)", cursor: "pointer", letterSpacing: "0.1em", fontFamily: "'JetBrains Mono'", flexShrink: 0 }}>
-                  {showQatarMap ? t('map.xdr_view') : t('map.map_view')}
+                  {showQatarMap ? "XDR VIEW →" : "← MAP VIEW"}
                 </button>
                 {attackState && (
                   <span style={{ fontSize: 9, color: attackState.def.color, fontWeight: 700, letterSpacing: "0.12em", background: `${attackState.def.color}12`, border: `1px solid ${attackState.def.color}30`, padding: "2px 10px", borderRadius: 5 }}>
@@ -1093,7 +1033,7 @@ export default function ThreatAcademy() {
                 )}
                 {attackState && attackState.step === -1 && attackState.done.size === 5 && (
                   <span style={{ fontSize: 9, color: "#22c55e", fontWeight: 700, letterSpacing: "0.12em", background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", padding: "2px 10px", borderRadius: 5 }}>
-                    {t('attack.contained')}
+                    ✓ CONTAINED
                   </span>
                 )}
                 {attackState && !showQatarMap && (
@@ -1101,7 +1041,7 @@ export default function ThreatAcademy() {
                     onClick={() => setReplayStep(prev => prev !== null ? null : 0)}
                     style={{ background: replayStep !== null ? "rgba(197,165,126,0.18)" : "rgba(197,165,126,0.08)", border: "1px solid rgba(197,165,126,0.3)", borderRadius: 6, color: "#D5B893", fontSize: 9, fontWeight: 700, cursor: "pointer", padding: "3px 10px", letterSpacing: "0.1em", flexShrink: 0 }}
                   >
-                    {replayStep !== null ? t('attack.exit_story') : t('attack.watch_story')}
+                    {replayStep !== null ? "✕ EXIT" : "▶ WATCH STORY"}
                   </button>
                 )}
               </div>
@@ -1208,7 +1148,7 @@ export default function ThreatAcademy() {
                             fill={isReplay && dispStep === i ? color : "rgba(197,165,126,0.28)"}
                             fontSize={7} fontWeight={700}
                             style={{ letterSpacing: "0.13em", textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif" }}
-                          >{stageLabels[i] ?? `STEP ${i + 1}`}</text>
+                          >{STAGE_LABELS[i] ?? `STEP ${i + 1}`}</text>
                         ))}
 
                         {/* Step nodes */}
@@ -1244,9 +1184,9 @@ export default function ThreatAcademy() {
                       {replayStep !== null && (
                         <div>
                           <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, padding:"8px 0 6px" }}>
-                            <button onClick={() => setReplayStep(prev => Math.max(0, (prev??0)-1))} disabled={replayStep===0} style={{ background:"rgba(197,165,126,0.08)", border:"1px solid rgba(197,165,126,0.25)", borderRadius:6, color:replayStep===0?"rgba(197,165,126,0.25)":"#D5B893", fontSize:10, fontWeight:700, cursor:replayStep===0?"default":"pointer", padding:"4px 12px" }}>{t('attack.back')}</button>
-                            <span style={{ fontSize:9, color:"rgba(197,165,126,0.45)", letterSpacing:"0.08em" }}>{t('attack.step_indicator', {step: replayStep+1, total: n})}</span>
-                            <button onClick={() => setReplayStep(prev => Math.min(n-1, (prev??0)+1))} disabled={replayStep===n-1} style={{ background:"rgba(197,165,126,0.08)", border:"1px solid rgba(197,165,126,0.25)", borderRadius:6, color:replayStep===n-1?"rgba(197,165,126,0.25)":"#D5B893", fontSize:10, fontWeight:700, cursor:replayStep===n-1?"default":"pointer", padding:"4px 12px" }}>{t('attack.next')}</button>
+                            <button onClick={() => setReplayStep(prev => Math.max(0, (prev??0)-1))} disabled={replayStep===0} style={{ background:"rgba(197,165,126,0.08)", border:"1px solid rgba(197,165,126,0.25)", borderRadius:6, color:replayStep===0?"rgba(197,165,126,0.25)":"#D5B893", fontSize:10, fontWeight:700, cursor:replayStep===0?"default":"pointer", padding:"4px 12px" }}>◀ Back</button>
+                            <span style={{ fontSize:9, color:"rgba(197,165,126,0.45)", letterSpacing:"0.08em" }}>Step {replayStep+1} / {n}</span>
+                            <button onClick={() => setReplayStep(prev => Math.min(n-1, (prev??0)+1))} disabled={replayStep===n-1} style={{ background:"rgba(197,165,126,0.08)", border:"1px solid rgba(197,165,126,0.25)", borderRadius:6, color:replayStep===n-1?"rgba(197,165,126,0.25)":"#D5B893", fontSize:10, fontWeight:700, cursor:replayStep===n-1?"default":"pointer", padding:"4px 12px" }}>Next ▶</button>
                           </div>
                           {sa && (
                             <div style={{ marginTop:4, padding:"11px 13px", borderRadius:10, background:"rgba(18,6,8,0.92)", border:`1px solid ${sevColor}28`, animation:"slideIn .2s ease" }}>
@@ -1268,7 +1208,7 @@ export default function ThreatAcademy() {
                       )}
                       {replayStep === null && (
                         <div style={{ textAlign: "center", padding: "8px 0 2px" }}>
-                          <span style={{ fontSize: 10, color: "rgba(197,165,126,0.28)", letterSpacing: "0.08em" }}>{t('attack.hint')}</span>
+                          <span style={{ fontSize: 10, color: "rgba(197,165,126,0.28)", letterSpacing: "0.08em" }}>Tap any stage to read · ▶ Watch Story for real alert investigation</span>
                         </div>
                       )}
                       {/* Click-revealed description */}
@@ -1279,31 +1219,31 @@ export default function ThreatAcademy() {
                         const badgeColor = isLive ? color : isPast ? "#22c55e" : "rgba(197,165,126,0.45)";
                         const badgeBg = isLive ? `${color}15` : isPast ? "rgba(34,197,94,0.1)" : "rgba(197,165,126,0.06)";
                         const badgeBorder = isLive ? `1px solid ${color}40` : isPast ? "1px solid rgba(34,197,94,0.3)" : "1px solid rgba(197,165,126,0.2)";
-                        const badgeText = isLive ? t('attack.live_badge') : isPast ? t('attack.passed_badge') : t('attack.step_badge', {n: clickedStep + 1});
+                        const badgeText = isLive ? "● LIVE" : isPast ? "✓ PASSED" : `STEP ${clickedStep + 1}`;
                         return (
                           <div style={{ marginTop: 10, padding: "11px 14px", borderRadius: 10, background: "rgba(42,14,16,0.88)", border: `1px solid ${isLive ? color + "30" : "rgba(197,165,126,0.12)"}`, animation: "slideIn .2s ease", position: "relative" }}>
-                            <button onClick={(e) => { e.stopPropagation(); setClickedStep(null); }} style={{ position: "absolute", top: 8, right: 10, background: "none", border: "none", color: "rgba(197,165,126,0.35)", cursor: "pointer", fontSize: 15, lineHeight: 1, padding: 2 }}>✕</button>
+                            <button onClick={(e) => { e.stopPropagation(); setClickedStep(null); }} style={{ position: "absolute", top: 8, ...(isAr ? {left:10} : {right:10}), background: "none", border: "none", color: "rgba(197,165,126,0.35)", cursor: "pointer", fontSize: 15, lineHeight: 1, padding: 2 }}>✕</button>
                             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, paddingRight: 20 }}>
                               <span style={{ fontSize: 16 }}>{cst.i}</span>
                               <span style={{ fontSize: 13, color: "#f5ede0", fontWeight: 700 }}>{cst.s}</span>
-                              <span style={{ fontSize: 9, color: "rgba(197,165,126,0.5)", marginLeft: 2, letterSpacing: "0.1em", textTransform: "uppercase" }}>{stageLabels[clickedStep]}</span>
+                              <span style={{ fontSize: 9, color: "rgba(197,165,126,0.5)", marginLeft: 2, letterSpacing: "0.1em", textTransform: "uppercase" }}>{STAGE_LABELS[clickedStep]}</span>
                               <span style={{ marginLeft: "auto", fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: badgeColor, background: badgeBg, border: badgeBorder, padding: "2px 8px", borderRadius: 4, animation: isLive ? "blink 1.8s ease-in-out infinite" : "none" }}>{badgeText}</span>
                             </div>
                             <p style={{ fontSize: 12, color: "#f5ede0bb", lineHeight: 1.65, margin: "0 0 10px" }}>{cst.d}</p>
                             <div style={{ borderTop: "1px solid rgba(197,165,126,0.1)", paddingTop: 8, display: "flex", flexDirection: "column", gap: 5 }}>
                               <p style={{ margin: 0, fontSize: 11, color: "#f5ede0aa", lineHeight: 1.6 }}>
-                                <span style={{ color: "#c5a57e", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontSize: 9 }}>{t('attack.why_label')} </span>
-                                {stageEducation[clickedStep].why}
+                                <span style={{ color: "#c5a57e", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontSize: 9 }}>Why attackers do this: </span>
+                                {STAGE_EDUCATION[clickedStep].why}
                               </p>
                               <p style={{ margin: 0, fontSize: 11, color: "#f5ede0aa", lineHeight: 1.6 }}>
-                                <span style={{ color: "#c5a57e", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontSize: 9 }}>{t('attack.watch_label')} </span>
-                                {stageEducation[clickedStep].watch}
+                                <span style={{ color: "#c5a57e", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontSize: 9 }}>Watch for: </span>
+                                {STAGE_EDUCATION[clickedStep].watch}
                               </p>
                             </div>
                             <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 5, opacity: 0.5 }}>
                               <span style={{ width: 4, height: 4, borderRadius: "50%", background: isReplay ? color : "rgba(197,165,126,0.5)", display: "inline-block" }} />
                               <span style={{ fontSize: 9, color: isReplay ? color : "rgba(197,165,126,0.5)", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                                {isReplay ? `${t('attack.watch_story')} · Step ${replayStep! + 1} / 5` : t('attack.browse_mode')}
+                                {isReplay ? `Watching story · Step ${replayStep! + 1} / 5` : "Browse mode · ▶ Watch Story to see live progression"}
                               </span>
                             </div>
                           </div>
@@ -1314,18 +1254,18 @@ export default function ThreatAcademy() {
                       {step === -1 && done.size === 5 && clickedStep === null && (
                         <div style={{ marginTop: 10, padding: "9px 14px", borderRadius: 10, background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.22)", display: "flex", alignItems: "center", gap: 10 }}>
                           <span style={{ fontSize: 16 }}>✅</span>
-                          <span style={{ fontSize: 12, color: "#86efac", fontWeight: 600 }}>{t('attack.all_contained')}</span>
+                          <span style={{ fontSize: 12, color: "#86efac", fontWeight: 600 }}>Attack contained — all stages logged. Monitoring for next incident.</span>
                         </div>
                       )}
 
                       {/* Legend */}
                       <div style={{ display: "flex", gap: 18, marginTop: 10, paddingTop: 8, borderTop: "1px solid rgba(197,165,126,0.1)", alignItems: "center" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: "#e03040", display: "inline-block" }}/><span style={{ fontSize: 9, color: "rgba(197,165,126,0.45)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{t('legend.active')}</span></div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: "#e0304060", display: "inline-block" }}/><span style={{ fontSize: 9, color: "rgba(197,165,126,0.45)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{t('legend.complete')}</span></div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: "#3a1a1c", display: "inline-block", border: "0.5px solid rgba(197,165,126,0.25)" }}/><span style={{ fontSize: 9, color: "rgba(197,165,126,0.45)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{t('legend.pending')}</span></div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: "#e03040", display: "inline-block" }}/><span style={{ fontSize: 9, color: "rgba(197,165,126,0.45)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Active</span></div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: "#e0304060", display: "inline-block" }}/><span style={{ fontSize: 9, color: "rgba(197,165,126,0.45)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Complete</span></div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: "#3a1a1c", display: "inline-block", border: "0.5px solid rgba(197,165,126,0.25)" }}/><span style={{ fontSize: 9, color: "rgba(197,165,126,0.45)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Pending</span></div>
                         <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
                           <svg width="24" height="6"><line x1="0" y1="3" x2="24" y2="3" stroke="rgba(197,165,126,0.4)" strokeWidth="0.8" strokeDasharray="4 3"/></svg>
-                          <span style={{ fontSize: 9, color: "rgba(197,165,126,0.45)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{t('legend.correlated')}</span>
+                          <span style={{ fontSize: 9, color: "rgba(197,165,126,0.45)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Correlated</span>
                         </div>
 
                       </div>
@@ -1333,7 +1273,7 @@ export default function ThreatAcademy() {
                   );
                 })() : (
                   <div style={{ textAlign: "center", padding: "24px 0 12px" }}>
-                    <p style={{ fontSize: 10, color: "rgba(213,184,147,0.22)", letterSpacing: "0.12em", textTransform: "uppercase", margin: 0 }}>{t('attack.initialising')}</p>
+                    <p style={{ fontSize: 10, color: "rgba(213,184,147,0.22)", letterSpacing: "0.12em", textTransform: "uppercase", margin: 0 }}>Initialising threat detection…</p>
                   </div>
                 )}
               </div>
@@ -1370,12 +1310,12 @@ export default function ThreatAcademy() {
                         {isCharUnlocked(a.id) ? (
                           <>
                             <span style={{ fontSize: 9, color: trainingBadges.has(a.id) ? "#22c55e" : "rgba(255,255,255,0.28)", letterSpacing: "0.12em" }}>
-                              {trainingBadges.has(a.id) ? t('analyst.trained') : t('analyst.click_to_train')}
+                              {trainingBadges.has(a.id) ? "✓ TRAINED" : "CLICK TO TRAIN"}
                             </span>
                             {trainingBadges.has(a.id) && <span style={{ fontSize:11 }}>🎖</span>}
                           </>
                         ) : (
-                          <span style={{ fontSize: 9, color: "rgba(197,165,126,0.3)", letterSpacing: "0.1em" }}>{t('analyst.locked')}</span>
+                          <span style={{ fontSize: 9, color: "rgba(197,165,126,0.3)", letterSpacing: "0.1em" }}>🔒 Complete the Live Scenario</span>
                         )}
                       </div>
                     </div>
@@ -1587,13 +1527,12 @@ export default function ThreatAcademy() {
             <div style={{ padding: 18 }}>
               {/* Plain summary + Imagine if story */}
               {(() => {
-                const threatKey = Object.entries(THREATS).find(([_, d]) => d.icon === threat.icon)?.[0] ?? "";
-                const story = threatStoriesLocalized[threatKey];
+                const story = THREAT_STORIES[Object.entries(THREATS).find(([_, d]) => d.icon === threat.icon)?.[0] ?? ""];
                 return story ? (
                   <div style={{ marginBottom: 18 }}>
                     <p style={{ fontSize: 13, color: "#f5ede0bb", lineHeight: 1.75, margin: "0 0 14px" }}>{story.summary}</p>
                     <div style={{ background: "rgba(197,165,126,0.06)", border: "1px solid rgba(197,165,126,0.15)", borderRadius: 10, padding: "13px 15px" }}>
-                      <span style={{ fontSize: 9, fontWeight: 700, color: "#D5B893", letterSpacing: "0.14em", textTransform: "uppercase", display: "block", marginBottom: 7 }}>{t('popup.imagine_label')}</span>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: "#D5B893", letterSpacing: "0.14em", textTransform: "uppercase", display: "block", marginBottom: 7 }}>💭 Imagine if…</span>
                       <p style={{ fontSize: 12.5, color: "#f5ede0aa", lineHeight: 1.8, margin: 0, fontStyle: "italic" }}>{story.imagine}</p>
                     </div>
                   </div>
@@ -1622,7 +1561,12 @@ export default function ThreatAcademy() {
                 {threat.quiz.opts.map((opt: string, oi: number) => {
                   const isC = oi === threat.quiz.ans; const isS = quizAnswer === oi; const done = quizAnswer !== null;
                   return (
-                    <button key={oi} onClick={() => { updateLesson(key, {quizAnswer: oi}); if (oi === threat.quiz.ans) { const tk = Object.entries(THREATS).find(([_,d]) => d.icon === threat.icon)?.[0]; if(tk) setCompleted(p => new Set([...p, tk])); } }} style={{ width: "100%", padding: "10px 14px", borderRadius: 10, textAlign: "left", marginBottom: 5, fontSize: 13, color: "#f5ede0", fontWeight: isS ? 700 : 400, cursor: done ? "default" : "pointer", border: `1.5px solid ${done?(isC?"#22c55e30":isS?"#ef444430":"#ffffff08"):"#ffffff08"}`, background: done?(isC?"#22c55e08":isS?"#ef444408":"transparent"):"#ffffff04" }}>
+                    <button key={oi} onClick={() => { updateLesson(key, {quizAnswer: oi}); if (oi === threat.quiz.ans) { const tk = Object.entries(THREATS).find(([_,d]) => d.icon === threat.icon)?.[0]; if(tk) setCompleted(p => {
+            const next = new Set([...p, tk]);
+            const cur = parseInt(localStorage.getItem("cm-attacks-mitigated") || "0");
+            localStorage.setItem("cm-attacks-mitigated", String(cur + 1));
+            return next;
+          }); } }} style={{ width: "100%", padding: "10px 14px", borderRadius: 10, textAlign: "left", marginBottom: 5, fontSize: 13, color: "#f5ede0", fontWeight: isS ? 700 : 400, cursor: done ? "default" : "pointer", border: `1.5px solid ${done?(isC?"#22c55e30":isS?"#ef444430":"#ffffff08"):"#ffffff08"}`, background: done?(isC?"#22c55e08":isS?"#ef444408":"transparent"):"#ffffff04" }}>
                       <span style={{ opacity: .4, marginRight: 8 }}>{String.fromCharCode(65+oi)}.</span>{opt}
                       {done && isC && <span style={{ float: "right", color: "#22c55e" }}>✓</span>}
                       {done && isS && !isC && <span style={{ float: "right", color: "#ef4444" }}>✗</span>}
@@ -1653,11 +1597,15 @@ export default function ThreatAcademy() {
 
       {/* ── SOC TOUR (6 steps, replaces old intro) ─────────────────────── */}
       {tourStep >= 0 && tourStep <= 5 && (() => {
-        const TOUR_ICONS = ["🛡", "🗺", "💬", "📋", "📊", "✓"];
-        const TOUR_SKIP  = [true, true, true, true, true, false];
-        const s = tourSteps[tourStep];
-        const icon = TOUR_ICONS[tourStep];
-        const canSkip = TOUR_SKIP[tourStep];
+        const STEPS = [
+          { icon:"🛡", label:"CyberMajlis SOC", title:"Security Operations Center", body:"You're about to observe a live SOC — real threats, real analysts, real response decisions. Let's walk you through each section before you dive in.", cta:"Take a quick tour →", skip:true },
+          { icon:"🗺", label:"1 of 5", title:"XDR Attack Graph", body:"The graph in the center maps each attack's kill chain — every stage from initial access to final impact. Hit ▶ Watch Story to step through it with real alert data: which entity was hit, the MITRE technique, the IOC, and what action to take.", cta:"Next →", skip:true },
+          { icon:"💬", label:"2 of 5", title:"Analyst Team Chat", body:"Your four analysts coordinate here in real time. Each has a distinct role — threat detection, risk assessment, forensics, incident response. Watch how they divide the problem as each attack unfolds.", cta:"Next →", skip:true },
+          { icon:"📋", label:"3 of 5", title:"Threat Feed", body:"Every active threat appears in the feed on the right. Click any entry to open a lesson — read what the attack is, see a real-world case, and take a short quiz. Answering correctly marks it as learned and updates your progress.", cta:"Next →", skip:true },
+          { icon:"📊", label:"4 of 5", title:"Live Dashboards", body:"The four panels at the bottom update in real time — network traffic volume, attack frequency by type, severity levels, and system health across firewall, IDS/IPS, SIEM, and endpoints.", cta:"Next →", skip:true },
+          { icon:"✓", label:"5 of 5", title:"You're all set", body:"The simulation is already running behind this screen. Threats will appear and analysts will respond. Click anything you're curious about. Your goal: understand all five threat types and answer each quiz correctly.", cta:"Enter the SOC →", skip:false },
+        ];
+        const s = STEPS[tourStep];
         return (
           <div style={{ position:"fixed", inset:0, zIndex:10001, background: tourStep === 0 ? "#0d0407" : "rgba(10,3,5,0.82)", backdropFilter: tourStep > 0 ? "blur(4px)" : "none", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
             {tourStep === 0 && <div style={{ position:"absolute", inset:0, opacity:.03, backgroundImage:"repeating-linear-gradient(0deg,#D5B893 0px,transparent 1px,transparent 50px),repeating-linear-gradient(90deg,#D5B893 0px,transparent 1px,transparent 50px)" }} />}
@@ -1670,7 +1618,7 @@ export default function ThreatAcademy() {
                 </div>
               )}
               <div style={{ textAlign:"center", marginBottom: tourStep === 0 ? 22 : 14 }}>
-                <div style={{ fontSize: tourStep === 0 ? 40 : 30, marginBottom:8 }}>{icon}</div>
+                <div style={{ fontSize: tourStep === 0 ? 40 : 30, marginBottom:8 }}>{s.icon}</div>
                 <div style={{ fontSize:9, color:"#D5B89345", letterSpacing:"0.28em", textTransform:"uppercase", fontFamily:"'JetBrains Mono'", marginBottom:8 }}>{s.label}</div>
                 <h2 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize: tourStep === 0 ? 34 : 24, color:"#f5ede0", margin:0, fontWeight:600 }}>{s.title}</h2>
               </div>
@@ -1690,7 +1638,7 @@ export default function ThreatAcademy() {
                   onMouseEnter={e => { (e.currentTarget).style.background="rgba(213,184,147,0.1)"; (e.currentTarget).style.borderColor="rgba(213,184,147,0.8)"; }}
                   onMouseLeave={e => { (e.currentTarget).style.background = tourStep===5 ? "rgba(197,165,126,0.1)" : "transparent"; (e.currentTarget).style.borderColor="rgba(213,184,147,0.45)"; }}
                 >{s.cta}</button>
-                {canSkip && <button onClick={() => {  completeTour(); }} style={{ background:"none", border:"none", color:"rgba(197,165,126,0.28)", fontSize:10, cursor:"pointer", letterSpacing:"0.1em" }}>{t('tour.skip')}</button>}
+                {s.skip && <button onClick={() => {  completeTour(); }} style={{ background:"none", border:"none", color:"rgba(197,165,126,0.28)", fontSize:10, cursor:"pointer", letterSpacing:"0.1em" }}>Skip tour</button>}
               </div>
             </div>
           </div>
@@ -1702,10 +1650,10 @@ export default function ThreatAcademy() {
         <div style={{ position:"fixed", inset:0, zIndex:10001, background:"rgba(13,4,7,0.88)", backdropFilter:"blur(5px)", display:"flex", alignItems:"center", justifyContent:"center" }}>
           <div style={{ background:"linear-gradient(155deg,#1c0b0d,#2a0e10)", border:"1px solid rgba(197,165,126,0.22)", borderRadius:20, padding:"38px 46px", maxWidth:540, width:"90%", animation:"popIn 0.45s ease both" }}>
             <div style={{ textAlign:"center", marginBottom:28 }}>
-              <div style={{ fontSize:10, color:"#D5B89355", letterSpacing:"0.28em", textTransform:"uppercase", marginBottom:10, fontFamily:"'JetBrains Mono'" }}>{t('debrief.session_complete')}</div>
-              <h2 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:34, color:"#f5ede0", margin:"0 0 10px", fontWeight:600 }}>{t('debrief.title')}</h2>
+              <div style={{ fontSize:10, color:"#D5B89355", letterSpacing:"0.28em", textTransform:"uppercase", marginBottom:10, fontFamily:"'JetBrains Mono'" }}>Session Complete</div>
+              <h2 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:34, color:"#f5ede0", margin:"0 0 10px", fontWeight:600 }}>Threat Debrief</h2>
               <p style={{ fontSize:13, color:"#f5ede0aa", margin:0, lineHeight:1.7 }}>
-                {t('debrief.all_observed')}{" "}{t('debrief.mastered_count', {count: completed.size, total: Object.keys(THREATS).length})}{" "}{completed.size === Object.keys(THREATS).length ? t('debrief.grade.flawless') : completed.size >= 3 ? t('debrief.grade.solid') : t('debrief.grade.practice')}
+                All five threats observed. You mastered <span style={{ color:"#22c55e", fontWeight:700 }}>{completed.size}</span> of {Object.keys(THREATS).length} — {completed.size === Object.keys(THREATS).length ? "flawless." : completed.size >= 3 ? "solid work." : "keep practising."}
               </p>
             </div>
             <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:30 }}>
@@ -1717,11 +1665,11 @@ export default function ThreatAcademy() {
                     <span style={{ fontSize:20 }}>{def.icon}</span>
                     <div style={{ flex:1 }}>
                       <div style={{ fontSize:13, color:"#f5ede0", fontWeight:600 }}>{loc?.type ?? key}</div>
-                      <div style={{ fontSize:10, color:"#f5ede035", fontFamily:"'JetBrains Mono'" }}>{t('debrief.contained')}</div>
+                      <div style={{ fontSize:10, color:"#f5ede035", fontFamily:"'JetBrains Mono'" }}>Contained</div>
                     </div>
                     {learned
-                      ? <span style={{ fontSize:10, color:"#22c55e", fontWeight:700, background:"rgba(34,197,94,0.1)", border:"1px solid rgba(34,197,94,0.25)", padding:"3px 10px", borderRadius:5, letterSpacing:"0.08em" }}>{t('debrief.mastered')}</span>
-                      : <span style={{ fontSize:10, color:"rgba(197,165,126,0.35)", background:"rgba(197,165,126,0.05)", border:"1px solid rgba(197,165,126,0.1)", padding:"3px 10px", borderRadius:5, letterSpacing:"0.08em" }}>{t('debrief.review')}</span>
+                      ? <span style={{ fontSize:10, color:"#22c55e", fontWeight:700, background:"rgba(34,197,94,0.1)", border:"1px solid rgba(34,197,94,0.25)", padding:"3px 10px", borderRadius:5, letterSpacing:"0.08em" }}>✓ MASTERED</span>
+                      : <span style={{ fontSize:10, color:"rgba(197,165,126,0.35)", background:"rgba(197,165,126,0.05)", border:"1px solid rgba(197,165,126,0.1)", padding:"3px 10px", borderRadius:5, letterSpacing:"0.08em" }}>REVIEW</span>
                     }
                   </div>
                 );
@@ -1729,10 +1677,10 @@ export default function ThreatAcademy() {
             </div>
             <div style={{ display:"flex", gap:10, justifyContent:"center" }}>
               <button onClick={() => setShowDebrief(false)} style={{ padding:"11px 26px", borderRadius:8, border:"1px solid rgba(197,165,126,0.25)", background:"transparent", color:"#D5B893", fontSize:11, fontWeight:700, cursor:"pointer", letterSpacing:"0.12em", textTransform:"uppercase" }}>
-                {t('debrief.continue')}
+                Continue Monitoring
               </button>
               <button onClick={() => { setShowDebrief(false); setCompleted(new Set()); setSeenThreats(new Set()); }} style={{ padding:"11px 26px", borderRadius:8, border:"none", background:"rgba(197,165,126,0.1)", color:"#D5B893", fontSize:11, fontWeight:700, cursor:"pointer", letterSpacing:"0.12em", textTransform:"uppercase" }}>
-                {t('debrief.run_again')}
+                Run Again →
               </button>
             </div>
           </div>

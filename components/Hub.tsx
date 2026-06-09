@@ -15,11 +15,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '@/app/lib/firebase';
 import { GAMES, GAME_DIFF } from '@/app/lib/gamesData';
 import { CHARS } from '@/app/lib/characters';
-import { genLB } from '@/app/lib/leaderboard';
+import type { LBEntry } from '@/app/lib/leaderboard';
 import { useTranslations, useLocale } from 'next-intl';
 
 // ─── Locale cookie helper ────────────────────────────────────
@@ -109,12 +109,48 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
   const [hoveredGame, setHoveredGame] = useState<string | null>(null);
   const [activeSimulation, setActiveSimulation] = useState<string | null>(null);
 
-  // ── Leaderboard (client-only to avoid SSR mismatch) ──────
-  const [lbBase, setLbBase] = useState<ReturnType<typeof genLB>>([]);
-  useEffect(() => { setLbBase(genLB(2400)); }, []);
+  // ── Leaderboard (real Firestore data) ────────────────────
+  const [lbData, setLbData] = useState<LBEntry[]>([]);
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const snap = await getDocs(collection(db, 'progress'));
+
+        // Aggregate XP per user: 100 XP per fully completed lesson
+        const userXP: Record<string, number> = {};
+        snap.docs.forEach((d) => {
+          const { userID, storyDone, demoDone, posterDone, quizDone } = d.data();
+          if (!userID) return;
+          if (!userXP[userID]) userXP[userID] = 0;
+          if (storyDone && demoDone && posterDone && quizDone) userXP[userID] += 100;
+        });
+
+        // Fetch display names and avatars for each user
+        const entries: LBEntry[] = await Promise.all(
+          Object.entries(userXP).map(async ([uid, xp]) => {
+            const userSnap = await getDoc(doc(db, 'user', uid));
+            const data = userSnap.exists() ? userSnap.data() : {};
+            return {
+              name: data.username || 'Anonymous',
+              avatar: data.avatar || '/characters/falcon.jpeg',
+              xp,
+              games: 0,
+              isYou: uid === user?.uid,
+            };
+          }),
+        );
+
+        setLbData(entries.sort((a, b) => b.xp - a.xp));
+      } catch (err) {
+        console.error('Leaderboard fetch error:', err);
+      }
+    };
+    fetchLeaderboard();
+  }, [user]);
+
   const lb = useMemo(
-    () => lbBase.map((p) => (p.isYou ? { ...p, xp: displayXP } : p)).sort((a, b) => b.xp - a.xp),
-    [displayXP, lbBase],
+    () => lbData.map((p) => (p.isYou ? { ...p, xp: displayXP } : p)).sort((a, b) => b.xp - a.xp),
+    [displayXP, lbData],
   );
 
   // ── Ticker ────────────────────────────────────────────────

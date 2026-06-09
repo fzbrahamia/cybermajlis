@@ -2750,5 +2750,43 @@
         ]
       }
     ]
+  },
+  "DIY": {
+    "backToDashboard": "← Back to Dashboard",
+    "backToRoom": "← Back to CyberMajlis Room",
+    "backToOptions": "← Back to options",
+    "backToDevices": "← Back to device choices",
+    "roomIntro": "Explore the CyberMajlis room. Hover over a glowing device to see its name, then click to start the lesson.",
+    "startLesson": "Start Lesson",
+    "chooseHowToLearn": "Choose how you want to learn",
+    "watchVideo": "Watch Video",
+    "watchVideoDesc": "Enjoy watching a focused video.",
+    "readSteps": "Read the Steps",
+    "readStepsDesc": "Learn by reading the written instructions.",
+    "quickChecklist": "Quick Checklist",
+    "quickChecklistDesc": "Tick each action after completing it.",
+    "chooseDeviceFirst": "Choose your device first.",
+    "learningJourney": "Learning Journey",
+    "deviceGuide": "Device Guide",
+    "routerProtection": "Router Protection",
+    "mission": "Mission",
+    "of": "/",
+    "whatToDo": "What to do",
+    "whyItMatters": "Why this matters",
+    "previous": "← Previous",
+    "nextMission": "I understand, next →",
+    "goToChecklist": "Ready to apply it? Go to Checklist →",
+    "completeTick": "Complete each action and tick it off.",
+    "completeDeviceThenRouter": "Complete the steps for your device, then continue with the shared router protection steps.",
+    "completed": "completed",
+    "allDone": "Great job! You completed this security checklist.",
+    "lessonNotFound": "Lesson not found",
+    "pageNotFound": "Page not found",
+    "devices": {
+      "camera": "Smart Camera",
+      "tv": "Smart TV",
+      "router": "Wi-Fi Router",
+      "lock": "Smart Lock"
+    }
   }
 }

@@ -2750,5 +2750,43 @@
         ]
       }
     ]
+  },
+  "DIY": {
+    "backToDashboard": "العودة للوحة التحكم ←",
+    "backToRoom": "العودة لغرفة المجلس ←",
+    "backToOptions": "العودة للخيارات ←",
+    "backToDevices": "العودة لاختيار الجهاز ←",
+    "roomIntro": "استكشف غرفة المجلس السيبراني. مرّر المؤشر على الجهاز المضيء لرؤية اسمه، ثم اضغط لبدء الدرس.",
+    "startLesson": "ابدأ الدرس",
+    "chooseHowToLearn": "اختر طريقة التعلم",
+    "watchVideo": "شاهد الفيديو",
+    "watchVideoDesc": "استمتع بمشاهدة فيديو مركّز.",
+    "readSteps": "اقرأ الخطوات",
+    "readStepsDesc": "تعلّم بالقراءة خطوة بخطوة.",
+    "quickChecklist": "قائمة مراجعة سريعة",
+    "quickChecklistDesc": "ضع علامة على كل إجراء بعد إكماله.",
+    "chooseDeviceFirst": "اختر جهازك أولاً.",
+    "learningJourney": "رحلة التعلم",
+    "deviceGuide": "دليل الجهاز",
+    "routerProtection": "حماية الراوتر",
+    "mission": "مهمة",
+    "of": "/",
+    "whatToDo": "ماذا تفعل",
+    "whyItMatters": "لماذا هذا مهم",
+    "previous": "السابق ←",
+    "nextMission": "فهمت، التالي ←",
+    "goToChecklist": "جاهز للتطبيق؟ انتقل لقائمة المراجعة ←",
+    "completeTick": "أكمل كل إجراء وضع علامة عليه.",
+    "completeDeviceThenRouter": "أكمل خطوات جهازك المختار، ثم تابع خطوات حماية الراوتر المشتركة.",
+    "completed": "مكتمل",
+    "allDone": "أحسنت! أكملت قائمة مراجعة الأمان.",
+    "lessonNotFound": "الدرس غير موجود",
+    "pageNotFound": "الصفحة غير موجودة",
+    "devices": {
+      "camera": "الكاميرا الذكية",
+      "tv": "التلفاز الذكي",
+      "router": "جهاز Wi-Fi",
+      "lock": "القفل الذكي"
+    }
   }
 }
