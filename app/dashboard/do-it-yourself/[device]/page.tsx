@@ -37,62 +37,39 @@ export default function DeviceLessonPage() {
     <main
       style={{
         ...pageShellStyle,
-        padding: "0 2rem 2rem",
+        padding: "80px 2rem 2rem",
         direction: isRtl ? "rtl" : "ltr",
       }}
     >
       <style>{globalLessonStyles}</style>
 
-      {/* Sticky sub-header */}
-      <div
-        style={{
-          position: "sticky",
-          top: 80,
-          zIndex: 20,
-          background: "rgba(227,218,201,0.92)",
-          backdropFilter: "blur(8px)",
-          borderBottom: "1px solid rgba(99,32,36,0.1)",
-          padding: "0.55rem 0",
-          margin: "0 -2rem 1.2rem",
-          paddingLeft: "2rem",
-          paddingRight: "2rem",
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          flexWrap: "wrap",
-        }}
-      >
-        <Link href="/dashboard/do-it-yourself" className="back-btn" style={{ flexShrink: 0 }}>
+      <div style={{ maxWidth: 1050, margin: "0 auto", paddingTop: "1.8rem" }}>
+        <Link href="/dashboard/do-it-yourself" className="back-btn">
           {t("backToRoom")}
         </Link>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <h1
-            style={{
-              fontFamily: "'Cinzel', serif",
-              fontSize: "clamp(1rem, 2vw, 1.4rem)",
-              margin: 0,
-              color: "#3e1316",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {lesson.title}
-          </h1>
-          <p style={{ fontSize: "0.82rem", color: "#5C4033", margin: 0, lineHeight: 1.4 }}>
-            {lesson.description}
-          </p>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 1050, margin: "0 auto" }}>
+        <h1
+          style={{
+            fontFamily: "'Cinzel', serif",
+            fontSize: "clamp(1.1rem, 2vw, 1.6rem)",
+            margin: "0 0 0.3rem",
+            color: "#3e1316",
+          }}
+        >
+          {lesson.title}
+        </h1>
+        <p style={{ fontSize: "0.88rem", color: "#5C4033", margin: "0 0 1.5rem", lineHeight: 1.5 }}>
+          {lesson.description}
+        </p>
         <section>
           <h2
             style={{
               fontFamily: "'Cinzel', serif",
-              fontSize: "0.95rem",
-              marginBottom: "0.8rem",
+              fontSize: "1.15rem",
+              marginBottom: "1.2rem",
               color: "#3e1316",
+              textAlign: "center",
+              fontWeight: 400,
+              letterSpacing: "0.04em",
             }}
           >
             {t("chooseHowToLearn")}

@@ -14,7 +14,8 @@ const mockChar: Character = {
   profile: "/characters/oryx.jpeg",
   games: [],
   role: "",
-  quote: "",
+  roleAr: "",
+  desc: "",
 };
 
 // ── GameHeader ───────────────────────────────────────────────

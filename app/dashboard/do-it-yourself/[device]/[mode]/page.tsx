@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { globalLessonStyles, lessons, lessonsAr, pageShellStyle, ReadingSection } from "../lessonData";
+import { auth } from "@/app/lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 type Mode = "video" | "reading" | "checklist";
 
@@ -25,47 +27,19 @@ export default function LessonModePage() {
   const lesson = (isRtl ? lessonsAr : lessons)[deviceId];
 
   const stickyHeader = (
-    <div
-      style={{
-        position: "sticky",
-        top: 80,
-        zIndex: 20,
-        background: "rgba(227,218,201,0.92)",
-        backdropFilter: "blur(8px)",
-        borderBottom: "1px solid rgba(99,32,36,0.1)",
-        padding: "0.55rem 0",
-        margin: "0 -2rem 1.2rem",
-        paddingLeft: "2rem",
-        paddingRight: "2rem",
-        display: "flex",
-        alignItems: "center",
-        gap: "0.8rem",
-        direction: isRtl ? "rtl" : "ltr",
-      }}
-    >
+    <div style={{ direction: isRtl ? "rtl" : "ltr", paddingTop: "1.8rem", paddingBottom: "1rem" }}>
       <Link
         href={`/dashboard/do-it-yourself/${deviceId}`}
         className="back-btn"
-        style={{ flexShrink: 0 }}
       >
         {t("backToOptions")}
       </Link>
-      <span
-        style={{
-          fontFamily: "'Cinzel', serif",
-          fontSize: "0.85rem",
-          fontWeight: 700,
-          color: "#3e1316",
-        }}
-      >
-        {t(modeTitleKeys[mode] ?? "watchVideo")}
-      </span>
     </div>
   );
 
   if (!lesson || !["video", "reading", "checklist"].includes(mode)) {
     return (
-      <main style={{ ...pageShellStyle, padding: "0 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
+      <main style={{ ...pageShellStyle, padding: "80px 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
         <style>{globalLessonStyles}</style>
         {stickyHeader}
         <div style={{ maxWidth: 1050, margin: "0 auto" }}>
@@ -78,21 +52,29 @@ export default function LessonModePage() {
   // Router lesson has platform guides — show device selector
   if (lesson.platformGuides?.length) {
     return (
-      <main style={{ ...pageShellStyle, padding: "0 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
+      <main style={{ ...pageShellStyle, padding: "80px 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
         <style>{globalLessonStyles}</style>
         {stickyHeader}
 
         <div style={{ maxWidth: 1050, margin: "0 auto" }}>
-          <p style={{ fontSize: "0.9rem", color: "#5C4033", marginBottom: "1rem", lineHeight: 1.5 }}>
+          <h2 style={{
+            fontFamily: "'Cinzel', serif",
+            fontSize: "1.15rem",
+            fontWeight: 700,
+            color: "#3e1316",
+            marginBottom: "1.2rem",
+            letterSpacing: "0.04em",
+          }}>
             {t("chooseDeviceFirst")}
-          </p>
+          </h2>
 
-          {/* Compact pill row for platform selection */}
+          {/* Platform selection buttons */}
           <div
             style={{
               display: "flex",
               flexWrap: "wrap",
-              gap: "0.6rem",
+              gap: "0.8rem",
+              justifyContent: "center",
             }}
           >
             {lesson.platformGuides.map((guide) => (
@@ -105,12 +87,12 @@ export default function LessonModePage() {
                   justifyContent: "center",
                   fontFamily: "'Cinzel', serif",
                   fontWeight: 700,
-                  fontSize: "0.82rem",
+                  fontSize: "0.9rem",
                   letterSpacing: "0.05em",
                   color: "#E8D4BC",
                   background: "linear-gradient(135deg, #3e1316, #632024)",
                   border: "1px solid rgba(197,165,126,0.45)",
-                  padding: "0.6rem 1.3rem",
+                  padding: "0.75rem 1.7rem",
                   borderRadius: 999,
                   textDecoration: "none",
                   boxShadow: "0 4px 14px rgba(62,19,22,0.2)",
@@ -135,7 +117,7 @@ export default function LessonModePage() {
   }
 
   return (
-    <main style={{ ...pageShellStyle, padding: "0 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
+    <main style={{ ...pageShellStyle, padding: "80px 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
       <style>{globalLessonStyles}</style>
       {stickyHeader}
 
@@ -345,22 +327,33 @@ function ChecklistPageContent({
   t: ReturnType<typeof useTranslations>;
 }) {
   const [checked, setChecked] = useState<boolean[]>([]);
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) { setChecked(checklistItems.map((_, i) => Boolean(parsed[i]))); return; }
-      } catch {}
-    }
-    setChecked(checklistItems.map(() => false));
+    const unsub = onAuthStateChanged(auth, (u) => {
+      const loggedIn = !!u;
+      setIsSignedIn(loggedIn);
+      if (!loggedIn) {
+        // Guest: always start fresh
+        setChecked(checklistItems.map(() => false));
+        return;
+      }
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) { setChecked(checklistItems.map((_, i) => Boolean(parsed[i]))); return; }
+        } catch {}
+      }
+      setChecked(checklistItems.map(() => false));
+    });
+    return () => unsub();
   }, [storageKey, checklistItems.length]);
 
   useEffect(() => {
-    if (checked.length !== checklistItems.length) return;
+    if (!isSignedIn || checked.length !== checklistItems.length) return;
     localStorage.setItem(storageKey, JSON.stringify(checked));
-  }, [checked, storageKey, checklistItems.length]);
+  }, [checked, storageKey, checklistItems.length, isSignedIn]);
 
   const completed = checked.filter(Boolean).length;
   const progress = checklistItems.length ? Math.round((completed / checklistItems.length) * 100) : 0;

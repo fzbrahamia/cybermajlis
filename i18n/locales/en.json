@@ -392,7 +392,22 @@
     "lessonsCompleted": "Lessons Completed",
     "totalXP": "Total Experience",
     "badges": "Badges Earned",
-    "currentLevel": "Current Level"
+    "currentLevel": "Current Level",
+    "badgesSection": "Your Achievements",
+    "badgesSectionSub": "Earn badges by exploring every corner of CyberMajlis",
+    "badgeNotEarned": "Not yet earned",
+    "badgeList": {
+      "first_step": { "title": "First Step", "desc": "Complete your first full lesson" },
+      "aware": { "title": "Cyber Aware", "desc": "Complete 3 lessons" },
+      "basic": { "title": "Basic Graduate", "desc": "Complete all basic lessons" },
+      "advanced": { "title": "Advanced Scholar", "desc": "Complete an advanced lesson" },
+      "soc": { "title": "SOC Analyst", "desc": "Survive a live attack scenario in the SOC" },
+      "diy": { "title": "Home Guardian", "desc": "Complete a DIY security checklist" },
+      "gamer": { "title": "Souq Player", "desc": "Play any game in the Souq" },
+      "scanner": { "title": "Digital Detective", "desc": "Use the threat scanner to analyse a URL or file" },
+      "community": { "title": "Community Watch", "desc": "Submit a report to the community" },
+      "veteran": { "title": "Cyber Veteran", "desc": "Earn 6 or more badges — true CyberMajlis status" }
+    }
   },
   "SOC": {
     "back": "← Back",

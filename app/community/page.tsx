@@ -192,6 +192,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
       status:"pending",upvotes:0,upvotedBy:[],createdAt:serverTimestamp(),
     });
     setLoading(false);
+    localStorage.setItem("cm-community-posted", "1");
     onSubmitted();
     setStep("done");
   };

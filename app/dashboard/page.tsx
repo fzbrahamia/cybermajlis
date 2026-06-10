@@ -52,8 +52,7 @@ export default function DashboardPage() {
   // XP: 100 per completed lesson
   const totalXP = completedLessons * 100;
 
-  // Level
-  const level = completedLessons === 0 ? t("levels.beginner") : completedLessons === 1 ? t("levels.aware") : completedLessons === 2 ? t("levels.defender") : t("levels.guardian");
+  // Level — determined after BADGE_DEFS are computed, so use a derived value below
   // Overall progress %
   const overallPct = Math.round((completedLessons / totalLessons) * 100);
 
@@ -61,6 +60,42 @@ export default function DashboardPage() {
   const basicLessons = [virusProgress, wormProgress, ransomwareProgress];
   const basicCompleted = basicLessons.filter(isLessonComplete).length;
   const advancedCompleted = [polyProgress].filter(isLessonComplete).length;
+
+  // ── Badge conditions (computed from localStorage + lesson progress) ──
+  const [badgeState, setBadgeState] = useState({
+    socDone: false, diyDone: false, gamesPlayed: false,
+    scannerUsed: false, communityPost: false,
+  });
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const socDone = parseInt(localStorage.getItem("cm-attacks-mitigated") || "0") >= 1;
+    const diyDone = Object.keys(localStorage).some(k => k.startsWith("diy-checklist-") && localStorage.getItem(k));
+    const gamesPlayed = Object.keys(localStorage).some(k => k.startsWith("cm-game-"));
+    const scannerUsed = !!localStorage.getItem("cm-scan-used");
+    const communityPost = !!localStorage.getItem("cm-community-posted");
+    setBadgeState({ socDone, diyDone, gamesPlayed, scannerUsed, communityPost });
+  }, []);
+
+  const BADGE_DEFS = [
+    { id: "first_step", icon: "🎖", earned: completedLessons >= 1 },
+    { id: "aware",      icon: "🧠", earned: completedLessons >= 3 },
+    { id: "basic",      icon: "📚", earned: basicCompleted >= 3   },
+    { id: "advanced",   icon: "⚔️", earned: advancedCompleted >= 1 },
+    { id: "soc",        icon: "🖥️", earned: badgeState.socDone   },
+    { id: "diy",        icon: "🏠", earned: badgeState.diyDone    },
+    { id: "gamer",      icon: "🎮", earned: badgeState.gamesPlayed },
+    { id: "scanner",    icon: "🔍", earned: badgeState.scannerUsed },
+    { id: "community",  icon: "🌐", earned: badgeState.communityPost },
+    { id: "veteran",    icon: "🏆", earned: false /* set below */ },
+  ];
+  const earnedCount = BADGE_DEFS.filter(b => b.earned).length;
+  BADGE_DEFS[9].earned = earnedCount >= 6;
+  const totalBadges = BADGE_DEFS.filter(b => b.earned).length;
+
+  const level = totalBadges === 0 ? t("levels.beginner")
+    : totalBadges <= 2 ? t("levels.aware")
+    : totalBadges <= 5 ? t("levels.defender")
+    : t("levels.guardian");
 
   const categories: Category[] = [
     {
@@ -588,7 +623,7 @@ export default function DashboardPage() {
             </div>
             <div className="stat-card">
               <span className="stat-emoji">🏅</span>
-              <div className="stat-value">{completedLessons}</div>
+              <div className="stat-value">{totalBadges}</div>
               <div className="stat-label">{t("badges")}</div>
             </div>
             <div className="stat-card">
@@ -622,6 +657,70 @@ export default function DashboardPage() {
               </Link>
             )
           )}
+        </div>
+
+        {/* ── Badges Section ── */}
+        <div style={{ marginTop: "3rem" }}>
+          <p className="section-label" style={{ marginBottom: "0.3rem" }}>{t("badgesSection")}</p>
+          <p style={{ fontSize: "0.9rem", color: "#5C4033", marginBottom: "1.8rem", fontStyle: "italic" }}>{t("badgesSectionSub")}</p>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
+            gap: "1rem",
+            direction: isRtl ? "rtl" : "ltr",
+          }}>
+            {BADGE_DEFS.map((badge) => {
+              const badgeT = t.raw(`badgeList.${badge.id}`) as { title: string; desc: string };
+              return (
+                <div key={badge.id} style={{
+                  background: badge.earned
+                    ? "linear-gradient(135deg, #3e1316, #632024)"
+                    : "rgba(62,19,22,0.05)",
+                  border: badge.earned
+                    ? "1px solid rgba(197,165,126,0.4)"
+                    : "1px solid rgba(62,19,22,0.12)",
+                  borderRadius: 16,
+                  padding: "1.1rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  gap: "0.5rem",
+                  opacity: badge.earned ? 1 : 0.55,
+                  transition: "opacity 0.2s, transform 0.2s",
+                  position: "relative",
+                  overflow: "hidden",
+                }}>
+                  {badge.earned && (
+                    <div style={{
+                      position: "absolute", top: 0, left: 0, right: 0,
+                      height: 2,
+                      background: "linear-gradient(90deg, #c5a57e, rgba(197,165,126,0.2))",
+                    }} />
+                  )}
+                  <span style={{ fontSize: "1.8rem", filter: badge.earned ? "none" : "grayscale(1)" }}>
+                    {badge.icon}
+                  </span>
+                  <div style={{
+                    fontFamily: "'Cinzel', serif",
+                    fontSize: "0.72rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.05em",
+                    color: badge.earned ? "#E8D4BC" : "#5C4033",
+                  }}>
+                    {badgeT.title}
+                  </div>
+                  <div style={{
+                    fontSize: "0.72rem",
+                    color: badge.earned ? "rgba(232,212,188,0.7)" : "#7a5a4a",
+                    lineHeight: 1.4,
+                  }}>
+                    {badge.earned ? badgeT.desc : t("badgeNotEarned")}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

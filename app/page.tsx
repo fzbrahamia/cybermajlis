@@ -368,7 +368,7 @@ export default function HomePage() {
       }}>
 
         {/* —— Left copy —— */}
-        <div style={{ maxWidth: 570, flex: "1 1 460px", paddingTop: "4rem", paddingLeft: "4rem" }}>
+        <div style={{ maxWidth: 570, flex: "1 1 460px", paddingTop: "4rem", paddingInlineStart: "4rem" }}>
 
           {/* Badge with pulsing dot */}
           <div style={{
@@ -811,6 +811,38 @@ export default function HomePage() {
       </section>
 
       <Footer />
+
+      {/* Scroll-to-top button — appears after scrolling 300px */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Back to top"
+        style={{
+          position: "fixed",
+          bottom: 36,
+          left: 36,
+          zIndex: 9999,
+          width: 46,
+          height: 46,
+          borderRadius: "50%",
+          border: "1px solid rgba(197,165,126,0.55)",
+          background: "linear-gradient(135deg, #3e1316, #7a1e22)",
+          color: "#E8D4BC",
+          fontSize: 20,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          boxShadow: "0 6px 24px rgba(62,19,22,0.5)",
+          transition: "opacity 0.3s ease, transform 0.2s ease",
+          opacity: scrollY > 300 ? 1 : 0,
+          pointerEvents: scrollY > 300 ? "auto" : "none",
+          transform: scrollY > 300 ? "translateY(0)" : "translateY(12px)",
+        }}
+        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = scrollY > 300 ? "translateY(0)" : "translateY(12px)"; }}
+      >
+        ↑
+      </button>
 
     </div>
   );

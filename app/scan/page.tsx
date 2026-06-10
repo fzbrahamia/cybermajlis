@@ -116,6 +116,7 @@ export default function ScanPage() {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       setResult({ type: mode, target: mode === "file" ? file!.name : input.trim(), ...data });
+      localStorage.setItem("cm-scan-used", "1");
     } catch (e: any) {
       setError(e.message || (isAR ? "فشل الفحص. يرجى المحاولة مرة أخرى." : "Scan failed. Please try again."));
     }

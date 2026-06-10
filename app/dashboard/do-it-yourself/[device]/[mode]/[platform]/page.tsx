@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { globalLessonStyles, lessons, lessonsAr, pageShellStyle, ReadingSection } from "../../lessonData";
+import { auth } from "@/app/lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 type Mode = "video" | "reading" | "checklist";
 
@@ -25,49 +27,19 @@ export default function PlatformLessonPage() {
   );
 
   const stickyHeader = (
-    <div
-      style={{
-        position: "sticky",
-        top: 80,
-        zIndex: 20,
-        background: "rgba(227,218,201,0.92)",
-        backdropFilter: "blur(8px)",
-        borderBottom: "1px solid rgba(99,32,36,0.1)",
-        padding: "0.55rem 0",
-        margin: "0 -2rem 1.2rem",
-        paddingLeft: "2rem",
-        paddingRight: "2rem",
-        display: "flex",
-        alignItems: "center",
-        gap: "0.8rem",
-        direction: isRtl ? "rtl" : "ltr",
-      }}
-    >
+    <div style={{ direction: isRtl ? "rtl" : "ltr", paddingTop: "1.8rem", paddingBottom: "1rem" }}>
       <Link
         href={`/dashboard/do-it-yourself/${deviceId}/${mode}`}
         className="back-btn"
-        style={{ flexShrink: 0 }}
       >
         {t("backToDevices")}
       </Link>
-      {guide && (
-        <span
-          style={{
-            fontFamily: "'Cinzel', serif",
-            fontSize: "0.85rem",
-            fontWeight: 700,
-            color: "#3e1316",
-          }}
-        >
-          {guide.label}
-        </span>
-      )}
     </div>
   );
 
   if (!lesson || !guide || !["video", "reading", "checklist"].includes(mode)) {
     return (
-      <main style={{ ...pageShellStyle, padding: "0 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
+      <main style={{ ...pageShellStyle, padding: "80px 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
         <style>{globalLessonStyles}</style>
         {stickyHeader}
         <div style={{ maxWidth: 1050, margin: "0 auto" }}>
@@ -80,7 +52,7 @@ export default function PlatformLessonPage() {
   const checklistItems = [...guide.checklist, ...lesson.checklist];
 
   return (
-    <main style={{ ...pageShellStyle, padding: "0 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
+    <main style={{ ...pageShellStyle, padding: "80px 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>
       <style>{globalLessonStyles}</style>
       {stickyHeader}
 
@@ -319,22 +291,32 @@ function ChecklistPageContent({
   t: ReturnType<typeof useTranslations>;
 }) {
   const [checked, setChecked] = useState<boolean[]>([]);
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) { setChecked(checklistItems.map((_, i) => Boolean(parsed[i]))); return; }
-      } catch {}
-    }
-    setChecked(checklistItems.map(() => false));
+    const unsub = onAuthStateChanged(auth, (u) => {
+      const loggedIn = !!u;
+      setIsSignedIn(loggedIn);
+      if (!loggedIn) {
+        setChecked(checklistItems.map(() => false));
+        return;
+      }
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) { setChecked(checklistItems.map((_, i) => Boolean(parsed[i]))); return; }
+        } catch {}
+      }
+      setChecked(checklistItems.map(() => false));
+    });
+    return () => unsub();
   }, [storageKey, checklistItems.length]);
 
   useEffect(() => {
-    if (checked.length !== checklistItems.length) return;
+    if (!isSignedIn || checked.length !== checklistItems.length) return;
     localStorage.setItem(storageKey, JSON.stringify(checked));
-  }, [checked, storageKey, checklistItems.length]);
+  }, [checked, storageKey, checklistItems.length, isSignedIn]);
 
   const completed = checked.filter(Boolean).length;
   const progress = checklistItems.length ? Math.round((completed / checklistItems.length) * 100) : 0;

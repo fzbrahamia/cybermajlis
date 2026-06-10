@@ -32,7 +32,7 @@ export default function DoItYourselfPage() {
       style={{
         minHeight: "100vh",
         background: "#E3DAC9",
-        padding: "0 2rem 2rem",
+        padding: "80px 2rem 2rem",
         color: "#3e1316",
         fontFamily: "'Crimson Pro', Georgia, serif",
       }}
@@ -78,25 +78,17 @@ export default function DoItYourselfPage() {
         .diy-hotspot:hover .diy-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
         .diy-sub-header {
-          position: sticky;
-          top: 80px;
-          z-index: 20;
-          background: rgba(227, 218, 201, 0.92);
-          backdrop-filter: blur(8px);
-          border-bottom: 1px solid rgba(99,32,36,0.1);
-          padding: 0.55rem 0;
-          margin: 0 -2rem 1.2rem;
-          padding-left: 2rem;
-          padding-right: 2rem;
           display: flex;
           align-items: center;
           gap: 1rem;
           flex-wrap: wrap;
+          padding: 0;
+          margin-top: 2rem;
         }
 
         @media (max-width: 700px) {
-          main { padding: 0 1rem 1rem !important; }
-          .diy-sub-header { margin: 0 -1rem 1rem; padding-left: 1rem; padding-right: 1rem; }
+          main { padding: 80px 1rem 1rem !important; }
+          .diy-sub-header { padding: 1rem 0 0.6rem; }
           .diy-tooltip { font-size: 0.72rem; top: 58px; }
         }
       `}</style>

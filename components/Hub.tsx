@@ -110,10 +110,13 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
   const [activeSimulation, setActiveSimulation] = useState<string | null>(null);
 
   // ── Leaderboard (real Firestore data) ────────────────────
+  // Requires Firestore rules: allow read on /progress/{doc} for authenticated users
   const [lbData, setLbData] = useState<LBEntry[]>([]);
+  const [lbError, setLbError] = useState(false);
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
+        setLbError(false);
         const snap = await getDocs(collection(db, 'progress'));
 
         // Aggregate XP per user: 100 XP per fully completed lesson
@@ -142,7 +145,8 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
 
         setLbData(entries.sort((a, b) => b.xp - a.xp));
       } catch (err) {
-        console.error('Leaderboard fetch error:', err);
+        console.error('Leaderboard fetch error (check Firestore rules for /progress collection):', err);
+        setLbError(true);
       }
     };
     fetchLeaderboard();
@@ -186,7 +190,7 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
 
   // ═══════════════════════════════════════════════════════════
   return (
-    <div className="min-h-screen bg-[#5C1E22] font-sans relative overflow-hidden">
+    <div className="min-h-screen bg-[#5C1E22] font-sans relative overflow-hidden" style={isRtl ? { fontFamily: "var(--font-arabic), serif", direction: "rtl" } : undefined}>
       <div className="absolute inset-0 bg-gradient-to-b from-[#5C1E22] to-[#4F1A1B] pointer-events-none" />
 
       <div className="relative z-10 max-w-[960px] mx-auto px-5 pb-24">
@@ -448,6 +452,21 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
               </div>
             )}
 
+            {lbError && (
+              <div className="text-center py-4 px-5 mb-4 rounded-2xl border border-[#D5B893]/20 bg-[#D5B893]/5">
+                <div className="text-[#D5B893] font-bold text-sm mb-1">
+                  {isRtl ? "🏆 انضم إلى المتصدرين" : "🏆 Join the leaderboard"}
+                </div>
+                <div className="text-[#f5ede0]/50 text-xs mb-3">
+                  {isRtl
+                    ? "سجّل دخولك لتُضاف إلى المتصدرين وتتابع تقدمك مقارنةً بالآخرين."
+                    : "Sign in to appear on the leaderboard and track your progress against the community."}
+                </div>
+                <a href="/auth?signup=true" className="inline-block px-5 py-2 rounded-xl bg-[#D5B893] text-[#3a1012] text-xs font-extrabold cursor-pointer">
+                  {isRtl ? "سجّل الآن مجاناً ←" : "Join for free →"}
+                </a>
+              </div>
+            )}
             <div className="bg-white/[.07] rounded-2xl border border-white/10 overflow-hidden">
               <div className="px-4 py-3 border-b border-white/10 flex justify-between">
                 <span className="text-xs text-[#D5B893] font-bold tracking-[2px]">

@@ -2,6 +2,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/app/lib/firebase";
 
 const rand = (a: number, b: number): number => Math.floor(Math.random() * (b - a + 1)) + a;
 const pick = <T,>(a: T[]): T => a[Math.floor(Math.random() * a.length)];
@@ -236,6 +238,7 @@ const SCRIPT_VARIANTS: Record<string, Array<{ radio: string[]; stepChat: [string
 };
 
 const STAGE_LABELS = ["INITIAL ACCESS", "EXECUTION", "ESCALATION", "LATERAL MOVE", "IMPACT"];
+const STAGE_LABELS_AR = ["الوصول الأولي", "التنفيذ", "التصعيد", "الحركة الجانبية", "التأثير"];
 const STAGE_WHY = [
   "Humans bypass firewalls",
   "Foothold established",
@@ -265,6 +268,51 @@ const STAGE_EDUCATION = [
     watch: "Large outbound data transfers, file encryption activity across shares, DNS queries with unusually long or encoded domain names.",
   },
 ];
+const STAGE_EDUCATION_AR = [
+  {
+    why: "يستهدف المهاجمون الأشخاص لأن الهندسة الاجتماعية تتجاوز الضوابط التقنية فوراً. نقرة واحدة تتخطى جدار الحماية وبرامج الحماية وفلاتر البريد ومراقبة الشبكة في آنٍ واحد — دون الحاجة إلى أي ثغرة.",
+    watch: "المرفقات غير المتوقعة، نطاقات المرسل غير المتطابقة، صفحات تسجيل الدخول المرتبطة بالبريد الإلكتروني، اللغة العاجلة التي تدفع للتصرف السريع.",
+  },
+  {
+    why: "التنفيذ يمنح المهاجم عملية تعمل داخل بيئتك تحت هوية مستخدم شرعي. يبدو كنشاط طبيعي لمعظم أدوات المراقبة، مما يجعل الكشف عنه صعباً.",
+    watch: "تطبيقات Office تُولِّد أوامر shell، أوامر PowerShell مشفرة، عمليات جديدة تكتب ملفات في المجلدات المؤقتة.",
+  },
+  {
+    why: "بيانات الاعتماد هي مفاتيح رئيسية. بكلمات مرور صحيحة، يتنقل المهاجم في الشبكة كمستخدم موثوق — دون الحاجة لأي اختراق إضافي. لهذا تُعدّ صحة كلمات المرور والمصادقة المتعددة أمراً بالغ الأهمية.",
+    watch: "الوصول إلى عملية LSASS من مصادر غير متوقعة، بصمات أدوات سرقة بيانات الاعتماد، ارتفاع غير اعتيادي في حجم المصادقة.",
+  },
+  {
+    why: "محطة عمل واحدة مخترقة ذات قيمة محدودة. الوصول إلى Active Directory أو الخوادم الرئيسية يضاعف سيطرة المهاجم على كل حساب في المؤسسة في آنٍ واحد.",
+    watch: "اتصالات غير اعتيادية بين الأجهزة، أدوات إدارية تعمل على أنظمة غير مخصصة للإدارة، إنشاء خدمات على مضيفات بعيدة.",
+  },
+  {
+    why: "هذه هي اللحظة الحاسمة — سرقة البيانات أو نشر برامج الفدية أو تعطيل الخدمات. كل ما سبق كان تحضيراً لهذه اللحظة. المدافعون الذين يكتشفون الهجوم مبكراً يمنعون الوصول إلى هذه المرحلة.",
+    watch: "عمليات نقل بيانات ضخمة للخارج، نشاط تشفير الملفات عبر المجلدات المشتركة، استعلامات DNS بأسماء نطاقات طويلة أو مشفرة.",
+  },
+];
+// Short plain-language description + "Imagine if" story per threat type — Arabic versions
+const THREAT_STORIES_AR: Record<string, { summary: string; imagine: string }> = {
+  phishing: {
+    summary: "يتظاهر المهاجم بأنه مصدر موثوق — بنكك أو فريق تقنية المعلومات أو أحد زملائك — ليخدعك لتسليم بيانات اعتمادك أو النقر على رابط خبيث. لا يكسر أي نظام؛ أنت من يفتح الباب بنفسك.",
+    imagine: "تخيّل أنك تتلقى اتصالاً من شخص يبدو تماماً كموظف بنكك. يعرف اسمك وآخر معاملاتك وحتى فرعك. يطلب منك تأكيد رقمك السري لـ'أسباب أمنية' — فتفعل. لقد سلّمته مفاتيحك دون أن يلمس أي قفل.",
+  },
+  virus: {
+    summary: "شيفرة خبيثة مخفية داخل ملف يبدو عادياً تنسخ نفسها بصمت عبر جهازك وكل مجلد شبكي في متناولها فور فتح الملف.",
+    imagine: "تخيّل أن زميلاً يعطيك قرص USB عليه 'تقرير Q3.pdf'. تفتحه ويبدو كل شيء طبيعياً. لكن في الخلفية، يُنسخ الملف بهدوء إلى كل مجلد مشترك في المكتب. بعد ثلاثة أيام، 400 ملف مصاب ولا أحد يعرف من أين بدأ.",
+  },
+  ransomware: {
+    summary: "برنامج خبيث يُشفِّر كل شيء يصل إليه — الملفات والنسخ الاحتياطية والمجلدات المشتركة — ثم يطلب دفعاً للحصول على مفتاح فك التشفير. بدون نسخة احتياطية نظيفة خارج الشبكة، يكاد الاسترداد يكون مستحيلاً.",
+    imagine: "تخيّل أنك استيقظت لتجد كل باب في منزلك تحوّل إلى خزنة مقفلة — غرفتك ومكتبك وخزانتك. على الطاولة ورقة: 'ادفع 4.5 بيتكوين وستحصل على المجموعات. لديك 72 ساعة.' ملفاتك لا تزال موجودة. أنت فقط لا تستطيع لمسها.",
+  },
+  rootkit: {
+    summary: "برنامج يُدمج نفسه على مستوى النواة، مختبئاً من برامج مكافحة الفيروسات ونظام التشغيل نفسه، مع منح المهاجم وصولاً دائماً وغير مرئي للجهاز.",
+    imagine: "تخيّل دخيلاً يقتحم منزلك ويستبدل كاميرات المراقبة بتغذيات مزيفة تُظهر غرفة فارغة — ثم يعيش داخل الجدران. تتحقق من الكاميرات كل يوم. كل شيء يبدو طبيعياً. لكنه يراقبك منذ أشهر، غير مرئي تماماً لأنه يتحكم فيما تُسمح لك برؤيته.",
+  },
+  ddos: {
+    summary: "آلاف الأجهزة المخترقة تُغرق خادماً بحركة مرور مزيفة في وقت واحد حتى لا يتمكن من الاستجابة للمستخدمين الحقيقيين — دون استغلال أي ثغرة، مجرد حجم هائل من الطلبات.",
+    imagine: "تخيّل 80,000 شخص يتصلون بهاتفك في نفس اللحظة. كل مكالمة حقيقية — عائلتك وعملاؤك وطبيبك — لا تستطيع الوصول إليك لأن الخط مشغول تماماً. لم يكسر أحد شيئاً. جعلوا فقط من المستحيل على أي شخص آخر استخدام الخط.",
+  },
+};
 
 // TARGETS - localized - localized
 const TARGETS_BASE = ["web_server", "email_gateway", "database", "api_endpoint", "vpn", "dns_resolver", "workstation", "iot_segment", "cloud_vm", "auth_service"];
@@ -589,10 +637,16 @@ export default function ThreatAcademy() {
       role: t(`analysts.${a.roleKey}.role`)
     }));
   }, [t]);
-  
+
   // Memoize localized threats to prevent recreation on every render
   const locale = useLocale();
   const isAr = locale === "ar";
+
+  // Localized HAMAD (name differs in Arabic)
+  const HAMAD_LOCALIZED = useMemo(() => ({
+    ...HAMAD,
+    name: isAr ? t('analysts.hamad.name') : HAMAD.name,
+  }), [isAr, t]);
   const [socAttempts, setSocAttempts] = useState(1);
   const [generatedVariants, setGeneratedVariants] = useState<Record<string, {radio:string[];stepChat:[string,string][];quiz:{q:string;opts:string[];ans:number;why:string};hamadChat?:{msg:string;analystReply:string;recovery:string}}>>({});
   const [generatingVariant, setGeneratingVariant] = useState(false);
@@ -672,9 +726,20 @@ export default function ThreatAcademy() {
   const [showDebrief, setShowDebrief] = useState(false);
   const [seenThreats, setSeenThreats] = useState<Set<string>>(new Set());
   const [persistedQuizAnswers, setPersistedQuizAnswers] = useState<Record<string, number | null>>({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => setIsLoggedIn(!!u));
+    return () => unsub();
+  }, []);
+  // For guests: reset attack progress when they leave the SOC
+  useEffect(() => {
+    return () => {
+      if (!auth.currentUser) {
+        localStorage.removeItem("cm-attacks-mitigated");
+      }
+    };
+  }, []);
   const scenarioDone = typeof window !== "undefined" && parseInt(localStorage.getItem("cm-attacks-mitigated") || "0") >= 1;
-  const isCharUnlocked = (charId: string): boolean => { if (charId === "hamad") return true; return scenarioDone; };
-  const unlockHint = () => "Complete the Live Scenario to unlock";
   const [trainingBadges, setTrainingBadges] = useState<Set<string>>(() => {
     // Only load saved badges if user is authenticated
     if (typeof window !== "undefined") {
@@ -749,15 +814,28 @@ export default function ThreatAcademy() {
 
   // Generate Arabic/adaptive variant for a SPECIFIC threat when it actually runs
   const generateVariantForThreat = async (threatKey: string): Promise<any> => {
+    // Only generate for signed-in users who have completed at least one scenario
+    if (!isAr && (!isLoggedIn || !scenarioDone)) return;
+
     // 1. Check React state — already generated this session
     if (generatedVariants[threatKey]) return;
 
     // 2. Check localStorage — use cached variant from a previous session
-    const cacheKey = "cm-soc-variant-v2-" + threatKey + "-" + locale;
+    const cacheKey = "cm-soc-variant-v3-" + threatKey + "-" + locale;
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
       try {
-        const variant = JSON.parse(cached);
+        let variant = JSON.parse(cached);
+        if (variant.stepChat && isAr) {
+          variant = {
+            ...variant,
+            stepChat: variant.stepChat.map((pair: [string, string]) =>
+              pair.map(line =>
+                line.replace(/^[؀-ۿ؀-ۿ\w'ʿ]+:\s*/u, "").replace(/حامد/g, "حمد").trim()
+              ) as [string, string]
+            ),
+          };
+        }
         setGeneratedVariants(prev => ({ ...prev, [threatKey]: variant }));
         return variant;
       } catch { /* cache corrupt — regenerate */ }
@@ -775,6 +853,14 @@ export default function ThreatAcademy() {
       });
       const d = await res.json();
       if (d.success && d.variant) {
+        // Strip any "Name: " prefix the AI may have added to chat lines
+        if (d.variant.stepChat && isAr) {
+          d.variant.stepChat = d.variant.stepChat.map((pair: [string, string]) =>
+            pair.map(line =>
+              line.replace(/^[؀-ۿ؀-ۿ\w'ʿ]+:\s*/u, "").replace(/حامد/g, "حمد").trim()
+            ) as [string, string]
+          );
+        }
         setGeneratedVariants(prev => ({ ...prev, [threatKey]: d.variant }));
         localStorage.setItem(cacheKey, JSON.stringify(d.variant));
         setGeneratingVariant(false);
@@ -890,7 +976,7 @@ export default function ThreatAcademy() {
             if (cancelled) return;
             setChatMsgs(prev => [...prev, {
               id: Date.now() + Math.random() + 5,
-              from: HAMAD as typeof ANALYSTS_BASE[number],
+              from: HAMAD_LOCALIZED as typeof ANALYSTS_BASE[number],
               textKey: hamadScene.msg,
               time: getTime(),
             }].slice(-25));
@@ -1226,18 +1312,18 @@ export default function ThreatAcademy() {
                             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, paddingRight: 20 }}>
                               <span style={{ fontSize: 16 }}>{cst.i}</span>
                               <span style={{ fontSize: 13, color: "#f5ede0", fontWeight: 700 }}>{cst.s}</span>
-                              <span style={{ fontSize: 9, color: "rgba(197,165,126,0.5)", marginLeft: 2, letterSpacing: "0.1em", textTransform: "uppercase" }}>{STAGE_LABELS[clickedStep]}</span>
+                              <span style={{ fontSize: 9, color: "rgba(197,165,126,0.5)", marginLeft: 2, letterSpacing: "0.1em", textTransform: "uppercase" }}>{isAr ? STAGE_LABELS_AR[clickedStep] : STAGE_LABELS[clickedStep]}</span>
                               <span style={{ marginLeft: "auto", fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: badgeColor, background: badgeBg, border: badgeBorder, padding: "2px 8px", borderRadius: 4, animation: isLive ? "blink 1.8s ease-in-out infinite" : "none" }}>{badgeText}</span>
                             </div>
                             <p style={{ fontSize: 12, color: "#f5ede0bb", lineHeight: 1.65, margin: "0 0 10px" }}>{cst.d}</p>
                             <div style={{ borderTop: "1px solid rgba(197,165,126,0.1)", paddingTop: 8, display: "flex", flexDirection: "column", gap: 5 }}>
                               <p style={{ margin: 0, fontSize: 11, color: "#f5ede0aa", lineHeight: 1.6 }}>
-                                <span style={{ color: "#c5a57e", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontSize: 9 }}>Why attackers do this: </span>
-                                {STAGE_EDUCATION[clickedStep].why}
+                                <span style={{ color: "#c5a57e", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontSize: 9 }}>{isAr ? "لماذا يفعل المهاجم ذلك: " : "Why attackers do this: "}</span>
+                                {isAr ? STAGE_EDUCATION_AR[clickedStep].why : STAGE_EDUCATION[clickedStep].why}
                               </p>
                               <p style={{ margin: 0, fontSize: 11, color: "#f5ede0aa", lineHeight: 1.6 }}>
-                                <span style={{ color: "#c5a57e", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontSize: 9 }}>Watch for: </span>
-                                {STAGE_EDUCATION[clickedStep].watch}
+                                <span style={{ color: "#c5a57e", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", fontSize: 9 }}>{isAr ? "راقب بحثاً عن: " : "Watch for: "}</span>
+                                {isAr ? STAGE_EDUCATION_AR[clickedStep].watch : STAGE_EDUCATION[clickedStep].watch}
                               </p>
                             </div>
                             <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 5, opacity: 0.5 }}>
@@ -1288,36 +1374,32 @@ export default function ThreatAcademy() {
                 { right: 12, bottom: 12 },
               ];
               return (
-                <div key={a.id} style={{ position: "absolute", ...positions[i], zIndex: 15, cursor: isCharUnlocked(a.id) ? "pointer" : "default", opacity: isCharUnlocked(a.id) ? 1 : 0.5 }}
-                  onClick={() => isCharUnlocked(a.id) && router.push(`/soc/train/${a.id}`)}>
+                <div key={a.id} style={{ position: "absolute", ...positions[i], zIndex: 15, cursor: scenarioDone ? "pointer" : "default" }}
+                  onClick={() => scenarioDone && router.push(`/soc/train/${a.id}`)}>
                   <div style={{
                     display: "flex", alignItems: "center", gap: 12,
                     background: "#2a0e10dd", borderRadius: 14,
                     padding: "10px 20px 10px 10px",
-                    border: `1.5px solid ${isCharUnlocked(a.id) ? a.color + "30" : "rgba(197,165,126,0.1)"}`,
+                    border: `1.5px solid ${a.color}30`,
                     backdropFilter: "blur(6px)",
                     width: 220, minWidth: 220,
                     transition: "border-color 0.2s, transform 0.2s",
                   }}
-                    onMouseEnter={e => { if (isCharUnlocked(a.id)) { (e.currentTarget as HTMLElement).style.borderColor=`${a.color}75`; (e.currentTarget as HTMLElement).style.transform="scale(1.025)"; }}}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor=isCharUnlocked(a.id)?`${a.color}30`:"rgba(197,165,126,0.1)"; (e.currentTarget as HTMLElement).style.transform="scale(1)"; }}
+                    onMouseEnter={e => { if (!scenarioDone) return; (e.currentTarget as HTMLElement).style.borderColor=`${a.color}75`; (e.currentTarget as HTMLElement).style.transform="scale(1.025)"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor=`${a.color}30`; (e.currentTarget as HTMLElement).style.transform="scale(1)"; }}
                   >
                     <CharFrame analyst={a} width={110} />
                     <div>
                       <div style={{ fontSize: 18, color: "#f5ede0", fontWeight: 700 }}>{a.name}</div>
-                      <div style={{ fontSize: 13, color: isCharUnlocked(a.id) ? a.color : "rgba(197,165,126,0.35)", fontWeight: 600 }}>{a.role}</div>
-                      <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:3 }}>
-                        {isCharUnlocked(a.id) ? (
-                          <>
-                            <span style={{ fontSize: 9, color: trainingBadges.has(a.id) ? "#22c55e" : "rgba(255,255,255,0.28)", letterSpacing: "0.12em" }}>
-                              {trainingBadges.has(a.id) ? "✓ TRAINED" : "CLICK TO TRAIN"}
-                            </span>
-                            {trainingBadges.has(a.id) && <span style={{ fontSize:11 }}>🎖</span>}
-                          </>
-                        ) : (
-                          <span style={{ fontSize: 9, color: "rgba(197,165,126,0.3)", letterSpacing: "0.1em" }}>🔒 Complete the Live Scenario</span>
-                        )}
-                      </div>
+                      <div style={{ fontSize: 13, color: a.color, fontWeight: 600 }}>{a.role}</div>
+                      {scenarioDone && (
+                        <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:3 }}>
+                          <span style={{ fontSize: 9, color: trainingBadges.has(a.id) ? "#22c55e" : "rgba(255,255,255,0.28)", letterSpacing: "0.12em" }}>
+                            {trainingBadges.has(a.id) ? "✓ TRAINED" : "CLICK TO TRAIN"}
+                          </span>
+                          {trainingBadges.has(a.id) && <span style={{ fontSize:11 }}>🎖</span>}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1436,10 +1518,6 @@ export default function ThreatAcademy() {
             <div style={{ padding: "8px 14px", background: "#2a0e10", borderBottom: "1px solid rgba(255,255,255,.06)", fontSize: 12, color: "#D5B89380", fontWeight: 700, flexShrink: 0, display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}
               onClick={() => openPanel("chat")}>
               <span>💬</span> {t('panels.chat.title')} <span style={{ fontSize: 8, color: "#f5ede020", marginLeft: "auto" }}>ⓘ</span>
-              <button onClick={e => { e.stopPropagation(); router.push("/soc/train/hamad"); }} title="Hamad's Awareness Training"
-                style={{ background:"rgba(96,165,250,0.1)", border:"1px solid rgba(96,165,250,0.3)", borderRadius:5, color:"#60a5fa", fontSize:8, fontWeight:700, cursor:"pointer", padding:"2px 7px", letterSpacing:"0.1em", marginLeft:4 }}>
-                {trainingBadges.has("hamad") ? "🎖" : "👤"} Hamad
-              </button>
               <button onClick={e => { e.stopPropagation(); router.push("/soc/scenario"); }} title="Run a Live Scenario"
                 style={{ background:"rgba(239,68,68,0.1)", border:"1px solid rgba(239,68,68,0.35)", borderRadius:5, color:"#f87171", fontSize:8, fontWeight:700, cursor:"pointer", padding:"2px 7px", letterSpacing:"0.1em", animation:"blink 2s ease-in-out infinite" }}>
                 ▶ LIVE
@@ -1496,7 +1574,7 @@ export default function ThreatAcademy() {
 
       {/* PANEL INFO POPUPS — multiple, close each independently */}
       {panelPopups.map((key, pi) => PANEL_INFO[key] && (
-        <DraggableFloater key={key} onClose={() => closePanel(key)} width={440} initialX={180 + pi * 30} initialY={90 + pi * 30}>
+        <DraggableFloater key={key} onClose={() => closePanel(key)} width={440} initialX={180 + pi * 30} initialY={90 + pi * 30} isRtl={isAr}>
           <div style={{ padding: "14px 18px", borderBottom: "1px solid rgba(197,165,126,0.12)", display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 26 }}>{PANEL_INFO[key].icon}</span>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, color: "#f5ede0", margin: 0, flex: 1 }}>{PANEL_INFO[key].title}</h3>
@@ -1516,7 +1594,7 @@ export default function ThreatAcademy() {
         const { loc: threat, activeStep, animating, quizAnswer } = item;
         const key = threat.type;
         return (
-          <DraggableFloater key={key} onClose={() => closeLesson(key)} width={540} initialX={250 + pi * 35} initialY={60 + pi * 35}>
+          <DraggableFloater key={key} onClose={() => closeLesson(key)} width={540} initialX={250 + pi * 35} initialY={60 + pi * 35} isRtl={isAr}>
             <div style={{ padding: "14px 18px", borderBottom: "1px solid rgba(197,165,126,0.12)", display: "flex", alignItems: "center", gap: 12 }}>
               <span style={{ fontSize: 32 }}>{threat.icon}</span>
               <div style={{ flex: 1 }}>
@@ -1527,12 +1605,13 @@ export default function ThreatAcademy() {
             <div style={{ padding: 18 }}>
               {/* Plain summary + Imagine if story */}
               {(() => {
-                const story = THREAT_STORIES[Object.entries(THREATS).find(([_, d]) => d.icon === threat.icon)?.[0] ?? ""];
+                const threatKey = Object.entries(THREATS).find(([_, d]) => d.icon === threat.icon)?.[0] ?? "";
+                const story = isAr ? (THREAT_STORIES_AR[threatKey] || THREAT_STORIES[threatKey]) : THREAT_STORIES[threatKey];
                 return story ? (
                   <div style={{ marginBottom: 18 }}>
                     <p style={{ fontSize: 13, color: "#f5ede0bb", lineHeight: 1.75, margin: "0 0 14px" }}>{story.summary}</p>
                     <div style={{ background: "rgba(197,165,126,0.06)", border: "1px solid rgba(197,165,126,0.15)", borderRadius: 10, padding: "13px 15px" }}>
-                      <span style={{ fontSize: 9, fontWeight: 700, color: "#D5B893", letterSpacing: "0.14em", textTransform: "uppercase", display: "block", marginBottom: 7 }}>💭 Imagine if…</span>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: "#D5B893", letterSpacing: "0.14em", textTransform: "uppercase", display: "block", marginBottom: 7 }}>{isAr ? "💭 تخيّل لو…" : "💭 Imagine if…"}</span>
                       <p style={{ fontSize: 12.5, color: "#f5ede0aa", lineHeight: 1.8, margin: 0, fontStyle: "italic" }}>{story.imagine}</p>
                     </div>
                   </div>
@@ -1812,10 +1891,10 @@ function QatarMap({ attackState }: {
 
 // DraggableFloater — reusable draggable panel matching SOC aesthetic
 function DraggableFloater({
-  children, onClose, width = 480, initialX, initialY,
+  children, onClose, width = 480, initialX, initialY, isRtl = false,
 }: {
   children: React.ReactNode; onClose: () => void;
-  width?: number; initialX?: number; initialY?: number;
+  width?: number; initialX?: number; initialY?: number; isRtl?: boolean;
 }) {
   const [pos, setPos] = useState(() => ({
     x: initialX ?? (typeof window !== "undefined" ? Math.max(60, window.innerWidth / 2 - width / 2) : 300),
@@ -1851,14 +1930,14 @@ function DraggableFloater({
       zIndex: 500, overflow: "hidden", userSelect: "none",
       maxHeight: "85vh", display: "flex", flexDirection: "column",
     }}>
-      {/* Drag handle — invisible, covers the header row */}
+      {/* Drag handle — invisible, covers the header row (leaves space for close button) */}
       <div onMouseDown={onHeaderMouseDown} style={{
-        position: "absolute", top: 0, left: 0, right: 44, height: 46,
+        position: "absolute", top: 0, ...(isRtl ? { left: 44, right: 0 } : { left: 0, right: 44 }), height: 46,
         cursor: "grab", zIndex: 1,
       }} />
-      {/* Close button */}
+      {/* Close button — left in RTL, right in LTR */}
       <button onClick={onClose} style={{
-        position: "absolute", top: 8, right: 10, zIndex: 2,
+        position: "absolute", top: 8, ...(isRtl ? { left: 10 } : { right: 10 }), zIndex: 2,
         background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",
         borderRadius: 8, color: "rgba(197,165,126,0.55)", fontSize: 16, lineHeight: 1,
         cursor: "pointer", width: 30, height: 30,

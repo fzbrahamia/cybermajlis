@@ -194,42 +194,68 @@ export default function Navbar() {
 
         {/* Auth + locale */}
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          {/* EN / AR sliding toggle */}
+          {/* EN / AR pill toggle */}
           <div
-            className="relative flex rounded-[10px] p-[3px]"
-            style={{ background: "rgba(255,255,255,0.12)", width: 110, direction: "ltr" }}
+            suppressHydrationWarning
+            style={{
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+              background: "rgba(255,255,255,0.07)",
+              borderRadius: 999,
+              padding: "3px",
+              direction: "ltr",
+              border: "1px solid rgba(197,165,126,0.18)",
+              gap: 0,
+            }}
           >
-            <div
-              className="absolute top-[3px] bottom-[3px] rounded-[8px] transition-transform duration-300 ease-in-out"
+            {/* Sliding pill indicator */}
+            <span
+              suppressHydrationWarning
+              aria-hidden
               style={{
-                background: "#E3DAC9",
+                position: "absolute",
+                top: 3,
+                bottom: 3,
+                left: isArabic ? "calc(50% - 1.5px)" : "3px",
                 width: "calc(50% - 3px)",
-                left: "3px",
-                transform: isArabic ? "translateX(100%)" : "translateX(0)",
+                borderRadius: 999,
+                background: "linear-gradient(135deg, rgba(227,218,201,0.22), rgba(197,165,126,0.18))",
+                border: "1px solid rgba(197,165,126,0.35)",
+                transition: "left 0.25s cubic-bezier(.4,0,.2,1)",
+                pointerEvents: "none",
               }}
             />
             <button
-              onClick={() => !isArabic || setLocaleCookie("en")}
+              onClick={() => isArabic && setLocaleCookie("en")}
               suppressHydrationWarning
-              className="relative z-10 w-1/2 py-[7px] rounded-[8px] transition-all duration-300"
               style={{
-                fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 600,
-                color: !isArabic ? "#632024" : "rgba(227,218,201,0.7)",
-                cursor: !isArabic ? "default" : "pointer",
-                border: "none", background: "transparent",
+                position: "relative", zIndex: 1,
+                fontFamily: "'Cinzel', serif",
+                fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em",
+                padding: "5px 14px", borderRadius: 999, border: "none",
+                background: "transparent",
+                color: !isArabic ? "#E3DAC9" : "rgba(227,218,201,0.42)",
+                cursor: isArabic ? "pointer" : "default",
+                transition: "color 0.25s ease",
+                whiteSpace: "nowrap",
               }}
             >
               EN
             </button>
             <button
-              onClick={() => isArabic || setLocaleCookie("ar")}
+              onClick={() => !isArabic && setLocaleCookie("ar")}
               suppressHydrationWarning
-              className="relative z-10 w-1/2 py-[7px] rounded-[8px] transition-all duration-300"
               style={{
-                fontFamily: "inherit", fontSize: "0.85rem", fontWeight: 600,
-                color: isArabic ? "#632024" : "rgba(227,218,201,0.7)",
-                cursor: isArabic ? "default" : "pointer",
-                border: "none", background: "transparent",
+                position: "relative", zIndex: 1,
+                fontFamily: "'Noto Naskh Arabic', serif",
+                fontSize: "0.8rem", fontWeight: 600,
+                padding: "5px 14px", borderRadius: 999, border: "none",
+                background: "transparent",
+                color: isArabic ? "#E3DAC9" : "rgba(227,218,201,0.42)",
+                cursor: !isArabic ? "pointer" : "default",
+                transition: "color 0.25s ease",
+                whiteSpace: "nowrap",
               }}
             >
               عربي

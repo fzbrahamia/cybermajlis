@@ -59,97 +59,108 @@ function NewsCard({ item }: { item: NewsItem }) {
   const dir      = isAr && item.headline_ar ? "rtl" : "ltr";
 
   return (
-    <article dir={dir} style={{
-      background:"white", borderRadius:14,
-      border:"1px solid rgba(99,32,36,0.09)",
-      borderLeft: dir === "rtl" ? undefined : "4px solid " + s.color,
-      borderRight: dir === "rtl" ? "4px solid " + s.color : undefined,
-      boxShadow:"0 2px 14px rgba(99,32,36,0.06)",
-      overflow:"hidden", marginBottom:"1rem",
-    }}>
-      <div style={{ padding:"0.9rem 1.1rem" }}>
+    <article dir={dir} onClick={() => setExpanded(!expanded)}
+      style={{
+        background:"white", borderRadius:12,
+        border:"1px solid rgba(99,32,36,0.09)",
+        borderLeft: dir === "rtl" ? undefined : "3px solid " + s.color,
+        borderRight: dir === "rtl" ? "3px solid " + s.color : undefined,
+        boxShadow:"0 1px 8px rgba(99,32,36,0.05)",
+        marginBottom:"0.7rem", cursor:"pointer",
+        transition:"box-shadow .2s",
+      }}
+      onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 4px 16px rgba(99,32,36,0.1)")}
+      onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 1px 8px rgba(99,32,36,0.05)")}>
+      <div style={{ padding:"0.85rem 1rem" }}>
 
         {/* Meta row */}
-        <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10, flexWrap:"wrap",
+        <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:6, flexWrap:"wrap",
           justifyContent: dir === "rtl" ? "flex-end" : "flex-start" }}>
-          <span style={{ fontSize:10, fontWeight:700, padding:"2px 8px", borderRadius:10,
-            background:s.bg, color:s.color, fontFamily:"'Cinzel',serif", letterSpacing:"0.08em" }}>
+          <span style={{ fontSize:9, fontWeight:700, padding:"2px 7px", borderRadius:9,
+            background:s.bg, color:s.color, fontFamily:"'Cinzel',serif", letterSpacing:"0.08em",
+            textTransform:"uppercase" }}>
             {isAr ? s.label_ar : s.label}
           </span>
-          <span style={{ fontSize:10, color:"rgba(99,32,36,0.5)", padding:"2px 8px",
-            border:"1px solid rgba(99,32,36,0.12)", borderRadius:10 }}>
+          <span style={{ fontSize:9, color:"rgba(99,32,36,0.45)", padding:"2px 7px",
+            border:"1px solid rgba(99,32,36,0.1)", borderRadius:9 }}>
             {item.who_affected}
           </span>
           {item.qatar_relevant && (
-            <span style={{ fontSize:10, color:"#632024", fontWeight:600 }}>🇶🇦 Qatar Alert</span>
+            <span style={{ fontSize:9, color:"#632024", fontWeight:700 }}>🇶🇦</span>
           )}
-          <span style={{ marginLeft:"auto", fontSize:10, color:"rgba(99,32,36,0.35)", fontFamily:"'Cinzel',serif" }}>
+          <span style={{ marginLeft:"auto", fontSize:9, color:"rgba(99,32,36,0.3)",
+            fontFamily:"'Cinzel',serif" }}>
             {item.createdAt ? timeAgo(item.createdAt.toDate()) : ""}
           </span>
         </div>
 
         {/* Headline */}
-        <h2 style={{ fontFamily:"'Cinzel',serif", fontSize:"clamp(0.85rem,2vw,1rem)",
-          fontWeight:700, color:"#3e1316", margin:"0 0 8px", lineHeight:1.4,
+        <h2 style={{ fontFamily:"'Cinzel',serif", fontSize:"clamp(0.78rem,1.8vw,0.9rem)",
+          fontWeight:700, color:"#3e1316", margin:"0 0 8px", lineHeight:1.35,
           textAlign: dir === "rtl" ? "right" : "left" }}>
           {headline}
         </h2>
 
-        {/* Body — truncated, expand on click */}
-        <p onClick={() => setExpanded(!expanded)}
-          style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.9rem", color:"#5C4033",
-            lineHeight:1.65, margin:"0 0 8px", textAlign: dir === "rtl" ? "right" : "left",
-            cursor:"pointer",
-            display:"-webkit-box", WebkitLineClamp: expanded ? undefined : 2,
-            WebkitBoxOrient:"vertical" as any, overflow: expanded ? "visible" : "hidden" }}>
-          {body}
-        </p>
-
-        {/* Qatar note */}
-        {(qnote && (expanded || item.qatar_relevant)) && (
-          <div style={{ background:"rgba(99,32,36,0.05)", borderRadius:8, padding:"8px 12px",
-            border:"1px solid rgba(99,32,36,0.12)", marginBottom:10, fontSize:12,
-            color:"#632024", fontStyle:"italic", fontFamily:"'Crimson Pro',serif",
+        {/* Qatar note — always show when relevant */}
+        {qnote && (
+          <div style={{ fontStyle:"italic", color:"rgba(99,32,36,0.65)", marginBottom:8,
+            fontSize:"0.8rem", fontFamily:"'Crimson Pro',serif", lineHeight:1.5,
             textAlign: dir === "rtl" ? "right" : "left" }}>
             🇶🇦 {qnote}
           </div>
         )}
 
-        {/* Action steps — only when expanded */}
-        {expanded && steps && steps.length > 0 && (
-          <div style={{ background:s.bg, borderRadius:9, padding:"10px 12px",
-            border:"1px solid " + s.color + "30" }}>
-            <div style={{ fontSize:9, letterSpacing:"0.2em", color:s.color, fontWeight:700,
-              fontFamily:"'Cinzel',serif", marginBottom:8,
+        {/* Action steps — always visible, this is what the user needs */}
+        {steps && steps.length > 0 && (
+          <div style={{ background:s.bg, borderRadius:8, padding:"8px 10px",
+            border:"1px solid " + s.color + "25", marginBottom: expanded ? 8 : 0 }}>
+            <div style={{ fontSize:8, letterSpacing:"0.2em", color:s.color, fontWeight:700,
+              fontFamily:"'Cinzel',serif", marginBottom:5, textTransform:"uppercase",
               textAlign: dir === "rtl" ? "right" : "left" }}>
-              {isAr ? "ماذا تفعل الآن" : "WHAT TO DO NOW"}
+              {isAr ? "ماذا تفعل" : "What to do"}
             </div>
-            {steps.map((step, i) => (
-              <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start",
-                marginBottom: i < steps.length - 1 ? 5 : 0,
+            {steps.slice(0, expanded ? steps.length : 2).map((step, i) => (
+              <div key={i} style={{ display:"flex", gap:6, alignItems:"flex-start",
+                marginBottom: i < steps.length - 1 ? 4 : 0,
                 flexDirection: dir === "rtl" ? "row-reverse" : "row" }}>
-                <span style={{ width:20, height:20, borderRadius:"50%", background:s.color,
-                  color:"white", fontSize:10, fontWeight:700, display:"flex",
-                  alignItems:"center", justifyContent:"center", flexShrink:0 }}>
+                <span style={{ width:16, height:16, borderRadius:"50%", background:s.color,
+                  color:"white", fontSize:8, fontWeight:700, display:"flex",
+                  alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:1 }}>
                   {i + 1}
                 </span>
-                <span style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.9rem",
-                  color:"#3e1316", lineHeight:1.6 }}>{step}</span>
+                <span style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.82rem",
+                  color:"#3e1316", lineHeight:1.55 }}>{step}</span>
               </div>
             ))}
           </div>
         )}
 
-        {/* Source */}
-        {item.source_url && (
-          <div style={{ marginTop:10, textAlign: dir === "rtl" ? "left" : "right" }}>
-            <a href={item.source_url} target="_blank" rel="noreferrer"
-              style={{ fontSize:10, color:"rgba(99,32,36,0.35)", fontFamily:"'Cinzel',serif",
-                letterSpacing:"0.08em", textDecoration:"none" }}>
-              {isAr ? "المصدر" : "Source"} ↗
-            </a>
+        {/* Expanded: what happened */}
+        {expanded && (
+          <div style={{ marginTop:8, borderTop:"1px solid rgba(99,32,36,0.07)", paddingTop:8 }}>
+            <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.85rem", color:"#5C4033",
+              lineHeight:1.7, margin:"0 0 6px", textAlign: dir === "rtl" ? "right" : "left" }}>
+              {body}
+            </p>
+            {item.source_url && (
+              <a href={item.source_url} target="_blank" rel="noreferrer"
+                onClick={e => e.stopPropagation()}
+                style={{ fontSize:9, color:"rgba(99,32,36,0.35)", fontFamily:"'Cinzel',serif",
+                  letterSpacing:"0.08em", textDecoration:"none" }}>
+                {isAr ? "المصدر" : "Source"} ↗
+              </a>
+            )}
           </div>
         )}
+
+        {/* Expand hint */}
+        <div style={{ textAlign: dir === "rtl" ? "left" : "right", marginTop:4 }}>
+          <span style={{ fontSize:8, color:"rgba(99,32,36,0.3)", fontFamily:"'Cinzel',serif",
+            letterSpacing:"0.1em" }}>
+            {expanded ? (isAr ? "▲ أقل" : "▲ less") : (isAr ? "▼ التفاصيل" : "▼ details")}
+          </span>
+        </div>
+
       </div>
     </article>
   );
