@@ -75,15 +75,15 @@ export default function ElderCommunityPage() {
     getDocs(query(collection(db, "communityWarnings"), orderBy("createdAt", "desc")))
       .then(snap => {
         const all = snap.docs.map(d => ({ id: d.id, ...d.data() } as Warning));
-        // show approved posts and legacy posts (no status field); hide pending from others
-        setWarnings(all.filter(w => !w.status || w.status === "approved"));
+        // hide only rejected posts; show approved, pending, and legacy posts
+        setWarnings(all.filter(w => w.status !== "rejected"));
       })
       .catch(() => {
         // createdAt index missing — load without ordering
         getDocs(collection(db, "communityWarnings"))
           .then(snap => {
             const all = snap.docs.map(d => ({ id: d.id, ...d.data() } as Warning));
-            setWarnings(all.filter(w => !w.status || w.status === "approved").reverse());
+            setWarnings(all.filter(w => w.status !== "rejected").reverse());
           })
           .catch(() => {});
       })

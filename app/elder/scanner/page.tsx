@@ -53,16 +53,21 @@ export default function ElderScannerPage() {
     if (!url.trim()) return;
     setLoading(true); setResult(null); setError("");
     try {
+      // Ensure URL has a scheme so VirusTotal accepts it
+      let target = url.trim();
+      if (!/^https?:\/\//i.test(target)) target = "https://" + target;
+
       const res = await fetch("/api/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: "url", target: url.trim() }),
+        body: JSON.stringify({ type: "url", target }),
       });
-      if (!res.ok) throw new Error("scan failed");
       const d = await res.json();
+      // The scan API always returns 200; check for server-side error
+      if (d.error) throw new Error(d.error);
       setResult(d);
-    } catch {
-      setError(c.unknown);
+    } catch (err: any) {
+      setError(err?.message || c.unknown);
     }
     setLoading(false);
   };
