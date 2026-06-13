@@ -1,5 +1,7 @@
 // app/api/chat/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rateLimit";
+import { sanitizeUserInput, getClientIp } from "@/lib/sanitize";
 
 const buildSystem = (reports: string, news: string) => [
   "You are Hamad, the friendly cybersecurity guide for CyberMajlis — Qatar's community security platform.",
@@ -40,8 +42,31 @@ const buildSystem = (reports: string, news: string) => [
 ].join("\n");
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = rateLimit(`${ip}:chat`, LIMITS.chat.limit, LIMITS.chat.windowMs);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { reply: "You're sending messages too quickly. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetIn / 1000)) } }
+    );
+  }
+
   try {
     const { messages, context } = await req.json();
+
+    // Sanitize the last user message for prompt injection
+    const lastUserIdx = [...(messages as any[])].reverse().findIndex((m: any) => m.role === "user");
+    if (lastUserIdx !== -1) {
+      const idx = messages.length - 1 - lastUserIdx;
+      const check = sanitizeUserInput(messages[idx].content as string, 2000);
+      if (check.flagged) {
+        return NextResponse.json(
+          { reply: "I can only help with cybersecurity questions. What would you like to know?" },
+          { status: 200 }
+        );
+      }
+      messages[idx] = { ...messages[idx], content: check.clean };
+    }
 
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",

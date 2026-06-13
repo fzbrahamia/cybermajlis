@@ -1,5 +1,7 @@
 // app/api/soc/generate/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rateLimit";
+import { getClientIp, safeError } from "@/lib/sanitize";
 
 const THREAT_CONTEXT: Record<string, { en: string; ar: string }> = {
   phishing:   { en: "credential theft via email — fake login portals, harvested passwords, session hijacking",
@@ -86,6 +88,15 @@ function buildPrompt(threat: string, attempts: number, locale: string): string {
 }
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = rateLimit(`${ip}:soc`, LIMITS.soc.limit, LIMITS.soc.windowMs);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait before generating another scenario." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetIn / 1000)) } }
+    );
+  }
+
   try {
     const { threat, attempts = 1, locale = "en" } = await req.json();
     if (!THREAT_CONTEXT[threat]) return NextResponse.json({ error: "Unknown threat" }, { status: 400 });
@@ -155,7 +166,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, variant, locale });
   } catch (err) {
-    console.error("[soc/generate]", String(err));
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    console.error("[soc/generate]", err);
+    return NextResponse.json({ error: safeError(err, "Scenario generation failed. Please try again.") }, { status: 500 });
   }
 }

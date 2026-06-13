@@ -1,5 +1,7 @@
 // app/api/training/generate/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rateLimit";
+import { getClientIp, safeError } from "@/lib/sanitize";
 
 const CHAR_PROMPTS: Record<string, (history: any) => string> = {
   saqr: (h) => `You generate SIEM alert triage training questions for a cybersecurity education platform.
@@ -94,6 +96,15 @@ Return ONLY valid JSON array — no markdown:
 };
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = rateLimit(`${ip}:training`, LIMITS.soc.limit, LIMITS.soc.windowMs);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait before generating another training session." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetIn / 1000)) } }
+    );
+  }
+
   try {
     const { characterId, history } = await req.json();
 
@@ -123,6 +134,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, questions });
   } catch (err) {
-    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
+    console.error("[training/generate]", err);
+    return NextResponse.json({ success: false, error: safeError(err, "Training generation failed. Please try again.") }, { status: 500 });
   }
 }

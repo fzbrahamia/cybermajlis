@@ -1,7 +1,18 @@
 // Server-side proxy for ElevenLabs TTS — keeps API key off the client
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rateLimit";
+import { getClientIp } from "@/lib/sanitize";
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = rateLimit(`${ip}:tts`, LIMITS.tts.limit, LIMITS.tts.windowMs);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait before requesting more audio." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetIn / 1000)) } }
+    );
+  }
+
   const { text, lang = "en" } = await req.json();
   if (!text || typeof text !== "string") {
     return NextResponse.json({ error: "No text" }, { status: 400 });

@@ -149,6 +149,8 @@ export default function ElderPage() {
               overflow: "hidden",
               cursor: "pointer",
               transition: "transform 0.2s ease, box-shadow 0.2s ease",
+              display: "flex",
+              flexDirection: "column",
             }}
               onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "0 12px 36px rgba(62,19,22,0.15)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = ""; (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 24px rgba(62,19,22,0.08)"; }}
@@ -161,7 +163,7 @@ export default function ElderPage() {
                 <p style={{ fontSize: "1.1rem", color: "#5C4033", margin: 0, lineHeight: 1.65 }}>{card.then}</p>
               </div>
               {/* Now */}
-              <div style={{ padding: "1.4rem 1.6rem", borderBottom: "1px solid rgba(99,32,36,0.08)" }}>
+              <div style={{ padding: "1.4rem 1.6rem", borderBottom: "1px solid rgba(99,32,36,0.08)", flex: 1 }}>
                 <div style={{ fontFamily: cinzel, fontSize: "0.75rem", letterSpacing: "0.1em", color: "#632024", fontWeight: 700, marginBottom: "0.5rem" }}>
                   {isRtl ? "الآن" : "NOW"}
                 </div>

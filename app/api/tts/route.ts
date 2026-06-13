@@ -1,9 +1,20 @@
 // app/api/tts/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rateLimit";
+import { getClientIp } from "@/lib/sanitize";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = rateLimit(`${ip}:tts`, LIMITS.tts.limit, LIMITS.tts.windowMs);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait before requesting more audio." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetIn / 1000)) } }
+    );
+  }
+
   try {
     const { text } = await req.json();
 

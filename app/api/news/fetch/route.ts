@@ -1,5 +1,6 @@
 // app/api/news/fetch/route.ts
 import { NextResponse } from "next/server";
+import { safeError } from "@/lib/sanitize";
 
 const SOURCES = [
   { name: "The Hacker News",   url: "https://feeds.feedburner.com/TheHackersNews" },
@@ -108,7 +109,8 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ success: true, summaries, total: summaries.length });
   } catch (err) {
-    return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
+    console.error("[news/fetch]", err);
+    return NextResponse.json({ success: false, error: safeError(err, "News fetch failed. Please try again.") }, { status: 500 });
   }
 }
 

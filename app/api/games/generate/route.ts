@@ -1,5 +1,7 @@
 // app/api/games/generate/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rateLimit";
+import { getClientIp, safeError } from "@/lib/sanitize";
 
 // ── Per-game prompts ──────────────────────────────────────────────────────────
 const PROMPTS: Record<string, (attempts: number, weak: string) => string> = {
@@ -192,6 +194,15 @@ Return ONLY valid JSON:
 
 // ── Route handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const rl = rateLimit(`${ip}:games`, LIMITS.soc.limit, LIMITS.soc.windowMs);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many requests. Please wait before generating another game round." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetIn / 1000)) } }
+    );
+  }
+
   try {
     const { gameId, attempts = 1, weak = "", mode = "game" } = await req.json();
 
@@ -222,6 +233,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, content });
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    console.error("[games/generate]", err);
+    return NextResponse.json({ error: safeError(err, "Game generation failed. Please try again.") }, { status: 500 });
   }
 }

@@ -1,5 +1,7 @@
 // app/api/scan/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { rateLimit, LIMITS } from "@/lib/rateLimit";
+import { getClientIp } from "@/lib/sanitize";
 
 const VT = "https://www.virustotal.com/api/v3";
 const KEY = () => process.env.VT_API_KEY!;
@@ -99,6 +101,15 @@ async function scanFile(formData: FormData) {
 export async function POST(req: NextRequest) {
   if (!KEY()) {
     return NextResponse.json({ error: "VT_API_KEY not configured on the server." }, { status: 500 });
+  }
+
+  const ip = getClientIp(req);
+  const rl = rateLimit(`${ip}:scan`, LIMITS.scan.limit, LIMITS.scan.windowMs);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: "Too many scans. You can run 5 scans per minute. Please wait before scanning again." },
+      { status: 429, headers: { "Retry-After": String(Math.ceil(rl.resetIn / 1000)) } }
+    );
   }
 
   try {
