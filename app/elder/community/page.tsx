@@ -1,13 +1,20 @@
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useEffect } from "react";
 import { collection, addDoc, getDocs, orderBy, query, serverTimestamp } from "firebase/firestore";
-import { db } from "@/app/lib/firebase";
+import { db, auth } from "@/app/lib/firebase";
+import { useRouter } from "next/navigation";
 import ElderNav from "@/components/elder/ElderNav";
+import { useElderLang } from "@/hooks/useElderLang";
 
 const cinzel = "'Cinzel', Georgia, serif";
 const body   = "'Crimson Pro', Georgia, serif";
 
-interface Warning { id: string; description: string; channel?: string; status?: string; createdAt?: { toDate: () => Date }; }
+// `description` is the elder-form field; `content`/`title` come from main-site
+// posts written to the same collection — accept either so nothing renders blank.
+interface Warning { id: string; description?: string; content?: string; title?: string; channel?: string; status?: string; createdAt?: { toDate: () => Date }; }
+
+const warningText = (w: Warning) => w.description || w.content || w.title || "";
 
 const PAGE_SIZE = 8;
 
@@ -31,6 +38,8 @@ const T = {
     success: "Thank you for sharing. Your warning will help protect others.",
     note: "Your report is reviewed before publishing.",
     shareAnother: "Share another warning",
+    loginNeeded: "Please sign in first, so we know who shared this warning.",
+    loginBtn: "Sign in to post",
     ago: (s: number) => s < 60 ? "Just now" : s < 3600 ? Math.floor(s/60) + "m ago" : s < 86400 ? Math.floor(s/3600) + "h ago" : Math.floor(s/86400) + "d ago",
   },
   ar: {
@@ -52,12 +61,15 @@ const T = {
     success: "شكراً لك على المشاركة. تحذيرك سيساعد في حماية الآخرين.",
     note: "تقريرك يُراجع قبل النشر.",
     shareAnother: "شارك تحذيراً آخر",
+    loginNeeded: "يرجى تسجيل الدخول أولاً، حتى نعرف من شارك هذا التحذير.",
+    loginBtn: "سجّل الدخول للنشر",
     ago: (s: number) => s < 60 ? "الآن" : s < 3600 ? Math.floor(s/60) + " د" : s < 86400 ? Math.floor(s/3600) + " س" : Math.floor(s/86400) + " ي",
   },
 };
 
 export default function ElderCommunityPage() {
-  const [lang, setLang]         = useState<"en" | "ar">("en");
+  useTrackView("elder_community");
+  const [lang, setLang]         = useElderLang();
   const [tab, setTab]           = useState<"feed" | "post">("feed");
   const [warnings, setWarnings] = useState<Warning[]>([]);
   const [page, setPage]         = useState(1);
@@ -66,32 +78,39 @@ export default function ElderCommunityPage() {
   const [channel, setChannel]   = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone]         = useState(false);
+  const [needsLogin, setNeedsLogin] = useState(false);
+  const router = useRouter();
 
   const isRtl = lang === "ar";
   const c = T[lang];
 
-  useEffect(() => {
-    // single-field orderBy doesn't require a composite index
+  const loadFeed = () => {
+    setLoadingFeed(true);
+    const apply = (snap: { docs: { id: string; data: () => Record<string, unknown> }[] }, ordered: boolean) => {
+      const all = snap.docs.map(d => ({ id: d.id, ...d.data() } as Warning));
+      // hide only rejected posts; require some text so nothing renders blank
+      const visible = all.filter(w => w.status !== "rejected" && warningText(w));
+      setWarnings(ordered ? visible : visible.reverse());
+    };
     getDocs(query(collection(db, "communityWarnings"), orderBy("createdAt", "desc")))
-      .then(snap => {
-        const all = snap.docs.map(d => ({ id: d.id, ...d.data() } as Warning));
-        // hide only rejected posts; show approved, pending, and legacy posts
-        setWarnings(all.filter(w => w.status !== "rejected"));
-      })
-      .catch(() => {
-        // createdAt index missing — load without ordering
+      .then(snap => apply(snap, true))
+      .catch((err) => {
+        // Surface the real reason (e.g. permission-denied / missing index) and
+        // retry unordered so a missing createdAt index alone can't blank the feed.
+        console.error("Elder community feed (ordered) failed — retrying unordered:", err);
         getDocs(collection(db, "communityWarnings"))
-          .then(snap => {
-            const all = snap.docs.map(d => ({ id: d.id, ...d.data() } as Warning));
-            setWarnings(all.filter(w => w.status !== "rejected").reverse());
-          })
-          .catch(() => {});
+          .then(snap => apply(snap, false))
+          .catch((e) => console.error("Elder community feed failed:", e));
       })
       .finally(() => setLoadingFeed(false));
-  }, []);
+  };
+
+  useEffect(() => { loadFeed(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const submit = async () => {
     if (!text.trim()) return;
+    const user = auth.currentUser;
+    if (!user) { setNeedsLogin(true); return; }   // ask them to sign in first
     setSubmitting(true);
     try {
       await addDoc(collection(db, "communityWarnings"), {
@@ -99,12 +118,17 @@ export default function ElderCommunityPage() {
         channel: channel || "Unknown",
         status: "pending",
         source: "elder",
+        userID: user.uid,
+        displayName: user.displayName || null,
         lang,
         createdAt: serverTimestamp(),
       });
       setDone(true);
       setText(""); setChannel("");
-    } catch { /* silent */ }
+      loadFeed(); // show the new post immediately
+    } catch (err) {
+      console.error("Elder community post failed:", err);
+    }
     setSubmitting(false);
   };
 
@@ -193,7 +217,7 @@ export default function ElderCommunityPage() {
                     </span>
                     <span style={{ fontSize: "0.85rem", color: "#8B6555", whiteSpace: "nowrap" }}>{timeAgo(w)}</span>
                   </div>
-                  <p style={{ fontSize: "1.05rem", color: "#4A3728", margin: 0, lineHeight: 1.75 }}>{w.description}</p>
+                  <p style={{ fontSize: "1.05rem", color: "#4A3728", margin: 0, lineHeight: 1.75 }}>{warningText(w)}</p>
                 </div>
               ))}
             </div>
@@ -244,6 +268,18 @@ export default function ElderCommunityPage() {
                     </button>
                   ))}
                 </div>
+
+                {needsLogin && (
+                  <div style={{ marginTop: "1.5rem", background: "#FBF6EF", border: "1px solid #E4C9A1", borderRadius: 14, padding: "1.1rem 1.3rem", textAlign: "center" }}>
+                    <p style={{ fontSize: "1rem", color: "#7a5c2e", margin: "0 0 0.9rem", lineHeight: 1.6 }}>{c.loginNeeded}</p>
+                    <button
+                      onClick={() => router.push("/auth")}
+                      style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1rem", background: "linear-gradient(135deg, #3e1316, #632024)", color: "#E8D4BC", border: "none", borderRadius: 999, padding: "0.7rem 1.8rem", cursor: "pointer" }}
+                    >
+                      {c.loginBtn}
+                    </button>
+                  </div>
+                )}
 
                 <button
                   onClick={submit}

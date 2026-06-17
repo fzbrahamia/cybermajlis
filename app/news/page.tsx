@@ -1,5 +1,6 @@
 // app/news/page.tsx
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useEffect, useCallback } from "react";
 import { useLocale } from "next-intl";
 import {
@@ -168,6 +169,7 @@ function NewsCard({ item }: { item: NewsItem }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function NewsPage() {
+  useTrackView("news");
   const locale = useLocale();
   const isAr   = locale === "ar";
 

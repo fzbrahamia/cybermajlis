@@ -1,8 +1,10 @@
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useEffect } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import ElderNav from "@/components/elder/ElderNav";
+import { useElderLang } from "@/hooks/useElderLang";
 
 const cinzel = "'Cinzel', Georgia, serif";
 const body   = "'Crimson Pro', Georgia, serif";
@@ -25,7 +27,8 @@ const SEV_LABEL: Record<Severity, { en: string; ar: string }> = {
 };
 
 export default function ElderNewsPage() {
-  const [lang, setLang] = useState<"en" | "ar">("en");
+  useTrackView("elder_news");
+  const [lang, setLang] = useElderLang();
   const [items, setItems] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const isRtl = lang === "ar";

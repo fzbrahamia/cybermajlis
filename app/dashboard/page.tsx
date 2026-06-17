@@ -1,4 +1,5 @@
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -17,6 +18,7 @@ type Category = {
 };
 
 export default function DashboardPage() {
+  useTrackView("dashboard");
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const t = useTranslations("Dashboard");
   const tAuth = useTranslations("Auth");

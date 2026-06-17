@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { trackSocComplete } from "@/app/lib/analytics";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type Phase = "intro" | "hamad" | "saqr" | "thalab" | "hisan" | "oryx" | "result";
@@ -1006,6 +1007,14 @@ export default function Scenario() {
     setPhaseIdx(1); // skip "selector", go to "intro"
     setScores({});
   };
+
+  // Record SOC scenario performance once the result screen is reached.
+  useEffect(() => {
+    if (currentPhase !== "result" || !scenarioId) return;
+    const total = Object.values(scores).reduce((a, b) => a + b, 0);
+    trackSocComplete(scenarioId, scores, total);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPhase, scenarioId]);
 
   // Active tier indicators (skip selector/intro/result)
   const tierPhases = scenarioId

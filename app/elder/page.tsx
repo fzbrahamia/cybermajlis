@@ -1,8 +1,10 @@
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import ElderNav from "@/components/elder/ElderNav";
 import TtsButton from "@/components/elder/TtsButton";
+import { useElderLang } from "@/hooks/useElderLang";
 
 const cinzel = "'Cinzel', Georgia, serif";
 const body   = "'Crimson Pro', Georgia, serif";
@@ -97,14 +99,25 @@ function useScrollY() {
 }
 
 export default function ElderPage() {
-  const [lang, setLang] = useState<"en" | "ar">("en");
+  useTrackView("elder_home");
+  const [lang, setLang] = useElderLang();
   const router = useRouter();
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollY = useScrollY();
   const c = content[lang];
   const isRtl = lang === "ar";
 
-  const getPageText = () => contentRef.current?.innerText ?? "";
+  const getPageText = () => {
+    const root = contentRef.current;
+    if (!root) return "";
+    // Skip control buttons (e.g. Read-aloud) so the TTS reads only the page body.
+    const skip = Array.from(root.querySelectorAll<HTMLElement>("[data-tts-skip]"));
+    const prev = skip.map((el) => el.style.display);
+    skip.forEach((el) => { el.style.display = "none"; });
+    const text = root.innerText ?? "";
+    skip.forEach((el, i) => { el.style.display = prev[i]; });
+    return text;
+  };
 
   return (
     <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#3e1316", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>

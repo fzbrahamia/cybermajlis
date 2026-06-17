@@ -16,8 +16,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const isMainOrAuthPage = pathname === "/" || pathname.startsWith("/auth");
   const isGamesPage = pathname.startsWith("/games");
   const isSocPage = pathname.startsWith("/soc");
-  const showFooter = !isMainOrAuthPage && !isGamesPage && !isSocPage;
-  const hideChatbot = isGamesPage || isSocPage;
+  const isCalmPage = pathname.startsWith("/calm");
+  const showFooter = !isMainOrAuthPage && !isGamesPage && !isSocPage && !isCalmPage;
+  const hideChatbot = isGamesPage || isSocPage || isCalmPage;
 
   const isLoggedIn = !isMainOrAuthPage && !hideChatbot;
 
@@ -44,7 +45,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      {!isGamesPage && !isSocPage && <Navbar />}
+      {!isGamesPage && !isSocPage && !isCalmPage && <Navbar />}
       {!hideChatbot && <Chatbot isLoggedIn={isLoggedIn} />}
       <div>{children}</div>
       {showFooter && <Footer />}
@@ -60,30 +61,3 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     </>
   );
 }
-
-
-// "use client";
-
-// import { usePathname } from "next/navigation";
-// import Chatbot from "@/components/Chatbot";
-// import Navbar from "@/components/ui/NavBar";
-
-// export default function ClientLayout({ children }: { children: React.ReactNode }) {
-//   const pathname = usePathname();
-
-//   const isMainOrAuthPage = pathname === "/" || pathname.startsWith("/auth");
-//   const isGamesPage = pathname.startsWith("/games");
-//   const isSocPage = pathname.startsWith("/soc");
-
-//   const isLoggedIn = !isMainOrAuthPage && !isGamesPage && !isSocPage;
-
-//   return (
-//     <>
-//       {!isGamesPage && !isSocPage && <Navbar />}
-//       {!isGamesPage && !isSocPage && <Chatbot isLoggedIn={isLoggedIn} />}
-
-//       <Chatbot isLoggedIn={isLoggedIn} />
-//       <div>{children}</div>
-//     </>
-//   );
-// }

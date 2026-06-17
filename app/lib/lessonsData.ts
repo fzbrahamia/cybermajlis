@@ -15,7 +15,7 @@ export const lessonsData = {
     },
     {
       slug: "worm",
-      title: "Worm", 
+      title: "Worm",
       titleKey: "basic.worm.title",
       descKey: "basic.worm.description",
       image: "/lessons/wormsCoverPage.jpeg",
@@ -66,7 +66,7 @@ export const lessonsData = {
       videoCaption: "",
       demoCaption: "",
       posterUrl: "",
-      quizUrl: "",      
+      quizUrl: "",
     },
     {
       slug: "",
@@ -79,7 +79,7 @@ export const lessonsData = {
       videoCaption: "",
       demoCaption: "",
       posterUrl: "",
-      quizUrl: "",      
+      quizUrl: "",
     }
   ],
 
@@ -116,65 +116,3 @@ export const lessonsData = {
     },
   ],
 };
-
-
-
-
-// export const lessonsData = {
-//   easy: [
-//     {
-//       slug: "virus",
-//       title: "Virus",
-//       difficulty: "Easy",
-//       image: "/lessons/virus.jpg",
-//       videoUrl: "",          // placeholder, can be empty
-//       simulationUrl: "",     // placeholder
-//       posterUrl: "",         // placeholder
-//       quizUrl: "",           // placeholder
-//     },
-//     {
-//       slug: "worm",
-//       title: "Worm",
-//       difficulty: "Easy",
-//       image: "/lessons/worm.jpg",
-//       videoUrl: "",
-//       simulationUrl: "",
-//       posterUrl: "",
-//       quizUrl: "",
-//     },
-//     {
-//       slug: "trojan",
-//       title: "Trojan",
-//       difficulty: "Easy",
-//       image: "/lessons/trojan.jpg",
-//       videoUrl: "",
-//       simulationUrl: "",
-//       posterUrl: "",
-//       quizUrl: "",
-//     },
-//   ],
-//   advanced: [
-//     {
-//       slug: "ransomware",
-//       title: "Ransomware",
-//       difficulty: "Medium",
-//       image: "/lessons/ransomware.jpg",
-//       videoUrl: "",
-//       simulationUrl: "",
-//       posterUrl: "",
-//       quizUrl: "",
-//     },
-//   ],
-//   realtime: [
-//     {
-//       slug: "phishing",
-//       title: "Phishing",
-//       difficulty: "Hard",
-//       image: "/lessons/phishing.jpg",
-//       videoUrl: "",
-//       simulationUrl: "",
-//       posterUrl: "",
-//       quizUrl: "",
-//     },
-//   ],
-// };

@@ -21,6 +21,8 @@ import DigitalDetective from "./DigitalDetective";
 import SmartTrap from "./SmartTrap";
 import { useRouter } from "next/navigation";
 import { SIM_MAP } from "./simMap";
+import { useTrackView } from "@/hooks/useTrackView";
+import { trackGameStart, trackGameComplete } from "@/app/lib/analytics";
 
 const GAME_MAP: Record<string, React.ComponentType<{ onHome: (xp?: number) => void }>> = {
   souq:       SouqSafe,
@@ -37,6 +39,7 @@ const GAME_MAP: Record<string, React.ComponentType<{ onHome: (xp?: number) => vo
 
 export default function App() {
   const router = useRouter();
+  useTrackView("games");
   const [activeGame, setActiveGame] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [totalXP, setTotalXP] = useState(0);
@@ -61,6 +64,7 @@ export default function App() {
   // ── Award XP when returning from a game ──
   const returnFromGame = useCallback(async (gameSlug: string, earnedXP: number = 0) => {
     setActiveGame(null);
+    trackGameComplete(gameSlug, earnedXP);
     if (earnedXP <= 0) return;
 
     const currentUser = userRef.current; // use ref — never stale
@@ -98,7 +102,7 @@ export default function App() {
   return (
     <Hub
       totalXP={totalXP}
-      onSelectGame={(id: string) => setActiveGame(id)}
+      onSelectGame={(id: string) => { trackGameStart(id); setActiveGame(id); }}
       onDashboard={() => router.push("/dashboard")}
       gameMap={GAME_MAP}
       simMap={SIM_MAP}

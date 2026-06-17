@@ -1,5 +1,6 @@
 // app/community/page.tsx
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
   collection, addDoc, getDocs, query, where, orderBy,
@@ -361,6 +362,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function CommunityPage() {
+  useTrackView("community");
   const isAR = useLocale() === "ar";
   const [reports,setReports]=useState<Report[]>([]);
   const [filter,setFilter]=useState<WType|"all">("all");

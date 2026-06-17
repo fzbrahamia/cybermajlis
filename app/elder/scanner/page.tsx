@@ -1,6 +1,8 @@
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 import { useState } from "react";
 import ElderNav from "@/components/elder/ElderNav";
+import { useElderLang } from "@/hooks/useElderLang";
 
 const cinzel = "'Cinzel', Georgia, serif";
 const body   = "'Crimson Pro', Georgia, serif";
@@ -41,7 +43,8 @@ const content = {
 };
 
 export default function ElderScannerPage() {
-  const [lang, setLang] = useState<"en" | "ar">("en");
+  useTrackView("elder_scanner");
+  const [lang, setLang] = useElderLang();
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);

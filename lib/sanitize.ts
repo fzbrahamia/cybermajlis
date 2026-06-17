@@ -1,3 +1,5 @@
+import { createHash } from "crypto";
+
 // Prompt injection and input sanitization utilities
 
 // Patterns that attempt to override system prompts or extract instructions
@@ -56,4 +58,12 @@ export function getClientIp(req: Request): string {
   const forwarded = req.headers.get("x-forwarded-for");
   if (forwarded) return forwarded.split(",")[0].trim();
   return req.headers.get("x-real-ip") ?? "unknown";
+}
+
+// Hash an IP before persisting it, so a child's raw IP address is never stored.
+// Salted/peppered so the short IPv4 space can't simply be brute-forced back.
+// The hash is still stable per-IP, which is all abuse investigation needs.
+export function hashIp(ip: string): string {
+  const salt = process.env.IP_HASH_SALT || "cybermajlis-ip-pepper-v1";
+  return createHash("sha256").update(`${salt}|${ip}`).digest("hex").slice(0, 16);
 }

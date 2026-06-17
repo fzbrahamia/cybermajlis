@@ -1,8 +1,10 @@
 "use client";
+import { useTrackLesson } from "@/hooks/useTrackView";
 import { useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import ElderNav from "@/components/elder/ElderNav";
 import TtsButton from "@/components/elder/TtsButton";
+import { useElderLang } from "@/hooks/useElderLang";
 
 const cinzel = "'Cinzel', Georgia, serif";
 const body   = "'Crimson Pro', Georgia, serif";
@@ -200,7 +202,7 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
       sections: [
         {
           heading: "Signs a website is trustworthy",
-          body: "• The address starts with https:// (the 's' stands for secure)\n• There is a small padlock icon in your browser's address bar\n• The website has clear contact information and a physical address\n• It has realistic reviews — not all five stars with vague praise",
+          body: "• The address uses https:// and shows a padlock — this keeps your connection private, but on its own it does NOT prove the shop is honest (scam sites use it too)\n• The website has clear contact information and a physical address\n• It has realistic reviews — not all five stars with vague praise",
           tip: "When in doubt, use well-known websites you have heard of before, or ask a family member to help.",
         },
         {
@@ -220,7 +222,7 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
       sections: [
         {
           heading: "علامات الموقع الموثوق",
-          body: "• عنوان الموقع يبدأ بـ https:// (الحرف 's' يعني آمن)\n• يوجد رمز قفل صغير في شريط عنوان المتصفح\n• الموقع يحتوي على معلومات تواصل واضحة وعنوان فعلي\n• التقييمات تبدو حقيقية — ليست كلها خمس نجوم بمدح مبهم",
+          body: "• عنوان الموقع يستخدم https:// ويظهر رمز قفل — هذا يحافظ على خصوصية اتصالك، لكنه وحده لا يثبت أن المتجر صادق (مواقع الاحتيال تستخدمه أيضاً)\n• الموقع يحتوي على معلومات تواصل واضحة وعنوان فعلي\n• التقييمات تبدو حقيقية — ليست كلها خمس نجوم بمدح مبهم",
           tip: "عند الشك، استخدم المواقع الكبيرة المعروفة التي سمعت بها من قبل، أو اطلب من أحد أفراد عائلتك المساعدة.",
         },
         {
@@ -283,7 +285,8 @@ export default function ElderLessonPage() {
   const params = useParams();
   const router = useRouter();
   const topic = params.topic as string;
-  const [lang, setLang] = useState<"en" | "ar">("en");
+  useTrackLesson(topic, "elder");
+  const [lang, setLang] = useElderLang();
   const contentRef = useRef<HTMLDivElement>(null);
   const isRtl = lang === "ar";
 
@@ -299,7 +302,18 @@ export default function ElderLessonPage() {
     );
   }
 
-  const getPageText = () => contentRef.current?.innerText ?? "";
+  const getPageText = () => {
+    const root = contentRef.current;
+    if (!root) return "";
+    // Hide control buttons (Back, Read-aloud) so the TTS reads only the lesson,
+    // then restore — synchronous, so there is no visible flicker.
+    const skip = Array.from(root.querySelectorAll<HTMLElement>("[data-tts-skip]"));
+    const prev = skip.map((el) => el.style.display);
+    skip.forEach((el) => { el.style.display = "none"; });
+    const text = root.innerText ?? "";
+    skip.forEach((el, i) => { el.style.display = prev[i]; });
+    return text;
+  };
 
   return (
     <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#3e1316", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
@@ -309,6 +323,7 @@ export default function ElderLessonPage() {
         {/* Back */}
         <button
           onClick={() => router.push("/elder/lessons")}
+          data-tts-skip="true"
           style={{
             fontFamily: cinzel, fontSize: "0.8rem", letterSpacing: "0.08em",
             color: "#632024", background: "none", border: "1px solid rgba(99,32,36,0.3)",

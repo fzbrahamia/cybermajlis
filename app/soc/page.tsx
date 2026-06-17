@@ -1,5 +1,6 @@
 // app/soc/page.tsx
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ import { useTranslations } from "next-intl";
 const LiveSoc = dynamic(() => import("@/components/live_soc"), { ssr: false });
 
 export default function SocPage() {
+  useTrackView("soc");
   const router = useRouter();
   const t = useTranslations("SOC");
 

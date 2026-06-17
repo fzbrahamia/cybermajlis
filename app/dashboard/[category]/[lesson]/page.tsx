@@ -3,11 +3,14 @@
 import * as React from "react";
 import { lessonsData } from "@/app/lib/lessonsData";
 import LessonDetailPage from "@/components/ui/lessonDetailPage";
+import { useTrackLesson } from "@/hooks/useTrackView";
 
 export default function LessonPage({ params }: { params: Promise<{ category: string; lesson: string }> }) {
   const resolvedParams = React.use(params);
   const category = resolvedParams?.category;
   const lesson = resolvedParams?.lesson;
+
+  useTrackLesson(lesson, "main");
 
   if (!category || !lesson) return null;
 

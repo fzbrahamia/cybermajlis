@@ -1,7 +1,9 @@
 // app/api/chat/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { rateLimit, LIMITS } from "@/lib/rateLimit";
-import { sanitizeUserInput, getClientIp } from "@/lib/sanitize";
+import { sanitizeUserInput, getClientIp, hashIp } from "@/lib/sanitize";
+import { adminDb } from "@/lib/firebase-admin";
+import { FieldValue } from "firebase-admin/firestore";
 
 const buildSystem = (reports: string, news: string) => [
   "You are Hamad, the friendly cybersecurity guide for CyberMajlis — Qatar's community security platform.",
@@ -60,6 +62,14 @@ export async function POST(req: NextRequest) {
       const idx = messages.length - 1 - lastUserIdx;
       const check = sanitizeUserInput(messages[idx].content as string, 2000);
       if (check.flagged) {
+        adminDb.collection("chatLogs").add({
+  ip: hashIp(ip),
+  userMessage: messages[idx].content,
+  flagged: true,
+  flagReason: check.reason,
+  source: "web",
+  createdAt: FieldValue.serverTimestamp(),
+});
         return NextResponse.json(
           { reply: "I can only help with cybersecurity questions. What would you like to know?" },
           { status: 200 }
@@ -93,6 +103,17 @@ export async function POST(req: NextRequest) {
       .replace(/\*([^*]+)\*/g, "$1")
       .replace(/#{1,6}\s/g, "")
       .trim();
+
+      adminDb.collection("chatLogs").add({
+      ip: hashIp(ip),
+      // lastUserIdx is an index into the REVERSED array — convert it back to the
+      // real index, otherwise we log the wrong message (e.g. the AI greeting).
+      userMessage: messages[messages.length - 1 - lastUserIdx]?.content ?? "",
+      reply,
+      flagged: false,
+      source: "web",
+      createdAt: FieldValue.serverTimestamp(),
+    });
 
     return NextResponse.json({ reply });
   } catch {

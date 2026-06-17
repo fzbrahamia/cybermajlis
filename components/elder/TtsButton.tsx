@@ -55,6 +55,7 @@ export default function TtsButton({ getText, lang = "en" }: Props) {
   return (
     <button
       onClick={speak}
+      data-tts-skip="true"
       title={label}
       style={{
         display: "inline-flex",

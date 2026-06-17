@@ -1,7 +1,9 @@
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ElderNav from "@/components/elder/ElderNav";
+import { useElderLang } from "@/hooks/useElderLang";
 
 const cinzel = "'Cinzel', Georgia, serif";
 const body   = "'Crimson Pro', Georgia, serif";
@@ -26,7 +28,8 @@ const topics = {
 };
 
 export default function ElderLessonsPage() {
-  const [lang, setLang] = useState<"en" | "ar">("en");
+  useTrackView("elder_lessons");
+  const [lang, setLang] = useElderLang();
   const router = useRouter();
   const list = topics[lang];
   const isRtl = lang === "ar";

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { trackQuizComplete } from "@/app/lib/analytics";
 
 interface QuizProps {
   questions: {
@@ -114,6 +115,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
       const finalScore = questions.reduce((acc, q, i) => acc + (selectedAnswers[i] === q.correctAnswer ? 1 : 0), 0);
       setScore(finalScore);
       setFinished(true);
+      trackQuizComplete(finalScore, questions.length);
       if (onQuizDone) onQuizDone(finalScore, questions.length);
     }
   };

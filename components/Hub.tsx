@@ -131,8 +131,14 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
         // Fetch display names and avatars for each user
         const entries: LBEntry[] = await Promise.all(
           Object.entries(userXP).map(async ([uid, xp]) => {
-            const userSnap = await getDoc(doc(db, 'user', uid));
-            const data = userSnap.exists() ? userSnap.data() : {};
+            // Guests can't read other users' docs (rules require auth), so a
+            // single denied read must not abort the whole leaderboard. Fall back
+            // to an anonymised entry — the XP ranking still renders for everyone.
+            let data: { username?: string; avatar?: string } = {};
+            try {
+              const userSnap = await getDoc(doc(db, 'user', uid));
+              if (userSnap.exists()) data = userSnap.data() as { username?: string; avatar?: string };
+            } catch { /* anonymised entry */ }
             return {
               name: data.username || 'Anonymous',
               avatar: data.avatar || '/characters/falcon.jpeg',

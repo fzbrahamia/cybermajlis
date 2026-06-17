@@ -17,7 +17,7 @@ const FEATURES = [
 
 const SPECIAL = [
   { href: "/elder", en: "Seniors Mode",     ar: "كبار القدر",    desc_en: "Large text, audio & simplified UI",    desc_ar: "نص كبير وصوت وواجهة مبسطة" },
-  { href: "#",      en: "Calm Mode",        ar: "الوضع الهادئ",  desc_en: "For neurodivergent learners — coming soon", desc_ar: "للمتعلمين ذوي الاحتياجات الخاصة — قريباً" },
+  { href: "/calm",  en: "Calm Mode",        ar: "الوضع الهادئ",  desc_en: "For neurodivergent learners",               desc_ar: "للمتعلمين ذوي الاحتياجات الخاصة" },
 ];
 
 export default function Footer() {
@@ -124,8 +124,11 @@ export default function Footer() {
         flexWrap: "wrap", gap: "0.5rem",
       }}>
         <span style={{ fontFamily: crimson, fontSize: 12.5, color: "rgba(232,212,188,0.35)" }}>
-          {isAR ? "© 2025 مجلس الأمن السيبراني" : "© 2025 CyberMajlis — Qatar"}
+          {isAR ? "© 2026 مجلس الأمن السيبراني" : "© 2026 CyberMajlis — Qatar"}
         </span>
+        <a href="/privacy" style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(197,165,126,0.75)", textDecoration: "none" }}>
+          {isAR ? "سياسة الخصوصية" : "Privacy Policy"}
+        </a>
         <span style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 12, color: "rgba(232,212,188,0.25)" }}>
           {isAR ? "تعليم الأمن السيبراني للجميع" : "Cybersecurity education for everyone"}
         </span>

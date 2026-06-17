@@ -9,6 +9,12 @@ out/
 build/
 dist/
 
+# secrets / service-account keys — never commit
+firebase-admin-key.json
+*-key.json
+*-service-account*.json
+serviceAccountKey*.json
+
 # environment variables
 .env
 .env.local

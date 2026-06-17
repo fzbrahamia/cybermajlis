@@ -1,5 +1,6 @@
 // app/scan/page.tsx
 "use client";
+import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useRef } from "react";
 import { useLocale } from "next-intl";
 
@@ -64,6 +65,7 @@ const LOADING_MSGS_AR: Record<ScanType, string[]> = {
 const TYPE_LABEL_AR: Record<ScanType, string> = { url: "الرابط", file: "الملف", hash: "البصمة" };
 
 export default function ScanPage() {
+  useTrackView("scanner");
   const locale = useLocale();
   const isAR = locale === "ar";
 

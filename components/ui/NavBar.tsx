@@ -28,6 +28,7 @@ const NAV_LINK_KEYS = [
   { key: "dashboard", href: "/dashboard" },
   { key: "community", href: "/community" },
   { key: "games",     href: "/games"     },
+  { key: "ctf",       href: "/ctf"       },
   { key: "news",      href: "/news"      },
   { key: "scanner",   href: "/scan"      },
   { key: "soc",       href: "/soc"       },
