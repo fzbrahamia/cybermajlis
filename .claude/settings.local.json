@@ -6,7 +6,12 @@
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\fzbra\\\\Documents\\\\GitHub\\\\fzbrhamia\\\\cybermajlis\" -Recurse -Directory)",
       "Bash(Select-Object -ExpandProperty FullName)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\fzbra\\\\Documents\\\\GitHub\\\\fzbrhamia\\\\cybermajlis\" -Depth 0 -Force)",
-      "Bash(Select-Object -ExpandProperty Name)"
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Bash(curl -s http://localhost:3000/ -o /tmp/h.html -w \"EN HTTP %{http_code}\\\\n\")",
+      "Read(//private/tmp/**)",
+      "Bash(curl -s http://localhost:3001/ -o /tmp/h.html -w \"EN HTTP %{http_code}\\\\n\")",
+      "Bash(curl -s -H \"Cookie: locale=ar\" http://localhost:3001/ -o /tmp/ar.html -w \"AR HTTP %{http_code}\\\\n\")",
+      "Read(//tmp/**)"
     ]
   }
 }

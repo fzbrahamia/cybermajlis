@@ -104,6 +104,12 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
 
   // ── UI state ──────────────────────────────────────────────
   const [view, setView] = useState<'games' | 'simulations' | 'rankings'>('games');
+
+  // Allow deep-linking a tab via ?view= (e.g. /games?view=simulations from the landing page)
+  useEffect(() => {
+    const v = new URLSearchParams(window.location.search).get('view');
+    if (v === 'games' || v === 'simulations' || v === 'rankings') setView(v);
+  }, []);
   const [charFilter, setCharFilter] = useState<string | null>(null);
   const [tickerIdx, setTickerIdx] = useState(0);
   const [hoveredGame, setHoveredGame] = useState<string | null>(null);

@@ -49,6 +49,13 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
     if (open) setTimeout(() => inputRef.current?.focus(), 300);
   }, [open]);
 
+  // Allow other parts of the app (e.g. the landing page) to open Hamad
+  useEffect(() => {
+    const openHandler = () => setOpen(true);
+    window.addEventListener("cm:open-chat", openHandler);
+    return () => window.removeEventListener("cm:open-chat", openHandler);
+  }, []);
+
   const speakReply = async (text: string) => {
     if (!text || typeof window === "undefined") return;
 

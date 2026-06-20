@@ -1,9 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
-import { Volume2, VolumeX, ChevronDown, Compass, Swords, Trophy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  Volume2, VolumeX, ChevronDown, ArrowRight,
+  BookOpen, FlaskConical, Radar, Newspaper, Users, ScanLine, Flag, MessageCircle,
+} from "lucide-react";
 import { useLocale } from "next-intl";
+import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import Footer from "@/components/ui/Footer";
 
 /* ── Fonts ───────────────────────────────────────────────── */
@@ -11,110 +15,398 @@ const cinzel  = '"Cinzel", "Trajan Pro", Georgia, serif';
 const crimson = '"Crimson Pro", "Crimson Text", Georgia, serif';
 const mono    = '"Geist Mono", "JetBrains Mono", Menlo, monospace';
 
-/* ── Static data ─────────────────────────────────────────── */
+/* ── Palette ─────────────────────────────────────────────── */
+const C = {
+  ink: "#2a0c0e", maroon: "#3e1316", maroonMid: "#632024", crimson: "#8B2635",
+  gold: "#c5a57e", goldLight: "#E8D4BC", sand: "#E3DAC9", sandWarm: "#EDE0CE", cream: "#f5ede0",
+};
 
-const CHARS = [
-  {
-    id: "saqr",   img: "/characters/saqr.GIF",
-    name: "SAQR",    nameAr: "الصقر",
-    role: "RECONNAISSANCE", roleAr: "الاستطلاع",
-    accent: "#8B2635", rgb: "139,38,53",
-    desc: "The falcon's eye. Master of OSINT, footprinting, and the patient hunt.",
-    descAr: "عين الصقر. خبير في الاستخبارات مفتوحة المصدر والتتبع والصيد الصبور.",
-  },
-  {
-    id: "oryx",   img: "/characters/oryx.GIF",
-    name: "ORYX",    nameAr: "المها",
-    role: "DEFENCE",        roleAr: "الدفاع",
-    accent: "#7a5c2e", rgb: "122,92,46",
-    desc: "Resilient guardian. Teaches hardening, segmentation, and the long watch.",
-    descAr: "الحارس الصامد. يعلّم التحصين والعزل والمراقبة الدؤوبة.",
-  },
-  {
-    id: "thalab", img: "/characters/fox.GIF",
-    name: "THA'LAB", nameAr: "الثعلب",
-    role: "OFFENSE",        roleAr: "الهجوم",
-    accent: "#8B4513", rgb: "139,69,19",
-    desc: "The cunning fox. Red-team tactics, social engineering, the lockpick's art.",
-    descAr: "الثعلب الماكر. تكتيكات الفريق الأحمر والهندسة الاجتماعية وفن الاختراق.",
-  },
-  {
-    id: "hisan",  img: "/characters/hisan.GIF",
-    name: "HISAN",   nameAr: "الحصان",
-    role: "RESPONSE",       roleAr: "الاستجابة",
-    accent: "#4a7c59", rgb: "74,124,89",
-    desc: "Swift charger. Incident response, forensics, the cool head under fire.",
-    descAr: "المندفع السريع. الاستجابة للحوادث والتحقيقات الجنائية والرأس الثابت.",
-  },
-];
+const EASE = [0.22, 1, 0.36, 1] as const;
 
-const FEATURES = [
-  {
-    Glyph: "learn",
-    title: "LEARN",    titleAr: "تعلّم",
-    desc:  "Master different malware categories through Qatari-specific use cases.",
-    descAr: "أتقن أطر الأمن السيبراني المتقدمة من خلال حالات استخدام قطرية خاصة ومعايير دولية.",
-  },
-  {
-    Glyph: "play",
-    title: "PLAY",     titleAr: "العب",
-    desc:  "Apply your knowledge in engaging mini-games designed to challenge your skills.",
-    descAr: "طبق معرفتك في ألعاب صغيرة ممتعة مصممة لتحدي مهاراتك.",
-  },
-  {
-    Glyph: "simulate",
-    title: "SIMULATE", titleAr: "محاكاة",
-    desc:  "Deploy into realistic sandbox environments mimicking real-world scenarios.",
-    descAr: "انتشر في بيئات محاكاة واقعية تحاكي السيناريوهات الحقيقية.",
-  },
-  {
-    Glyph: "monitor",
-    title: "MONITOR",  titleAr: "مراقبة",
-    desc:  "Live SOC dashboard tracking global threats in real-time with fellow Majlis members.",
-    descAr: "لوحة مركز العمليات الأمنية الحية لتتبع التهديدات العالمية مع أعضاء المجلس.",
-  },
-];
+/* ── Reveal animation variants ───────────────────────────── */
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.04 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 26 },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
+};
 
-const HOW_IT_WORKS = [
-  {
-    num: "01", Icon: Compass,
-    title: "Explore",         titleAr: "استكشف",
-    desc:  "Choose your guardian and dive into four deep-dive lessons on the most dangerous cyber threats — presented as an animated story.",
-    descAr: "اختر بطلك وانطلق في أربع دروس تفاعلية حول أخطر التهديدات السيبرانية.",
-  },
-  {
-    num: "02", Icon: Swords,
-    title: "Play & Simulate", titleAr: "العب وجرّب",
-    desc:  "Put your knowledge to the test in ten mini-games and seven real-world breach simulations — make decisions, see consequences.",
-    descAr: "اختبر معلوماتك في عشر ألعاب وسبعة سيناريوهات هجمات واقعية في بيئة آمنة.",
-  },
-  {
-    num: "03", Icon: Trophy,
-    title: "Master & Rise",   titleAr: "أتقن وارتقِ",
-    desc:  "Monitor the live SOC, earn achievements, and climb the leaderboard as your cybersecurity expertise grows.",
-    descAr: "راقب مركز العمليات الحي واكسب الإنجازات وتصاعد في لوحة المتصدرين.",
-  },
-];
+/* ════════════════════════════════════════════════════════════
+   Device frame + per-feature visual mocks
+   ════════════════════════════════════════════════════════════ */
 
-
-/* ── Hooks ───────────────────────────────────────────────── */
-
-function useInView(threshold = 0.12) {
-  const [inView, setInView] = useState(false);
-  const ref = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
+function Dot({ c }: { c: string }) {
+  return <span style={{ width: 8, height: 8, borderRadius: "50%", background: c }} />;
 }
 
+function DeviceFrame({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div style={{
+      width: 300, borderRadius: 22, overflow: "hidden", background: "#1d0708",
+      border: "1px solid rgba(197,165,126,.28)",
+      boxShadow: "0 44px 90px rgba(42,12,14,.5), 0 0 0 1px rgba(197,165,126,.1), inset 0 1px 0 rgba(255,255,255,.06)",
+    }}>
+      <div style={{
+        display: "flex", alignItems: "center", gap: 6, padding: "10px 13px",
+        background: "linear-gradient(180deg,#3e1316,#2a0c0e)", borderBottom: "1px solid rgba(197,165,126,.16)",
+      }}>
+        <Dot c="#a03040" /><Dot c="#b58a4a" /><Dot c="#4a7c59" />
+        <span style={{ marginInlineStart: "auto", fontFamily: mono, fontSize: 8.5, letterSpacing: 1, color: "rgba(197,165,126,.6)" }}>
+          {title}
+        </span>
+      </div>
+      <div style={{ padding: 16, minHeight: 332, display: "flex", flexDirection: "column", gap: 12 }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function ScreenLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ fontFamily: mono, fontSize: 8.5, letterSpacing: 2, color: "rgba(197,165,126,.6)" }}>{children}</div>
+  );
+}
+
+function LessonsMock() {
+  const isAR = useLocale() === "ar";
+  const rows = [
+    { img: "/lessons/virusesCoverPage.jpeg",    en: "Viruses",    ar: "الفيروسات", pct: 100 },
+    { img: "/lessons/wormsCoverPage.jpeg",      en: "Worms",      ar: "الديدان",   pct: 60  },
+    { img: "/lessons/ransomwareCoverPage.jpeg", en: "Ransomware", ar: "الفدية",    pct: 25  },
+  ];
+  return (
+    <>
+      <ScreenLabel>{isAR ? "المسارات" : "TRACKS"}</ScreenLabel>
+      <div style={{ display: "flex", gap: 6 }}>
+        {[isAR ? "مبتدئ" : "Basic", isAR ? "متقدم" : "Advanced", isAR ? "افعلها بنفسك" : "DIY"].map((t, i) => (
+          <span key={i} style={{
+            fontFamily: cinzel, fontSize: 8, letterSpacing: 1, fontWeight: 700,
+            padding: "4px 9px", borderRadius: 99, color: i === 0 ? C.maroon : C.goldLight,
+            background: i === 0 ? C.gold : "rgba(197,165,126,.12)", border: "1px solid rgba(197,165,126,.25)",
+          }}>{t}</span>
+        ))}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 9, marginTop: 2 }}>
+        {rows.map((r, i) => (
+          <div key={i} style={{
+            display: "flex", alignItems: "center", gap: 10, padding: 8, borderRadius: 11,
+            background: "rgba(255,255,255,.04)", border: "1px solid rgba(197,165,126,.14)",
+          }}>
+            <img src={r.img} alt="" style={{ width: 40, height: 40, borderRadius: 8, objectFit: "cover", flexShrink: 0 }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 700, color: C.goldLight }}>{isAR ? r.ar : r.en}</div>
+              <div style={{ height: 4, borderRadius: 99, background: "rgba(197,165,126,.18)", marginTop: 6 }}>
+                <div style={{ height: "100%", width: `${r.pct}%`, borderRadius: 99, background: "linear-gradient(90deg,#c5a57e,#E8D4BC)" }} />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function SimMock() {
+  const isAR = useLocale() === "ar";
+  return (
+    <>
+      <div style={{
+        display: "flex", alignItems: "center", gap: 7, padding: "6px 10px", borderRadius: 8,
+        background: "rgba(74,124,89,.16)", border: "1px solid rgba(74,156,110,.35)",
+        fontFamily: cinzel, fontSize: 8.5, letterSpacing: 1.5, fontWeight: 700, color: "#8fcfa6",
+      }}>
+        <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#4a9c6e", animation: "cmPulse 1.6s infinite" }} />
+        {isAR ? "محاكاة · آمنة 100%" : "SIMULATION · 100% SAFE"}
+      </div>
+
+      <ScreenLabel>{isAR ? "جرّب: كي لوغر" : "TRY IT · KEYLOGGER"}</ScreenLabel>
+      {/* what the user types */}
+      <div>
+        <div style={{ fontFamily: mono, fontSize: 8, letterSpacing: 1, color: "rgba(232,212,188,.5)", marginBottom: 5 }}>{isAR ? "أنت تكتب هنا" : "YOU TYPE HERE"}</div>
+        <div style={{ padding: "9px 11px", borderRadius: 9, background: "#120405", border: "1px solid rgba(197,165,126,.22)", fontFamily: mono, fontSize: 12, color: C.goldLight }}>
+          my password is qatar123<span style={{ display: "inline-block", width: 7, height: 13, background: C.gold, marginInlineStart: 2, animation: "cmBlink 1s step-end infinite", verticalAlign: "middle" }} />
+        </div>
+      </div>
+      {/* what the keylogger silently captures */}
+      <div style={{ flex: 1 }}>
+        <div style={{ fontFamily: mono, fontSize: 8, letterSpacing: 1, color: "#e0a78f", marginBottom: 5 }}>{isAR ? "↓ يلتقطها الكي لوغر سرًّا" : "↓ SILENTLY CAPTURED BY THE KEYLOGGER"}</div>
+        <div style={{ borderRadius: 9, padding: 11, background: "rgba(160,48,64,.12)", border: "1px solid rgba(224,121,106,.3)", fontFamily: mono, fontSize: 11, lineHeight: 1.8, color: "rgba(232,212,188,.85)" }}>
+          <div style={{ color: "rgba(197,165,126,.55)" }}>[09:14] keystrokes:</div>
+          <div>m·y·p·a·s·s·w·o·r·d·i·s</div>
+          <div>q·a·t·a·r·1·2·3</div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function SOCMock() {
+  const isAR = useLocale() === "ar";
+  const alerts = [
+    { sev: "#e0796a", en: "Brute-force · 88.x.x.x", ar: "هجوم تخمين · 88.x.x.x" },
+    { sev: "#d9a14a", en: "Phishing domain flagged", ar: "نطاق تصيّد مرصود" },
+    { sev: "#4a9c6e", en: "Patch deployed · web-03", ar: "تحديث مطبّق · web-03" },
+  ];
+  return (
+    <>
+      <div style={{
+        display: "flex", alignItems: "center", gap: 7, padding: "6px 10px", borderRadius: 8,
+        background: "rgba(217,161,74,.14)", border: "1px solid rgba(217,161,74,.32)",
+        fontFamily: cinzel, fontSize: 8.5, letterSpacing: 1.5, fontWeight: 700, color: "#e0c184",
+      }}>
+        <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#d9a14a", animation: "cmPulse 1.8s infinite" }} />
+        {isAR ? "محاكاة تدريبية · ليست هجمات حقيقية" : "SIMULATED · TRAINING SCENARIO"}
+      </div>
+      <div style={{ borderRadius: 12, padding: "14px 14px", background: "linear-gradient(135deg,rgba(99,32,36,.4),rgba(42,12,14,.4))", border: "1px solid rgba(197,165,126,.18)" }}>
+        <div style={{ fontFamily: cinzel, fontSize: 26, fontWeight: 900, color: C.goldLight, letterSpacing: 0.5 }}>1,284</div>
+        <div style={{ fontFamily: crimson, fontSize: 11, color: "rgba(197,165,126,.8)", fontStyle: "italic" }}>
+          {isAR ? "تنبيه فرزته في التدريب" : "alerts triaged in training"}
+        </div>
+        <div style={{ display: "flex", gap: 3, marginTop: 10, alignItems: "flex-end", height: 26 }}>
+          {[40, 70, 35, 90, 55, 75, 48, 95, 60, 80].map((h, i) => (
+            <div key={i} style={{ flex: 1, height: `${h}%`, borderRadius: 2, background: "linear-gradient(180deg,#c5a57e,rgba(197,165,126,.25))" }} />
+          ))}
+        </div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+        {alerts.map((a, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: 9, padding: "8px 10px", borderRadius: 9, background: "rgba(255,255,255,.04)", border: "1px solid rgba(197,165,126,.12)" }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: a.sev, animation: `cmPulse 1.8s ${i * 0.3}s infinite`, flexShrink: 0 }} />
+            <span style={{ fontFamily: mono, fontSize: 9.5, color: "rgba(232,212,188,.78)" }}>{isAR ? a.ar : a.en}</span>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function NewsMock() {
+  const isAR = useLocale() === "ar";
+  const rows = [
+    { tag: isAR ? "تصيّد" : "PHISHING", c: "#e0796a", en: "Fake Ooredoo bill SMS spreading", ar: "رسائل فاتورة Ooredoo مزيفة تنتشر", time: "2h" },
+    { tag: isAR ? "ثغرة" : "CVE", c: "#d9a14a", en: "Router firmware patch released", ar: "تحديث أمني لأجهزة الراوتر", time: "5h" },
+    { tag: isAR ? "احتيال" : "SCAM", c: "#9c7bd4", en: "QR parking-fine fraud in Doha", ar: "احتيال غرامات المواقف في الدوحة", time: "1d" },
+  ];
+  return (
+    <>
+      <ScreenLabel>{isAR ? "آخر الأخبار" : "LATEST"}</ScreenLabel>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {rows.map((r, i) => (
+          <div key={i} style={{ padding: 11, borderRadius: 11, background: "rgba(255,255,255,.04)", border: "1px solid rgba(197,165,126,.14)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 6 }}>
+              <span style={{ fontFamily: cinzel, fontSize: 7.5, letterSpacing: 1.5, fontWeight: 700, color: r.c, padding: "2px 7px", borderRadius: 5, background: "rgba(255,255,255,.05)", border: `1px solid ${r.c}55` }}>{r.tag}</span>
+              <span style={{ marginInlineStart: "auto", fontFamily: mono, fontSize: 8.5, color: "rgba(197,165,126,.5)" }}>{r.time}</span>
+            </div>
+            <div style={{ fontFamily: crimson, fontSize: 12.5, color: "rgba(232,212,188,.88)", lineHeight: 1.4 }}>{isAR ? r.ar : r.en}</div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function CommunityMock() {
+  const isAR = useLocale() === "ar";
+  const reports = [
+    { av: "/characters/saqr.GIF", name: isAR ? "نورة" : "Noora", tag: isAR ? "احتيال هاتفي" : "SCAM CALL", c: "#e0796a", en: "Caller posing as the bank asked for my OTP. Reported the number.", ar: "متصل يدّعي أنه البنك طلب رمز التحقق. أبلغت عن الرقم.", warned: 38 },
+    { av: "/characters/oryx.GIF", name: isAR ? "خالد" : "Khalid", tag: isAR ? "تصيّد" : "PHISHING", c: "#d9a14a", en: "Fake 'Ooredoo bill' SMS with a payment link. Reported so others are warned.", ar: "رسالة 'فاتورة Ooredoo' مزيفة برابط دفع. أبلغت عنها لتحذير الآخرين.", warned: 52 },
+  ];
+  return (
+    <>
+      <ScreenLabel>{isAR ? "بلاغات المجتمع" : "INCIDENT REPORTS"}</ScreenLabel>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {reports.map((r, i) => (
+          <div key={i} style={{ padding: 11, borderRadius: 12, background: "rgba(255,255,255,.04)", border: "1px solid rgba(197,165,126,.14)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
+              <img src={r.av} alt="" style={{ width: 26, height: 26, borderRadius: "50%", objectFit: "cover", border: "1px solid rgba(197,165,126,.4)" }} />
+              <span style={{ fontFamily: cinzel, fontSize: 10.5, fontWeight: 700, color: C.goldLight }}>{r.name}</span>
+              <span style={{ marginInlineStart: "auto", fontFamily: cinzel, fontSize: 7, letterSpacing: 1, fontWeight: 700, color: r.c, padding: "2px 7px", borderRadius: 5, background: "rgba(255,255,255,.05)", border: `1px solid ${r.c}55` }}>{r.tag}</span>
+            </div>
+            <div style={{ fontFamily: crimson, fontSize: 12, color: "rgba(232,212,188,.82)", lineHeight: 1.45 }}>{isAR ? r.ar : r.en}</div>
+            <div style={{ fontFamily: mono, fontSize: 9, color: "#8fcfa6", marginTop: 7 }}>🛡 {isAR ? `حذّر ${r.warned} شخصًا` : `warned ${r.warned} people`}</div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function ScanMock() {
+  const isAR = useLocale() === "ar";
+  return (
+    <>
+      <ScreenLabel>{isAR ? "فاحص الروابط" : "LINK SCANNER"}</ScreenLabel>
+      <div style={{ display: "flex", gap: 6 }}>
+        <div style={{ flex: 1, padding: "9px 11px", borderRadius: 9, background: "#120405", border: "1px solid rgba(197,165,126,.2)", fontFamily: mono, fontSize: 9.5, color: "rgba(232,212,188,.7)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          0oredoo-qatar.win/pay
+        </div>
+        <button style={{ fontFamily: cinzel, fontSize: 9, fontWeight: 700, letterSpacing: 1, padding: "0 12px", borderRadius: 9, border: "none", background: C.gold, color: C.maroon, cursor: "default" }}>
+          {isAR ? "افحص" : "SCAN"}
+        </button>
+      </div>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12, borderRadius: 12, background: "rgba(160,48,64,.14)", border: "1px solid rgba(224,121,106,.35)", padding: 16 }}>
+        <div style={{ width: 56, height: 56, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(224,121,106,.16)", border: "1.5px solid rgba(224,121,106,.5)", animation: "cmPulseRing 2.2s infinite" }}>
+          <ScanLine size={26} color="#e0796a" />
+        </div>
+        <div style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 2, color: "#e0967a" }}>{isAR ? "خطر" : "DANGER"}</div>
+        <div style={{ fontFamily: crimson, fontSize: 11.5, fontStyle: "italic", color: "rgba(232,212,188,.7)", textAlign: "center" }}>
+          {isAR ? "نطاق تصيّد يحاكي Ooredoo" : "Phishing domain impersonating Ooredoo"}
+        </div>
+      </div>
+    </>
+  );
+}
+
+function CTFMock() {
+  const isAR = useLocale() === "ar";
+  return (
+    <>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+        {["WEB", "CRYPTO", "FORENSICS", "OSINT", "PWN"].map((t, i) => (
+          <span key={i} style={{ fontFamily: mono, fontSize: 8, letterSpacing: 1, padding: "3px 8px", borderRadius: 6, color: i === 2 ? C.maroon : "rgba(197,165,126,.8)", background: i === 2 ? C.gold : "rgba(197,165,126,.1)", border: "1px solid rgba(197,165,126,.2)" }}>{t}</span>
+        ))}
+      </div>
+      <div style={{ flex: 1, borderRadius: 12, padding: 14, background: "rgba(255,255,255,.04)", border: "1px solid rgba(197,165,126,.16)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontFamily: cinzel, fontSize: 8, letterSpacing: 1.5, fontWeight: 700, color: "#d9a14a" }}>FORENSICS</span>
+          <span style={{ fontFamily: mono, fontSize: 9.5, color: C.gold }}>250 pts</span>
+        </div>
+        <div style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, color: C.goldLight, margin: "8px 0 4px" }}>
+          {isAR ? "مخفي على مرأى الجميع" : "Hidden in Plain Sight"}
+        </div>
+        <div style={{ fontFamily: crimson, fontSize: 11, fontStyle: "italic", color: "rgba(232,212,188,.65)", lineHeight: 1.5 }}>
+          {isAR ? "هناك سرّ داخل هذه الصورة. استخرج العلم." : "A secret hides in this image. Recover the flag."}
+        </div>
+        <div style={{ display: "flex", gap: 6, marginTop: 12 }}>
+          <div style={{ flex: 1, padding: "8px 10px", borderRadius: 8, background: "#120405", border: "1px solid rgba(197,165,126,.22)", fontFamily: mono, fontSize: 10, color: "rgba(232,212,188,.55)" }}>
+            flag&#123;<span style={{ animation: "cmBlink 1s step-end infinite" }}>_</span>&#125;
+          </div>
+          <button style={{ fontFamily: cinzel, fontSize: 8.5, fontWeight: 700, letterSpacing: 1, padding: "0 12px", borderRadius: 8, border: "none", background: C.gold, color: C.maroon, cursor: "default" }}>
+            {isAR ? "أرسل" : "SUBMIT"}
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function ChatMock() {
+  const isAR = useLocale() === "ar";
+  const bubble = (side: "l" | "r", text: string) => (
+    <div style={{ display: "flex", justifyContent: side === "l" ? "flex-start" : "flex-end" }}>
+      <div style={{
+        maxWidth: "82%", padding: "9px 12px", borderRadius: 14,
+        borderBottomLeftRadius: side === "l" ? 4 : 14, borderBottomRightRadius: side === "r" ? 4 : 14,
+        fontFamily: crimson, fontSize: 12, lineHeight: 1.45,
+        background: side === "l" ? "rgba(197,165,126,.14)" : C.gold,
+        color: side === "l" ? "rgba(232,212,188,.92)" : C.maroon,
+        border: side === "l" ? "1px solid rgba(197,165,126,.2)" : "none",
+      }}>{text}</div>
+    </div>
+  );
+  return (
+    <>
+      <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+        <img src="/avatar.png" alt="Hamad" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover", border: "1.5px solid rgba(197,165,126,.5)" }} />
+        <div>
+          <div style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 700, color: C.goldLight }}>HAMAD</div>
+          <div style={{ fontFamily: mono, fontSize: 8, color: "#4a9c6e" }}>● {isAR ? "متصل" : "online"}</div>
+        </div>
+      </div>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 9, justifyContent: "center" }}>
+        {bubble("l", isAR ? "مرحباً! أنا حمد. كيف أساعدك؟ 👋" : "Hi! I'm Hamad. How can I help? 👋")}
+        {bubble("r", isAR ? "وصلني رابط غريب، آمن؟" : "Got a weird link — is it safe?")}
+        {bubble("l", isAR ? "أرسله لي وسأفحصه فوراً 🔎" : "Send it over and I'll check it right away 🔎")}
+        <div style={{ display: "flex", gap: 4, paddingInlineStart: 4 }}>
+          {[0, 1, 2].map(i => <span key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(197,165,126,.6)", animation: `cmBlink 1.2s ${i * 0.2}s infinite` }} />)}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ── Feature data ────────────────────────────────────────── */
+type Feature = {
+  id: string; route: string; Icon: React.ElementType; Mock: React.FC;
+  frame: string;
+  kicker: { en: string; ar: string };
+  motto:  { en: string; ar: string };
+  desc:   { en: string; ar: string };
+  points: { en: string[]; ar: string[] };
+  cta:    { en: string; ar: string };
+};
+
+const FEATURES: Feature[] = [
+  {
+    id: "lessons", route: "/dashboard", Icon: BookOpen, Mock: LessonsMock, frame: "cybermajlis.qa/learn",
+    kicker: { en: "LESSONS", ar: "الدروس" },
+    motto:  { en: "Knowledge is the first shield.", ar: "المعرفة هي الدرع الأول." },
+    desc:   { en: "Story-driven lessons on the malware that actually targets us — viruses, worms, ransomware and the shape-shifters — each grounded in real Qatari scenarios.", ar: "دروس بأسلوب القصة حول البرمجيات الخبيثة التي تستهدفنا فعلاً — الفيروسات والديدان والفدية والمتحوّلة — كلها مبنية على سيناريوهات قطرية واقعية." },
+    points: { en: ["Basic, Advanced & Do-It-Yourself tracks", "Animated stories, live demos & quizzes", "Earn XP and rise through the ranks"], ar: ["مسارات: مبتدئ، متقدم، وافعلها بنفسك", "قصص متحركة وعروض حية واختبارات", "اكسب نقاط الخبرة وارتقِ في الرتب"] },
+    cta:    { en: "Start learning", ar: "ابدأ التعلّم" },
+  },
+  {
+    id: "simulations", route: "/games?view=simulations", Icon: FlaskConical, Mock: SimMock, frame: "sandbox://try-it",
+    kicker: { en: "SIMULATIONS", ar: "المحاكاة" },
+    motto:  { en: "Don't just read it. Try it.", ar: "لا تكتفِ بالقراءة. جرّبه." },
+    desc:   { en: "Safe, hands-on demos where you drive. Type into a keylogger and watch it capture every word, lock and unlock a machine like ransomware does, or run a program and watch windows multiply — feel how each threat behaves, no code and nothing real ever touched.", ar: "عروض آمنة وتفاعلية أنت من يقودها. اكتب في الكي لوغر وشاهده يلتقط كل كلمة، اقفل جهازًا وافتحه كما تفعل الفدية، أو شغّل برنامجًا وشاهد النوافذ تتكاثر — لتشعر بكيفية عمل كل تهديد، دون أي شفرة ودون المساس بشيء حقيقي." },
+    points: { en: ["You drive the demo — not a script", "Keylogger, ransomware, virus & more", "100% safe — nothing real is touched"], ar: ["أنت تقود العرض — لا شفرة مكتوبة", "كي لوغر، فدية، فيروس وأكثر", "آمن 100% — لا شيء حقيقي يُمَسّ"] },
+    cta:    { en: "Try a simulation", ar: "جرّب محاكاة" },
+  },
+  {
+    id: "soc", route: "/soc", Icon: Radar, Mock: SOCMock, frame: "soc.cybermajlis.qa · training",
+    kicker: { en: "SOC SIMULATION", ar: "محاكاة مركز العمليات" },
+    motto:  { en: "The watch never sleeps.", ar: "العين الساهرة لا تنام." },
+    desc:   { en: "Sit in a simulated Security Operations Center and practice the real job. Triage realistic — but simulated — alerts, follow the playbook, and respond to an attack scenario as it unfolds. It's training, not a live wire.", ar: "اجلس في مركز عمليات أمنية محاكى وتدرّب على المهمة الحقيقية. افرز تنبيهات واقعية — لكنها محاكاة — واتبع الإجراءات، واستجب لسيناريو هجوم وهو يتطوّر. إنه تدريب، وليست هجمات حقيقية." },
+    points: { en: ["A realistic, simulated SOC", "Practice triage & incident response", "Scenario-based — not real attacks"], ar: ["مركز عمليات محاكى وواقعي", "تدرّب على الفرز والاستجابة للحوادث", "قائم على سيناريوهات — ليست هجمات حقيقية"] },
+    cta:    { en: "Enter the SOC", ar: "ادخل المركز" },
+  },
+  {
+    id: "news", route: "/news", Icon: Newspaper, Mock: NewsMock, frame: "cybermajlis.qa/news",
+    kicker: { en: "NEWS", ar: "الأخبار" },
+    motto:  { en: "Stay one step ahead.", ar: "ابقَ متقدّمًا بخطوة." },
+    desc:   { en: "Curated cyber news that actually matters to Qatar — every story decoded into plain language and a clear next step you can act on today.", ar: "أخبار سيبرانية مختارة تهمّ قطر فعلاً — كل خبر مُبسّط بلغة واضحة وخطوة عملية يمكنك اتخاذها اليوم." },
+    points: { en: ["Local & regional threats first", "Jargon translated into plain talk", "Always an action you can take"], ar: ["التهديدات المحلية والإقليمية أولاً", "مصطلحات مترجمة بلغة بسيطة", "دائماً خطوة عملية يمكنك اتخاذها"] },
+    cta:    { en: "Read the news", ar: "اقرأ الأخبار" },
+  },
+  {
+    id: "community", route: "/community", Icon: Users, Mock: CommunityMock, frame: "cybermajlis.qa/community",
+    kicker: { en: "COMMUNITY", ar: "المجتمع" },
+    motto:  { en: "Report it. Protect everyone.", ar: "أبلغ عنه. واحمِ الجميع." },
+    desc:   { en: "Spotted a scam call, a phishing text or a suspicious number? Report it here. Every incident you submit warns the whole community and helps protect the people around you before they get caught.", ar: "رصدت اتصال احتيال أو رسالة تصيّد أو رقمًا مشبوهًا؟ أبلغ عنه هنا. كل حادثة ترفعها تحذّر المجتمع كله وتساعد على حماية من حولك قبل أن يقعوا في الفخ." },
+    points: { en: ["Report scams, phishing & incidents", "Warn others before they're hit", "Build a safer community together"], ar: ["أبلغ عن الاحتيال والتصيّد والحوادث", "حذّر الآخرين قبل أن يقعوا ضحية", "ابنِ مجتمعًا أكثر أمانًا معًا"] },
+    cta:    { en: "Report an incident", ar: "أبلغ عن حادثة" },
+  },
+  {
+    id: "scan", route: "/scan", Icon: ScanLine, Mock: ScanMock, frame: "cybermajlis.qa/scan",
+    kicker: { en: "LINK SCANNER", ar: "فاحص الروابط" },
+    motto:  { en: "When in doubt, scan it.", ar: "إن شككت، فافحصه." },
+    desc:   { en: "Paste a suspicious link or drop a file and get an instant, clear verdict — safe or dangerous — before you ever click. No guessing, no regret.", ar: "الصق رابطًا مشبوهًا أو أسقِط ملفًا واحصل على حكم فوري وواضح — آمن أم خطر — قبل أن تنقر. لا تخمين ولا ندم." },
+    points: { en: ["Instant link & file analysis", "Plain verdict: safe or danger", "Catches phishing & impersonation"], ar: ["تحليل فوري للروابط والملفات", "حكم واضح: آمن أم خطر", "يكشف التصيّد وانتحال الهوية"] },
+    cta:    { en: "Scan a link", ar: "افحص رابطًا" },
+  },
+  {
+    id: "ctf", route: "/ctf", Icon: Flag, Mock: CTFMock, frame: "ctf.cybermajlis.qa",
+    kicker: { en: "CAPTURE THE FLAG", ar: "التقط العلم" },
+    motto:  { en: "Prove your skill. Capture the flag.", ar: "أثبت مهارتك. التقط العلم." },
+    desc:   { en: "Real capture-the-flag challenges across five categories — web, crypto, forensics, OSINT and pwn. Solve, submit the flag, and climb the leaderboard.", ar: "تحديات حقيقية لالتقاط العلم عبر خمس فئات — الويب، التشفير، التحقيق الجنائي، الاستخبارات، والاختراق. حلّ، وأرسل العلم، وتصدّر القائمة." },
+    points: { en: ["Five real CTF categories", "From beginner to expert", "Live leaderboard & points"], ar: ["خمس فئات حقيقية لالتقاط العلم", "من المبتدئ إلى الخبير", "قائمة متصدرين ونقاط حيّة"] },
+    cta:    { en: "Take the challenge", ar: "ابدأ التحدي" },
+  },
+  {
+    id: "chatbot", route: "", Icon: MessageCircle, Mock: ChatMock, frame: "Hamad · your guide",
+    kicker: { en: "HAMAD · AI GUIDE", ar: "حمد · الدليل الذكي" },
+    motto:  { en: "Hamad has your back, 24/7.", ar: "حمد بجانبك، على مدار الساعة." },
+    desc:   { en: "Ask anything, anytime. Is this link safe? Was I scammed? What does this news mean for me? Hamad answers — in Arabic or English — and even speaks back.", ar: "اسأل أي شيء، في أي وقت. هل هذا الرابط آمن؟ هل تعرّضت للاحتيال؟ ماذا يعني هذا الخبر لي؟ حمد يجيب — بالعربية أو الإنجليزية — وحتى يتحدّث إليك." },
+    points: { en: ["Arabic & English, voice or text", "Checks links, numbers & scams", "Always one tap away"], ar: ["عربي وإنجليزي، صوت أو نص", "يفحص الروابط والأرقام والاحتيال", "دائماً على بُعد نقرة واحدة"] },
+    cta:    { en: "Talk to Hamad", ar: "تحدّث مع حمد" },
+  },
+];
+
+/* ── Hooks ───────────────────────────────────────────────── */
 function useScrollY() {
   const [y, setY] = useState(0);
   useEffect(() => {
@@ -125,153 +417,351 @@ function useScrollY() {
   return y;
 }
 
-/* ── SVG components ──────────────────────────────────────── */
+function useActiveSection(ids: string[]) {
+  const [active, setActive] = useState(ids[0]);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }),
+      { rootMargin: "-48% 0px -48% 0px" }
+    );
+    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    return () => obs.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ids.join(",")]);
+  return active;
+}
 
+/* ── Feature section ─────────────────────────────────────── */
+function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; isAR: boolean; onCTA: () => void }) {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const yRaw = useTransform(scrollYProgress, [0, 1], [70, -70]);
+  const y: MotionValue<number> | number = reduce ? 0 : yRaw;
 
-function DesignWatermark({ size = 600 }: { size?: number }) {
+  const dark = index % 2 === 0;
+  const Icon = f.Icon;
+  const flip = index % 2 === 1;
+
+  const heading = dark ? C.goldLight : C.maroon;
+  const body    = dark ? "rgba(232,212,188,.78)" : "#5a2428";
+  const bg = dark
+    ? "linear-gradient(180deg,#3e1316 0%,#2a0c0e 100%)"
+    : (index === 1 ? C.sand : C.sandWarm);
+
+  const btn: React.CSSProperties = dark
+    ? { color: C.maroon, background: "linear-gradient(135deg,#E8D4BC,#c5a57e)", boxShadow: "0 6px 22px rgba(197,165,126,.3)" }
+    : { color: C.cream, background: "linear-gradient(135deg,#632024,#8B2635)", boxShadow: "0 6px 22px rgba(99,32,36,.32)" };
+
   return (
-    <svg width={size} height={size} viewBox="0 0 600 600" aria-hidden>
-      <g fill="none" stroke="#632024" strokeWidth="1">
-        <polygon points="300,40 520,170 520,430 300,560 80,430 80,170" />
-        <polygon points="300,100 470,200 470,400 300,500 130,400 130,200" />
-        <polygon points="300,160 420,230 420,370 300,440 180,370 180,230" stroke="#c5a57e" />
-      </g>
-      <g fill="none" stroke="#c5a57e" strokeWidth="1">
-        <circle cx="300" cy="300" r="120" />
-        <circle cx="300" cy="300" r="60" />
-      </g>
-      <g stroke="#632024" strokeWidth="1">
-        <line x1="80"  y1="300" x2="520" y2="300" />
-        <line x1="300" y1="40"  x2="300" y2="560" />
-        <line x1="120" y1="120" x2="480" y2="480" />
-        <line x1="120" y1="480" x2="480" y2="120" />
-      </g>
-    </svg>
+    <section
+      id={f.id}
+      ref={ref}
+      style={{
+        position: "relative", zIndex: 1, background: bg,
+        borderTop: dark ? "1px solid rgba(197,165,126,.18)" : "1px solid rgba(197,165,126,.22)",
+        padding: "clamp(72px,11vh,128px) 4rem", overflow: "hidden",
+      }}
+    >
+      {/* faint feature number watermark */}
+      <div aria-hidden style={{
+        position: "absolute", top: "50%", insetInlineEnd: 30, transform: "translateY(-50%)",
+        fontFamily: cinzel, fontWeight: 900, fontSize: "26vh", lineHeight: 1,
+        color: dark ? "rgba(197,165,126,.05)" : "rgba(99,32,36,.05)", pointerEvents: "none", userSelect: "none",
+      }}>
+        {String(index + 1).padStart(2, "0")}
+      </div>
+
+      <div style={{
+        position: "relative", maxWidth: 1180, margin: "0 auto",
+        display: "flex", gap: "clamp(40px,6vw,90px)", alignItems: "center",
+        flexWrap: "wrap", flexDirection: flip ? "row-reverse" : "row",
+      }}>
+        {/* —— Copy —— */}
+        <motion.div
+          variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.35 }}
+          style={{ flex: "1 1 380px", maxWidth: 520 }}
+        >
+          <motion.div variants={item} style={{ display: "inline-flex", alignItems: "center", gap: 9, marginBottom: 22 }}>
+            <span style={{
+              width: 42, height: 42, borderRadius: 11, display: "flex", alignItems: "center", justifyContent: "center",
+              background: dark ? "rgba(197,165,126,.14)" : "rgba(99,32,36,.07)",
+              border: `1px solid ${dark ? "rgba(197,165,126,.3)" : "rgba(99,32,36,.2)"}`,
+            }}>
+              <Icon size={20} color={dark ? C.gold : C.maroonMid} strokeWidth={1.6} />
+            </span>
+            <span style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 3, color: dark ? C.gold : C.crimson }}>
+              {isAR ? f.kicker.ar : f.kicker.en}
+            </span>
+          </motion.div>
+
+          <motion.h2 variants={item} style={{
+            fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(1.9rem,3.4vw,3rem)",
+            lineHeight: 1.08, color: heading, margin: "0 0 8px",
+          }}>
+            {isAR ? f.motto.ar : f.motto.en}
+          </motion.h2>
+
+          <motion.div variants={item} style={{ display: "flex", alignItems: "center", gap: 8, margin: "16px 0 18px" }}>
+            <div style={{ width: 48, height: 1, background: `linear-gradient(90deg,${C.maroonMid},${C.gold})` }} />
+            <div style={{ width: 5, height: 5, background: C.gold, transform: "rotate(45deg)" }} />
+          </motion.div>
+
+          <motion.p variants={item} style={{
+            fontFamily: crimson, fontSize: "1.12rem", fontStyle: "italic", lineHeight: 1.6, color: body, margin: 0,
+          }}>
+            {isAR ? f.desc.ar : f.desc.en}
+          </motion.p>
+
+          <motion.ul variants={item} style={{ listStyle: "none", padding: 0, margin: "22px 0 30px", display: "flex", flexDirection: "column", gap: 11 }}>
+            {(isAR ? f.points.ar : f.points.en).map((p, i) => (
+              <li key={i} style={{ display: "flex", alignItems: "center", gap: 11, fontFamily: crimson, fontSize: "1rem", color: body }}>
+                <span style={{ width: 6, height: 6, background: C.gold, transform: "rotate(45deg)", flexShrink: 0 }} />
+                {p}
+              </li>
+            ))}
+          </motion.ul>
+
+          <motion.button
+            variants={item}
+            onClick={onCTA}
+            style={{
+              fontFamily: cinzel, fontSize: 12.5, fontWeight: 700, letterSpacing: 1.4,
+              padding: "13px 26px", borderRadius: 11, border: "none", cursor: "pointer",
+              display: "inline-flex", alignItems: "center", gap: 10, transition: "all .25s ease", ...btn,
+            }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = ""; }}
+          >
+            {isAR ? f.cta.ar : f.cta.en}
+            <ArrowRight size={16} style={{ transform: isAR ? "scaleX(-1)" : "none" }} />
+          </motion.button>
+        </motion.div>
+
+        {/* —— Visual —— */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: EASE }}
+          style={{ flex: "0 0 auto", marginInline: "auto", position: "relative" }}
+        >
+          {/* halo */}
+          <div aria-hidden style={{
+            position: "absolute", inset: -40, borderRadius: 40,
+            background: `radial-gradient(circle, ${dark ? "rgba(197,165,126,.18)" : "rgba(99,32,36,.1)"}, transparent 68%)`,
+            filter: "blur(20px)", pointerEvents: "none",
+          }} />
+          <motion.div style={{ y }}>
+            <DeviceFrame title={f.frame}><f.Mock /></DeviceFrame>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
-const glyphSVGProps = {
-  width: 32, height: 32, viewBox: "0 0 32 32",
-  fill: "none", stroke: "#c5a57e", strokeWidth: 1.4,
-  strokeLinecap: "round" as const, strokeLinejoin: "round" as const,
-};
-
-function GlyphLearn() {
+/* ── Store badges (placeholder links) ────────────────────── */
+function StoreBadge({ kind, isAR }: { kind: "apple" | "play"; isAR: boolean }) {
+  const top = kind === "apple" ? (isAR ? "حمّله من" : "Download on the") : (isAR ? "احصل عليه من" : "GET IT ON");
+  const bottom = kind === "apple" ? "App Store" : "Google Play";
   return (
-    <svg {...glyphSVGProps}>
-      <path d="M3 8l13-4 13 4-13 4z" />
-      <path d="M8 11v9c0 1.5 3.5 3 8 3s8-1.5 8-3v-9" />
-      <path d="M29 8v9" />
-      <circle cx="29" cy="19" r="1.3" fill="#c5a57e" />
-    </svg>
-  );
-}
-function GlyphPlay() {
-  return (
-    <svg {...glyphSVGProps}>
-      <rect x="3" y="9" width="26" height="16" rx="5" />
-      <circle cx="10" cy="17" r="1.6" fill="#c5a57e" />
-      <line x1="22" y1="14" x2="22" y2="20" />
-      <line x1="19" y1="17" x2="25" y2="17" />
-      <line x1="9"  y1="6"  x2="9"  y2="9"  />
-      <line x1="23" y1="6"  x2="23" y2="9"  />
-    </svg>
-  );
-}
-function GlyphSimulate() {
-  return (
-    <svg {...glyphSVGProps}>
-      <circle cx="16" cy="16" r="11" />
-      <path d="M5 16c4-3 7-3 11 0s7 3 11 0" />
-      <circle cx="16" cy="16" r="2" fill="#c5a57e" />
-      <line x1="16" y1="5" x2="16" y2="27" />
-    </svg>
-  );
-}
-function GlyphMonitor() {
-  return (
-    <svg {...glyphSVGProps}>
-      <path d="M3 17c2 0 2-5 4-5s2 8 4 8 3-12 5-12 3 10 5 10 2-4 4-4 2 3 4 3" />
-      <circle cx="16" cy="16" r="13" />
-    </svg>
+    // TODO: replace href="#" with the real store URL once the app is published
+    <a href="#" onClick={e => e.preventDefault()} aria-label={bottom} style={{
+      display: "inline-flex", alignItems: "center", gap: 11, textDecoration: "none",
+      padding: "9px 18px", borderRadius: 11, background: "#1d0708",
+      border: "1px solid rgba(197,165,126,.4)", cursor: "pointer", transition: "transform .2s ease, border-color .2s ease",
+    }}
+      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.borderColor = "rgba(197,165,126,.7)"; }}
+      onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.borderColor = "rgba(197,165,126,.4)"; }}
+    >
+      {kind === "apple" ? (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill={C.goldLight} aria-hidden>
+          <path d="M16.4 12.9c0-2 1.6-2.9 1.7-3-1-1.4-2.4-1.6-2.9-1.6-1.2-.1-2.4.7-3 .7s-1.6-.7-2.6-.7c-1.3 0-2.6.8-3.2 2-1.4 2.4-.4 6 1 8 .7.9 1.4 2 2.5 1.9 1-.04 1.4-.6 2.6-.6s1.5.6 2.6.6 1.7-.9 2.4-1.8c.7-1 1-2 1-2-.04-.02-1.9-.75-1.9-2.9zM14.6 6.7c.5-.7.9-1.6.8-2.5-.8.03-1.7.5-2.3 1.2-.5.6-.9 1.5-.8 2.4.9.07 1.7-.4 2.3-1.1z"/>
+        </svg>
+      ) : (
+        <svg width="20" height="22" viewBox="0 0 24 24" aria-hidden>
+          <path d="M3.6 2.3 13 12 3.6 21.7c-.3-.2-.5-.6-.5-1V3.3c0-.4.2-.8.5-1z" fill="#c5a57e"/>
+          <path d="M16.5 8.6 5.2 2.1 14 11z" fill="#E8D4BC"/>
+          <path d="M16.5 15.4 14 13l-8.8 8.9z" fill="#a07060"/>
+          <path d="M20.3 11.1c.6.4.6 1.4 0 1.8l-2.6 1.5L14.8 12l2.9-2.4z" fill="#d9a14a"/>
+        </svg>
+      )}
+      <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
+        <span style={{ fontFamily: cinzel, fontSize: 7.5, letterSpacing: 1, color: "rgba(232,212,188,.6)", textTransform: "uppercase" }}>{top}</span>
+        <span style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, color: C.goldLight }}>{bottom}</span>
+      </span>
+    </a>
   );
 }
 
-const GLYPH_MAP: Record<string, React.ReactNode> = {
-  learn:    <GlyphLearn />,
-  play:     <GlyphPlay />,
-  simulate: <GlyphSimulate />,
-  monitor:  <GlyphMonitor />,
-};
+/* ── Mobile-app section ──────────────────────────────────── */
+function MobileSection({ isAR }: { isAR: boolean }) {
+  const tabs = [
+    { e: "🎮", en: "Games", ar: "ألعاب" },
+    { e: "📰", en: "News", ar: "أخبار" },
+    { e: "🛡", en: "Community", ar: "المجتمع" },
+    { e: "💬", en: "Chat", ar: "محادثة" },
+  ];
+  const points: [string, string][] = isAR
+    ? [["🎮", "ألعاب صغيرة محمولة وحماسية"], ["🔥", "حافظ على سلسلتك اليومية"], ["📰", "أخبار ومجتمع أينما كنت"], ["💬", "تحدّث مع حمد في أي وقت"]]
+    : [["🎮", "Arcade-style mini-games on the go"], ["🔥", "Keep your daily learning streak"], ["📰", "News & community in your pocket"], ["💬", "Chat with Hamad anytime"]];
 
-/* ── Decorative helpers ──────────────────────────────────── */
-
-function GoldDivider() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "20px 0 18px" }}>
-      <div style={{ width: 52, height: 1, background: "linear-gradient(90deg, #632024, #c5a57e)" }} />
-      <div style={{ width: 5, height: 5, background: "#c5a57e", transform: "rotate(45deg)" }} />
-      <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, #c5a57e, transparent)" }} />
+    <section id="mobile" style={{
+      position: "relative", zIndex: 1, background: C.sand, overflow: "hidden",
+      borderTop: "1px solid rgba(197,165,126,.22)", padding: "clamp(72px,11vh,128px) 4rem",
+    }}>
+      <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto", display: "flex", gap: "clamp(40px,6vw,90px)", alignItems: "center", flexWrap: "wrap" }}>
+        {/* copy */}
+        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.35 }} style={{ flex: "1 1 380px", maxWidth: 540 }}>
+          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 3, color: C.crimson, marginBottom: 18 }}>
+            {isAR ? "سايبر مجلس على الجوال" : "CYBERMAJLIS ON MOBILE"}
+          </motion.div>
+          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(1.9rem,3.4vw,3rem)", lineHeight: 1.08, color: C.maroon, margin: 0 }}>
+            {isAR ? "مجلسك في جيبك." : "Your majlis, in your pocket."}
+          </motion.h2>
+          <motion.div variants={item} style={{ display: "flex", alignItems: "center", gap: 8, margin: "16px 0 18px" }}>
+            <div style={{ width: 48, height: 1, background: `linear-gradient(90deg,${C.maroonMid},${C.gold})` }} />
+            <div style={{ width: 5, height: 5, background: C.gold, transform: "rotate(45deg)" }} />
+          </motion.div>
+          <motion.p variants={item} style={{ fontFamily: crimson, fontSize: "1.12rem", fontStyle: "italic", lineHeight: 1.6, color: "#5a2428", margin: 0 }}>
+            {isAR
+              ? "خذ سايبر مجلس معك أينما ذهبت. العب الألعاب الصغيرة، وحافظ على سلسلتك اليومية، واقرأ الأخبار، وتحدّث مع حمد — كل ذلك من هاتفك."
+              : "Take CyberMajlis everywhere. Play the mini-games, keep your daily streak alive, read the news, and chat with Hamad — all from your phone."}
+          </motion.p>
+          <motion.ul variants={item} style={{ listStyle: "none", padding: 0, margin: "22px 0 28px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 18px" }}>
+            {points.map(([e, txt], i) => (
+              <li key={i} style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: crimson, fontSize: "0.98rem", color: "#5a2428" }}>
+                <span style={{ fontSize: 16 }}>{e}</span>{txt}
+              </li>
+            ))}
+          </motion.ul>
+          <motion.div variants={item} style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+            <StoreBadge kind="apple" isAR={isAR} />
+            <StoreBadge kind="play" isAR={isAR} />
+          </motion.div>
+          <motion.div variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 13, color: "rgba(99,32,36,.55)", marginTop: 14 }}>
+            {isAR ? "متوفر قريبًا على App Store و Google Play." : "Coming soon to the App Store & Google Play."}
+          </motion.div>
+        </motion.div>
+
+        {/* phone mockup */}
+        <motion.div initial={{ opacity: 0, y: 30, scale: 0.94 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, ease: EASE }} style={{ flex: "0 0 auto", marginInline: "auto", position: "relative" }}>
+          <div aria-hidden style={{ position: "absolute", inset: -40, borderRadius: 40, background: "radial-gradient(circle, rgba(99,32,36,.12), transparent 68%)", filter: "blur(20px)" }} />
+          <div style={{
+            position: "relative", width: 248, height: 506, borderRadius: 38, padding: 11,
+            background: "linear-gradient(160deg,#3e1316,#1d0708)", border: "1px solid rgba(197,165,126,.3)",
+            boxShadow: "0 44px 90px rgba(42,12,14,.5), inset 0 1px 0 rgba(255,255,255,.08)", animation: "cmFloat 6s ease-in-out infinite",
+          }}>
+            {/* notch */}
+            <div style={{ position: "absolute", top: 11, left: "50%", transform: "translateX(-50%)", width: 96, height: 20, borderRadius: "0 0 14px 14px", background: "#1d0708", zIndex: 2 }} />
+            {/* screen */}
+            <div style={{ width: "100%", height: "100%", borderRadius: 28, overflow: "hidden", background: "linear-gradient(180deg,#2c1010,#1d0708)", display: "flex", flexDirection: "column" }}>
+              {/* app header */}
+              <div style={{ padding: "26px 16px 12px", display: "flex", alignItems: "center", gap: 9 }}>
+                <img src="/avatar.png" alt="" style={{ width: 30, height: 30, borderRadius: "50%", objectFit: "cover", border: "1.5px solid rgba(197,165,126,.5)" }} />
+                <div>
+                  <div style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 700, color: C.goldLight }}>{isAR ? "أهلاً 👋" : "Welcome 👋"}</div>
+                  <div style={{ fontFamily: mono, fontSize: 8, color: "#e0a78f" }}>🔥 {isAR ? "سلسلة ٥ أيام" : "5-day streak"}</div>
+                </div>
+              </div>
+              {/* featured card */}
+              <div style={{ margin: "4px 14px", borderRadius: 14, overflow: "hidden", border: "1px solid rgba(197,165,126,.2)" }}>
+                <img src="/icons/games.gif" alt="" style={{ width: "100%", height: 92, objectFit: "cover" }} />
+                <div style={{ padding: "9px 11px", background: "rgba(255,255,255,.04)" }}>
+                  <div style={{ fontFamily: cinzel, fontSize: 10.5, fontWeight: 700, color: C.goldLight }}>{isAR ? "مفتّش البريد" : "Inbox Inspector"}</div>
+                  <div style={{ fontFamily: crimson, fontSize: 10, fontStyle: "italic", color: "rgba(197,165,126,.7)" }}>{isAR ? "العب · ٢ دقيقة" : "Play · 2 min"}</div>
+                </div>
+              </div>
+              {/* mini list */}
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 7, padding: "10px 14px" }}>
+                {[isAR ? "تحدي اليوم" : "Daily challenge", isAR ? "أحدث الأخبار" : "Latest news"].map((t, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 10px", borderRadius: 9, background: "rgba(255,255,255,.04)", border: "1px solid rgba(197,165,126,.12)" }}>
+                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: C.gold }} />
+                    <span style={{ fontFamily: crimson, fontSize: 11, color: "rgba(232,212,188,.8)" }}>{t}</span>
+                  </div>
+                ))}
+              </div>
+              {/* bottom tab bar */}
+              <div style={{ display: "flex", justifyContent: "space-around", padding: "10px 8px 16px", borderTop: "1px solid rgba(197,165,126,.16)", background: "rgba(0,0,0,.2)" }}>
+                {tabs.map((tb, i) => (
+                  <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, opacity: i === 0 ? 1 : 0.5 }}>
+                    <span style={{ fontSize: 15 }}>{tb.e}</span>
+                    <span style={{ fontFamily: cinzel, fontSize: 7, letterSpacing: 0.5, color: i === 0 ? C.gold : "rgba(232,212,188,.5)" }}>{isAR ? tb.ar : tb.en}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Side rail ───────────────────────────────────────────── */
+function SideRail({ ids, labels, active, isAR }: { ids: string[]; labels: string[]; active: string; isAR: boolean }) {
+  return (
+    <div className="cm-rail" style={{ insetInlineEnd: 24 }}>
+      {ids.map((id, i) => {
+        const on = active === id;
+        return (
+          <button key={id} onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}
+            aria-label={labels[i]}
+            style={{
+              position: "relative", width: 12, height: 12, padding: 0,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              background: "none", border: "none", cursor: "pointer",
+            }}
+          >
+            {/* dot — fixed-size box keeps every dot perfectly aligned */}
+            <span style={{
+              width: on ? 10 : 7, height: on ? 10 : 7, borderRadius: "50%",
+              background: on ? C.maroonMid : "rgba(99,32,36,.26)",
+              boxShadow: on ? "0 0 0 4px rgba(99,32,36,.12)" : "none", transition: "all .3s ease",
+            }} />
+            {/* label — absolutely positioned so it never pushes the dot */}
+            <span className="cm-rail-label" style={{
+              position: "absolute", [isAR ? "left" : "right"]: 20, top: "50%",
+              transform: "translateY(-50%)", whiteSpace: "nowrap",
+              fontFamily: cinzel, fontSize: 9, letterSpacing: 1.5, fontWeight: 700, color: C.maroonMid,
+              opacity: on ? 1 : 0, transition: "opacity .25s ease", pointerEvents: "none",
+            }}>{labels[i]}</span>
+          </button>
+        );
+      })}
     </div>
   );
 }
 
-function CenterDivider() {
-  return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, maxWidth: 280, margin: "18px auto 0" }}>
-      <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, transparent, #c5a57e)" }} />
-      <div style={{ width: 5, height: 5, background: "#c5a57e", transform: "rotate(45deg)", flexShrink: 0 }} />
-      <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, #c5a57e, transparent)" }} />
-    </div>
-  );
-}
-
-function CornerOrnaments() {
-  const b = "2.5px solid #c5a57e";
-  const dot: React.CSSProperties = { position: "absolute", width: 5, height: 5, borderRadius: "50%", background: "#c5a57e" };
-  return (
-    <>
-      <div style={{ position: "absolute", top: -1, left:  -1, width: 22, height: 22, borderTop: b, borderLeft:  b, borderRadius: "4px 0 0 0" }} />
-      <div style={{ position: "absolute", top: -1, right: -1, width: 22, height: 22, borderTop: b, borderRight: b, borderRadius: "0 4px 0 0" }} />
-      <div style={{ position: "absolute", bottom: -1, left:  -1, width: 22, height: 22, borderBottom: b, borderLeft:  b, borderRadius: "0 0 0 4px" }} />
-      <div style={{ position: "absolute", bottom: -1, right: -1, width: 22, height: 22, borderBottom: b, borderRight: b, borderRadius: "0 0 4px 0" }} />
-      <div style={{ ...dot, top: -3, left: "50%", transform: "translateX(-50%)" }} />
-      <div style={{ ...dot, bottom: -3, left: "50%", transform: "translateX(-50%)" }} />
-      <div style={{ ...dot, left: -3, top: "50%", transform: "translateY(-50%)" }} />
-      <div style={{ ...dot, right: -3, top: "50%", transform: "translateY(-50%)" }} />
-    </>
-  );
-}
-
-/* ── Page ────────────────────────────────────────────────── */
-
+/* ════════════════════════════════════════════════════════════
+   Page
+   ════════════════════════════════════════════════════════════ */
 export default function HomePage() {
   const router = useRouter();
-  const locale = useLocale();
-  const isAR    = locale === "ar";
-  const [step,       setStep      ] = useState(0);
-  const [isMuted,    setIsMuted   ] = useState(true);
-  const [hasPlayed,  setHasPlayed ] = useState(false);
-  const [hoveredChar,setHoveredChar] = useState<string | null>(null);
+  const isAR = useLocale() === "ar";
 
-  const scrollY = useScrollY();
-
-  const { ref: featRef, inView: featInView } = useInView();
-  const { ref: howRef,  inView: howInView  } = useInView();
-  const { ref: charRef, inView: charInView } = useInView();
-  const { ref: ctaRef,  inView: ctaInView  } = useInView(0.2);
-
+  const [isMuted, setIsMuted] = useState(true);
+  const [hasPlayed, setHasPlayed] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    const ts: ReturnType<typeof setTimeout>[] = [];
-    for (let i = 1; i <= 5; i++) ts.push(setTimeout(() => setStep(s => Math.max(s, i)), 300 * i));
-    return () => ts.forEach(clearTimeout);
-  }, []);
+  const scrollY = useScrollY();
+  const { scrollYProgress } = useScroll();
 
+  const railIds = ["top", ...FEATURES.map(f => f.id), "mobile", "join"];
+  const railLabels = [
+    isAR ? "البداية" : "Start",
+    ...FEATURES.map(f => (isAR ? f.kicker.ar : f.kicker.en)),
+    isAR ? "التطبيق" : "Mobile App",
+    isAR ? "انضم" : "Join",
+  ];
+  const active = useActiveSection(railIds);
+
+  // load brand fonts
   useEffect(() => {
     const link = document.createElement("link");
-    link.rel  = "stylesheet";
+    link.rel = "stylesheet";
     link.href = "https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap";
     document.head.appendChild(link);
     return () => { document.head.removeChild(link); };
@@ -283,8 +773,7 @@ export default function HomePage() {
       setHasPlayed(true); setIsMuted(false);
       videoRef.current.muted = false; videoRef.current.play();
     } else {
-      const next = !isMuted;
-      setIsMuted(next); videoRef.current.muted = next;
+      const next = !isMuted; setIsMuted(next); videoRef.current.muted = next;
     }
   };
   const toggleMute = (e: React.MouseEvent) => {
@@ -293,557 +782,240 @@ export default function HomePage() {
     const next = !isMuted; setIsMuted(next); videoRef.current.muted = next;
   };
 
-  const enter = (s: number, delay = 0): React.CSSProperties => ({
-    opacity:   step >= s ? 1 : 0,
-    transform: step >= s ? "translateY(0)" : "translateY(14px)",
-    transition: `opacity .7s ease ${delay}s, transform .7s ease ${delay}s`,
-  });
-
-  const reveal = (visible: boolean, i: number): React.CSSProperties => ({
-    opacity:   visible ? 1 : 0,
-    transform: visible ? "translateY(0)" : "translateY(28px)",
-    transition: `opacity .65s ease ${i * 0.09}s, transform .65s ease ${i * 0.09}s`,
-  });
-
-  /* ── Button styles ── */
-  const btnPrimary: React.CSSProperties = {
-    fontFamily: cinzel, fontSize: 13, fontWeight: 700, letterSpacing: 0.8,
-    padding: "13px 28px", borderRadius: 10, border: "none", cursor: "pointer",
-    color: "#f5ede0", background: "linear-gradient(135deg, #632024, #8B2635)",
-    boxShadow: "0 4px 20px rgba(99,32,36,.35), inset 0 1px 0 rgba(255,255,255,.1)",
-    transition: "all .25s ease",
-  };
-  const btnPrimarySm: React.CSSProperties = {
-    fontFamily: cinzel, fontSize: 11, fontWeight: 700, letterSpacing: 1.2,
-    padding: "9px 18px", borderRadius: 8, border: "none", cursor: "pointer",
-    color: "#f5ede0", background: "linear-gradient(135deg, #632024, #8B2635)",
-    boxShadow: "0 2px 10px rgba(99,32,36,.25)", transition: "all .25s ease",
-  };
-  const btnSecondary: React.CSSProperties = {
-    fontFamily: cinzel, fontSize: 13, fontWeight: 700, letterSpacing: 0.5,
-    padding: "13px 28px", borderRadius: 10, cursor: "pointer",
-    color: "#632024", background: "rgba(99,32,36,.06)",
-    border: "1.5px solid rgba(99,32,36,.3)", transition: "all .25s ease",
+  const onFeatureCTA = (f: Feature) => {
+    if (f.id === "chatbot") { window.dispatchEvent(new Event("cm:open-chat")); return; }
+    router.push(f.route);
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#E3DAC9", fontFamily: crimson, color: "#3e1316", position: "relative" }}>
+    <div style={{ minHeight: "100vh", background: C.sand, fontFamily: crimson, color: C.maroon, position: "relative" }}>
 
       <style>{`
-        @keyframes gridMove   { 0% { background-position: 0 0; } 100% { background-position: 44px 44px; } }
-        @keyframes videoPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.015); } }
-        @keyframes scrollBnce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-        @keyframes playPulse  { 0%,100% { box-shadow: 0 0 0 0 rgba(232,212,188,.35); } 50% { box-shadow: 0 0 0 14px rgba(232,212,188,0); } }
-        @keyframes dotPulse   { 0%,100% { box-shadow: 0 0 0 0 rgba(139,38,53,.5); } 50% { box-shadow: 0 0 0 5px rgba(139,38,53,0); } }
-        @keyframes ringPulse  { 0%,100% { opacity:.5; transform:scale(1); } 50% { opacity:1; transform:scale(1.04); } }
-        @media (prefers-reduced-motion: reduce) {
-          *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
-        }
+        @keyframes cmBlink     { 0%,100%{opacity:.25} 50%{opacity:1} }
+        @keyframes cmPulse     { 0%,100%{box-shadow:0 0 0 0 currentColor;opacity:1} 50%{opacity:.55} }
+        @keyframes cmPulseRing { 0%,100%{box-shadow:0 0 0 0 rgba(224,121,106,.4)} 50%{box-shadow:0 0 0 12px rgba(224,121,106,0)} }
+        @keyframes cmScroll    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+        @keyframes cmDot       { 0%,100%{box-shadow:0 0 0 0 rgba(139,38,53,.5)} 50%{box-shadow:0 0 0 5px rgba(139,38,53,0)} }
+        @keyframes cmFloat     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+        @keyframes cmVidPulse  { 0%,100%{transform:scale(1)} 50%{transform:scale(1.015)} }
+        @keyframes cmPlay      { 0%,100%{box-shadow:0 0 0 0 rgba(232,212,188,.35)} 50%{box-shadow:0 0 0 14px rgba(232,212,188,0)} }
+        .cm-rail { position: fixed; top: 50%; transform: translateY(-50%); z-index: 40; display:flex; flex-direction:column; gap:16px; }
+        .cm-rail button:hover .cm-rail-label { opacity: 1 !important; transform: none !important; }
+        @media (max-width: 1180px){ .cm-rail{ display:none } }
+        @media (prefers-reduced-motion: reduce){ *,*::before,*::after{ animation-duration:.01ms !important } }
       `}</style>
 
-      {/* ── Fixed atmospheric background with parallax ── */}
-      <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }}>
-        <div style={{
-          position: "absolute", width: 700, height: 700, top: -200, left: -200,
-          borderRadius: "50%", background: "radial-gradient(circle, rgba(99,32,36,.09), transparent 65%)",
-          filter: "blur(40px)", transform: `translateY(${scrollY * 0.08}px)`, transition: "transform .1s linear",
-        }} />
-        <div style={{
-          position: "absolute", width: 500, height: 500, bottom: -200, right: -200,
-          borderRadius: "50%", background: "radial-gradient(circle, rgba(197,165,126,.14), transparent 65%)",
-          filter: "blur(40px)", transform: `translateY(${scrollY * -0.05}px)`, transition: "transform .1s linear",
-        }} />
-        <div style={{ position: "absolute", right: -120, top: 60, opacity: 0.04 }}>
-          <DesignWatermark size={600} />
-        </div>
+      {/* scroll progress bar */}
+      <motion.div style={{
+        position: "fixed", top: 0, left: 0, right: 0, height: 3, zIndex: 60, transformOrigin: isAR ? "100% 0" : "0% 0",
+        scaleX: scrollYProgress, background: "linear-gradient(90deg,#632024,#c5a57e)",
+      }} />
+
+      <SideRail ids={railIds} labels={railLabels} active={active} isAR={isAR} />
+
+      {/* ambient background */}
+      <div aria-hidden style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }}>
+        <div style={{ position: "absolute", width: 700, height: 700, top: -220, insetInlineStart: -200, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,32,36,.09), transparent 65%)", filter: "blur(40px)", transform: `translateY(${scrollY * 0.06}px)` }} />
+        <div style={{ position: "absolute", width: 500, height: 500, bottom: -200, insetInlineEnd: -200, borderRadius: "50%", background: "radial-gradient(circle, rgba(197,165,126,.14), transparent 65%)", filter: "blur(40px)", transform: `translateY(${scrollY * -0.04}px)` }} />
       </div>
 
-      {/* ════════════════════════════════════════
-          § 1  HERO
-          ════════════════════════════════════════ */}
-      <section style={{
-        position: "relative", zIndex: 1,
-        display: "flex", flexWrap: "wrap", gap: 5, justifyContent: "space-between",
-        padding: "calc(5rem + 76px) 4rem 4rem", maxWidth: 1440, margin: "0 auto",
+      {/* ════════ HERO ════════ */}
+      <section id="top" style={{
+        position: "relative", zIndex: 1, minHeight: "100vh",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: "calc(76px + 4rem) 4rem 4rem", maxWidth: 1280, margin: "0 auto",
       }}>
+        <div style={{ display: "flex", gap: "clamp(40px,5vw,80px)", alignItems: "center", flexWrap: "wrap", justifyContent: "center" }}>
 
-        {/* —— Left copy —— */}
-        <div style={{ maxWidth: 570, flex: "1 1 460px", paddingTop: "4rem", paddingInlineStart: "4rem" }}>
-
-          {/* Badge with pulsing dot */}
-          <div style={{
-            ...enter(1),
-            display: "inline-flex", alignItems: "center", gap: 8,
-            padding: "5px 16px", borderRadius: 99,
-            background: "rgba(197,165,126,.18)", border: "1px solid rgba(197,165,126,.4)",
-            fontFamily: cinzel, fontWeight: 600, fontSize: 9.5, letterSpacing: 2.5, color: "#632024",
-            marginBottom: 0,
-          }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#8B2635", animation: "dotPulse 2s ease-in-out infinite" }} />
-            {isAR ? "توعية أمن المعلومات" : "Cybersecurity Awareness"}
-          </div>
-
-          {/* H1 */}
-          <h1 style={{
-            ...enter(1, 0.05),
-            fontFamily: cinzel, fontWeight: 900,
-            fontSize: "clamp(3rem, 5vw, 4.2rem)",
-            lineHeight: 1.02, letterSpacing: "-0.5px", margin: "20px 0 6px",
-          }}>
-            <span style={{ color: "#3e1316" }}>Cyber</span>
-            <span style={{ color: "#8B2635" }}> Majlis</span>
-          </h1>
-
-          {isAR && (
-            <div style={{ ...enter(1, 0.1), fontFamily: crimson, fontSize: 24, color: "#a07060", direction: "rtl", marginBottom: 4 }}>
-              المجلس السيبراني
-            </div>
-          )}
-
-          <div style={enter(2, 0.15)}><GoldDivider /></div>
-
-          <p style={{
-            ...enter(2, 0.2),
-            fontFamily: crimson, fontSize: "1.15rem", fontStyle: "italic",
-            color: "#5a2428", lineHeight: 1.55, fontWeight: 400,
-          }}>
-            {isAR
-              ? "أكاديمية قطر الأولى للأمن السيبراني بأسلوب اللعب والمحاكاة. أتقن الأطر الدولية من خلال سيناريوهات مستوحاة من بنيتنا التحتية الوطنية الحيوية وادافع عن الوطن إلى جانب زملائك في المجلس."
-              : "Qatar's first gamified cybersecurity academy. Master international frameworks through scenarios drawn from our critical national infrastructure and defend the realm alongside fellow Majlis members."}
-          </p>
-
-          <div style={{ ...enter(3, 0.25), marginTop: 28 }}>
-            {/* 3 section-jump pills */}
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {[
-                { label: isAR ? "تعلّم" : "LEARN",           id: "about"        },
-                { label: isAR ? "كيف يعمل" : "HOW IT WORKS", id: "how-it-works" },
-                { label: isAR ? "الحراس" : "GUARDIANS",      id: "majlis"       },
-              ].map(({ label, id }) => (
-                <button
-                  key={id}
-                  onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })}
-                  style={{
-                    fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 1.5,
-                    padding: "9px 18px", borderRadius: 8, cursor: "pointer",
-                    color: "#632024", background: "rgba(99,32,36,.06)",
-                    border: "1.5px solid rgba(99,32,36,.28)", transition: "all .25s ease",
-                    whiteSpace: "nowrap",
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.14)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; e.currentTarget.style.transform = ""; }}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            {/* CTA button — same row width as pills above */}
-            <button
-              onClick={() => router.push("/auth?signup=true")}
-              style={{
-                fontFamily: cinzel, fontSize: 13, fontWeight: 700, letterSpacing: 1.8,
-                padding: "13px 28px", borderRadius: 10, border: "none", cursor: "pointer",
-                color: "#f5ede0",
-                background: "linear-gradient(135deg, #632024 0%, #8B2635 60%, #a03040 100%)",
-                boxShadow: "0 4px 16px rgba(99,32,36,.35), inset 0 1px 0 rgba(255,255,255,.1)",
-                transition: "all .25s ease",
-                marginTop: 10, whiteSpace: "nowrap",
-              }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(99,32,36,.48), inset 0 1px 0 rgba(255,255,255,.12)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 16px rgba(99,32,36,.35), inset 0 1px 0 rgba(255,255,255,.1)"; }}
-            >
-              {isAR ? "انضم إلى سايبر مجلس" : "JOIN CYBER MAJLIS"}
-            </button>
-          </div>
-        </div>
-
-        {/* —— Right: video card —— */}
-        <div style={{
-          ...enter(3),
-          transition: "opacity .8s cubic-bezier(.34,1.2,.64,1), transform .8s cubic-bezier(.34,1.2,.64,1)",
-          position: "relative", flex: "0 0 auto", marginRight: "4rem",
-        }}>
-          {/* Halo glow */}
-          <div style={{
-            position: "absolute", inset: -30, borderRadius: 30,
-            background: "radial-gradient(circle, rgba(197,165,126,.35), transparent 65%)",
-            filter: "blur(16px)", pointerEvents: "none",
-          }} />
-
-          <div
-            onClick={handleVideoClick}
-            style={{
-              position: "relative", width: 320, height: 560, borderRadius: 22,
-              border: "2px solid rgba(99,32,36,.35)", overflow: "hidden",
-              background: "#2c1010", cursor: "pointer",
-              boxShadow: "0 32px 80px rgba(99,32,36,.22), 0 0 0 1px rgba(197,165,126,.2), inset 0 1px 0 rgba(255,255,255,.3)",
-            }}
-          >
-            {/* Dark texture behind video */}
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #3e1316, #1d0708)" }} />
-            <div style={{ position: "absolute", inset: 0, backgroundImage: "repeating-linear-gradient(135deg, rgba(232,212,188,.03) 0 1px, transparent 1px 14px), repeating-linear-gradient(45deg, rgba(197,165,126,.05) 0 1px, transparent 1px 22px)" }} />
-
-            <video
-              ref={videoRef}
-              src="/hamad.mp4"
-              autoPlay loop muted={isMuted}
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", animation: "videoPulse 5s ease-in-out infinite" }}
-            />
-
-            {/* Play overlay (before first interaction) */}
-            {!hasPlayed && (
-              <div style={{
-                position: "absolute", inset: 0,
-                display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 18,
-                background: "linear-gradient(180deg, rgba(62,19,22,.15), rgba(62,19,22,.6))",
-              }}>
-                <div style={{
-                  width: 76, height: 76, borderRadius: "50%",
-                  border: "1.5px solid rgba(232,212,188,.85)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "rgba(62,19,22,.45)", boxShadow: "0 0 0 6px rgba(232,212,188,.1)",
-                  animation: "playPulse 2.2s ease-in-out infinite",
-                }}>
-                  <div style={{ width: 0, height: 0, marginLeft: 5, borderLeft: "16px solid #E8D4BC", borderTop: "10px solid transparent", borderBottom: "10px solid transparent" }} />
-                </div>
-                <div style={{ fontFamily: cinzel, fontSize: 11, letterSpacing: 4, color: "#E8D4BC", fontWeight: 700 }}>{isAR ? "شاهد المقدمة" : "WATCH INTRO"}</div>
-              </div>
-            )}
-
-            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: "linear-gradient(to top, rgba(62,19,22,.82), transparent)", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", bottom: 20, left: 20, right: 20, display: "flex", flexDirection: "column", gap: 4 }}>
-              <span style={{ fontFamily: cinzel, fontSize: 8.5, letterSpacing: "0.15em", color: "rgba(232,212,188,.65)", fontWeight: 600 }}>{isAR ? "دليلك" : "YOUR GUIDE"}</span>
-              <span style={{ fontFamily: cinzel, fontSize: 14, letterSpacing: 1.4, color: "#E8D4BC", fontWeight: 700 }}>HAMAD</span>
-            </div>
-
-            {hasPlayed && (
-              <button onClick={toggleMute} style={{
-                position: "absolute", bottom: 12, right: 12, borderRadius: "50%",
-                padding: 7, cursor: "pointer", background: "rgba(62,19,22,.75)",
-                border: "1px solid rgba(197,165,126,.3)", color: "#E8D4BC",
-                backdropFilter: "blur(6px)", display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
-              </button>
-            )}
-          </div>
-
-          <CornerOrnaments />
-        </div>
-
-        {/* Scroll cue */}
-        <div style={{
-          ...enter(5, 0.8),
-          position: "absolute", bottom: 28, left: "50%", transform: "translateX(-50%)",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-        }}>
-          <span style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "rgba(99,32,36,.5)", fontWeight: 600 }}>{isAR ? "مرر للأسفل" : "SCROLL"}</span>
-          <ChevronDown size={14} color="#c5a57e" style={{ animation: "scrollBnce 1.6s ease-in-out infinite", opacity: 0.7 }} />
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════
-          § 2  FEATURES
-          ════════════════════════════════════════ */}
-      <section
-        id="about"
-        ref={featRef as React.RefObject<HTMLElement>}
-        style={{
-          position: "relative", zIndex: 1,
-          padding: "96px 4rem",
-          background: "#3e1316",
-          borderTop: "1px solid rgba(197,165,126,.2)",
-          borderBottom: "1px solid rgba(197,165,126,.2)",
-        }}
-      >
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 56px" }}>
-          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>
-            {isAR ? "ما هو المجلس السيبراني؟" : "WHAT IS CYBERMAJLIS?"}
-          </div>
-          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#E8D4BC", margin: 0 }}>
-            {isAR ? "أربع طرق للتعلم" : "Four ways to learn"}
-          </h2>
-          <CenterDivider />
-          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "rgba(227,218,201,.78)", marginTop: 18, lineHeight: 1.55 }}>
-            {isAR
-              ? "منهج مبني على أربعة ركائز — كل منها مستند إلى سيناريوهات قطرية واقعية والمعايير الدولية التي تحكمها."
-              : "A curriculum built on four pillars each grounded in real Qatari scenarios and the international standards that govern them."}
-          </p>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 22, maxWidth: 1080, margin: "0 auto" }}>
-          {FEATURES.map((f, i) => (
-            <div key={i} style={{
-              ...reveal(featInView, i),
-              background: "rgba(255,255,255,.16)", border: "1.5px solid rgba(197,165,126,.25)",
-              borderRadius: 16, padding: 28, backdropFilter: "blur(8px)",
-              boxShadow: "0 2px 16px rgba(0,0,0,.22)",
+          {/* copy */}
+          <motion.div variants={container} initial="hidden" animate="show" style={{ flex: "1 1 440px", maxWidth: 580 }}>
+            <motion.div variants={item} style={{
+              display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px", borderRadius: 99,
+              background: "rgba(197,165,126,.18)", border: "1px solid rgba(197,165,126,.4)",
+              fontFamily: cinzel, fontWeight: 600, fontSize: 9.5, letterSpacing: 2.5, color: C.maroonMid,
             }}>
-              {/* Glyph icon container */}
-              <div style={{
-                width: 44, height: 44, borderRadius: 10,
-                background: "rgba(197,165,126,.15)", border: "1px solid rgba(197,165,126,.3)",
-                display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18,
-              }}>
-                {GLYPH_MAP[f.Glyph]}
-              </div>
-              <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: 14, letterSpacing: 1.5, color: "#E8D4BC" }}>
-                {isAR ? f.titleAr : f.title}
-              </div>
-              <div style={{ height: 1, background: "linear-gradient(90deg, #c5a57e, transparent)", margin: "12px 0 14px" }} />
-              <p style={{ fontFamily: crimson, fontSize: 14, color: "rgba(197,165,126,.85)", lineHeight: 1.55, margin: 0 }}>
-                {isAR ? f.descAr : f.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: C.crimson, animation: "cmDot 2s infinite" }} />
+              {isAR ? "أكاديمية قطر للأمن السيبراني" : "QATAR'S CYBERSECURITY ACADEMY"}
+            </motion.div>
 
-      {/* ════════════════════════════════════════
-          § 3  HOW IT WORKS
-          ════════════════════════════════════════ */}
-      <section
-        id="how-it-works"
-        ref={howRef as React.RefObject<HTMLElement>}
-        style={{
-          position: "relative", zIndex: 1,
-          padding: "96px 4rem 104px",
-          borderBottom: "1px solid rgba(197,165,126,.15)",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(99,32,36,.05), transparent)" }} />
-        <div style={{ position: "absolute", right: -80, top: "50%", transform: "translateY(-50%)", opacity: 0.04 }}>
-          <DesignWatermark size={380} />
-        </div>
+            <motion.h1 variants={item} style={{
+              fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(3rem,5.5vw,4.6rem)",
+              lineHeight: 1.02, letterSpacing: "-0.5px", margin: "22px 0 6px",
+            }}>
+              <span style={{ color: C.maroon }}>Cyber</span><span style={{ color: C.crimson }}> Majlis</span>
+            </motion.h1>
 
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 72px" }}>
-          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>{isAR ? "كيف يعمل" : "HOW IT WORKS"}</div>
-          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: 0 }}>{isAR ? "مسارك نحو الاحتراف" : "Your Path to Mastery"}</h2>
-          <CenterDivider />
-          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "#5a2428", marginTop: 18, lineHeight: 1.55 }}>
-            {isAR
-              ? "ثلاث خطوات بسيطة تحوّلك من مبتدئ إلى محترف في الأمن السيبراني."
-              : "Three simple steps from curious beginner to confident cyber defender."}
-          </p>
-        </div>
+            {isAR && (
+              <motion.div variants={item} style={{ fontFamily: crimson, fontSize: 24, color: "#a07060", marginBottom: 4 }}>
+                المجلس السيبراني
+              </motion.div>
+            )}
 
-        <div style={{ maxWidth: 960, margin: "0 auto", position: "relative" }}>
-          <div style={{
-            position: "absolute", top: 36, left: "18%", right: "18%", height: 1,
-            background: "linear-gradient(90deg, transparent, rgba(197,165,126,.5) 20%, rgba(197,165,126,.5) 80%, transparent)",
-            zIndex: 0,
-          }} />
-          <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-            {HOW_IT_WORKS.map((s, i) => {
-              const StepIcon = s.Icon;
-              return (
-                <div key={i} style={{
-                  ...reveal(howInView, i),
-                  flex: "1 1 240px",
-                  display: "flex", flexDirection: "column", alignItems: "center",
-                  textAlign: "center", padding: "0 24px", position: "relative", zIndex: 1,
-                }}>
-                  <div style={{ position: "relative", marginBottom: 24 }}>
-                    <div style={{ position: "absolute", inset: -6, borderRadius: "50%", border: "1px solid rgba(197,165,126,.3)", animation: howInView ? `ringPulse 3s ease-in-out ${i * 0.8}s infinite` : "none" }} />
-                    <div style={{
-                      width: 72, height: 72, borderRadius: "50%",
-                      background: "linear-gradient(135deg, #632024, #8B2635)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      boxShadow: "0 8px 24px rgba(99,32,36,.32), inset 0 1px 0 rgba(255,255,255,.15)",
-                    }}>
-                      <span style={{ fontFamily: cinzel, fontSize: 13, fontWeight: 700, color: "#f5ede0", letterSpacing: "1.5px" }}>{s.num}</span>
-                    </div>
-                  </div>
-                  <div style={{ marginBottom: 16, color: "#8B2635", opacity: 0.85 }}>
-                    <StepIcon size={26} strokeWidth={1.5} />
-                  </div>
-                  <div style={{ fontFamily: cinzel, fontSize: 15, fontWeight: 700, color: "#3e1316", marginBottom: 14 }}>
-                    {isAR ? s.titleAr : s.title}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, width: "100%", justifyContent: "center" }}>
-                    <div style={{ height: 1, width: 32, background: "linear-gradient(90deg, transparent, #c5a57e)" }} />
-                    <div style={{ width: 4, height: 4, background: "#c5a57e", transform: "rotate(45deg)" }} />
-                    <div style={{ height: 1, width: 32, background: "linear-gradient(90deg, #c5a57e, transparent)" }} />
-                  </div>
-                  <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "0.93rem", color: "#5a2428", lineHeight: 1.7, margin: 0 }}>
-                    {isAR ? s.descAr : s.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+            <motion.div variants={item} style={{ display: "flex", alignItems: "center", gap: 8, margin: "18px 0" }}>
+              <div style={{ width: 52, height: 1, background: `linear-gradient(90deg,${C.maroonMid},${C.gold})` }} />
+              <div style={{ width: 5, height: 5, background: C.gold, transform: "rotate(45deg)" }} />
+              <div style={{ flex: 1, maxWidth: 120, height: 1, background: `linear-gradient(90deg,${C.gold},transparent)` }} />
+            </motion.div>
 
-      {/* ════════════════════════════════════════
-          § 4  CHARACTERS
-          ════════════════════════════════════════ */}
-      <section
-        id="majlis"
-        ref={charRef as React.RefObject<HTMLElement>}
-        style={{ position: "relative", zIndex: 1, padding: "96px 4rem", overflow: "hidden", background: "#3e1316" }}
-      >
-        <div style={{ position: "absolute", left: -140, top: "50%", transform: "translateY(-50%)", opacity: 0.04 }}>
-          <DesignWatermark size={420} />
-        </div>
+            <motion.p variants={item} style={{
+              fontFamily: crimson, fontSize: "1.25rem", fontStyle: "italic", color: "#5a2428", lineHeight: 1.55, maxWidth: 500,
+            }}>
+              {isAR
+                ? "كل ما تحتاجه لتتعلّم الأمن السيبراني وتعيشه وتدافع به — في مكان واحد. مرّر للأسفل لتكتشف كل ميزة."
+                : "Everything you need to learn cybersecurity, live it, and defend with it — in one place. Scroll to meet every feature."}
+            </motion.p>
 
-        <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 56px" }}>
-          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>{isAR ? "أدلاؤك" : "YOUR GUIDES"}</div>
-          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#E8D4BC", margin: 0 }}>{isAR ? "تعرف على الحراس" : "Meet the Guardians"}</h2>
-          <CenterDivider />
-          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.05rem", color: "rgba(227,218,201,.78)", marginTop: 18, lineHeight: 1.55 }}>
-            {isAR
-              ? "أربعة حرّاس قطريون — كل منهم متخصص في مجال مختلف من الأمن السيبراني."
-              : "Four mentors lead your training. Each represents a discipline of the craft — pick the one whose path speaks to you first."}
-          </p>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: 22, maxWidth: 960, margin: "0 auto" }}>
-          {CHARS.map((c, i) => {
-            const hovered = hoveredChar === c.id;
-            return (
-              <div key={c.id}
-                onMouseEnter={() => setHoveredChar(c.id)}
-                onMouseLeave={() => setHoveredChar(null)}
+            <motion.div variants={item} style={{ display: "flex", gap: 14, marginTop: 30, flexWrap: "wrap" }}>
+              <button
+                onClick={() => router.push("/auth?signup=true")}
                 style={{
-                  ...reveal(charInView, i),
-                  borderRadius: 18, padding: 20,
-                  background: hovered ? `#f0e6d8` : "#EDE0CE",
-                  border:     hovered ? `1.5px solid ${c.accent}88` : "1.5px solid rgba(197,165,126,.35)",
-                  transform:  charInView ? (hovered ? "translateY(-8px) scale(1.01)" : "translateY(0) scale(1)") : "translateY(28px)",
-                  boxShadow:  hovered
-                    ? `0 0 0 2.5px ${c.accent}55, 0 0 28px rgba(${c.rgb},.25), 0 20px 56px rgba(${c.rgb},.2)`
-                    : "0 2px 12px rgba(99,32,36,.06)",
-                  transition: charInView
-                    ? `opacity .65s ease ${i * .09}s, transform .3s cubic-bezier(.34,1.2,.64,1), box-shadow .3s ease, border-color .3s ease, background .3s ease`
-                    : `opacity .65s ease ${i * .09}s, transform .65s ease ${i * .09}s`,
-                  opacity: charInView ? 1 : 0,
+                  fontFamily: cinzel, fontSize: 13, fontWeight: 700, letterSpacing: 1.6,
+                  padding: "14px 30px", borderRadius: 11, border: "none", cursor: "pointer", color: C.cream,
+                  background: "linear-gradient(135deg,#632024,#8B2635 60%,#a03040)",
+                  boxShadow: "0 6px 24px rgba(99,32,36,.4)", transition: "all .25s ease",
+                  display: "inline-flex", alignItems: "center", gap: 10,
                 }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = ""; }}
               >
-                {/* Character image */}
-                <div style={{
-                  height: 200, borderRadius: 12, position: "relative",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  marginBottom: 16, overflow: "hidden",
-                  background: `rgba(${c.rgb},.10)`,
-                  transition: "background .3s ease",
-                }}>
-                  <img
-                    src={c.img}
-                    alt={c.name}
-                    style={{
-                      width: "100%", height: "100%", objectFit: "cover",
-                      transition: "transform .4s cubic-bezier(.34,1.2,.64,1)",
-                      transform: hovered ? "scale(1.08)" : "scale(1)",
-                    }}
-                  />
-                </div>
+                {isAR ? "انضم الآن" : "Join now"}
+                <ArrowRight size={16} style={{ transform: isAR ? "scaleX(-1)" : "none" }} />
+              </button>
+              <button
+                onClick={() => document.getElementById("lessons")?.scrollIntoView({ behavior: "smooth" })}
+                style={{
+                  fontFamily: cinzel, fontSize: 13, fontWeight: 700, letterSpacing: 1,
+                  padding: "14px 28px", borderRadius: 11, cursor: "pointer", color: C.maroonMid,
+                  background: "rgba(99,32,36,.06)", border: "1.5px solid rgba(99,32,36,.3)", transition: "all .25s ease",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.13)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; }}
+              >
+                {isAR ? "اكتشف الميزات" : "Explore features"}
+              </button>
+            </motion.div>
+          </motion.div>
 
-                <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: 15, letterSpacing: 1.2, color: "#3e1316" }}>
-                  {isAR ? c.nameAr : c.name}
+          {/* video card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
+            style={{ flex: "0 0 auto", position: "relative", animation: "cmFloat 6s ease-in-out infinite" }}
+          >
+            <div aria-hidden style={{ position: "absolute", inset: -30, borderRadius: 30, background: "radial-gradient(circle, rgba(197,165,126,.35), transparent 65%)", filter: "blur(16px)" }} />
+            <div onClick={handleVideoClick} style={{
+              position: "relative", width: 300, height: 540, borderRadius: 24, overflow: "hidden",
+              border: "2px solid rgba(99,32,36,.35)", background: "#2c1010", cursor: "pointer",
+              boxShadow: "0 32px 80px rgba(99,32,36,.25), 0 0 0 1px rgba(197,165,126,.2)",
+            }}>
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg,#3e1316,#1d0708)" }} />
+              <video ref={videoRef} src="/hamad.mp4" autoPlay loop muted={isMuted}
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", animation: "cmVidPulse 5s ease-in-out infinite" }} />
+              {!hasPlayed && (
+                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, background: "linear-gradient(180deg,rgba(62,19,22,.15),rgba(62,19,22,.6))" }}>
+                  <div style={{ width: 74, height: 74, borderRadius: "50%", border: "1.5px solid rgba(232,212,188,.85)", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(62,19,22,.45)", animation: "cmPlay 2.2s infinite" }}>
+                    <div style={{ width: 0, height: 0, marginLeft: 5, borderLeft: "16px solid #E8D4BC", borderTop: "10px solid transparent", borderBottom: "10px solid transparent" }} />
+                  </div>
+                  <div style={{ fontFamily: cinzel, fontSize: 11, letterSpacing: 4, color: C.goldLight, fontWeight: 700 }}>{isAR ? "شاهد المقدمة" : "MEET HAMAD"}</div>
                 </div>
-                {isAR && (
-                  <div style={{ fontFamily: crimson, fontSize: 14, color: "#a07060", direction: "rtl", marginTop: 2 }}>{c.name}</div>
-                )}
-                <div style={{ display: "inline-block", padding: "3px 12px", borderRadius: 99, marginTop: 10, background: `rgba(${c.rgb},.12)`, border: `1px solid rgba(${c.rgb},.25)`, fontFamily: cinzel, fontSize: 9, letterSpacing: 1.5, fontWeight: 700, color: c.accent }}>
-                  {isAR ? c.roleAr : c.role}
-                </div>
-                <div style={{ height: 1, background: `linear-gradient(90deg, ${c.accent}66, transparent)`, margin: "12px 0 10px" }} />
-                <p style={{ fontFamily: crimson, fontSize: 13, color: "#5a2428", lineHeight: 1.5, margin: 0 }}>
-                  {isAR ? c.descAr : c.desc}
-                </p>
+              )}
+              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: "linear-gradient(to top,rgba(62,19,22,.82),transparent)" }} />
+              <div style={{ position: "absolute", bottom: 20, insetInlineStart: 20 }}>
+                <div style={{ fontFamily: cinzel, fontSize: 8.5, letterSpacing: "0.15em", color: "rgba(232,212,188,.65)", fontWeight: 600 }}>{isAR ? "دليلك" : "YOUR GUIDE"}</div>
+                <div style={{ fontFamily: cinzel, fontSize: 15, letterSpacing: 1.4, color: C.goldLight, fontWeight: 700 }}>HAMAD</div>
               </div>
-            );
-          })}
+              {hasPlayed && (
+                <button onClick={toggleMute} style={{ position: "absolute", bottom: 12, insetInlineEnd: 12, borderRadius: "50%", padding: 7, cursor: "pointer", background: "rgba(62,19,22,.75)", border: "1px solid rgba(197,165,126,.3)", color: C.goldLight, display: "flex" }}>
+                  {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                </button>
+              )}
+            </div>
+          </motion.div>
         </div>
+
+        {/* scroll cue */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
+          style={{ position: "absolute", bottom: 26, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+          <span style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "rgba(99,32,36,.5)", fontWeight: 600 }}>{isAR ? "مرّر" : "SCROLL"}</span>
+          <ChevronDown size={14} color={C.gold} style={{ animation: "cmScroll 1.6s ease-in-out infinite" }} />
+        </motion.div>
       </section>
 
-      {/* ════════════════════════════════════════
-          § 5  CTA STRIP
-          ════════════════════════════════════════ */}
-      <section
-        id="community"
-        ref={ctaRef as React.RefObject<HTMLElement>}
-        style={{
-          position: "relative", zIndex: 1,
-          padding: "96px 4rem", textAlign: "center",
-          borderTop: "1px solid rgba(197,165,126,.3)",
-          borderBottom: "1px solid rgba(197,165,126,.3)",
-          background: "#E3DAC9",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,32,36,.07), transparent 65%)", filter: "blur(60px)", pointerEvents: "none" }} />
+      {/* ════════ FEATURE SECTIONS ════════ */}
+      {FEATURES.map((f, i) => (
+        <FeatureSection key={f.id} f={f} index={i} isAR={isAR} onCTA={() => onFeatureCTA(f)} />
+      ))}
 
-        <div style={{
-          position: "relative",
-          opacity: ctaInView ? 1 : 0,
-          transform: ctaInView ? "translateY(0)" : "translateY(32px)",
-          transition: "opacity .8s ease, transform .8s ease",
-          maxWidth: 720, margin: "0 auto",
-        }}>
-          <div style={{ fontFamily: cinzel, fontSize: 9, letterSpacing: 3, color: "#c5a57e", fontWeight: 600, marginBottom: 12 }}>{isAR ? "انضم إلى المجلس" : "JOIN THE MAJLIS"}</div>
-          <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.8rem, 3vw, 2.5rem)", color: "#3e1316", margin: "8px 0 0" }}>
+      {/* ════════ MOBILE APP ════════ */}
+      <MobileSection isAR={isAR} />
+
+      {/* ════════ JOIN NOW ════════ */}
+      <section id="join" style={{
+        position: "relative", zIndex: 1, overflow: "hidden",
+        background: "linear-gradient(160deg,#3e1316 0%,#2a0c0e 100%)",
+        borderTop: "1px solid rgba(197,165,126,.25)",
+        padding: "clamp(96px,16vh,180px) 4rem", textAlign: "center",
+      }}>
+        <div aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(197,165,126,.16), transparent 60%)", filter: "blur(60px)" }} />
+        <motion.div
+          variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.4 }}
+          style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}
+        >
+          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, letterSpacing: 4, color: C.gold, fontWeight: 700, marginBottom: 18 }}>
+            {isAR ? "انضم إلى المجلس" : "JOIN THE MAJLIS"}
+          </motion.div>
+          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(2rem,4.5vw,3.4rem)", lineHeight: 1.1, color: C.goldLight, margin: 0 }}>
             {isAR ? "قطر تحتاج جيلها القادم من المدافعين." : "Qatar needs its next generation of defenders."}
-          </h2>
-          <CenterDivider />
-          <div style={{ display: "flex", gap: 14, marginTop: 28, justifyContent: "center", flexWrap: "wrap" }}>
+          </motion.h2>
+          <motion.div variants={item} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, margin: "22px auto", maxWidth: 280 }}>
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,transparent,${C.gold})` }} />
+            <div style={{ width: 5, height: 5, background: C.gold, transform: "rotate(45deg)" }} />
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,${C.gold},transparent)` }} />
+          </motion.div>
+          <motion.p variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.2rem", color: "rgba(232,212,188,.78)", lineHeight: 1.6, margin: "0 auto 36px", maxWidth: 560 }}>
+            {isAR
+              ? "ابدأ مجانًا اليوم. تعلّم، العب، حاكِ، وراقب — وكن جزءًا من المجلس الذي يحمي قطر."
+              : "Start free today. Learn, play, simulate and watch — and become part of the majlis that keeps Qatar safe."}
+          </motion.p>
+          <motion.div variants={item} style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <button
               onClick={() => router.push("/auth?signup=true")}
-              style={btnPrimary}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(99,32,36,.45), inset 0 1px 0 rgba(255,255,255,.15)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = "0 4px 20px rgba(99,32,36,.35), inset 0 1px 0 rgba(255,255,255,.1)"; }}
+              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1.6, padding: "16px 38px", borderRadius: 12, border: "none", cursor: "pointer", color: C.maroon, background: "linear-gradient(135deg,#E8D4BC,#c5a57e)", boxShadow: "0 10px 30px rgba(197,165,126,.35)", transition: "all .25s ease", display: "inline-flex", alignItems: "center", gap: 10 }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = ""; }}
             >
-              {isAR ? "ابدأ تدريبك" : "BEGIN YOUR TRAINING"}
+              {isAR ? "أنشئ حسابك" : "Create your account"}
+              <ArrowRight size={17} style={{ transform: isAR ? "scaleX(-1)" : "none" }} />
             </button>
             <button
-              onClick={() => router.push("/dashboard")}
-              style={btnSecondary}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.13)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; e.currentTarget.style.transform = ""; }}
+              onClick={() => router.push("/auth")}
+              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1, padding: "16px 34px", borderRadius: 12, cursor: "pointer", color: C.goldLight, background: "rgba(197,165,126,.08)", border: "1.5px solid rgba(197,165,126,.4)", transition: "all .25s ease" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(197,165,126,.18)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(197,165,126,.08)"; }}
             >
-              {isAR ? "استكشف المنهج" : "EXPLORE THE CURRICULUM"}
+              {isAR ? "لديّ حساب" : "I have an account"}
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       <Footer />
 
-      {/* Scroll-to-top button — appears after scrolling 300px */}
+      {/* back to top */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         aria-label="Back to top"
         style={{
-          position: "fixed",
-          bottom: 36,
-          left: 36,
-          zIndex: 9999,
-          width: 46,
-          height: 46,
-          borderRadius: "50%",
-          border: "1px solid rgba(197,165,126,0.55)",
-          background: "linear-gradient(135deg, #3e1316, #7a1e22)",
-          color: "#E8D4BC",
-          fontSize: 20,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          boxShadow: "0 6px 24px rgba(62,19,22,0.5)",
-          transition: "opacity 0.3s ease, transform 0.2s ease",
-          opacity: scrollY > 300 ? 1 : 0,
-          pointerEvents: scrollY > 300 ? "auto" : "none",
-          transform: scrollY > 300 ? "translateY(0)" : "translateY(12px)",
+          position: "fixed", bottom: 36, insetInlineStart: 36, zIndex: 9999, width: 46, height: 46, borderRadius: "50%",
+          border: "1px solid rgba(197,165,126,.55)", background: "linear-gradient(135deg,#3e1316,#7a1e22)", color: C.goldLight,
+          fontSize: 20, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+          boxShadow: "0 6px 24px rgba(62,19,22,.5)", transition: "opacity .3s ease, transform .2s ease",
+          opacity: scrollY > 400 ? 1 : 0, pointerEvents: scrollY > 400 ? "auto" : "none",
+          transform: scrollY > 400 ? "translateY(0)" : "translateY(12px)",
         }}
-        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = scrollY > 300 ? "translateY(0)" : "translateY(12px)"; }}
       >
         ↑
       </button>
-
     </div>
   );
 }
