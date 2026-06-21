@@ -11,7 +11,7 @@ const cinzel = "'Cinzel', Georgia, serif";
 const body   = "'Crimson Pro', Georgia, serif";
 
 // `description` is the elder-form field; `content`/`title` come from main-site
-// posts written to the same collection — accept either so nothing renders blank.
+// posts written to the same collection, accept either so nothing renders blank.
 interface Warning { id: string; description?: string; content?: string; title?: string; channel?: string; status?: string; createdAt?: { toDate: () => Date }; }
 
 const warningText = (w: Warning) => w.description || w.content || w.title || "";
@@ -21,7 +21,7 @@ const PAGE_SIZE = 8;
 const T = {
   en: {
     title: "Community Warnings",
-    sub: "Read what others have reported — and share your own warning to protect the community.",
+    sub: "Read what others have reported, and share your own warning to protect the community.",
     tabFeed: "Community Feed",
     tabPost: "Post a Warning",
     feedTitle: "Recent warnings from the community",
@@ -44,7 +44,7 @@ const T = {
   },
   ar: {
     title: "تحذيرات المجتمع",
-    sub: "اقرأ ما أبلغ عنه الآخرون — وشارك تحذيرك الخاص لحماية المجتمع.",
+    sub: "اقرأ ما أبلغ عنه الآخرون، وشارك تحذيرك الخاص لحماية المجتمع.",
     tabFeed: "تحذيرات المجتمع",
     tabPost: "شارك تحذيراً",
     feedTitle: "أحدث التحذيرات من المجتمع",
@@ -97,7 +97,7 @@ export default function ElderCommunityPage() {
       .catch((err) => {
         // Surface the real reason (e.g. permission-denied / missing index) and
         // retry unordered so a missing createdAt index alone can't blank the feed.
-        console.error("Elder community feed (ordered) failed — retrying unordered:", err);
+        console.error("Elder community feed (ordered) failed, retrying unordered:", err);
         getDocs(collection(db, "communityWarnings"))
           .then(snap => apply(snap, false))
           .catch((e) => console.error("Elder community feed failed:", e));

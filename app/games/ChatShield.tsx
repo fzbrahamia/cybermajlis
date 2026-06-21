@@ -1,5 +1,5 @@
 // ============================================================
-// CHAT SHIELD — Pick the safest response in online chats
+// CHAT SHIELD, Pick the safest response in online chats
 // ============================================================
 
 import { useState, useEffect, useRef } from "react";
@@ -208,7 +208,7 @@ export default function ChatShield({ onHome }: { onHome: (xp?: number) => void }
           </span>
         </div>
 
-        {/* Fixed-height slot — no jumping */}
+        {/* Fixed-height slot, no jumping */}
         <div style={{ minHeight: 420 }}>
 
           {/* Chat bubble */}

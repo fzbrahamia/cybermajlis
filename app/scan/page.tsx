@@ -32,34 +32,34 @@ const SEV: Record<Severity, { color: string; bg: string; border: string; icon: s
     summaryAr:(d,t,tp)=>`أكدت ${d} من أصل ${t} أداة أمنية أن هذا ${tp} خطير. لا تفتحه.` },
   unknown:    { color:"#6b7280", bg:"rgba(107,114,128,0.07)", border:"rgba(107,114,128,0.2)",  icon:"❓",
     label:"Unknown",    labelAr:"غير معروف",
-    summary:()=>`No scan results found. The file may not have been analysed before — try uploading it directly.`,
-    summaryAr:()=>`لم يتم العثور على نتائج فحص. قد لا يكون الملف قد تم تحليله من قبل — جرّب رفعه مباشرةً.` },
+    summary:()=>`No scan results found. The file may not have been analysed before, try uploading it directly.`,
+    summaryAr:()=>`لم يتم العثور على نتائج فحص. قد لا يكون الملف قد تم تحليله من قبل، جرّب رفعه مباشرةً.` },
 };
 
 const ADVICE: Record<Severity, string[]> = {
   clean:      ["Results look safe, but still be cautious with files from unknown sources.", "Never share personal information through unexpected links, even clean-looking ones."],
   suspicious: ["Do not open or interact with this until you can confirm it is safe.", "Contact your IT department or a trusted person before proceeding.", "If you received this unexpectedly, report it to CERT.Qatar at cert.gov.qa"],
-  malicious:  ["Do not open this under any circumstances.", "If you already opened it — change your passwords immediately from a different device.", "If on a work device — contact your IT department right now.", "Report this to CERT.Qatar at cert.gov.qa and your bank if financial details may be at risk."],
+  malicious:  ["Do not open this under any circumstances.", "If you already opened it, change your passwords immediately from a different device.", "If on a work device, contact your IT department right now.", "Report this to CERT.Qatar at cert.gov.qa and your bank if financial details may be at risk."],
   unknown:    ["Try uploading the file directly instead of using the hash.", "If in doubt, don't open it."],
 };
 
 const ADVICE_AR: Record<Severity, string[]> = {
   clean:      ["تبدو النتائج آمنة، لكن توخَّ الحذر مع الملفات من مصادر غير معروفة.", "لا تشارك معلوماتك الشخصية عبر روابط غير متوقعة، حتى لو بدت نظيفة."],
   suspicious: ["لا تفتح هذا أو تتفاعل معه حتى تتأكد من سلامته.", "تواصل مع قسم تقنية المعلومات أو شخصاً موثوقاً قبل المتابعة.", "إذا تلقيته بشكل غير متوقع، بلّغ عنه لـ CERT.Qatar على cert.gov.qa"],
-  malicious:  ["لا تفتح هذا تحت أي ظرف.", "إذا فتحته بالفعل — غيّر كلمات مرورك فوراً من جهاز مختلف.", "إذا كان على جهاز عمل — تواصل مع قسم تقنية المعلومات الآن.", "بلّغ عنه لـ CERT.Qatar على cert.gov.qa وبنكك إذا كانت بياناتك المالية في خطر."],
+  malicious:  ["لا تفتح هذا تحت أي ظرف.", "إذا فتحته بالفعل، غيّر كلمات مرورك فوراً من جهاز مختلف.", "إذا كان على جهاز عمل، تواصل مع قسم تقنية المعلومات الآن.", "بلّغ عنه لـ CERT.Qatar على cert.gov.qa وبنكك إذا كانت بياناتك المالية في خطر."],
   unknown:    ["جرّب رفع الملف مباشرةً بدلاً من استخدام البصمة.", "في حال الشك، لا تفتحه."],
 };
 
 const LOADING_MSGS: Record<ScanType, string[]> = {
   url:  ["Submitting link to VirusTotal…", "Checking against 70+ security engines…", "Almost done…"],
   hash: ["Looking up hash in VirusTotal database…", "Retrieving scan history…"],
-  file: ["Uploading file securely…", "Scanning with 70+ security engines…", "This can take up to 90 seconds for new files…", "Still scanning — almost there…"],
+  file: ["Uploading file securely…", "Scanning with 70+ security engines…", "This can take up to 90 seconds for new files…", "Still scanning, almost there…"],
 };
 
 const LOADING_MSGS_AR: Record<ScanType, string[]> = {
   url:  ["جارٍ إرسال الرابط إلى VirusTotal…", "جارٍ الفحص باستخدام أكثر من 70 محرك أمني…", "اقتربنا من الانتهاء…"],
   hash: ["جارٍ البحث عن البصمة في قاعدة بيانات VirusTotal…", "جارٍ استرداد سجل الفحص…"],
-  file: ["جارٍ رفع الملف بأمان…", "جارٍ الفحص بأكثر من 70 محرك أمني…", "قد يستغرق الأمر حتى 90 ثانية للملفات الجديدة…", "لا يزال الفحص جارياً — اقتربنا من الانتهاء…"],
+  file: ["جارٍ رفع الملف بأمان…", "جارٍ الفحص بأكثر من 70 محرك أمني…", "قد يستغرق الأمر حتى 90 ثانية للملفات الجديدة…", "لا يزال الفحص جارياً، اقتربنا من الانتهاء…"],
 };
 
 const TYPE_LABEL_AR: Record<ScanType, string> = { url: "الرابط", file: "الملف", hash: "البصمة" };
@@ -155,8 +155,8 @@ export default function ScanPage() {
           <div style={{ width:44, height:2, background:"linear-gradient(90deg,#632024,transparent)", marginBottom:12 }}/>
           <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"1rem", color:"#5C4033", lineHeight:1.75, maxWidth:540 }}>
             {isAR
-              ? "افحص أي ملف أو رابط أو بصمة ملف باستخدام أكثر من 70 أداة أمنية. النتائج موضّحة بلغة بسيطة — لا تحتاج خبرة تقنية."
-              : "Check any suspicious file, link, or file hash against 70+ security tools. Results are explained in plain language — no technical knowledge needed."}
+              ? "افحص أي ملف أو رابط أو بصمة ملف باستخدام أكثر من 70 أداة أمنية. النتائج موضّحة بلغة بسيطة، لا تحتاج خبرة تقنية."
+              : "Check any suspicious file, link, or file hash against 70+ security tools. Results are explained in plain language, no technical knowledge needed."}
           </p>
         </div>
 
@@ -242,7 +242,7 @@ export default function ScanPage() {
             <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
             <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.72rem", letterSpacing:"0.15em", color:"rgba(99,32,36,0.7)", marginBottom:6 }}>{loadMsg}</div>
             {mode === "file" && <div style={{ fontSize:11, color:"rgba(99,32,36,0.35)", marginTop:4 }}>
-              {isAR ? "قد يستغرق فحص الملفات 60-90 ثانية" : "File scans can take 60–90 seconds"}
+              {isAR ? "قد يستغرق فحص الملفات 60-90 ثانية" : "File scans can take 60-90 seconds"}
             </div>}
           </div>
         )}
@@ -343,8 +343,8 @@ export default function ScanPage() {
                 {flagged.length === 0 && (
                   <div style={{ padding:"10px 14px", background:"rgba(22,163,74,0.06)", borderRadius:8, border:"1px solid rgba(22,163,74,0.2)", fontSize:13, color:"#16a34a", fontFamily:"'Crimson Pro',serif", marginBottom:10 }}>
                     {isAR
-                      ? `✓ لم يُصنِّف أي محرك هذا كخطير — أعادت جميع ${result.total} أداة نتائج نظيفة.`
-                      : `✓ No engines flagged this — all ${result.total} tools returned clean results.`}
+                      ? `✓ لم يُصنِّف أي محرك هذا كخطير، أعادت جميع ${result.total} أداة نتائج نظيفة.`
+                      : `✓ No engines flagged this, all ${result.total} tools returned clean results.`}
                   </div>
                 )}
 
@@ -373,8 +373,8 @@ export default function ScanPage() {
                   </div>
                   <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.93rem", color:"#5C4033", lineHeight:1.7, margin:"0 0 8px" }}>
                     {isAR
-                      ? "إذا تلقيته عبر رسالة أو بريد إلكتروني، بلّغ عنه لـ CERT.Qatar — الجهة الوطنية للأمن السيبراني."
-                      : "If you received this through a message or email, report it to CERT.Qatar — the National Cybersecurity Agency."}
+                      ? "إذا تلقيته عبر رسالة أو بريد إلكتروني، بلّغ عنه لـ CERT.Qatar, الجهة الوطنية للأمن السيبراني."
+                      : "If you received this through a message or email, report it to CERT.Qatar, the National Cybersecurity Agency."}
                   </p>
                   <a href="https://www.cert.gov.qa" target="_blank" rel="noreferrer"
                     style={{ fontFamily:"'Cinzel',serif", fontSize:"0.6rem", letterSpacing:"0.12em", color:"#632024", textDecoration:"none", fontWeight:700 }}>

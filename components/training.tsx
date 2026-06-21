@@ -8,69 +8,69 @@ const CHARS = {
     name: "Saqr", role: "Threat Detection", color: "#D5B893", img: "/characters/saqr.GIF",
     bg: "linear-gradient(160deg,#100900,#1c1100)",
     title: "Alert Triage Lab",
-    welcome: "In threat detection, speed and accuracy are everything. I'll give you 8 live alerts straight from our SIEM. Triage each one — True Positive, False Positive, or Needs Investigation. I'll tell you exactly where you got it right and where you didn't.",
+    welcome: "In threat detection, speed and accuracy are everything. I'll give you 8 live alerts straight from our SIEM. Triage each one, True Positive, False Positive, or Needs Investigation. I'll tell you exactly where you got it right and where you didn't.",
   },
   oryx: {
     name: "Oryx", role: "Risk Assessor", color: "#818cf8", img: "/characters/oryx.GIF",
     bg: "linear-gradient(160deg,#06061a,#0d0d2e)",
     title: "Risk Assessment Chamber",
-    welcome: "Risk is two numbers multiplied: how likely it is, and how badly it hurts. I'll give you 5 real scenarios. Rate the likelihood, rate the impact, recommend a control. Then I'll show you where your judgment aligns with mine — and where it doesn't.",
+    welcome: "Risk is two numbers multiplied: how likely it is, and how badly it hurts. I'll give you 5 real scenarios. Rate the likelihood, rate the impact, recommend a control. Then I'll show you where your judgment aligns with mine, and where it doesn't.",
   },
   thalab: {
     name: "Tha'lab", role: "Forensics", color: "#f59e0b", img: "/characters/fox.GIF",
     bg: "linear-gradient(160deg,#110900,#1d1000)",
     title: "Digital Forensics Workshop",
-    welcome: "Attackers leave traces. Always. You'll see 10 log entries from a real incident — some are attack artifacts, some are normal noise. Tag each one. After you're done, I'll show you exactly what happened and in what order.",
+    welcome: "Attackers leave traces. Always. You'll see 10 log entries from a real incident, some are attack artifacts, some are normal noise. Tag each one. After you're done, I'll show you exactly what happened and in what order.",
   },
   hisan: {
     name: "Hisan", role: "Incident Response", color: "#f87171", img: "/characters/hisan.GIF",
     bg: "linear-gradient(160deg,#130000,#210808)",
     title: "Incident Response Simulator",
-    welcome: "When a real incident hits, every decision has a consequence and there is no undo. I'll walk you through a live ransomware attack — five critical decision points. Your choices determine whether this becomes a minor incident or a catastrophe.",
+    welcome: "When a real incident hits, every decision has a consequence and there is no undo. I'll walk you through a live ransomware attack, five critical decision points. Your choices determine whether this becomes a minor incident or a catastrophe.",
   },
   hamad: {
     name: "Hamad", role: "Awareness & Social Engineering", color: "#60a5fa", img: "/avatar.png",
     bg: "linear-gradient(160deg,#020b18,#061525)",
     title: "Social Engineering Lab",
-    welcome: "I'm Hamad — I work in the Finance department. I'm not a security expert. But I've learned the hard way that attackers don't just target IT systems — they target people like me. Let's go through what I should have caught before it was too late.",
+    welcome: "I'm Hamad, I work in the Finance department. I'm not a security expert. But I've learned the hard way that attackers don't just target IT systems, they target people like me. Let's go through what I should have caught before it was too late.",
   },
 } as const;
 type CharId = keyof typeof CHARS;
 
 // ── Saqr data ────────────────────────────────────────────────────────────────
 const SAQR_ALERTS = [
-  { id:1, time:"02:14", src:"185.220.101.42 (Tor exit node)", dst:"10.0.1.55 — admin account",
+  { id:1, time:"02:14", src:"185.220.101.42 (Tor exit node)", dst:"10.0.1.55, admin account",
     type:"Failed Authentication ×847", sev:"high",
-    log:"FAILED LOGIN: user=admin — 847 attempts in 4 minutes\nSource IP: 185.220.101.42 (Tor exit node, NL)",
-    correct:"tp", why:"847 login attempts in 4 minutes from a Tor node is an active brute-force. TRUE POSITIVE — block the IP and lock the account immediately." },
+    log:"FAILED LOGIN: user=admin, 847 attempts in 4 minutes\nSource IP: 185.220.101.42 (Tor exit node, NL)",
+    correct:"tp", why:"847 login attempts in 4 minutes from a Tor node is an active brute-force. TRUE POSITIVE, block the IP and lock the account immediately." },
   { id:2, time:"09:03", src:"WKSTN-08 (h.alqatari)", dst:"External / C2",
-    type:"Encoded PowerShell — Outlook parent", sev:"critical",
+    type:"Encoded PowerShell, Outlook parent", sev:"critical",
     log:"Process: powershell.exe -EncodedCommand UwB0AGEAcgB0...\nParent: OUTLOOK.EXE (PID 4821)",
-    correct:"tp", why:"Outlook spawning encoded PowerShell is a textbook phishing payload. This is an Emotet-style dropper. TRUE POSITIVE — isolate WKSTN-08 immediately and capture memory." },
-  { id:3, time:"14:22", src:"WKSTN-12 (standard employee)", dst:"10.0.0.0/16 — 254 hosts",
+    correct:"tp", why:"Outlook spawning encoded PowerShell is a textbook phishing payload. This is an Emotet-style dropper. TRUE POSITIVE, isolate WKSTN-08 immediately and capture memory." },
+  { id:3, time:"14:22", src:"WKSTN-12 (standard employee)", dst:"10.0.0.0/16, 254 hosts",
     type:"Internal Network Scan", sev:"medium",
     log:"nmap SYN scan from WKSTN-12 → /16 subnet\nPorts: 22, 80, 443, 3389 | User: m.hassan",
     correct:"inv", why:"Could be IT doing network inventory OR an attacker doing lateral movement recon. The user is a standard employee, not IT. INVESTIGATE FURTHER before classifying." },
   { id:4, time:"23:47", src:"WKSTN-15 (h.alqatari)", dst:"api.transfernow.net",
-    type:"Large Data Upload — Off Hours", sev:"high",
+    type:"Large Data Upload, Off Hours", sev:"high",
     log:"HTTPS POST → api.transfernow.net\nSize: 287MB | User: h.alqatari | Time: 23:47 local",
-    correct:"tp", why:"287MB upload to a file-sharing site at midnight by a regular employee is almost certainly data exfiltration. TRUE POSITIVE — freeze the account and pull the connection logs." },
+    correct:"tp", why:"287MB upload to a file-sharing site at midnight by a regular employee is almost certainly data exfiltration. TRUE POSITIVE, freeze the account and pull the connection logs." },
   { id:5, time:"03:12", src:"WKSTN-19 (m.hassan)", dst:"FILESERVER-01 /HR/",
     type:"After-Hours File Access", sev:"medium",
     log:"User m.hassan accessed /HR/payroll/Q1-2025.xlsx at 03:12\n6 payroll files opened in 8 minutes",
-    correct:"inv", why:"After-hours access to HR payroll could be a legitimate late worker OR an insider threat. Unusual but not conclusive. INVESTIGATE FURTHER — verify with the employee before escalating." },
+    correct:"inv", why:"After-hours access to HR payroll could be a legitimate late worker OR an insider threat. Unusual but not conclusive. INVESTIGATE FURTHER, verify with the employee before escalating." },
   { id:6, time:"11:04", src:"WKSTN-33", dst:"ghost.update-service.xyz",
-    type:"DNS Query — Threat Intel Flagged Domain", sev:"critical",
+    type:"DNS Query, Threat Intel Flagged Domain", sev:"critical",
     log:"DNS: ghost.update-service.xyz | Domain age: 6 days\nThreat intel hits: 3 feeds (Abuse.ch, Feodo, OTX)",
-    correct:"tp", why:"A 6-day-old domain appearing in 3 threat intel feeds is almost certainly C2 infrastructure. TRUE POSITIVE — WKSTN-33 is beaconing. Isolate immediately and pull the process tree." },
+    correct:"tp", why:"A 6-day-old domain appearing in 3 threat intel feeds is almost certainly C2 infrastructure. TRUE POSITIVE, WKSTN-33 is beaconing. Isolate immediately and pull the process tree." },
   { id:7, time:"16:30", src:"WKSTN-55 (it.helpdesk.admin)", dst:"Internal",
-    type:"Antivirus Alert — PUA Quarantined", sev:"low",
+    type:"Antivirus Alert, PUA Quarantined", sev:"low",
     log:"AV quarantined: Advanced_IP_Scanner_v3.exe\nClassification: PUA | User: it.helpdesk.admin",
-    correct:"fp", why:"Advanced IP Scanner is a legitimate IT tool commonly misclassified as PUA. The user is an IT admin. FALSE POSITIVE — whitelist the tool for IT accounts and close the alert." },
+    correct:"fp", why:"Advanced IP Scanner is a legitimate IT tool commonly misclassified as PUA. The user is an IT admin. FALSE POSITIVE, whitelist the tool for IT accounts and close the alert." },
   { id:8, time:"08:55", src:"41.156.x.x (Cairo, EG)", dst:"vpn.company.qa",
-    type:"VPN Auth — Unusual Location", sev:"low",
+    type:"VPN Auth, Unusual Location", sev:"low",
     log:"VPN AUTH SUCCESS: user=sara.m | Location: Cairo, EG\nPrevious: Doha, QA (90 min ago) | MFA: ✓ verified",
-    correct:"fp", why:"MFA was verified and Doha→Cairo in 90 minutes is geographically plausible. The unusual-location flag is expected for travelling staff. FALSE POSITIVE — log for awareness, no action needed." },
+    correct:"fp", why:"MFA was verified and Doha→Cairo in 90 minutes is geographically plausible. The unusual-location flag is expected for travelling staff. FALSE POSITIVE, log for awareness, no action needed." },
 ];
 
 // ── Oryx data ────────────────────────────────────────────────────────────────
@@ -81,64 +81,64 @@ const ORYX_SCENARIOS = [
     controls:[
       {id:"mitigate",label:"Patch immediately and add a WAF"},
       {id:"monitor", label:"Enable enhanced monitoring and logging"},
-      {id:"accept",  label:"Accept the risk — patching causes downtime"},
+      {id:"accept",  label:"Accept the risk, patching causes downtime"},
       {id:"transfer",label:"Transfer risk via cyber insurance"},
     ],
-    why:"L4 — known exploits exist for Apache 2.2 and it's easily discoverable. I5 — public breach means customer PII exposure and regulatory penalties. Patching + WAF is the only acceptable response here." },
+    why:"L4, known exploits exist for Apache 2.2 and it's easily discoverable. I5, public breach means customer PII exposure and regulatory penalties. Patching + WAF is the only acceptable response here." },
   { id:2, title:"Stolen company laptop (full-disk encryption active)",
     detail:"Laptop reported stolen. BitLocker + TPM + PIN required on boot. Remote wipe initiated within 30 minutes of report.",
     expertL:2, expertI:2, correctControl:"accept",
     controls:[
       {id:"mitigate",label:"Mandate a new device security policy for all staff"},
       {id:"monitor", label:"Audit all systems the employee had access to"},
-      {id:"accept",  label:"Accept residual risk — encryption protects the data"},
+      {id:"accept",  label:"Accept residual risk, encryption protects the data"},
       {id:"transfer",label:"File a police report and claim insurance"},
     ],
-    why:"L2 — recovering data from a BitLocker device without the PIN is extremely difficult. I2 — encryption + remote wipe makes an actual breach very unlikely. Accepting low residual risk is the correct and proportionate response." },
+    why:"L2, recovering data from a BitLocker device without the PIN is extremely difficult. I2, encryption + remote wipe makes an actual breach very unlikely. Accepting low residual risk is the correct and proportionate response." },
   { id:3, title:"Shared admin account used by 3 IT staff",
     detail:"Single 'admin' account for all server management. Password unchanged for 18 months. No MFA. No individual audit trail.",
     expertL:5, expertI:4, correctControl:"mitigate",
     controls:[
       {id:"mitigate",label:"Assign individual admin accounts with MFA immediately"},
       {id:"monitor", label:"Add detailed logging to the shared account"},
-      {id:"accept",  label:"Accept — IT staff are trusted employees"},
+      {id:"accept",  label:"Accept, IT staff are trusted employees"},
       {id:"transfer",label:"Document and schedule a fix next quarter"},
     ],
-    why:"L5 — shared credentials are frequently already leaked without anyone knowing. I4 — a compromised admin account means full domain access with no accountability and no quick revocation path. This cannot wait." },
+    why:"L5, shared credentials are frequently already leaked without anyone knowing. I4, a compromised admin account means full domain access with no accountability and no quick revocation path. This cannot wait." },
   { id:4, title:"Windows XP controlling server room HVAC",
     detail:"Single XP machine manages air conditioning for the primary data centre. Network-isolated but connected to corporate VLAN for vendor remote access.",
     expertL:3, expertI:5, correctControl:"mitigate",
     controls:[
       {id:"mitigate",label:"Isolate from VLAN and deploy compensating controls"},
       {id:"monitor", label:"Monitor all traffic to and from the device"},
-      {id:"accept",  label:"Accept — it's a minor system with limited access"},
+      {id:"accept",  label:"Accept, it's a minor system with limited access"},
       {id:"transfer",label:"Make the HVAC vendor responsible for its security"},
     ],
-    why:"L3 — not internet-facing, but VLAN access is a viable pivot path for an attacker already inside the network. I5 — HVAC failure in the data centre could destroy millions in hardware. Never accept catastrophic-impact risks, even at moderate likelihood." },
+    why:"L3, not internet-facing, but VLAN access is a viable pivot path for an attacker already inside the network. I5, HVAC failure in the data centre could destroy millions in hardware. Never accept catastrophic-impact risks, even at moderate likelihood." },
   { id:5, title:"Staff phishing simulation: 38% click rate",
     detail:"Quarterly phishing simulation shows 38% of staff clicked the link. Finance and HR: 55% click rate. No mandatory awareness training exists.",
     expertL:5, expertI:4, correctControl:"mitigate",
     controls:[
       {id:"mitigate",label:"Mandatory training programme + quarterly simulations"},
       {id:"monitor", label:"Deploy advanced email filtering and sandbox attachments"},
-      {id:"accept",  label:"Accept — some clicking is inevitable"},
+      {id:"accept",  label:"Accept, some clicking is inevitable"},
       {id:"transfer",label:"Add phishing coverage to cyber insurance"},
     ],
-    why:"L5 — 38% means an attacker only needs to send 3 emails to guarantee one victim. I4 — phishing is the #1 initial access vector and one click can mean full domain compromise. Technical controls help but the root cause is human — training is non-optional." },
+    why:"L5, 38% means an attacker only needs to send 3 emails to guarantee one victim. I4, phishing is the #1 initial access vector and one click can mean full domain compromise. Technical controls help but the root cause is human, training is non-optional." },
 ];
 
 // ── Tha'lab data ──────────────────────────────────────────────────────────────
 const THALAB_ENTRIES = [
-  { id:1,  time:"07:45", event:"VPN auth success — user: h.alqatari — source: 185.220.x.x (Amsterdam, NL)",           isAttack:true,  label:"Initial Access — attacker authenticates with stolen credentials from overseas" },
-  { id:2,  time:"08:12", event:"OUTLOOK.EXE opened email attachment: shipping_update_Q2.xlsm",                          isAttack:true,  label:"Delivery — victim opens malicious macro-enabled Excel document" },
-  { id:3,  time:"08:14", event:"EXCEL.EXE → CMD.EXE → powershell.exe -EncodedCommand [base64 blob]",                   isAttack:true,  label:"Execution — macro triggers encoded PowerShell to download payload" },
-  { id:4,  time:"08:20", event:"PowerShell downloaded 2.3MB binary from cdn77-redirect-service.xyz",                    isAttack:true,  label:"Payload Delivery — ransomware executable retrieved from attacker C2" },
-  { id:5,  time:"08:30", event:"wmic.exe executed: net view /all — 23 shares discovered across domain",                 isAttack:true,  label:"Reconnaissance — mapping accessible network shares before encryption begins" },
-  { id:6,  time:"08:45", event:"Scheduled task: Windows Defender definition update v1.403.1 — completed successfully",  isAttack:false, label:"Normal — routine AV update, completely unrelated to the attack" },
-  { id:7,  time:"09:00", event:"DNS: mail.cybermajlis.local → resolved — standard mail client activity",                isAttack:false, label:"Normal — legitimate email client doing a routine DNS lookup" },
-  { id:8,  time:"09:15", event:"vssadmin.exe delete shadows /all /quiet — executed as SYSTEM privilege",                isAttack:true,  label:"Defense Evasion — shadow copies deleted to prevent recovery without paying the ransom" },
-  { id:9,  time:"09:17", event:"Mass file writes: .locked extension on 1,240 files/min across 6 shares on FILE-SERVER-01", isAttack:true, label:"Impact — ransomware encryption actively in progress" },
-  { id:10, time:"09:52", event:"README_DECRYPT.txt created in 23 directories — demand: 4.5 BTC within 72 hours",        isAttack:true,  label:"Extortion — ransom notes deployed across all affected directories, attack complete" },
+  { id:1,  time:"07:45", event:"VPN auth success, user: h.alqatari, source: 185.220.x.x (Amsterdam, NL)",           isAttack:true,  label:"Initial Access, attacker authenticates with stolen credentials from overseas" },
+  { id:2,  time:"08:12", event:"OUTLOOK.EXE opened email attachment: shipping_update_Q2.xlsm",                          isAttack:true,  label:"Delivery, victim opens malicious macro-enabled Excel document" },
+  { id:3,  time:"08:14", event:"EXCEL.EXE → CMD.EXE → powershell.exe -EncodedCommand [base64 blob]",                   isAttack:true,  label:"Execution, macro triggers encoded PowerShell to download payload" },
+  { id:4,  time:"08:20", event:"PowerShell downloaded 2.3MB binary from cdn77-redirect-service.xyz",                    isAttack:true,  label:"Payload Delivery, ransomware executable retrieved from attacker C2" },
+  { id:5,  time:"08:30", event:"wmic.exe executed: net view /all, 23 shares discovered across domain",                 isAttack:true,  label:"Reconnaissance, mapping accessible network shares before encryption begins" },
+  { id:6,  time:"08:45", event:"Scheduled task: Windows Defender definition update v1.403.1, completed successfully",  isAttack:false, label:"Normal, routine AV update, completely unrelated to the attack" },
+  { id:7,  time:"09:00", event:"DNS: mail.cybermajlis.local → resolved, standard mail client activity",                isAttack:false, label:"Normal, legitimate email client doing a routine DNS lookup" },
+  { id:8,  time:"09:15", event:"vssadmin.exe delete shadows /all /quiet, executed as SYSTEM privilege",                isAttack:true,  label:"Defense Evasion, shadow copies deleted to prevent recovery without paying the ransom" },
+  { id:9,  time:"09:17", event:"Mass file writes: .locked extension on 1,240 files/min across 6 shares on FILE-SERVER-01", isAttack:true, label:"Impact, ransomware encryption actively in progress" },
+  { id:10, time:"09:52", event:"README_DECRYPT.txt created in 23 directories, demand: 4.5 BTC within 72 hours",        isAttack:true,  label:"Extortion, ransom notes deployed across all affected directories, attack complete" },
 ];
 
 // ── Hisan data ────────────────────────────────────────────────────────────────
@@ -152,9 +152,9 @@ const HISAN_STEPS = [
       {id:"b",text:"Immediately isolate FILE-SERVER-01 from the network",correct:true,
        consequence:"Isolation successful. Encryption stopped. 847GB locked but spread fully contained to one machine."},
       {id:"c",text:"Broadcast an all-staff alert to stop using the network",correct:false,
-       consequence:"Mass confusion. Staff flood IT. Encryption continued for 8 more minutes — 11,000 additional files locked — before isolation happened."},
+       consequence:"Mass confusion. Staff flood IT. Encryption continued for 8 more minutes, 11,000 additional files locked, before isolation happened."},
     ],
-    lesson:"In active ransomware every second costs files. Stop the spread first — always isolate before you investigate." },
+    lesson:"In active ransomware every second costs files. Stop the spread first, always isolate before you investigate." },
   { id:2, phase:"CONTAIN",
     situation:"FILE-SERVER-01 is isolated. Encryption stopped. Three workstations were accessing its shares during the attack window and may be compromised.",
     question:"What do you do next?",
@@ -163,10 +163,10 @@ const HISAN_STEPS = [
        consequence:"The 3 infected workstations re-encrypt the fresh restore within 40 minutes. You're back to zero."},
       {id:"b",text:"Isolate the 3 workstations and identify the infection source",correct:true,
        consequence:"All 4 machines isolated. Forensics confirms: a phishing email 70 minutes ago started this. No other systems infected."},
-      {id:"c",text:"Pay the ransom — downtime is costing too much",correct:false,
+      {id:"c",text:"Pay the ransom, downtime is costing too much",correct:false,
        consequence:"Payment attempted but the 3 workstations remain infected and active. 40% of gangs don't provide working decryptors anyway."},
     ],
-    lesson:"Never restore before containment is complete. Verify the full scope of infection first — or you restore clean data directly into an active attack." },
+    lesson:"Never restore before containment is complete. Verify the full scope of infection first, or you restore clean data directly into an active attack." },
   { id:3, phase:"ERADICATE",
     situation:"4 machines confirmed infected (FILE-SERVER-01 + 3 workstations). Infection vector confirmed: a macro in a phishing email attachment opened 80 minutes ago.",
     question:"How do you clean the infected machines?",
@@ -178,34 +178,34 @@ const HISAN_STEPS = [
       {id:"c",text:"Manually delete all files created after the infection timestamp",correct:false,
        consequence:"Ransomware injected into 3 legitimate system processes. Manual file deletion misses the persistence mechanism. Infection remains."},
     ],
-    lesson:"You cannot trust AV on a compromised machine — the malware likely disabled or patched it. Reimaging is the only guarantee of a clean state." },
+    lesson:"You cannot trust AV on a compromised machine, the malware likely disabled or patched it. Reimaging is the only guarantee of a clean state." },
   { id:4, phase:"RECOVER",
     situation:"All 4 machines are clean. Two backup options available: last night at 23:00 (pre-infection, verified clean) and a 7-day-old backup.",
     question:"Which backup do you restore from?",
     options:[
-      {id:"a",text:"Restore from the 23:00 backup — most recent clean state",correct:true,
+      {id:"a",text:"Restore from the 23:00 backup, most recent clean state",correct:true,
        consequence:"Restoration complete. Only ~8 hours of work lost. Business back online with minimal data loss."},
       {id:"b",text:"Restore from the 7-day backup to be absolutely certain",correct:false,
-       consequence:"A full week of work lost across all departments unnecessarily. The 23:00 backup was confirmed clean — this cost 5 days of data for zero security benefit."},
+       consequence:"A full week of work lost across all departments unnecessarily. The 23:00 backup was confirmed clean, this cost 5 days of data for zero security benefit."},
       {id:"c",text:"Ask staff to rebuild their work from memory and email history",correct:false,
        consequence:"Encrypted files cannot be opened without the decryption key. This approach fails completely and extends the incident by days."},
     ],
-    lesson:"Restore from the most recent backup that predates the infection — not the discovery. The attack began hours before the SIEM fired." },
+    lesson:"Restore from the most recent backup that predates the infection, not the discovery. The attack began hours before the SIEM fired." },
   { id:5, phase:"LESSONS LEARNED",
     situation:"Services fully restored. 6 hours of downtime total. Business is back online. The incident cost an estimated $180,000 in lost productivity.",
     question:"What is the essential final step?",
     options:[
       {id:"a",text:"Document a full incident report and implement security improvements",correct:true,
        consequence:"Root causes found: macro execution not blocked + 58% phishing click rate. Both immediately remediated. This attack path is now closed permanently."},
-      {id:"b",text:"Resume normal operations — the incident is contained and resolved",correct:false,
+      {id:"b",text:"Resume normal operations, the incident is contained and resolved",correct:false,
        consequence:"No lessons captured. The phishing template circulates among other threat actors. Same attack succeeds again 4 months later."},
       {id:"c",text:"Discipline the employee who opened the phishing attachment",correct:false,
-       consequence:"A blame culture forms. Staff stop reporting suspicious emails. The next phishing attempt goes unreported for 72 hours — far worse outcome than today."},
+       consequence:"A blame culture forms. Staff stop reporting suspicious emails. The next phishing attempt goes unreported for 72 hours, far worse outcome than today."},
     ],
-    lesson:"Post-incident review is not a formality — it turns a costly incident into a lasting improvement. Blame fixes nothing; process changes do." },
+    lesson:"Post-incident review is not a formality, it turns a costly incident into a lasting improvement. Blame fixes nothing; process changes do." },
 ];
 
-// ── Hamad data — Social Engineering Awareness ─────────────────────────────────
+// ── Hamad data, Social Engineering Awareness ─────────────────────────────────
 const HAMAD_SCENARIOS = [
   { id:1,
     type:"Email",
@@ -213,9 +213,9 @@ const HAMAD_SCENARIOS = [
     subject:"⚠️ URGENT: Your account will be locked in 2 hours",
     body:"Dear Employee,\n\nOur system detected unusual activity on your account. Your access will be suspended in 2 hours unless you verify your credentials immediately.\n\nClick here to verify: http://company-portal-update.net/verify\n\nIT Security Team",
     question:"What should Hamad do?",
-    redFlags:["Sender domain is 'company-helpdesk.net' — not the real company domain","Urgent deadline to create panic and stop you thinking clearly","Link goes to 'company-portal-update.net' — a different domain entirely","IT never asks you to verify credentials via email"],
+    redFlags:["Sender domain is 'company-helpdesk.net', not the real company domain","Urgent deadline to create panic and stop you thinking clearly","Link goes to 'company-portal-update.net', a different domain entirely","IT never asks you to verify credentials via email"],
     options:[
-      {id:"a",text:"Click the link and verify — don't want to lose access",correct:false,why:"The sender domain and link domain are both fake. This is a credential phishing attack. Clicking gives attackers your password."},
+      {id:"a",text:"Click the link and verify, don't want to lose access",correct:false,why:"The sender domain and link domain are both fake. This is a credential phishing attack. Clicking gives attackers your password."},
       {id:"b",text:"Call the real IT helpdesk directly using the number from the company intranet",correct:true,why:"Always verify suspicious IT requests through official channels. The IT team can confirm whether the email is real in 30 seconds."},
       {id:"c",text:"Ignore and delete it",correct:false,why:"Ignoring is better than clicking, but you should report it to your security team. Other colleagues may have received it too."},
     ] },
@@ -225,9 +225,9 @@ const HAMAD_SCENARIOS = [
     subject:"WhatsApp Message",
     body:"Hello, this is Ahmed from IT. We're doing an urgent security audit. Your employee account was flagged. I need your employee ID and the last 4 digits of your QID to verify your identity and unlock your account. Please respond quickly.",
     question:"What is the correct response?",
-    redFlags:["Contacting via personal WhatsApp — IT uses official channels","Asking for personal ID details over an unverified channel","'Ahmed from IT' with no surname or employee number","Urgency is a manipulation tactic"],
+    redFlags:["Contacting via personal WhatsApp, IT uses official channels","Asking for personal ID details over an unverified channel","'Ahmed from IT' with no surname or employee number","Urgency is a manipulation tactic"],
     options:[
-      {id:"a",text:"Send the information — it's just the last 4 digits, harmless",correct:false,why:"Combined with your employee ID, QID digits can enable identity fraud. IT will NEVER ask for this over WhatsApp. This is social engineering."},
+      {id:"a",text:"Send the information, it's just the last 4 digits, harmless",correct:false,why:"Combined with your employee ID, QID digits can enable identity fraud. IT will NEVER ask for this over WhatsApp. This is social engineering."},
       {id:"b",text:"Don't respond, block the number, and report to real IT security",correct:true,why:"Legitimate IT staff contact employees through official systems. Any unsolicited WhatsApp request for credentials is a social engineering attack."},
       {id:"c",text:"Ask them to call you on your desk phone instead",correct:false,why:"Closer, but still engaging with the attacker. The right move is to disconnect completely and report to your actual IT security team."},
     ] },
@@ -235,36 +235,36 @@ const HAMAD_SCENARIOS = [
     type:"Situation",
     from:"Parking lot, your office building",
     subject:"USB Drive Found",
-    body:"Hamad arrives at work and finds a USB drive in the parking lot. It has a label on it: 'SALARY BONUSES — Q2 2025 — CONFIDENTIAL'. Hamad is curious and wonders if it might contain information about upcoming bonuses.",
+    body:"Hamad arrives at work and finds a USB drive in the parking lot. It has a label on it: 'SALARY BONUSES, Q2 2025, CONFIDENTIAL'. Hamad is curious and wonders if it might contain information about upcoming bonuses.",
     question:"What should Hamad do with the USB drive?",
-    redFlags:["Found USB drives are a classic attack — attackers drop them deliberately","The enticing label (salary bonuses) is designed to make you plug it in","Even if it looks innocent, a USB can run malicious code the moment it's inserted","This attack is called 'baiting'"],
+    redFlags:["Found USB drives are a classic attack, attackers drop them deliberately","The enticing label (salary bonuses) is designed to make you plug it in","Even if it looks innocent, a USB can run malicious code the moment it's inserted","This attack is called 'baiting'"],
     options:[
-      {id:"a",text:"Plug it into his work computer quickly just to check what's on it",correct:false,why:"This is exactly what the attacker wants. A malicious USB can execute code the instant it's plugged in — before you even see any files. Used in major infrastructure attacks worldwide."},
-      {id:"b",text:"Take it home and check on his personal computer — safer that way",correct:false,why:"Still dangerous. A malicious USB can compromise personal computers too, and personal data is valuable to attackers. Never plug unknown USB drives into ANY device."},
+      {id:"a",text:"Plug it into his work computer quickly just to check what's on it",correct:false,why:"This is exactly what the attacker wants. A malicious USB can execute code the instant it's plugged in, before you even see any files. Used in major infrastructure attacks worldwide."},
+      {id:"b",text:"Take it home and check on his personal computer, safer that way",correct:false,why:"Still dangerous. A malicious USB can compromise personal computers too, and personal data is valuable to attackers. Never plug unknown USB drives into ANY device."},
       {id:"c",text:"Hand it to the IT security team without plugging it in anywhere",correct:true,why:"Correct. The IT security team can safely inspect it in an isolated environment. Never plug unknown USB drives into any device, ever. The curiosity bait is the attack."},
     ] },
   { id:4,
     type:"Email",
     from:"support@linkedin.com",
-    subject:"Microsoft Security Alert — Action Required",
+    subject:"Microsoft Security Alert, Action Required",
     body:"We've detected unusual sign-in activity on your Microsoft 365 account.\n\nTo secure your account, please verify your identity immediately:\n→ Click here to verify\n\nIf you don't verify within 24 hours, your account will be suspended.\n\nMicrosoft Security Team",
     question:"How should Hamad handle this?",
     redFlags:["Microsoft does NOT send security alerts via LinkedIn email","The sender would be @microsoft.com for real alerts, not @linkedin.com","Legitimate alerts appear inside the Microsoft 365 portal itself","'24 hours or suspended' is urgency manipulation"],
     options:[
-      {id:"a",text:"Click the verification link — Microsoft security alerts are important",correct:false,why:"Microsoft never sends 365 security alerts through LinkedIn emails. This is credential phishing. The link leads to a fake Microsoft login page."},
-      {id:"b",text:"Go directly to microsoft.com/security in a fresh browser tab and check there",correct:true,why:"Always navigate directly to official sites — never through links in emails. Real Microsoft security alerts appear inside your M365 account portal, not via email links."},
+      {id:"a",text:"Click the verification link, Microsoft security alerts are important",correct:false,why:"Microsoft never sends 365 security alerts through LinkedIn emails. This is credential phishing. The link leads to a fake Microsoft login page."},
+      {id:"b",text:"Go directly to microsoft.com/security in a fresh browser tab and check there",correct:true,why:"Always navigate directly to official sites, never through links in emails. Real Microsoft security alerts appear inside your M365 account portal, not via email links."},
       {id:"c",text:"Forward it to IT and wait",correct:false,why:"Forwarding is good, but don't click the link yourself before forwarding. Go directly to the official site to check your account status independently."},
     ] },
   { id:5,
     type:"Situation",
     from:"Your colleague Sara (in person)",
     subject:"Tailgating / Access Control",
-    body:"Hamad is entering the office building with his access card. Behind him is someone he vaguely recognises — maybe from another floor. They're carrying a heavy box and say 'Could you hold the door? I left my card at my desk.' They look like a normal employee.",
+    body:"Hamad is entering the office building with his access card. Behind him is someone he vaguely recognises, maybe from another floor. They're carrying a heavy box and say 'Could you hold the door? I left my card at my desk.' They look like a normal employee.",
     question:"What should Hamad do?",
-    redFlags:["This is called 'tailgating' — a physical social engineering attack","Appearing friendly and helpless creates social pressure to comply","Even if they look like an employee, you cannot verify they are one","Many data breaches begin with physical access gained this way"],
+    redFlags:["This is called 'tailgating', a physical social engineering attack","Appearing friendly and helpless creates social pressure to comply","Even if they look like an employee, you cannot verify they are one","Many data breaches begin with physical access gained this way"],
     options:[
-      {id:"a",text:"Hold the door — they look like they work here and the box looks heavy",correct:false,why:"Social pressure is exactly what the attacker relies on. Tailgating is a real attack technique. Letting an unverified person through bypasses your entire physical security system."},
-      {id:"b",text:"Apologise, let the door close, and direct them to reception to get a visitor pass",correct:true,why:"Correct — and the polite way to handle it. Reception can verify identity. Most real employees understand. If they react badly to a reasonable security request, that itself is a red flag."},
+      {id:"a",text:"Hold the door, they look like they work here and the box looks heavy",correct:false,why:"Social pressure is exactly what the attacker relies on. Tailgating is a real attack technique. Letting an unverified person through bypasses your entire physical security system."},
+      {id:"b",text:"Apologise, let the door close, and direct them to reception to get a visitor pass",correct:true,why:"Correct, and the polite way to handle it. Reception can verify identity. Most real employees understand. If they react badly to a reasonable security request, that itself is a red flag."},
       {id:"c",text:"Call them out loudly in front of everyone",correct:false,why:"Confrontation can create conflict and isn't necessary. Politely directing them to reception achieves the security goal without an awkward scene. De-escalation is always better."},
     ] },
 ];
@@ -310,7 +310,7 @@ function ResultPhase({ char, score, total, onBack }: { char: CharConfig; score: 
       <div style={{ fontSize:52, fontWeight:700, color:grade.color, margin:"18px 0 6px", fontFamily:"'JetBrains Mono'" }}>
         {score}<span style={{ fontSize:24, color:`${grade.color}70` }}>/{total}</span>
       </div>
-      <div style={{ fontSize:13, color:"#f5ede0aa", marginBottom:36 }}>{pct}% correct — {char.title}</div>
+      <div style={{ fontSize:13, color:"#f5ede0aa", marginBottom:36 }}>{pct}% correct, {char.title}</div>
       <button onClick={onBack}
         style={{ padding:"13px 40px", borderRadius:8, border:`1.5px solid ${char.color}55`, background:"transparent", color:char.color, fontSize:11, fontWeight:700, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}
         onMouseEnter={e => (e.currentTarget.style.background = `${char.color}12`)}
@@ -448,12 +448,12 @@ function OryxTraining({ char, onComplete, overrideScenarios }: { char: CharConfi
       </div>
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:20 }}>
         <div style={{ background:"rgba(255,255,255,0.025)", borderRadius:12, padding:"16px 18px", border:"1px solid rgba(255,255,255,0.07)" }}>
-          <div style={{ fontSize:10, color:"rgba(255,255,255,0.4)", letterSpacing:"0.15em", marginBottom:12 }}>LIKELIHOOD (1–5)</div>
+          <div style={{ fontSize:10, color:"rgba(255,255,255,0.4)", letterSpacing:"0.15em", marginBottom:12 }}>LIKELIHOOD (1-5)</div>
           {ratingBtns(likelihood, setLikelihood, submitted)}
           {submitted && <div style={{ marginTop:10, fontSize:11, color: expertColor(likelihood, sc.expertL) }}>Your: {likelihood} · Expert: {sc.expertL} {Math.abs(likelihood - sc.expertL) <= 1 ? "✓" : `(off by ${Math.abs(likelihood - sc.expertL)})`}</div>}
         </div>
         <div style={{ background:"rgba(255,255,255,0.025)", borderRadius:12, padding:"16px 18px", border:"1px solid rgba(255,255,255,0.07)" }}>
-          <div style={{ fontSize:10, color:"rgba(255,255,255,0.4)", letterSpacing:"0.15em", marginBottom:12 }}>IMPACT (1–5)</div>
+          <div style={{ fontSize:10, color:"rgba(255,255,255,0.4)", letterSpacing:"0.15em", marginBottom:12 }}>IMPACT (1-5)</div>
           {ratingBtns(impact, setImpact, submitted)}
           {submitted && <div style={{ marginTop:10, fontSize:11, color: expertColor(impact, sc.expertI) }}>Your: {impact} · Expert: {sc.expertI} {Math.abs(impact - sc.expertI) <= 1 ? "✓" : `(off by ${Math.abs(impact - sc.expertI)})`}</div>}
         </div>
@@ -817,7 +817,7 @@ export default function Training({ characterId }: { characterId: string }) {
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           <img src={char.img} alt={char.name} style={{ width:28, height:28, borderRadius:6, objectFit:"cover" }} />
           <span style={{ fontSize:13, fontWeight:600, color:"#f5ede0" }}>{char.name}</span>
-          <span style={{ fontSize:11, color:char.color, fontFamily:"'JetBrains Mono'" }}>— {char.title}</span>
+          <span style={{ fontSize:11, color:char.color, fontFamily:"'JetBrains Mono'" }}>, {char.title}</span>
         </div>
         {phase === "training" && (
           <div style={{ fontSize:10, color:"rgba(255,255,255,0.3)", fontFamily:"'JetBrains Mono'" }}>
@@ -836,11 +836,11 @@ export default function Training({ characterId }: { characterId: string }) {
           <div style={{ maxWidth:520, background:"rgba(255,255,255,0.03)", borderRadius:12, padding:"20px 24px", border:`1px solid ${char.color}15`, marginBottom:userHistory ? 20 : 36 }}>
             <p style={{ fontSize:14, color:"#f5ede0bb", lineHeight:1.85, margin:0 }}>{char.welcome}</p>
           </div>
-          {/* Returning user — offer adaptive mode */}
+          {/* Returning user, offer adaptive mode */}
           {userHistory && (["saqr","oryx","hamad"].includes(id)) && (
             <div style={{ maxWidth:520, background:`${char.color}08`, borderRadius:12, padding:"16px 20px", border:`1px solid ${char.color}25`, marginBottom:24, width:"100%" }}>
               <div style={{ fontSize:11, color:char.color, fontWeight:700, marginBottom:6, letterSpacing:"0.1em" }}>
-                🎯 Welcome back — {userHistory.attempts} attempt{userHistory.attempts!==1?"s":""} · Last score: {userHistory.lastScore}
+                🎯 Welcome back, {userHistory.attempts} attempt{userHistory.attempts!==1?"s":""} · Last score: {userHistory.lastScore}
               </div>
               <p style={{ fontSize:13, color:"#f5ede0aa", lineHeight:1.6, margin:"0 0 14px" }}>
                 Want a personalised set of questions based on your previous performance? Claude will generate fresh challenges targeting your weak areas.

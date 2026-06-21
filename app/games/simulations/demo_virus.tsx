@@ -122,8 +122,8 @@ export default function VirusForkBomb() {
 
         {showPrediction && !prediction && (
           <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", background:"rgba(0,0,0,0.85)", border:"1px solid #d2992250", borderRadius:12, padding:"20px 24px", zIndex:50, maxWidth:360, textAlign:"center" }}>
-            <div style={{ fontSize:11, color:"#d29922", fontWeight:700, letterSpacing:"0.15em", marginBottom:10 }}>RETURN VISITOR — PREDICT THE OUTCOME</div>
-            <p style={{ fontSize:12, color:"#c9d1d9", lineHeight:1.7, marginBottom:14 }}>You've seen this before. Before you click the file — what do you think will happen first?</p>
+            <div style={{ fontSize:11, color:"#d29922", fontWeight:700, letterSpacing:"0.15em", marginBottom:10 }}>RETURN VISITOR, PREDICT THE OUTCOME</div>
+            <p style={{ fontSize:12, color:"#c9d1d9", lineHeight:1.7, marginBottom:14 }}>You've seen this before. Before you click the file, what do you think will happen first?</p>
             {["CPU hits 100% and the system freezes", "Multiple CMD windows start opening rapidly", "The file deletes itself to hide evidence", "An error message appears immediately"].map((opt,i) => (
               <button key={i} onClick={() => setPrediction(opt)}
                 style={{ display:"block", width:"100%", margin:"4px 0", padding:"8px 12px", borderRadius:7, border:"1px solid rgba(255,255,255,0.1)", background:"rgba(255,255,255,0.03)", color:"#8b949e", fontSize:11, textAlign:"left", cursor:"pointer" }}>
@@ -147,7 +147,7 @@ export default function VirusForkBomb() {
         </div>
       </>}
 
-      {/* Running — first CMD window */}
+      {/* Running, first CMD window */}
       {phase === "running" && (
         <div style={{ position: "absolute", left: 50, top: 30, width: 460, minHeight: 200, background: "#000", border: "1px solid #888", borderRadius: "4px 4px 0 0", zIndex: 5, boxShadow: "2px 3px 12px rgba(0,0,0,.4)" }}>
           <div style={{ background: "linear-gradient(180deg, #3a7bd5, #2563a8)", padding: "3px 6px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>

@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 // KEYLOGGER DEMO
 // Left: A normal-looking text editor / login form
 // Right: Attacker's hidden panel showing every keystroke
-// captured in real-time — including backspaces and deletions
+// captured in real-time, including backspaces and deletions
 // ============================================================
 
 interface KeyLog {
@@ -169,7 +169,7 @@ export default function DemoKeylogger() {
         {/* Victim side */}
         <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", background: isLogin ? "#f5f5f5" : "#ffffff" }}>
           {isLogin ? (
-            /* Login form — looks like a normal website */
+            /* Login form, looks like a normal website */
             <div style={{ width: 380, background: "#fff", borderRadius: 12, padding: 32, boxShadow: "0 4px 24px rgba(0,0,0,.1)" }}>
               <div style={{ textAlign: "center", marginBottom: 24 }}>
                 <div style={{ fontSize: 32, marginBottom: 8 }}>{scenario.icon}</div>

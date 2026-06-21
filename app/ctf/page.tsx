@@ -1,7 +1,7 @@
 "use client";
 
 // ============================================================
-// THE MAJLIS TRIALS — main-site kids CTF
+// THE MAJLIS TRIALS, main-site kids CTF
 // A gentle Capture-The-Flag that introduces real CTF categories.
 // Sign-in required; progress saved via useCtfProgress.
 // ============================================================
@@ -189,7 +189,7 @@ export default function CtfPage() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   HUB — section overview
+   HUB, section overview
    ════════════════════════════════════════════════════════════ */
 function Hub({
   isAR, solved, solvedCount, totalPoints, onOpenSection,
@@ -243,7 +243,7 @@ function Hub({
         </div>
         {allDone && (
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, color: GOLD2, fontFamily: cinzel, fontWeight: 700, fontSize: 13 }}>
-            <Sparkles size={16} /> {isAR ? "أتممت كل التجارب — أنت بطل المجلس!" : "All trials complete — you are a Majlis champion!"}
+            <Sparkles size={16} /> {isAR ? "أتممت كل التجارب، أنت بطل المجلس!" : "All trials complete, you are a Majlis champion!"}
           </div>
         )}
       </div>
@@ -297,7 +297,7 @@ function Hub({
 }
 
 /* ════════════════════════════════════════════════════════════
-   SECTION VIEW — challenge list
+   SECTION VIEW, challenge list
    ════════════════════════════════════════════════════════════ */
 function SectionView({
   section, isAR, solved, onOpenChallenge, onBack,
@@ -375,7 +375,7 @@ function SectionView({
 }
 
 /* ════════════════════════════════════════════════════════════
-   CHALLENGE VIEW — puzzle + flag input
+   CHALLENGE VIEW, puzzle + flag input
    ════════════════════════════════════════════════════════════ */
 function ChallengeView({
   challenge, isAR, solved, onSolve, onBack,
@@ -521,7 +521,7 @@ function ChallengeView({
           </div>
           {status === "wrong" && (
             <div style={{ marginTop: 10, fontFamily: crimson, fontSize: "1rem", color: "#c0392b", display: "flex", alignItems: "center", gap: 6 }}>
-              {isAR ? "ليس بعد — تفحّص اللغز مرة أخرى وحاول ثانية." : "Not yet — look at the puzzle again and try once more."}
+              {isAR ? "ليس بعد، تفحّص اللغز مرة أخرى وحاول ثانية." : "Not yet, look at the puzzle again and try once more."}
             </div>
           )}
           <div style={{ marginTop: 10, fontFamily: crimson, fontStyle: "italic", fontSize: "0.92rem", color: "#8a6a4a" }}>
@@ -630,7 +630,7 @@ function PuzzleView({ puzzle, isAR, accent }: { puzzle: Puzzle; isAR: boolean; a
     );
   }
 
-  // hidden — invisible-ink (white text on white note, reveal on hover/select)
+  // hidden, invisible-ink (white text on white note, reveal on hover/select)
   return <HiddenNote puzzle={puzzle} isAR={isAR} />;
 }
 

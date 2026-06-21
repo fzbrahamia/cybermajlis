@@ -1,7 +1,7 @@
 "use client";
 
 // ============================================================
-// CALM CTF — "Flag Finders"
+// CALM CTF, "Flag Finders"
 // A very gentle Capture-The-Flag for the calm/neurodivergent
 // space. One clear task per track, tap-to-answer (no typing),
 // no timer, no animations, soft-blue palette. Sign-in required
@@ -111,7 +111,7 @@ const TRACKS: Track[] = [
       { en: "Today's weather", ar: "طقس اليوم", correct: false },
       { en: "Their favourite food", ar: "طعامهم المفضّل", correct: false },
     ],
-    success: { en: "Right — the post gave away the dog's name, Max.", ar: "صحيح — كشف المنشور اسم الكلب، Max." },
+    success: { en: "Right, the post gave away the dog's name, Max.", ar: "صحيح، كشف المنشور اسم الكلب، Max." },
     lesson: {
       en: "Be careful what you share online. Even a pet's name can help a stranger guess a password or a secret answer.",
       ar: "انتبه لما تشاركه على الإنترنت. حتى اسم حيوان أليف قد يساعد غريباً على تخمين كلمة مرور أو إجابة سرّية.",
@@ -151,10 +151,10 @@ const TRACKS: Track[] = [
       { en: "FUN 🎈", ar: "FUN 🎈", correct: false },
       { en: "RUN 🏃", ar: "RUN 🏃", correct: false },
     ],
-    success: { en: "Yes! S–U–N spells SUN.", ar: "نعم! S–U–N تكوّن SUN." },
+    success: { en: "Yes! S, U, N spells SUN.", ar: "نعم! S, U, N تكوّن SUN." },
     lesson: {
-      en: "Hiding a word in the first letters of each line is a sneaky trick called steganography — a message hidden inside another.",
-      ar: "إخفاء كلمة في الأحرف الأولى لكل سطر حيلة لطيفة تُسمّى «إخفاء المعلومات» — رسالة مخبّأة داخل أخرى.",
+      en: "Hiding a word in the first letters of each line is a sneaky trick called steganography, a message hidden inside another.",
+      ar: "إخفاء كلمة في الأحرف الأولى لكل سطر حيلة لطيفة تُسمّى «إخفاء المعلومات», رسالة مخبّأة داخل أخرى.",
     },
   },
 ];
@@ -162,11 +162,11 @@ const TRACKS: Track[] = [
 const UI = {
   en: {
     heroTitle: "Flag Finders",
-    heroSub: "Five little challenges. Find the hidden answer in each one. Take your time — there is no timer.",
+    heroSub: "Five little challenges. Find the hidden answer in each one. Take your time, there is no timer.",
     progress: (n: number) => `${n} of ${TRACKS.length} found`,
     realLabel: "Real name:",
     tapHint: "Tap your answer",
-    tryAgain: "Not quite — have another look. You can try again 💙",
+    tryAgain: "Not quite, have another look. You can try again 💙",
     learned: "What you learned",
     back: "← Back to challenges",
     allDone: "You found every flag! Amazing work.",
@@ -178,11 +178,11 @@ const UI = {
   },
   ar: {
     heroTitle: "صائدو الأعلام",
-    heroSub: "خمسة تحدّيات صغيرة. اعثر على الإجابة المخفية في كل واحد. خذ وقتك — لا يوجد عدّاد.",
+    heroSub: "خمسة تحدّيات صغيرة. اعثر على الإجابة المخفية في كل واحد. خذ وقتك، لا يوجد عدّاد.",
     progress: (n: number) => `وجدت ${n} من ${TRACKS.length}`,
     realLabel: "الاسم الحقيقي:",
     tapHint: "اضغط على إجابتك",
-    tryAgain: "ليس تماماً — انظر مرة أخرى. يمكنك المحاولة ثانية 💙",
+    tryAgain: "ليس تماماً، انظر مرة أخرى. يمكنك المحاولة ثانية 💙",
     learned: "ماذا تعلّمت",
     back: "← العودة للتحدّيات",
     allDone: "وجدت كل الأعلام! عمل رائع.",

@@ -17,7 +17,7 @@ const ANALYSTS_BASE = [
   { id: "hisan", emoji: "🐴", img: "/characters/hisan.GIF",profile:"/characters/ArabianHorse.jpeg", name: "Hisan",  full: "Arabian Horse",  roleKey: "hisan",  color: "#ef4444" },
 ];
 
-// Hamad — the victim employee. Add /characters/hamad.GIF + /characters/hamad.jpeg to your assets.
+// Hamad, the victim employee. Add /characters/hamad.GIF + /characters/hamad.jpeg to your assets.
 const HAMAD = {
   id: "hamad", emoji: "🧑‍💻",
   img: "/characters/hamad.GIF",
@@ -31,36 +31,36 @@ const HAMAD_SCENARIOS: Record<string, { step: number; msg: string; analystId: st
     step: 1,
     msg: "I think I made a mistake 😰 An email from 'IT Support' asked me to verify my login. I entered my credentials before I realised it looked off... what do I do?",
     analystId: "saqr",
-    analystReply: "Hamad — stop touching the keyboard. Change your password RIGHT NOW from your phone, not the laptop. We're isolating your machine from the network.",
-    recovery: "Password changed, machine is clean. Thank you for acting so fast. I'll never enter credentials from an email link again — lesson absolutely learned.",
+    analystReply: "Hamad, stop touching the keyboard. Change your password RIGHT NOW from your phone, not the laptop. We're isolating your machine from the network.",
+    recovery: "Password changed, machine is clean. Thank you for acting so fast. I'll never enter credentials from an email link again, lesson absolutely learned.",
   },
   virus: {
     step: 0,
     msg: "My antivirus just went off like an alarm and now everything is crawling. I didn't open anything weird... should I restart it?",
     analystId: "hisan",
-    analystReply: "Hamad — do NOT restart. Leave it exactly as is, we need the memory state. Disconnect from WiFi physically if you can. IT is on the way to you now.",
-    recovery: "Reimaged from yesterday's backup. Lost maybe 15 minutes of work. You all responded in under 4 minutes — really impressive.",
+    analystReply: "Hamad, do NOT restart. Leave it exactly as is, we need the memory state. Disconnect from WiFi physically if you can. IT is on the way to you now.",
+    recovery: "Reimaged from yesterday's backup. Lost maybe 15 minutes of work. You all responded in under 4 minutes, really impressive.",
   },
   ransomware: {
     step: 2,
-    msg: "🚨 MY FILES. Everything in my documents folder is gone — replaced with something called README_DECRYPT.txt. There's a Bitcoin address on my screen. My entire project is encrypted.",
+    msg: "🚨 MY FILES. Everything in my documents folder is gone, replaced with something called README_DECRYPT.txt. There's a Bitcoin address on my screen. My entire project is encrypted.",
     analystId: "saqr",
-    analystReply: "Hamad — do NOT pay. Hard shutdown your machine right now, hold the power button. We have a 6am backup of everything. Your data is safe. Do not touch it.",
-    recovery: "6am backup fully restored. Lost about 3 hours of work but everything is recoverable. Hard lesson on attachments. Thank you all — this was terrifying.",
+    analystReply: "Hamad, do NOT pay. Hard shutdown your machine right now, hold the power button. We have a 6am backup of everything. Your data is safe. Do not touch it.",
+    recovery: "6am backup fully restored. Lost about 3 hours of work but everything is recoverable. Hard lesson on attachments. Thank you all, this was terrifying.",
   },
   rootkit: {
     step: 1,
-    msg: "This is strange — my antivirus icon disappeared from the taskbar and I can't reinstall it. Also getting an unusual login prompt I've never seen before.",
+    msg: "This is strange, my antivirus icon disappeared from the taskbar and I can't reinstall it. Also getting an unusual login prompt I've never seen before.",
     analystId: "thalab",
-    analystReply: "Hamad, that's a rootkit masking itself. Stop everything immediately. We'll need to reimage your machine — do not save or copy any files, they may be compromised.",
-    recovery: "Fresh OS image deployed, network drive backup restored. Rootkits are nasty — really glad the team caught the signature early.",
+    analystReply: "Hamad, that's a rootkit masking itself. Stop everything immediately. We'll need to reimage your machine, do not save or copy any files, they may be compromised.",
+    recovery: "Fresh OS image deployed, network drive backup restored. Rootkits are nasty, really glad the team caught the signature early.",
   },
   ddos: {
     step: 2,
-    msg: "I'm on a live client call and all our web apps are down — they can't access anything. Getting a lot of pressure. Any idea on restoration ETA? What do I tell them?",
+    msg: "I'm on a live client call and all our web apps are down, they can't access anything. Getting a lot of pressure. Any idea on restoration ETA? What do I tell them?",
     analystId: "oryx",
-    analystReply: "Hamad — tell them we're experiencing a service disruption and estimate 15-20 minutes to full restoration. Don't mention DDoS. We're rerouting traffic now.",
-    recovery: "Services back up. Client stayed on the call — 18 minutes was acceptable to them. They didn't lose confidence. Thanks for handling it calmly.",
+    analystReply: "Hamad, tell them we're experiencing a service disruption and estimate 15-20 minutes to full restoration. Don't mention DDoS. We're rerouting traffic now.",
+    recovery: "Services back up. Client stayed on the call, 18 minutes was acceptable to them. They didn't lose confidence. Thanks for handling it calmly.",
   },
 };
 
@@ -68,33 +68,33 @@ const SCRIPT_VARIANTS: Record<string, Array<{ radio: string[]; stepChat: [string
   virus: [
     {
       radio: [
-        "ALERT: Virus detected disguised as invoice PDF — multiple users on email gateway flagged",
-        "WARNING: Payload executing from outlook.exe on WKSTN-14 — process injection underway",
-        "DETECTION: Memory injection into system process confirmed — antivirus signatures failing",
-        "PROPAGATION: Virus copying to 6 mapped network shares — write activity accelerating",
-        "CONTAINMENT: Network isolation applied — scanning all endpoints for persistence artifacts",
+        "ALERT: Virus detected disguised as invoice PDF, multiple users on email gateway flagged",
+        "WARNING: Payload executing from outlook.exe on WKSTN-14, process injection underway",
+        "DETECTION: Memory injection into system process confirmed, antivirus signatures failing",
+        "PROPAGATION: Virus copying to 6 mapped network shares, write activity accelerating",
+        "CONTAINMENT: Network isolation applied, scanning all endpoints for persistence artifacts",
       ],
       stepChat: [
-        ["Tracking the signature — it's hitting multiple users from the same spoofed sender domain.", "Risk HIGH. If this reaches the backup server we lose 72 hours of snapshots."],
-        ["Confirmed execution on WKSTN-14. Checking for lateral movement indicators now.", "Running memory forensics — payload appears fileless. No disk writes detected yet."],
-        ["Memory injection into NTDLL.DLL confirmed — this is why AV missed it entirely.", "Coordinating with WKSTN-14 user. Isolating the endpoint remotely right now."],
-        ["6 mapped drives affected. Pulling write logs to trace exactly which files were modified.", "Threat contained on primary endpoint. Starting remediation playbook — ETA 40 minutes."],
+        ["Tracking the signature, it's hitting multiple users from the same spoofed sender domain.", "Risk HIGH. If this reaches the backup server we lose 72 hours of snapshots."],
+        ["Confirmed execution on WKSTN-14. Checking for lateral movement indicators now.", "Running memory forensics, payload appears fileless. No disk writes detected yet."],
+        ["Memory injection into NTDLL.DLL confirmed, this is why AV missed it entirely.", "Coordinating with WKSTN-14 user. Isolating the endpoint remotely right now."],
+        ["6 mapped drives affected. Pulling write logs to trace exactly which files were modified.", "Threat contained on primary endpoint. Starting remediation playbook, ETA 40 minutes."],
         ["Baseline restored. Virus variant catalogued and submitted to threat intelligence feed.", "Post-incident report drafted. Recommending mandatory file attachment filtering policy update."],
       ],
     },
     {
       radio: [
         "SUSPICIOUS: Unknown executable auto-ran from unregistered removable media on WKSTN-07",
-        "PROPAGATION: Virus spreading via autorun to mapped network shares — 3 shares compromised",
-        "EVASION: Malware deleting own files post-execution — memory-only persistence confirmed",
-        "SPREAD: Admin shares being probed — network-wide propagation attempt underway",
-        "ISOLATION: Affected segment quarantined — full environment scan in progress",
+        "PROPAGATION: Virus spreading via autorun to mapped network shares, 3 shares compromised",
+        "EVASION: Malware deleting own files post-execution, memory-only persistence confirmed",
+        "SPREAD: Admin shares being probed, network-wide propagation attempt underway",
+        "ISOLATION: Affected segment quarantined, full environment scan in progress",
       ],
       stepChat: [
-        ["USB autorun event on WKSTN-07. Checking physical access logs for who used that machine today.", "Threat is a dropper variant. The USB was likely left in the building intentionally — physical security involved."],
-        ["3 shares compromised. Pushing autorun disable policy to all endpoints now via GPO.", "Fileless execution confirmed — capturing memory dump before isolation destroys evidence."],
-        ["Malware wiped its own footprint. Working from memory artifacts and network logs only.", "Physical security flagged — that USB device is not in our registered asset inventory."],
-        ["Admin share probe blocked. Temporary SMB traffic restrictions applied at perimeter firewall.", "Quarantine complete. No exfiltration indicators — this appears to be a destructive payload, not espionage."],
+        ["USB autorun event on WKSTN-07. Checking physical access logs for who used that machine today.", "Threat is a dropper variant. The USB was likely left in the building intentionally, physical security involved."],
+        ["3 shares compromised. Pushing autorun disable policy to all endpoints now via GPO.", "Fileless execution confirmed, capturing memory dump before isolation destroys evidence."],
+        ["Malware wiped its own footprint. Working from memory artifacts and network logs only.", "Physical security flagged, that USB device is not in our registered asset inventory."],
+        ["Admin share probe blocked. Temporary SMB traffic restrictions applied at perimeter firewall.", "Quarantine complete. No exfiltration indicators, this appears to be a destructive payload, not espionage."],
         ["Remediation complete. USB device controls being added to the next security policy review cycle.", "Incident documented. Recommending physical security audit for all unsecured USB access points in the building."],
       ],
     },
@@ -102,32 +102,32 @@ const SCRIPT_VARIANTS: Record<string, Array<{ radio: string[]; stepChat: [string
   phishing: [
     {
       radio: [
-        "WARNING: Credential harvesting page detected — users redirected from HR impersonation email",
-        "ALERT: User credentials submitted to external domain — account compromise confirmed",
+        "WARNING: Credential harvesting page detected, users redirected from HR impersonation email",
+        "ALERT: User credentials submitted to external domain, account compromise confirmed",
         "DETECTION: Attacker authenticated using harvested credentials from external IP in Eastern Europe",
         "LATERAL: Compromised account accessing resources significantly beyond normal user scope",
         "RECOVERY: Account locked, sessions terminated, password reset and MFA re-enrollment initiated",
       ],
       stepChat: [
-        ["Phishing domain mimics our HR portal exactly — even has a valid SSL cert. Blocking domain now.", "3 users clicked. Confirming who submitted credentials vs who just opened the link."],
-        ["One credential set confirmed stolen — active login from Eastern European IP right now.", "Terminating all active sessions for the compromised account immediately across all services."],
+        ["Phishing domain mimics our HR portal exactly, even has a valid SSL cert. Blocking domain now.", "3 users clicked. Confirming who submitted credentials vs who just opened the link."],
+        ["One credential set confirmed stolen, active login from Eastern European IP right now.", "Terminating all active sessions for the compromised account immediately across all services."],
         ["Attacker accessed shared drive and pulled 4 files within 8 minutes of logging in.", "Files were sales contracts. Notifying legal team and affected client accounts now."],
-        ["Account pivot attempted — they tried the same credentials on the CRM system. Blocked.", "Email gateway rule deployed — blocking sender domain and all registered variants."],
-        ["Account fully secured, password reset complete, phishing URL globally blacklisted.", "Scheduling awareness training for all staff who received this email — roughly 140 people."],
+        ["Account pivot attempted, they tried the same credentials on the CRM system. Blocked.", "Email gateway rule deployed, blocking sender domain and all registered variants."],
+        ["Account fully secured, password reset complete, phishing URL globally blacklisted.", "Scheduling awareness training for all staff who received this email, roughly 140 people."],
       ],
     },
     {
       radio: [
-        "ALERT: Mass phishing campaign — 14 users received fake IT department password reset requests",
-        "CONFIRMATION: 2 accounts compromised — credentials entered on spoofed internal IT portal",
-        "BREACH: External login with valid stolen credentials — MFA push notification accepted",
+        "ALERT: Mass phishing campaign, 14 users received fake IT department password reset requests",
+        "CONFIRMATION: 2 accounts compromised, credentials entered on spoofed internal IT portal",
+        "BREACH: External login with valid stolen credentials, MFA push notification accepted",
         "ESCALATION: Compromised account accessing admin panel and exporting user directory",
         "CONTAINMENT: Accounts locked, tokens revoked, breach notification process started",
       ],
       stepChat: [
-        ["14 recipients, 2 clicked the link. Spoofed page matches our real IT portal design exactly.", "Attacker harvested session tokens too — standard password reset alone won't be sufficient here."],
-        ["MFA push was approved — one victim accepted it on their phone at 3am local time.", "SIEM shows login from Amsterdam — clearly not the real user. Blocking the session now."],
-        ["Admin panel accessed — they're actively browsing user lists and export functionality.", "Hard-blocking the session. Forcing MFA re-enrollment on all affected accounts immediately."],
+        ["14 recipients, 2 clicked the link. Spoofed page matches our real IT portal design exactly.", "Attacker harvested session tokens too, standard password reset alone won't be sufficient here."],
+        ["MFA push was approved, one victim accepted it on their phone at 3am local time.", "SIEM shows login from Amsterdam, clearly not the real user. Blocking the session now."],
+        ["Admin panel accessed, they're actively browsing user lists and export functionality.", "Hard-blocking the session. Forcing MFA re-enrollment on all affected accounts immediately."],
         ["Attacker exported 200 user records before we blocked them. Data breach assessment started.", "Compliance team notified. Checking breach notification obligations under applicable regulations."],
         ["All accounts secured. Configuring SIEM alerts for off-hours admin panel access going forward.", "Drafting communication to the 200 users whose records were exported. Legal is reviewing the language."],
       ],
@@ -136,65 +136,65 @@ const SCRIPT_VARIANTS: Record<string, Array<{ radio: string[]; stepChat: [string
   ransomware: [
     {
       radio: [
-        "CRITICAL: Ransomware dropper on email gateway — disguised as shipping notification attachment",
-        "EXECUTION: Ransomware binary unpacked in memory — encryption keys being generated",
+        "CRITICAL: Ransomware dropper on email gateway, disguised as shipping notification attachment",
+        "EXECUTION: Ransomware binary unpacked in memory, encryption keys being generated",
         "STAGING: Ransomware mapping 23 network shares before beginning mass encryption",
-        "ENCRYPTION: 847 files encrypted in under 3 minutes — spread continues",
-        "RECOVERY: Backup restoration initiated — environment being rebuilt from clean 6am snapshot",
+        "ENCRYPTION: 847 files encrypted in under 3 minutes, spread continues",
+        "RECOVERY: Backup restoration initiated, environment being rebuilt from clean 6am snapshot",
       ],
       stepChat: [
-        ["Ransomware family identified — known variant that targets backup systems first. Isolating now.", "Risk CRITICAL. If backup server is reachable from this host, we could lose everything. Checking now."],
-        ["Encryption keys generated in memory only — never written to disk. Signature-based AV missed it completely.", "Running Yara rules on memory dump. Attempting to extract the key before encryption begins."],
-        ["Ransomware mapped 23 shares. Blocking SMB traffic from the host — cutting off the spread path.", "SMB blocked. 847 files encrypted before we cut access — could have been much worse without the fast response."],
-        ["Ransom note dropped in every affected directory. Not paying — initiating full recovery procedure.", "Verified backup integrity at the 6am snapshot — all critical data is fully recoverable."],
-        ["Restoration complete. Post-mortem scheduled. Email filtering hardened to block this attachment class.", "Cyber insurance notified. Incident classified as contained — no data confirmed exfiltrated to attacker."],
+        ["Ransomware family identified, known variant that targets backup systems first. Isolating now.", "Risk CRITICAL. If backup server is reachable from this host, we could lose everything. Checking now."],
+        ["Encryption keys generated in memory only, never written to disk. Signature-based AV missed it completely.", "Running Yara rules on memory dump. Attempting to extract the key before encryption begins."],
+        ["Ransomware mapped 23 shares. Blocking SMB traffic from the host, cutting off the spread path.", "SMB blocked. 847 files encrypted before we cut access, could have been much worse without the fast response."],
+        ["Ransom note dropped in every affected directory. Not paying, initiating full recovery procedure.", "Verified backup integrity at the 6am snapshot, all critical data is fully recoverable."],
+        ["Restoration complete. Post-mortem scheduled. Email filtering hardened to block this attachment class.", "Cyber insurance notified. Incident classified as contained, no data confirmed exfiltrated to attacker."],
       ],
     },
     {
       radio: [
-        "ALERT: RDP brute-force succeeded — external attacker gained foothold on exposed port 3389",
-        "STAGING: Attacker downloading ransomware toolkit via RDP — 47MB transfer in progress",
+        "ALERT: RDP brute-force succeeded, external attacker gained foothold on exposed port 3389",
+        "STAGING: Attacker downloading ransomware toolkit via RDP, 47MB transfer in progress",
         "PREPARATION: Ransomware disabling Volume Shadow Copies and all backup agents",
-        "EXECUTION: Mass file encryption across 6 servers simultaneously — coordinated attack",
-        "RESPONSE: DR site activated — severing connections and beginning full restoration",
+        "EXECUTION: Mass file encryption across 6 servers simultaneously, coordinated attack",
+        "RESPONSE: DR site activated, severing connections and beginning full restoration",
       ],
       stepChat: [
-        ["RDP on port 3389 exposed to the internet with no account lockout policy. Brute-forced in 4 hours.", "Attacker is inside. Closing RDP externally now — too late to prevent initial access, containing spread."],
+        ["RDP on port 3389 exposed to the internet with no account lockout policy. Brute-forced in 4 hours.", "Attacker is inside. Closing RDP externally now, too late to prevent initial access, containing spread."],
         ["47MB download identified as a ransomware toolkit plus Cobalt Strike beacon deployment.", "Isolating the compromised server from the rest of the environment via network ACL changes."],
         ["Volume Shadow Copies deleted. Backup agent on this server killed by the ransomware preparation script.", "DR site confirmed clean. Verifying backup integrity before we cut over from the primary environment."],
-        ["Encryption across 6 servers simultaneously — this is clearly a professional, organised threat group.", "All affected servers isolated. DR site coming online now. No customer-facing downtime expected."],
-        ["DR site fully active. Services restored. RDP closed permanently, MFA enforced on all remote access.", "Engaging threat intelligence — this group may be targeting others in our sector. Sharing IOCs with ISAC."],
+        ["Encryption across 6 servers simultaneously, this is clearly a professional, organised threat group.", "All affected servers isolated. DR site coming online now. No customer-facing downtime expected."],
+        ["DR site fully active. Services restored. RDP closed permanently, MFA enforced on all remote access.", "Engaging threat intelligence, this group may be targeting others in our sector. Sharing IOCs with ISAC."],
       ],
     },
   ],
   rootkit: [
     {
       radio: [
-        "ANOMALY: Kernel-level hook detected — rootkit attempting to hide processes from security tools",
-        "PERSISTENCE: Rootkit modifying boot sector — achieving persistence below the operating system",
+        "ANOMALY: Kernel-level hook detected, rootkit attempting to hide processes from security tools",
+        "PERSISTENCE: Rootkit modifying boot sector, achieving persistence below the operating system",
         "EVASION: Security tool processes being actively terminated by rootkit self-defence mechanisms",
         "ESCALATION: Rootkit granting SYSTEM privileges to previously low-privilege malware process",
-        "REMEDIATION: Affected system quarantined — secure wipe and clean OS imaging initiated",
+        "REMEDIATION: Affected system quarantined, secure wipe and clean OS imaging initiated",
       ],
       stepChat: [
-        ["Kernel hook on SSDT — this rootkit intercepts system calls to hide its own presence from the OS.", "Risk HIGH. Once it's in the kernel layer, traditional antivirus tools simply cannot see it."],
-        ["Boot sector modified — this will survive a standard reimage. We need secure wipe first.", "Capturing volatile memory now — evidence is gone permanently if someone restarts that machine."],
-        ["Our EDR agent just went silent on this host — the rootkit killed it to prevent detection.", "Deploying out-of-band management channel to isolate without alerting the rootkit's self-defence."],
-        ["Rootkit granted SYSTEM privileges to a process that was previously running as a standard user.", "Isolation complete via network switch ACL — the machine has zero network connectivity now."],
-        ["Drive wiped using secure erase. Clean OS deployed. Rootkit variant submitted to threat intel.", "Scanning all 400 endpoints for the same kernel hook pattern — this may not be an isolated incident."],
+        ["Kernel hook on SSDT, this rootkit intercepts system calls to hide its own presence from the OS.", "Risk HIGH. Once it's in the kernel layer, traditional antivirus tools simply cannot see it."],
+        ["Boot sector modified, this will survive a standard reimage. We need secure wipe first.", "Capturing volatile memory now, evidence is gone permanently if someone restarts that machine."],
+        ["Our EDR agent just went silent on this host, the rootkit killed it to prevent detection.", "Deploying out-of-band management channel to isolate without alerting the rootkit's self-defence."],
+        ["Rootkit granted SYSTEM privileges to a process that was previously running as a standard user.", "Isolation complete via network switch ACL, the machine has zero network connectivity now."],
+        ["Drive wiped using secure erase. Clean OS deployed. Rootkit variant submitted to threat intel.", "Scanning all 400 endpoints for the same kernel hook pattern, this may not be an isolated incident."],
       ],
     },
     {
       radio: [
-        "DETECTION: Anti-forensics activity detected — rootkit hiding files and processes from operating system",
-        "INSTALLATION: Rootkit achieved ring-0 privilege — operating below OS visibility layer",
-        "DEFENSE_EVASION: Security queries returning falsified system state — machine effectively blind",
-        "PERSISTENCE: Rootkit survived reboot — confirmed hook into bootloader sequence",
-        "ERADICATION: Secure wipe initiated — firmware reflashed, environment rebuilt from verified image",
+        "DETECTION: Anti-forensics activity detected, rootkit hiding files and processes from operating system",
+        "INSTALLATION: Rootkit achieved ring-0 privilege, operating below OS visibility layer",
+        "DEFENSE_EVASION: Security queries returning falsified system state, machine effectively blind",
+        "PERSISTENCE: Rootkit survived reboot, confirmed hook into bootloader sequence",
+        "ERADICATION: Secure wipe initiated, firmware reflashed, environment rebuilt from verified image",
       ],
       stepChat: [
         ["Process list from OS shows nothing suspicious. Memory dump from hardware layer tells a very different story.", "This rootkit lies to the operating system about what is running. Sophisticated and deliberate."],
-        ["Ring-0 confirmed — this threat has full hardware-level control of the machine. Standard tools useless.", "Standard forensics methodology is broken here. Switching to hardware memory analyzer for truth."],
+        ["Ring-0 confirmed, this threat has full hardware-level control of the machine. Standard tools useless.", "Standard forensics methodology is broken here. Switching to hardware memory analyzer for truth."],
         ["Every security query returning falsified clean results. The machine is completely blind to itself.", "Out-of-band access via iLO confirmed. We can see reality from the hardware management layer."],
         ["Bootloader compromise confirmed via out-of-band BIOS hash verification against known good baseline.", "Pulling the machine from the environment entirely. No data from this host can be trusted."],
         ["Secure erase complete. New OS from verified hash-checked image. Firmware also reflashed to known good.", "IOCs shared with sector ISAC. Recommending firmware integrity verification sweep across the entire server fleet."],
@@ -204,32 +204,32 @@ const SCRIPT_VARIANTS: Record<string, Array<{ radio: string[]; stepChat: [string
   ddos: [
     {
       radio: [
-        "CRITICAL: 2.4 million requests per second hitting API gateway — DDoS attack underway",
-        "ESCALATION: Attack shifting to DNS infrastructure — attempting to make our domain unresolvable",
-        "AMPLIFICATION: DNS reflection attack confirmed — open resolvers being weaponised against us",
-        "MITIGATION: Traffic scrubbing centre active — filtering malicious from legitimate traffic",
-        "RECOVERY: Attack subsiding — services fully restored, rate limiting permanently enforced",
+        "CRITICAL: 2.4 million requests per second hitting API gateway, DDoS attack underway",
+        "ESCALATION: Attack shifting to DNS infrastructure, attempting to make our domain unresolvable",
+        "AMPLIFICATION: DNS reflection attack confirmed, open resolvers being weaponised against us",
+        "MITIGATION: Traffic scrubbing centre active, filtering malicious from legitimate traffic",
+        "RECOVERY: Attack subsiding, services fully restored, rate limiting permanently enforced",
       ],
       stepChat: [
-        ["2.4M RPS from 80 countries — this is a large botnet, not a single targeted source.", "Risk CRITICAL. All public-facing services offline in 3 minutes if we don't reroute now."],
-        ["Attack pivoting to DNS — they want to make our domain completely unresolvable to anyone.", "Switching to anycast DNS routing across multiple providers. This will significantly slow them."],
-        ["Amplification factor of 4000x — they turned our 14 open DNS resolvers against us.", "Rate-limiting and closing all open resolvers now. Attack bandwidth will drop immediately."],
-        ["Scrubbing centre absorbing 80% of attack volume. Services running at 60% capacity currently.", "CDN provider engaged — they have 10Tbps absorption capacity. More than enough for this attack."],
+        ["2.4M RPS from 80 countries, this is a large botnet, not a single targeted source.", "Risk CRITICAL. All public-facing services offline in 3 minutes if we don't reroute now."],
+        ["Attack pivoting to DNS, they want to make our domain completely unresolvable to anyone.", "Switching to anycast DNS routing across multiple providers. This will significantly slow them."],
+        ["Amplification factor of 4000x, they turned our 14 open DNS resolvers against us.", "Rate-limiting and closing all open resolvers now. Attack bandwidth will drop immediately."],
+        ["Scrubbing centre absorbing 80% of attack volume. Services running at 60% capacity currently.", "CDN provider engaged, they have 10Tbps absorption capacity. More than enough for this attack."],
         ["Attack ended after 23 minutes. 3 services briefly offline. Full recovery achieved across all systems.", "Post-attack hardening: 12,000 botnet IPs added to perimeter blocklist. Open resolvers permanently closed."],
       ],
     },
     {
       radio: [
-        "ALERT: SYN flood targeting authentication service — connection state table approaching saturation",
-        "ESCALATION: 8 million packets per second — upstream ISP reporting 40Gbps inbound volume",
-        "LAYER7: Attack shifted to HTTP flood — 1 million login attempts per minute on auth endpoint",
-        "DEFENSE: WAF challenge pages deployed — scrubbing legitimate from attack traffic at edge",
-        "STABILIZATION: Auth service restored to full capacity — DDoS protection permanently configured",
+        "ALERT: SYN flood targeting authentication service, connection state table approaching saturation",
+        "ESCALATION: 8 million packets per second, upstream ISP reporting 40Gbps inbound volume",
+        "LAYER7: Attack shifted to HTTP flood, 1 million login attempts per minute on auth endpoint",
+        "DEFENSE: WAF challenge pages deployed, scrubbing legitimate from attack traffic at edge",
+        "STABILIZATION: Auth service restored to full capacity, DDoS protection permanently configured",
       ],
       stepChat: [
-        ["SYN flood filling the firewall state table — new legitimate connections being rejected.", "AUTH service is the specific target — someone wants to prevent all logins deliberately."],
-        ["8M PPS. Upstream ISP seeing 40Gbps. Calling them now to request upstream traffic black-holing.", "Enabling SYN cookies at the firewall — reduces state table exhaustion significantly."],
-        ["They switched to HTTP flood — 1 million login attempts per minute consuming all resources.", "Deploying Captcha and rate limiting on the auth endpoint. Real users will need to solve a challenge."],
+        ["SYN flood filling the firewall state table, new legitimate connections being rejected.", "AUTH service is the specific target, someone wants to prevent all logins deliberately."],
+        ["8M PPS. Upstream ISP seeing 40Gbps. Calling them now to request upstream traffic black-holing.", "Enabling SYN cookies at the firewall, reduces state table exhaustion significantly."],
+        ["They switched to HTTP flood, 1 million login attempts per minute consuming all resources.", "Deploying Captcha and rate limiting on the auth endpoint. Real users will need to solve a challenge."],
         ["WAF blocking 94% of attack traffic. Legitimate traffic getting through the challenge pages.", "Authentication service recovering. Monitoring closely for attacker adapting their pattern."],
         ["DDoS concluded. Uptime maintained for most users throughout. Excellent coordination today.", "Permanent scrubbing service contract being procured. This cannot be the last time we see this."],
       ],
@@ -248,7 +248,7 @@ const STAGE_WHY = [
 ];
 const STAGE_EDUCATION = [
   {
-    why: "Attackers target people because social engineering defeats technical controls instantly. One click bypasses the firewall, EDR, email filters, and network monitoring simultaneously — no vulnerability needed.",
+    why: "Attackers target people because social engineering defeats technical controls instantly. One click bypasses the firewall, EDR, email filters, and network monitoring simultaneously, no vulnerability needed.",
     watch: "Unexpected attachments, mismatched sender domains, login pages linked from email, urgent language pressuring fast action.",
   },
   {
@@ -256,7 +256,7 @@ const STAGE_EDUCATION = [
     watch: "Office applications spawning command shells, encoded PowerShell commands, new processes writing files to temp directories.",
   },
   {
-    why: "Credentials are master keys. With valid passwords, the attacker moves through the network as a trusted user — no further exploitation required. This is why password hygiene and MFA matter so much.",
+    why: "Credentials are master keys. With valid passwords, the attacker moves through the network as a trusted user, no further exploitation required. This is why password hygiene and MFA matter so much.",
     watch: "LSASS process access from unexpected parents, credential dumping tool signatures, unusual authentication volume spikes.",
   },
   {
@@ -264,13 +264,13 @@ const STAGE_EDUCATION = [
     watch: "Unusual machine-to-machine connections, admin tools running on non-admin systems, service creation on remote hosts.",
   },
   {
-    why: "This is the payoff — data theft, ransomware deployment, or service disruption. Everything before this step was preparation for this moment. Defenders who detect early prevent reaching this stage.",
+    why: "This is the payoff, data theft, ransomware deployment, or service disruption. Everything before this step was preparation for this moment. Defenders who detect early prevent reaching this stage.",
     watch: "Large outbound data transfers, file encryption activity across shares, DNS queries with unusually long or encoded domain names.",
   },
 ];
 const STAGE_EDUCATION_AR = [
   {
-    why: "يستهدف المهاجمون الأشخاص لأن الهندسة الاجتماعية تتجاوز الضوابط التقنية فوراً. نقرة واحدة تتخطى جدار الحماية وبرامج الحماية وفلاتر البريد ومراقبة الشبكة في آنٍ واحد — دون الحاجة إلى أي ثغرة.",
+    why: "يستهدف المهاجمون الأشخاص لأن الهندسة الاجتماعية تتجاوز الضوابط التقنية فوراً. نقرة واحدة تتخطى جدار الحماية وبرامج الحماية وفلاتر البريد ومراقبة الشبكة في آنٍ واحد، دون الحاجة إلى أي ثغرة.",
     watch: "المرفقات غير المتوقعة، نطاقات المرسل غير المتطابقة، صفحات تسجيل الدخول المرتبطة بالبريد الإلكتروني، اللغة العاجلة التي تدفع للتصرف السريع.",
   },
   {
@@ -278,7 +278,7 @@ const STAGE_EDUCATION_AR = [
     watch: "تطبيقات Office تُولِّد أوامر shell، أوامر PowerShell مشفرة، عمليات جديدة تكتب ملفات في المجلدات المؤقتة.",
   },
   {
-    why: "بيانات الاعتماد هي مفاتيح رئيسية. بكلمات مرور صحيحة، يتنقل المهاجم في الشبكة كمستخدم موثوق — دون الحاجة لأي اختراق إضافي. لهذا تُعدّ صحة كلمات المرور والمصادقة المتعددة أمراً بالغ الأهمية.",
+    why: "بيانات الاعتماد هي مفاتيح رئيسية. بكلمات مرور صحيحة، يتنقل المهاجم في الشبكة كمستخدم موثوق، دون الحاجة لأي اختراق إضافي. لهذا تُعدّ صحة كلمات المرور والمصادقة المتعددة أمراً بالغ الأهمية.",
     watch: "الوصول إلى عملية LSASS من مصادر غير متوقعة، بصمات أدوات سرقة بيانات الاعتماد، ارتفاع غير اعتيادي في حجم المصادقة.",
   },
   {
@@ -286,31 +286,31 @@ const STAGE_EDUCATION_AR = [
     watch: "اتصالات غير اعتيادية بين الأجهزة، أدوات إدارية تعمل على أنظمة غير مخصصة للإدارة، إنشاء خدمات على مضيفات بعيدة.",
   },
   {
-    why: "هذه هي اللحظة الحاسمة — سرقة البيانات أو نشر برامج الفدية أو تعطيل الخدمات. كل ما سبق كان تحضيراً لهذه اللحظة. المدافعون الذين يكتشفون الهجوم مبكراً يمنعون الوصول إلى هذه المرحلة.",
+    why: "هذه هي اللحظة الحاسمة، سرقة البيانات أو نشر برامج الفدية أو تعطيل الخدمات. كل ما سبق كان تحضيراً لهذه اللحظة. المدافعون الذين يكتشفون الهجوم مبكراً يمنعون الوصول إلى هذه المرحلة.",
     watch: "عمليات نقل بيانات ضخمة للخارج، نشاط تشفير الملفات عبر المجلدات المشتركة، استعلامات DNS بأسماء نطاقات طويلة أو مشفرة.",
   },
 ];
-// Short plain-language description + "Imagine if" story per threat type — Arabic versions
+// Short plain-language description + "Imagine if" story per threat type, Arabic versions
 const THREAT_STORIES_AR: Record<string, { summary: string; imagine: string }> = {
   phishing: {
-    summary: "يتظاهر المهاجم بأنه مصدر موثوق — بنكك أو فريق تقنية المعلومات أو أحد زملائك — ليخدعك لتسليم بيانات اعتمادك أو النقر على رابط خبيث. لا يكسر أي نظام؛ أنت من يفتح الباب بنفسك.",
-    imagine: "تخيّل أنك تتلقى اتصالاً من شخص يبدو تماماً كموظف بنكك. يعرف اسمك وآخر معاملاتك وحتى فرعك. يطلب منك تأكيد رقمك السري لـ'أسباب أمنية' — فتفعل. لقد سلّمته مفاتيحك دون أن يلمس أي قفل.",
+    summary: "يتظاهر المهاجم بأنه مصدر موثوق، بنكك أو فريق تقنية المعلومات أو أحد زملائك، ليخدعك لتسليم بيانات اعتمادك أو النقر على رابط خبيث. لا يكسر أي نظام؛ أنت من يفتح الباب بنفسك.",
+    imagine: "تخيّل أنك تتلقى اتصالاً من شخص يبدو تماماً كموظف بنكك. يعرف اسمك وآخر معاملاتك وحتى فرعك. يطلب منك تأكيد رقمك السري لـ'أسباب أمنية', فتفعل. لقد سلّمته مفاتيحك دون أن يلمس أي قفل.",
   },
   virus: {
     summary: "شيفرة خبيثة مخفية داخل ملف يبدو عادياً تنسخ نفسها بصمت عبر جهازك وكل مجلد شبكي في متناولها فور فتح الملف.",
     imagine: "تخيّل أن زميلاً يعطيك قرص USB عليه 'تقرير Q3.pdf'. تفتحه ويبدو كل شيء طبيعياً. لكن في الخلفية، يُنسخ الملف بهدوء إلى كل مجلد مشترك في المكتب. بعد ثلاثة أيام، 400 ملف مصاب ولا أحد يعرف من أين بدأ.",
   },
   ransomware: {
-    summary: "برنامج خبيث يُشفِّر كل شيء يصل إليه — الملفات والنسخ الاحتياطية والمجلدات المشتركة — ثم يطلب دفعاً للحصول على مفتاح فك التشفير. بدون نسخة احتياطية نظيفة خارج الشبكة، يكاد الاسترداد يكون مستحيلاً.",
-    imagine: "تخيّل أنك استيقظت لتجد كل باب في منزلك تحوّل إلى خزنة مقفلة — غرفتك ومكتبك وخزانتك. على الطاولة ورقة: 'ادفع 4.5 بيتكوين وستحصل على المجموعات. لديك 72 ساعة.' ملفاتك لا تزال موجودة. أنت فقط لا تستطيع لمسها.",
+    summary: "برنامج خبيث يُشفِّر كل شيء يصل إليه، الملفات والنسخ الاحتياطية والمجلدات المشتركة، ثم يطلب دفعاً للحصول على مفتاح فك التشفير. بدون نسخة احتياطية نظيفة خارج الشبكة، يكاد الاسترداد يكون مستحيلاً.",
+    imagine: "تخيّل أنك استيقظت لتجد كل باب في منزلك تحوّل إلى خزنة مقفلة، غرفتك ومكتبك وخزانتك. على الطاولة ورقة: 'ادفع 4.5 بيتكوين وستحصل على المجموعات. لديك 72 ساعة.' ملفاتك لا تزال موجودة. أنت فقط لا تستطيع لمسها.",
   },
   rootkit: {
     summary: "برنامج يُدمج نفسه على مستوى النواة، مختبئاً من برامج مكافحة الفيروسات ونظام التشغيل نفسه، مع منح المهاجم وصولاً دائماً وغير مرئي للجهاز.",
-    imagine: "تخيّل دخيلاً يقتحم منزلك ويستبدل كاميرات المراقبة بتغذيات مزيفة تُظهر غرفة فارغة — ثم يعيش داخل الجدران. تتحقق من الكاميرات كل يوم. كل شيء يبدو طبيعياً. لكنه يراقبك منذ أشهر، غير مرئي تماماً لأنه يتحكم فيما تُسمح لك برؤيته.",
+    imagine: "تخيّل دخيلاً يقتحم منزلك ويستبدل كاميرات المراقبة بتغذيات مزيفة تُظهر غرفة فارغة، ثم يعيش داخل الجدران. تتحقق من الكاميرات كل يوم. كل شيء يبدو طبيعياً. لكنه يراقبك منذ أشهر، غير مرئي تماماً لأنه يتحكم فيما تُسمح لك برؤيته.",
   },
   ddos: {
-    summary: "آلاف الأجهزة المخترقة تُغرق خادماً بحركة مرور مزيفة في وقت واحد حتى لا يتمكن من الاستجابة للمستخدمين الحقيقيين — دون استغلال أي ثغرة، مجرد حجم هائل من الطلبات.",
-    imagine: "تخيّل 80,000 شخص يتصلون بهاتفك في نفس اللحظة. كل مكالمة حقيقية — عائلتك وعملاؤك وطبيبك — لا تستطيع الوصول إليك لأن الخط مشغول تماماً. لم يكسر أحد شيئاً. جعلوا فقط من المستحيل على أي شخص آخر استخدام الخط.",
+    summary: "آلاف الأجهزة المخترقة تُغرق خادماً بحركة مرور مزيفة في وقت واحد حتى لا يتمكن من الاستجابة للمستخدمين الحقيقيين، دون استغلال أي ثغرة، مجرد حجم هائل من الطلبات.",
+    imagine: "تخيّل 80,000 شخص يتصلون بهاتفك في نفس اللحظة. كل مكالمة حقيقية، عائلتك وعملاؤك وطبيبك، لا تستطيع الوصول إليك لأن الخط مشغول تماماً. لم يكسر أحد شيئاً. جعلوا فقط من المستحيل على أي شخص آخر استخدام الخط.",
   },
 };
 
@@ -569,61 +569,61 @@ const STEP_ALERTS: Record<string, Array<{
 }>> = {
   phishing: [
     { entity:{icon:"👤",type:"User",name:"hamad@cybermajlis.qa"}, alert:"Suspicious URL clicked from ZAP-quarantined email", mitre:"T1566.001 · Spearphishing Attachment", severity:"high", ioc:"Sender domain registered 4h ago, Let's Encrypt SSL, IP shared with 12 other phishing sites", action:"Force MFA re-enrollment, revoke all active sessions, warn colleagues who received the same email" },
-    { entity:{icon:"🖥️",type:"Device",name:"WKSTN-14.cybermajlis.local"}, alert:"User submitted credentials to spoofed login portal", mitre:"T1056.003 · Web Portal Capture", severity:"critical", ioc:"POST to feanqfllaj.mycompanyportal.xyz — base64 credentials in body, session cookie exfiled to attacker endpoint", action:"Reset compromised credentials immediately, notify user via phone, enable conditional access policies" },
-    { entity:{icon:"🌐",type:"Network",name:"185.220.101.42 (Tor exit node, Amsterdam)"}, alert:"Successful login from Tor exit node using stolen credentials", mitre:"T1078 · Valid Accounts", severity:"critical", ioc:"Login at 03:14 AM — 11 resource accesses in 8 minutes, 4x above 30-day baseline velocity", action:"Block external IP, revoke OAuth tokens, audit all resources accessed in past 24h by this account" },
-    { entity:{icon:"📁",type:"Share",name:"SharePoint · Sales & HR directories"}, alert:"Compromised account accessing high-value directories beyond normal scope", mitre:"T1078.002 · Domain Accounts", severity:"high", ioc:"4 sensitive directories in 8 minutes — sales contracts, HR data, client PII — velocity 4x above baseline", action:"Revoke OAuth tokens, enable step-up auth for admin resources, notify legal of potential data exposure" },
-    { entity:{icon:"📄",type:"File",name:"sales-contracts-Q1-2025.zip · 287MB"}, alert:"Sensitive data exfiltrated via HTTPS upload to external storage", mitre:"T1567.002 · Exfiltration to Cloud Storage", severity:"critical", ioc:"287MB to api.transfernow.net at 03:22 AM — 900x daily average, destination in 6 threat intel feeds", action:"Notify legal and compliance, contact affected clients, preserve forensic evidence, engage IR" },
+    { entity:{icon:"🖥️",type:"Device",name:"WKSTN-14.cybermajlis.local"}, alert:"User submitted credentials to spoofed login portal", mitre:"T1056.003 · Web Portal Capture", severity:"critical", ioc:"POST to feanqfllaj.mycompanyportal.xyz, base64 credentials in body, session cookie exfiled to attacker endpoint", action:"Reset compromised credentials immediately, notify user via phone, enable conditional access policies" },
+    { entity:{icon:"🌐",type:"Network",name:"185.220.101.42 (Tor exit node, Amsterdam)"}, alert:"Successful login from Tor exit node using stolen credentials", mitre:"T1078 · Valid Accounts", severity:"critical", ioc:"Login at 03:14 AM, 11 resource accesses in 8 minutes, 4x above 30-day baseline velocity", action:"Block external IP, revoke OAuth tokens, audit all resources accessed in past 24h by this account" },
+    { entity:{icon:"📁",type:"Share",name:"SharePoint · Sales & HR directories"}, alert:"Compromised account accessing high-value directories beyond normal scope", mitre:"T1078.002 · Domain Accounts", severity:"high", ioc:"4 sensitive directories in 8 minutes, sales contracts, HR data, client PII, velocity 4x above baseline", action:"Revoke OAuth tokens, enable step-up auth for admin resources, notify legal of potential data exposure" },
+    { entity:{icon:"📄",type:"File",name:"sales-contracts-Q1-2025.zip · 287MB"}, alert:"Sensitive data exfiltrated via HTTPS upload to external storage", mitre:"T1567.002 · Exfiltration to Cloud Storage", severity:"critical", ioc:"287MB to api.transfernow.net at 03:22 AM, 900x daily average, destination in 6 threat intel feeds", action:"Notify legal and compliance, contact affected clients, preserve forensic evidence, engage IR" },
   ],
   virus: [
     { entity:{icon:"📄",type:"File",name:"invoice_2025.pdf.exe"}, alert:"Malicious executable auto-ran from email attachment", mitre:"T1204.002 · Malicious File", severity:"high", ioc:"UPX-packed, matches Emotet dropper, 0 AV detections at delivery (zero-day variant)", action:"Quarantine file hash across endpoints, isolate WKSTN-14, capture memory before process terminates" },
-    { entity:{icon:"⚙️",type:"Process",name:"powershell.exe (child of OUTLOOK.EXE)"}, alert:"Office application spawning encoded PowerShell — process injection underway", mitre:"T1059.001 · PowerShell", severity:"critical", ioc:"-EncodedCommand decodes to: download payload from pastebin + persist via scheduled task", action:"Kill process tree, enable PowerShell Script Block Logging, capture memory dump" },
-    { entity:{icon:"⚙️",type:"Process",name:"svchost.exe · PID 4821 (hollowed)"}, alert:"Process hollowing — malware injected into legitimate system process", mitre:"T1055.012 · Process Hollowing", severity:"critical", ioc:"svchost.exe connecting outbound port 443 to known C2 — PE header mismatch in memory", action:"Memory dump first, then terminate PID 4821" },
-    { entity:{icon:"📁",type:"Share",name:"\\FILESERVER-01 · 6 shares · 847 files"}, alert:"Virus replicating across mapped network shares via SMB", mitre:"T1021.002 · SMB/Windows Admin Shares", severity:"high", ioc:"847 files modified in 3 minutes across 6 shares — automated copy velocity", action:"Block SMB from WKSTN-14, snapshot all shares before further damage" },
-    { entity:{icon:"🌐",type:"Network",name:"91.108.4.52 (Emotet C2)"}, alert:"Malware beaconing to known command-and-control infrastructure", mitre:"T1071.001 · Web Protocols", severity:"critical", ioc:"HTTPS beacons every 47s — encrypted payload contains host fingerprint", action:"Block at perimeter, force reimage WKSTN-14, submit IOCs to threat intel platform" },
+    { entity:{icon:"⚙️",type:"Process",name:"powershell.exe (child of OUTLOOK.EXE)"}, alert:"Office application spawning encoded PowerShell, process injection underway", mitre:"T1059.001 · PowerShell", severity:"critical", ioc:"-EncodedCommand decodes to: download payload from pastebin + persist via scheduled task", action:"Kill process tree, enable PowerShell Script Block Logging, capture memory dump" },
+    { entity:{icon:"⚙️",type:"Process",name:"svchost.exe · PID 4821 (hollowed)"}, alert:"Process hollowing, malware injected into legitimate system process", mitre:"T1055.012 · Process Hollowing", severity:"critical", ioc:"svchost.exe connecting outbound port 443 to known C2, PE header mismatch in memory", action:"Memory dump first, then terminate PID 4821" },
+    { entity:{icon:"📁",type:"Share",name:"\\FILESERVER-01 · 6 shares · 847 files"}, alert:"Virus replicating across mapped network shares via SMB", mitre:"T1021.002 · SMB/Windows Admin Shares", severity:"high", ioc:"847 files modified in 3 minutes across 6 shares, automated copy velocity", action:"Block SMB from WKSTN-14, snapshot all shares before further damage" },
+    { entity:{icon:"🌐",type:"Network",name:"91.108.4.52 (Emotet C2)"}, alert:"Malware beaconing to known command-and-control infrastructure", mitre:"T1071.001 · Web Protocols", severity:"critical", ioc:"HTTPS beacons every 47s, encrypted payload contains host fingerprint", action:"Block at perimeter, force reimage WKSTN-14, submit IOCs to threat intel platform" },
   ],
   ransomware: [
     { entity:{icon:"📄",type:"File",name:"shipping_notification.xlsm"}, alert:"Macro-enabled document executed ransomware dropper via PowerShell", mitre:"T1204.002 · Malicious File", severity:"high", ioc:"VBA macro downloads 2.3MB payload from attacker CDN via encoded PowerShell", action:"Block sender domain, issue org-wide warning, enforce macro blocking for all Office documents" },
-    { entity:{icon:"⚙️",type:"Process",name:"wmic.exe (child of EXCEL.EXE)"}, alert:"Ransomware mapping network shares — pre-encryption reconnaissance", mitre:"T1135 · Network Share Discovery", severity:"high", ioc:"23 shares enumerated in 8 seconds via Win32_NetworkConnection and Win32_Share queries", action:"Block WMI from infected host via GPO, preserve share access logs" },
-    { entity:{icon:"🖥️",type:"System",name:"VSS · Volume Shadow Service · FILE-SERVER-01"}, alert:"Volume Shadow Copies deleted — all local recovery options eliminated", mitre:"T1490 · Inhibit System Recovery", severity:"critical", ioc:"vssadmin.exe delete shadows /all /quiet at 02:31 AM as SYSTEM — all recovery points wiped", action:"IMMEDIATELY verify off-site backup — shadow copies gone, off-site is the ONLY recovery path" },
-    { entity:{icon:"📁",type:"Share",name:"\\FILE-SERVER-01 · 23 shares · 847GB"}, alert:"Mass file encryption in progress across file servers", mitre:"T1486 · Data Encrypted for Impact", severity:"critical", ioc:".locked extension on 1,200+ files/minute — AES-256, key held only by attacker C2", action:"Physically disconnect FILE-SERVER-01 NOW. Activate DR site immediately" },
-    { entity:{icon:"📄",type:"Ransom Note",name:"README_DECRYPT.txt · all affected systems"}, alert:"Ransom note deployed — LockBit 3.0 affiliate, extortion phase active", mitre:"T1491 · Defacement", severity:"critical", ioc:"Bitcoin wallet — 4.5 BTC (~$280K), 72h deadline, wallet linked to LockBit 3.0 in threat intel", action:"Do NOT pay. Activate DR. Engage cyber insurance and law enforcement" },
+    { entity:{icon:"⚙️",type:"Process",name:"wmic.exe (child of EXCEL.EXE)"}, alert:"Ransomware mapping network shares, pre-encryption reconnaissance", mitre:"T1135 · Network Share Discovery", severity:"high", ioc:"23 shares enumerated in 8 seconds via Win32_NetworkConnection and Win32_Share queries", action:"Block WMI from infected host via GPO, preserve share access logs" },
+    { entity:{icon:"🖥️",type:"System",name:"VSS · Volume Shadow Service · FILE-SERVER-01"}, alert:"Volume Shadow Copies deleted, all local recovery options eliminated", mitre:"T1490 · Inhibit System Recovery", severity:"critical", ioc:"vssadmin.exe delete shadows /all /quiet at 02:31 AM as SYSTEM, all recovery points wiped", action:"IMMEDIATELY verify off-site backup, shadow copies gone, off-site is the ONLY recovery path" },
+    { entity:{icon:"📁",type:"Share",name:"\\FILE-SERVER-01 · 23 shares · 847GB"}, alert:"Mass file encryption in progress across file servers", mitre:"T1486 · Data Encrypted for Impact", severity:"critical", ioc:".locked extension on 1,200+ files/minute, AES-256, key held only by attacker C2", action:"Physically disconnect FILE-SERVER-01 NOW. Activate DR site immediately" },
+    { entity:{icon:"📄",type:"Ransom Note",name:"README_DECRYPT.txt · all affected systems"}, alert:"Ransom note deployed, LockBit 3.0 affiliate, extortion phase active", mitre:"T1491 · Defacement", severity:"critical", ioc:"Bitcoin wallet, 4.5 BTC (~$280K), 72h deadline, wallet linked to LockBit 3.0 in threat intel", action:"Do NOT pay. Activate DR. Engage cyber insurance and law enforcement" },
   ],
   rootkit: [
-    { entity:{icon:"📄",type:"File",name:"NvStrMicMon.sys (unsigned kernel driver)"}, alert:"Unsigned kernel driver loaded — rootkit installation detected", mitre:"T1014 · Rootkit", severity:"critical", ioc:"Driver not in WHQL database, compiled 6h ago, cert from revoked CA — bypassed Secure Boot", action:"Block unsigned drivers via WDAC, quarantine file, force reboot to safe mode" },
-    { entity:{icon:"🔩",type:"Kernel",name:"SSDT hook · WKSTN-07"}, alert:"Kernel hook intercepting OS calls — rootkit hiding itself from security tools", mitre:"T1014 · Rootkit (Kernel Mode)", severity:"critical", ioc:"NtQuerySystemInformation hooked — filters ghost_ prefixed processes from all OS queries", action:"Do NOT restart — loses volatile evidence. Deploy hardware memory analyzer via out-of-band management" },
-    { entity:{icon:"⚙️",type:"Process",name:"[HIDDEN] PID 4292 — invisible to OS"}, alert:"Anti-forensics active — malicious process hidden from OS, AV, and EDR", mitre:"T1564.001 · Hidden Files and Directories", severity:"critical", ioc:"Hardware memory dump confirms PID 4292 with SYSTEM token — all OS-level tools report zero match", action:"Use iLO/IPMI/BMC for all analysis — OS commands are compromised" },
-    { entity:{icon:"🖥️",type:"System",name:"WKSTN-07 · Full kernel compromise"}, alert:"SYSTEM-level backdoor active — unrestricted hardware access confirmed", mitre:"T1543 · Create or Modify System Process", severity:"critical", ioc:"C2 commands via DNS TXT queries to attacker domain — uses legitimate DNS to blend in", action:"Isolate via network switch ACL (not OS firewall — rootkit intercepts those)" },
-    { entity:{icon:"🔌",type:"Firmware",name:"UEFI / BIOS · WKSTN-07"}, alert:"Bootloader persistence — rootkit survives full OS reinstall", mitre:"T1542.003 · Bootkit", severity:"critical", ioc:"BIOS hash mismatch vs vendor baseline — bootkit confirmed in EFI partition", action:"Reimage alone INSUFFICIENT — requires secure erase + firmware reflash from vendor-verified image" },
+    { entity:{icon:"📄",type:"File",name:"NvStrMicMon.sys (unsigned kernel driver)"}, alert:"Unsigned kernel driver loaded, rootkit installation detected", mitre:"T1014 · Rootkit", severity:"critical", ioc:"Driver not in WHQL database, compiled 6h ago, cert from revoked CA, bypassed Secure Boot", action:"Block unsigned drivers via WDAC, quarantine file, force reboot to safe mode" },
+    { entity:{icon:"🔩",type:"Kernel",name:"SSDT hook · WKSTN-07"}, alert:"Kernel hook intercepting OS calls, rootkit hiding itself from security tools", mitre:"T1014 · Rootkit (Kernel Mode)", severity:"critical", ioc:"NtQuerySystemInformation hooked, filters ghost_ prefixed processes from all OS queries", action:"Do NOT restart, loses volatile evidence. Deploy hardware memory analyzer via out-of-band management" },
+    { entity:{icon:"⚙️",type:"Process",name:"[HIDDEN] PID 4292, invisible to OS"}, alert:"Anti-forensics active, malicious process hidden from OS, AV, and EDR", mitre:"T1564.001 · Hidden Files and Directories", severity:"critical", ioc:"Hardware memory dump confirms PID 4292 with SYSTEM token, all OS-level tools report zero match", action:"Use iLO/IPMI/BMC for all analysis, OS commands are compromised" },
+    { entity:{icon:"🖥️",type:"System",name:"WKSTN-07 · Full kernel compromise"}, alert:"SYSTEM-level backdoor active, unrestricted hardware access confirmed", mitre:"T1543 · Create or Modify System Process", severity:"critical", ioc:"C2 commands via DNS TXT queries to attacker domain, uses legitimate DNS to blend in", action:"Isolate via network switch ACL (not OS firewall, rootkit intercepts those)" },
+    { entity:{icon:"🔌",type:"Firmware",name:"UEFI / BIOS · WKSTN-07"}, alert:"Bootloader persistence, rootkit survives full OS reinstall", mitre:"T1542.003 · Bootkit", severity:"critical", ioc:"BIOS hash mismatch vs vendor baseline, bootkit confirmed in EFI partition", action:"Reimage alone INSUFFICIENT, requires secure erase + firmware reflash from vendor-verified image" },
   ],
   ddos: [
-    { entity:{icon:"🌐",type:"Botnet",name:"80,000+ nodes · 147 ASNs · 80 countries"}, alert:"Coordinated DDoS attack — global botnet targeting infrastructure", mitre:"T1499 · Endpoint Denial of Service", severity:"high", ioc:"Identical HTTP header fingerprint, request variance < 2% — highly coordinated botnet", action:"Enable DDoS protection on edge routers, contact ISP for BGP traffic black-hole" },
-    { entity:{icon:"🔧",type:"Service",name:"api.cybermajlis.qa · /auth/login · Port 443"}, alert:"Authentication endpoint targeted — 340K req/sec exhausting connection pools", mitre:"T1498.001 · Direct Network Flood", severity:"high", ioc:"Unique User-Agent per request to bypass rate limiting — crafted to exhaust TCP connection pool", action:"Activate CAPTCHA and rate limiting on /auth, enable geo-blocking for non-Qatar IPs" },
-    { entity:{icon:"🌐",type:"Network",name:"Edge Router · 15Gbps saturated"}, alert:"DNS amplification flood — 2.4M req/sec, 60Gbps inbound at upstream ISP", mitre:"T1498.002 · Reflection Amplification", severity:"critical", ioc:"Amplification factor 4000x — 14 open DNS resolvers weaponised including 3 on our network", action:"Close all open resolvers NOW, reroute to DDoS scrubbing center" },
-    { entity:{icon:"⚙️",type:"System",name:"Load Balancer · Connection table 99.8% full"}, alert:"Services degrading — SYN flood exhausting firewall state table", mitre:"T1499.002 · Service Exhaustion Flood", severity:"critical", ioc:"Half-open SYN connections filling state table — legitimate users rejected at 94% rate", action:"Enable SYN cookies at firewall, activate CDN offload, escalate to DDoS provider SLA" },
-    { entity:{icon:"🛡️",type:"Defense",name:"Scrubbing Center · 96% attack absorbed"}, alert:"Mitigation active — scrubbing center filtering attack traffic at edge", mitre:"T1499 · Mitigated", severity:"medium", ioc:"Clean traffic restored to 94% — 2.3M malicious req/sec dropped, 140K legitimate reaching origin", action:"Maintain scrubbing 2h after normalisation, file ISP abuse reports, close remaining resolvers" },
+    { entity:{icon:"🌐",type:"Botnet",name:"80,000+ nodes · 147 ASNs · 80 countries"}, alert:"Coordinated DDoS attack, global botnet targeting infrastructure", mitre:"T1499 · Endpoint Denial of Service", severity:"high", ioc:"Identical HTTP header fingerprint, request variance < 2%, highly coordinated botnet", action:"Enable DDoS protection on edge routers, contact ISP for BGP traffic black-hole" },
+    { entity:{icon:"🔧",type:"Service",name:"api.cybermajlis.qa · /auth/login · Port 443"}, alert:"Authentication endpoint targeted, 340K req/sec exhausting connection pools", mitre:"T1498.001 · Direct Network Flood", severity:"high", ioc:"Unique User-Agent per request to bypass rate limiting, crafted to exhaust TCP connection pool", action:"Activate CAPTCHA and rate limiting on /auth, enable geo-blocking for non-Qatar IPs" },
+    { entity:{icon:"🌐",type:"Network",name:"Edge Router · 15Gbps saturated"}, alert:"DNS amplification flood, 2.4M req/sec, 60Gbps inbound at upstream ISP", mitre:"T1498.002 · Reflection Amplification", severity:"critical", ioc:"Amplification factor 4000x, 14 open DNS resolvers weaponised including 3 on our network", action:"Close all open resolvers NOW, reroute to DDoS scrubbing center" },
+    { entity:{icon:"⚙️",type:"System",name:"Load Balancer · Connection table 99.8% full"}, alert:"Services degrading, SYN flood exhausting firewall state table", mitre:"T1499.002 · Service Exhaustion Flood", severity:"critical", ioc:"Half-open SYN connections filling state table, legitimate users rejected at 94% rate", action:"Enable SYN cookies at firewall, activate CDN offload, escalate to DDoS provider SLA" },
+    { entity:{icon:"🛡️",type:"Defense",name:"Scrubbing Center · 96% attack absorbed"}, alert:"Mitigation active, scrubbing center filtering attack traffic at edge", mitre:"T1499 · Mitigated", severity:"medium", ioc:"Clean traffic restored to 94%, 2.3M malicious req/sec dropped, 140K legitimate reaching origin", action:"Maintain scrubbing 2h after normalisation, file ISP abuse reports, close remaining resolvers" },
   ],
 };
 // Short plain-language description + "Imagine if" story per threat type
 const THREAT_STORIES: Record<string, { summary: string; imagine: string }> = {
   phishing: {
-    summary: "An attacker impersonates a trusted source — your bank, IT team, or a colleague — to trick you into handing over credentials or clicking a malicious link. No system is broken; you open the door yourself.",
-    imagine: "Imagine you get a call from someone who sounds exactly like your bank. They know your name, your last transaction, even your branch. They ask you to confirm your PIN for 'security reasons' — and you do. You just handed over your keys without them ever touching a single lock."
+    summary: "An attacker impersonates a trusted source, your bank, IT team, or a colleague, to trick you into handing over credentials or clicking a malicious link. No system is broken; you open the door yourself.",
+    imagine: "Imagine you get a call from someone who sounds exactly like your bank. They know your name, your last transaction, even your branch. They ask you to confirm your PIN for 'security reasons', and you do. You just handed over your keys without them ever touching a single lock."
   },
   virus: {
     summary: "Malicious code hidden inside a normal-looking file silently copies itself across your system and every network drive it can reach the moment it is opened.",
     imagine: "Imagine a colleague hands you a USB drive with 'Q3 report.pdf' on it. You open it, nothing seems wrong. But in the background it quietly copies itself to every shared folder in the office. Three days later, 400 files are infected and nobody knows which machine started it."
   },
   ransomware: {
-    summary: "Malware that encrypts everything it can find — files, backups, shared drives — then demands payment for the decryption key. Without a clean off-site backup, recovery is nearly impossible.",
-    imagine: "Imagine waking up and every door in your house has been replaced with a vault lock overnight — your bedroom, your office, your safe. There's a note on the table: '4.5 Bitcoin and you get the combinations. You have 72 hours.' Your files are still there. You just can't touch them."
+    summary: "Malware that encrypts everything it can find, files, backups, shared drives, then demands payment for the decryption key. Without a clean off-site backup, recovery is nearly impossible.",
+    imagine: "Imagine waking up and every door in your house has been replaced with a vault lock overnight, your bedroom, your office, your safe. There's a note on the table: '4.5 Bitcoin and you get the combinations. You have 72 hours.' Your files are still there. You just can't touch them."
   },
   rootkit: {
     summary: "Software that embeds itself at the kernel level, hiding from antivirus and the operating system itself while giving the attacker persistent, invisible access to the machine.",
-    imagine: "Imagine an intruder breaks into your house, replaces every security camera with their own fake feed showing an empty room — then lives inside your walls. You check the cameras every day. Everything looks fine. But they've been watching you for months, completely invisible because they control what you're allowed to see."
+    imagine: "Imagine an intruder breaks into your house, replaces every security camera with their own fake feed showing an empty room, then lives inside your walls. You check the cameras every day. Everything looks fine. But they've been watching you for months, completely invisible because they control what you're allowed to see."
   },
   ddos: {
-    summary: "Thousands of hijacked devices flood a server with fake traffic simultaneously until it cannot respond to any real users — no vulnerability exploited, just pure volume.",
-    imagine: "Imagine 80,000 people all try to call your phone at the exact same moment. Every real call — your family, your clients, your doctor — can't get through because the line is completely jammed. Nobody broke anything. They just made sure nobody else could use it either."
+    summary: "Thousands of hijacked devices flood a server with fake traffic simultaneously until it cannot respond to any real users, no vulnerability exploited, just pure volume.",
+    imagine: "Imagine 80,000 people all try to call your phone at the exact same moment. Every real call, your family, your clients, your doctor, can't get through because the line is completely jammed. Nobody broke anything. They just made sure nobody else could use it either."
   },
 };
 
@@ -817,10 +817,10 @@ export default function ThreatAcademy() {
     // Only generate for signed-in users who have completed at least one scenario
     if (!isAr && (!isLoggedIn || !scenarioDone)) return;
 
-    // 1. Check React state — already generated this session
+    // 1. Check React state, already generated this session
     if (generatedVariants[threatKey]) return;
 
-    // 2. Check localStorage — use cached variant from a previous session
+    // 2. Check localStorage, use cached variant from a previous session
     const cacheKey = "cm-soc-variant-v3-" + threatKey + "-" + locale;
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
@@ -838,7 +838,7 @@ export default function ThreatAcademy() {
         }
         setGeneratedVariants(prev => ({ ...prev, [threatKey]: variant }));
         return variant;
-      } catch { /* cache corrupt — regenerate */ }
+      } catch { /* cache corrupt, regenerate */ }
     }
 
     // 3. Generate fresh (first time or cache miss)
@@ -879,7 +879,7 @@ export default function ThreatAcademy() {
     }
   }, [attackState?.done.size]);
 
-  // Sequential attack orchestration — one threat at a time, step by step
+  // Sequential attack orchestration, one threat at a time, step by step
   useEffect(() => {
     let cancelled = false;
     const sleep = (ms: number) => new Promise<void>(res => setTimeout(res, ms));
@@ -932,7 +932,7 @@ export default function ThreatAcademy() {
       setClickedStep(null);
       setReplayStep(null);
       setAttackState({ def, loc, step: -1, done: new Set(), victimAffected: false, variantIdx });
-      typeRadio(`ALERT: ${loc.type} — ${loc.tagline}`);
+      typeRadio(`ALERT: ${loc.type}, ${loc.tagline}`);
 
       setSeenThreats(prev => new Set([...prev, threatKey]));
 
@@ -1001,7 +1001,7 @@ export default function ThreatAcademy() {
         await sleep(rand(12000, 16000));
       }
 
-      // Hamad recovery message — fires after all steps finish
+      // Hamad recovery message, fires after all steps finish
       const genHamad = freshVariant?.hamadChat || generatedVariants[threatKey]?.hamadChat;
         const baseScene = HAMAD_SCENARIOS[threatKey];
         const hamadScene = genHamad && baseScene ? { ...baseScene, msg: genHamad.msg, analystReply: genHamad.analystReply, recovery: genHamad.recovery } : baseScene;
@@ -1018,7 +1018,7 @@ export default function ThreatAcademy() {
       // Mark all steps done, clear victim indicator
       setAttackState(prev => prev ? { ...prev, step: -1, done: new Set([0,1,2,3,4]), victimAffected: false } : null);
       await sleep(1500);
-      typeRadio(`INCIDENT CONTAINED — ${loc.type} resolved. Monitoring for next threat.`);
+      typeRadio(`INCIDENT CONTAINED, ${loc.type} resolved. Monitoring for next threat.`);
       await sleep(rand(3000, 5000));
     };
 
@@ -1029,7 +1029,7 @@ export default function ThreatAcademy() {
       await sleep(2000);
       let queue: string[] = [];
       while (!cancelled) {
-        // Refill queue with a fresh shuffle when empty — guarantees all 5 threats
+        // Refill queue with a fresh shuffle when empty, guarantees all 5 threats
         // appear before any repeats, and never in the same order twice
         if (queue.length === 0) queue = shuffle(Object.keys(THREATS));
         const threatKey = queue.shift()!;
@@ -1093,7 +1093,7 @@ export default function ThreatAcademy() {
             <div style={{ position: "absolute", inset: 0, opacity: .02, backgroundImage: "repeating-linear-gradient(0deg,#D5B893 0px,transparent 1px,transparent 50px),repeating-linear-gradient(90deg,#D5B893 0px,transparent 1px,transparent 50px)" }} />
             <canvas ref={canvasRef} style={{ display: "none" }} />
 
-            {/* XDR ATTACK GRAPH — live, step-by-step */}
+            {/* XDR ATTACK GRAPH, live, step-by-step */}
             {/* XDR ATTACK GRAPH PANEL */}
             <div style={{
               position: "absolute", top: "50%", left: "50%",
@@ -1340,7 +1340,7 @@ export default function ThreatAcademy() {
                       {step === -1 && done.size === 5 && clickedStep === null && (
                         <div style={{ marginTop: 10, padding: "9px 14px", borderRadius: 10, background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.22)", display: "flex", alignItems: "center", gap: 10 }}>
                           <span style={{ fontSize: 16 }}>✅</span>
-                          <span style={{ fontSize: 12, color: "#86efac", fontWeight: 600 }}>Attack contained — all stages logged. Monitoring for next incident.</span>
+                          <span style={{ fontSize: 12, color: "#86efac", fontWeight: 600 }}>Attack contained, all stages logged. Monitoring for next incident.</span>
                         </div>
                       )}
 
@@ -1572,7 +1572,7 @@ export default function ThreatAcademy() {
         </div>
       </div>
 
-      {/* PANEL INFO POPUPS — multiple, close each independently */}
+      {/* PANEL INFO POPUPS, multiple, close each independently */}
       {panelPopups.map((key, pi) => PANEL_INFO[key] && (
         <DraggableFloater key={key} onClose={() => closePanel(key)} width={440} initialX={180 + pi * 30} initialY={90 + pi * 30} isRtl={isAr}>
           <div style={{ padding: "14px 18px", borderBottom: "1px solid rgba(197,165,126,0.12)", display: "flex", alignItems: "center", gap: 10 }}>
@@ -1589,7 +1589,7 @@ export default function ThreatAcademy() {
           </div>
         </DraggableFloater>
       ))}
-      {/* EDUCATION POPUPS — multiple, close each independently */}
+      {/* EDUCATION POPUPS, multiple, close each independently */}
       {popupThreats.map((item, pi) => {
         const { loc: threat, activeStep, animating, quizAnswer } = item;
         const key = threat.type;
@@ -1677,11 +1677,11 @@ export default function ThreatAcademy() {
       {/* ── SOC TOUR (6 steps, replaces old intro) ─────────────────────── */}
       {tourStep >= 0 && tourStep <= 5 && (() => {
         const STEPS = [
-          { icon:"🛡", label:"CyberMajlis SOC", title:"Security Operations Center", body:"You're about to observe a live SOC — real threats, real analysts, real response decisions. Let's walk you through each section before you dive in.", cta:"Take a quick tour →", skip:true },
-          { icon:"🗺", label:"1 of 5", title:"XDR Attack Graph", body:"The graph in the center maps each attack's kill chain — every stage from initial access to final impact. Hit ▶ Watch Story to step through it with real alert data: which entity was hit, the MITRE technique, the IOC, and what action to take.", cta:"Next →", skip:true },
-          { icon:"💬", label:"2 of 5", title:"Analyst Team Chat", body:"Your four analysts coordinate here in real time. Each has a distinct role — threat detection, risk assessment, forensics, incident response. Watch how they divide the problem as each attack unfolds.", cta:"Next →", skip:true },
-          { icon:"📋", label:"3 of 5", title:"Threat Feed", body:"Every active threat appears in the feed on the right. Click any entry to open a lesson — read what the attack is, see a real-world case, and take a short quiz. Answering correctly marks it as learned and updates your progress.", cta:"Next →", skip:true },
-          { icon:"📊", label:"4 of 5", title:"Live Dashboards", body:"The four panels at the bottom update in real time — network traffic volume, attack frequency by type, severity levels, and system health across firewall, IDS/IPS, SIEM, and endpoints.", cta:"Next →", skip:true },
+          { icon:"🛡", label:"CyberMajlis SOC", title:"Security Operations Center", body:"You're about to observe a live SOC, real threats, real analysts, real response decisions. Let's walk you through each section before you dive in.", cta:"Take a quick tour →", skip:true },
+          { icon:"🗺", label:"1 of 5", title:"XDR Attack Graph", body:"The graph in the center maps each attack's kill chain, every stage from initial access to final impact. Hit ▶ Watch Story to step through it with real alert data: which entity was hit, the MITRE technique, the IOC, and what action to take.", cta:"Next →", skip:true },
+          { icon:"💬", label:"2 of 5", title:"Analyst Team Chat", body:"Your four analysts coordinate here in real time. Each has a distinct role, threat detection, risk assessment, forensics, incident response. Watch how they divide the problem as each attack unfolds.", cta:"Next →", skip:true },
+          { icon:"📋", label:"3 of 5", title:"Threat Feed", body:"Every active threat appears in the feed on the right. Click any entry to open a lesson, read what the attack is, see a real-world case, and take a short quiz. Answering correctly marks it as learned and updates your progress.", cta:"Next →", skip:true },
+          { icon:"📊", label:"4 of 5", title:"Live Dashboards", body:"The four panels at the bottom update in real time, network traffic volume, attack frequency by type, severity levels, and system health across firewall, IDS/IPS, SIEM, and endpoints.", cta:"Next →", skip:true },
           { icon:"✓", label:"5 of 5", title:"You're all set", body:"The simulation is already running behind this screen. Threats will appear and analysts will respond. Click anything you're curious about. Your goal: understand all five threat types and answer each quiz correctly.", cta:"Enter the SOC →", skip:false },
         ];
         const s = STEPS[tourStep];
@@ -1732,7 +1732,7 @@ export default function ThreatAcademy() {
               <div style={{ fontSize:10, color:"#D5B89355", letterSpacing:"0.28em", textTransform:"uppercase", marginBottom:10, fontFamily:"'JetBrains Mono'" }}>Session Complete</div>
               <h2 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:34, color:"#f5ede0", margin:"0 0 10px", fontWeight:600 }}>Threat Debrief</h2>
               <p style={{ fontSize:13, color:"#f5ede0aa", margin:0, lineHeight:1.7 }}>
-                All five threats observed. You mastered <span style={{ color:"#22c55e", fontWeight:700 }}>{completed.size}</span> of {Object.keys(THREATS).length} — {completed.size === Object.keys(THREATS).length ? "flawless." : completed.size >= 3 ? "solid work." : "keep practising."}
+                All five threats observed. You mastered <span style={{ color:"#22c55e", fontWeight:700 }}>{completed.size}</span> of {Object.keys(THREATS).length}, {completed.size === Object.keys(THREATS).length ? "flawless." : completed.size >= 3 ? "solid work." : "keep practising."}
               </p>
             </div>
             <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:30 }}>
@@ -1808,7 +1808,7 @@ function QatarMap({ attackState }: {
       <text x="68" y="96" textAnchor="middle" fill="rgba(197,165,126,0.1)" fontSize="7"
         fontFamily="'JetBrains Mono'" letterSpacing="1.5">ARABIAN GULF</text>
 
-      {/* Qatar outline — recognisable thumb shape in landscape space */}
+      {/* Qatar outline, recognisable thumb shape in landscape space */}
       <path
         d="M 170,20 C 182,18 202,30 218,48 L 232,68 L 236,90 L 234,110 L 228,130 L 214,154 L 194,168 L 170,172 L 148,168 L 132,152 L 122,128 L 118,106 L 120,84 L 126,62 L 142,44 C 156,28 162,20 170,20 Z"
         fill="rgba(197,165,126,0.06)"
@@ -1826,7 +1826,7 @@ function QatarMap({ attackState }: {
         </g>
       ))}
 
-      {/* Attack marker — clean single ring + badge */}
+      {/* Attack marker, clean single ring + badge */}
       {tgt && attackState && (
         <g>
           {/* Single subtle ring */}
@@ -1846,7 +1846,7 @@ function QatarMap({ attackState }: {
           <text x={tgt[0]} y={tgt[1] + 4} textAnchor="middle" fontSize="8">
             {contained ? "✓" : attackState.def.icon}
           </text>
-          {/* Attack badge — pill label to the right */}
+          {/* Attack badge, pill label to the right */}
           <rect x={tgt[0] + 12} y={tgt[1] - 10} width="62" height="18" rx="4"
             fill={contained ? "rgba(34,197,94,0.12)" : `${attackState.def.color}15`}
             stroke={contained ? "rgba(34,197,94,0.4)" : `${attackState.def.color}50`}
@@ -1889,7 +1889,7 @@ function QatarMap({ attackState }: {
 }
 
 
-// DraggableFloater — reusable draggable panel matching SOC aesthetic
+// DraggableFloater, reusable draggable panel matching SOC aesthetic
 function DraggableFloater({
   children, onClose, width = 480, initialX, initialY, isRtl = false,
 }: {
@@ -1930,12 +1930,12 @@ function DraggableFloater({
       zIndex: 500, overflow: "hidden", userSelect: "none",
       maxHeight: "85vh", display: "flex", flexDirection: "column",
     }}>
-      {/* Drag handle — invisible, covers the header row (leaves space for close button) */}
+      {/* Drag handle, invisible, covers the header row (leaves space for close button) */}
       <div onMouseDown={onHeaderMouseDown} style={{
         position: "absolute", top: 0, ...(isRtl ? { left: 44, right: 0 } : { left: 0, right: 44 }), height: 46,
         cursor: "grab", zIndex: 1,
       }} />
-      {/* Close button — left in RTL, right in LTR */}
+      {/* Close button, left in RTL, right in LTR */}
       <button onClick={onClose} style={{
         position: "absolute", top: 8, ...(isRtl ? { left: 10 } : { right: 10 }), zIndex: 2,
         background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",

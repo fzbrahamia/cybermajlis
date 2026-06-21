@@ -1,5 +1,5 @@
 // ============================================================
-// DM DETECTOR — Spot suspicious messages before time runs out
+// DM DETECTOR, Spot suspicious messages before time runs out
 // ============================================================
 
 import { useState, useEffect, useRef } from "react";
@@ -195,7 +195,7 @@ export default function DMDetector({ onHome }: { onHome: (xp?: number) => void }
 
       <div style={{ padding: "24px 40px", maxWidth: 680, margin: "0 auto" }}>
 
-        {/* Fixed-height slot — no jumping */}
+        {/* Fixed-height slot, no jumping */}
         <div style={{ minHeight: 420 }}>
           {!feedback ? (
             /* ── Message card ── */

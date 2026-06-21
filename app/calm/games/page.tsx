@@ -37,8 +37,8 @@ const GAMES = {
 };
 
 const UI = {
-  en: { title: "Play & Learn", sub: "Choose a game. Take your time — there is no timer pressure.", backHome: "← Back to home" },
-  ar: { title: "العب وتعلّم", sub: "اختر لعبة. خذ وقتك — لا يوجد عداد للوقت.", backHome: "← العودة للرئيسية" },
+  en: { title: "Play & Learn", sub: "Choose a game. Take your time, there is no timer pressure.", backHome: "← Back to home" },
+  ar: { title: "العب وتعلّم", sub: "اختر لعبة. خذ وقتك، لا يوجد عداد للوقت.", backHome: "← العودة للرئيسية" },
 };
 
 export default function CalmGamesPage() {

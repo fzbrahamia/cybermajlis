@@ -1,5 +1,5 @@
 // ============================================================
-// HACK LAB — Think like an attacker to learn defense
+// HACK LAB, Think like an attacker to learn defense
 // ============================================================
 
 import { useState, useEffect, useRef } from "react";
@@ -159,7 +159,7 @@ export default function HackLab({ onHome }: { onHome: (xp?: number) => void }) {
           {t('questionLabel')}
         </div>
 
-        {/* Fixed-height slot — no jumping */}
+        {/* Fixed-height slot, no jumping */}
         <div style={{ minHeight: 320 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {mission.opts.map((opt, i) => {

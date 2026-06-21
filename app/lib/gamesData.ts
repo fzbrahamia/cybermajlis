@@ -97,7 +97,7 @@ export const GAMES: GameDef[] = [
     id: "evidence", name: "Evidence Trail", nameAr: "أثر الدليل",
     tagline: "Collect clues in the right order",
     taglineAr: "اجمع القرائن بالترتيب الصحيح",
-    desc: "A cyber crime happened! Choose which evidence to collect first — volatile disappears!",
+    desc: "A cyber crime happened! Choose which evidence to collect first, volatile disappears!",
     descAr: "وقعت جريمة إلكترونية! اختر أي دليل تجمع أولاً.",
     mechanic: "Binary Choice", char: CHARS.fox,
     skills: ["Digital Forensics", "Evidence Handling"],
@@ -124,10 +124,10 @@ export const GAMES: GameDef[] = [
   // ── ADVANCED ──
   {
     id: "ransom", name: "Ransom Rescue", nameAr: "إنقاذ من الفدية",
-    tagline: "Your screen is locked — can you escape?",
-    taglineAr: "شاشتك مقفلة — هل تستطيع الهروب؟",
+    tagline: "Your screen is locked, can you escape?",
+    taglineAr: "شاشتك مقفلة، هل تستطيع الهروب؟",
     desc: "Ransomware locks your screen! Make the right decisions to recover without paying.",
-    descAr: "فيروس الفدية قفل شاشتك! لا تدفع — اتخذ القرارات الصحيحة.",
+    descAr: "فيروس الفدية قفل شاشتك! لا تدفع، اتخذ القرارات الصحيحة.",
     mechanic: "Puzzle & Restore", char: CHARS.horse,
     skills: ["Backup Strategy", "Ransomware Response"],
   },
@@ -145,14 +145,14 @@ export const GAMES: GameDef[] = [
     tagline: "Think like an attacker to defend better",
     taglineAr: "فكّر كمخترق لتدافع أفضل",
     desc: "Choose the best attack strategy for each target. Learn what defense prevents it!",
-    descAr: "اختر أفضل استراتيجية هجوم — فهم المهاجمين يجعلك مدافعًا أفضل!",
+    descAr: "اختر أفضل استراتيجية هجوم، فهم المهاجمين يجعلك مدافعًا أفضل!",
     mechanic: "Strategy", char: CHARS.falcon,
     skills: ["Offensive Thinking", "Attack Vectors"],
   },
   {
     id: "phishcraft", name: "Phish Crafter", nameAr: "صانع التصيّد",
-    tagline: "Build a phishing email — then learn to spot one",
-    taglineAr: "ابنِ رسالة تصيّد — ثم تعلّم كيف تكشفها",
+    tagline: "Build a phishing email, then learn to spot one",
+    taglineAr: "ابنِ رسالة تصيّد، ثم تعلّم كيف تكشفها",
     desc: "Build the most convincing phishing email. Then see a full red-flag breakdown!",
     descAr: "ابنِ أقنع رسالة تصيّد ثم شاهد تحليل العلامات الحمراء!",
     mechanic: "Drag to Build", char: CHARS.falcon,
@@ -169,8 +169,8 @@ export const GAMES: GameDef[] = [
   },
   {
     id: "smarttrap", name: "Smart Trap", nameAr: "الفخ الذكي",
-    tagline: "Your smart home is watching — are you?",
-    taglineAr: "بيتك الذكي يراقب — هل أنت كذلك؟",
+    tagline: "Your smart home is watching, are you?",
+    taglineAr: "بيتك الذكي يراقب، هل أنت كذلك؟",
     desc: "Move through a smart apartment. Fix IoT vulnerabilities before hackers exploit them!",
     descAr: "تنقل في شقة ذكية. اعثر على كل ثغرة وأصلحها!",
     mechanic: "Explore & Fix", char: CHARS.fox,
@@ -198,7 +198,7 @@ export const GAME_DIFF: Record<string, GameDifficulty> = {
   smarttrap: { stars: 2, time: "4-6 min" },
 };
 
-/** What each game teaches — shown on hover */
+/** What each game teaches, shown on hover */
 export const GAME_LEARN: Record<string, string[]> = {
   souq: ["What data is sensitive vs public", "Privacy fundamentals", "Data classification basics"],
   inbox: ["Spot misspelled domains", "Recognize urgency tactics", "Verify sender identity", "Check link destinations"],

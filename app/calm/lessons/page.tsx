@@ -59,8 +59,8 @@ export default function CalmLessonsPage() {
         </h1>
         <p style={{ fontSize: "1.2rem", color: "#475569", marginBottom: "3rem", lineHeight: 1.7 }}>
           {isRtl
-            ? "اختر أي موضوع يهمك. كل درس قصير وواضح — خطوة واحدة في كل مرة."
-            : "Pick any topic you want to learn about. Every lesson is short and clear — one step at a time."}
+            ? "اختر أي موضوع يهمك. كل درس قصير وواضح، خطوة واحدة في كل مرة."
+            : "Pick any topic you want to learn about. Every lesson is short and clear, one step at a time."}
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
@@ -125,7 +125,7 @@ export default function CalmLessonsPage() {
         background: "#F0F9FF",
         borderTop: "2px solid #BFDBFE",
       }}>
-        {isRtl ? "مجلس الأمن السيبراني — قطر" : "CyberMajlis — Qatar"} ·{" "}
+        {isRtl ? "مجلس الأمن السيبراني، قطر" : "CyberMajlis, Qatar"} ·{" "}
         <a href="/calm" style={{ color: "#1D7FCC", textDecoration: "none" }}>
           {isRtl ? "← الرئيسية" : "← Home"}
         </a>

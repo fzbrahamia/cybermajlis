@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   Volume2, VolumeX, ChevronDown, ArrowRight,
-  BookOpen, FlaskConical, Radar, Newspaper, Users, ScanLine, Flag, MessageCircle,
+  BookOpen, FlaskConical, Radar, Newspaper, Users, ScanLine, Flag, MessageCircle, Gamepad2, Flame,
 } from "lucide-react";
 import { useLocale } from "next-intl";
 import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
@@ -318,7 +318,7 @@ function ChatMock() {
       </div>
       <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 9, justifyContent: "center" }}>
         {bubble("l", isAR ? "مرحباً! أنا حمد. كيف أساعدك؟ 👋" : "Hi! I'm Hamad. How can I help? 👋")}
-        {bubble("r", isAR ? "وصلني رابط غريب، آمن؟" : "Got a weird link — is it safe?")}
+        {bubble("r", isAR ? "وصلني رابط غريب، آمن؟" : "Got a weird link, is it safe?")}
         {bubble("l", isAR ? "أرسله لي وسأفحصه فوراً 🔎" : "Send it over and I'll check it right away 🔎")}
         <div style={{ display: "flex", gap: 4, paddingInlineStart: 4 }}>
           {[0, 1, 2].map(i => <span key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(197,165,126,.6)", animation: `cmBlink 1.2s ${i * 0.2}s infinite` }} />)}
@@ -344,64 +344,64 @@ const FEATURES: Feature[] = [
     id: "lessons", route: "/dashboard", Icon: BookOpen, Mock: LessonsMock, frame: "cybermajlis.qa/learn",
     kicker: { en: "LESSONS", ar: "الدروس" },
     motto:  { en: "Knowledge is the first shield.", ar: "المعرفة هي الدرع الأول." },
-    desc:   { en: "Story-driven lessons on the malware that actually targets us — viruses, worms, ransomware and the shape-shifters — each grounded in real Qatari scenarios.", ar: "دروس بأسلوب القصة حول البرمجيات الخبيثة التي تستهدفنا فعلاً — الفيروسات والديدان والفدية والمتحوّلة — كلها مبنية على سيناريوهات قطرية واقعية." },
-    points: { en: ["Basic, Advanced & Do-It-Yourself tracks", "Animated stories, live demos & quizzes", "Earn XP and rise through the ranks"], ar: ["مسارات: مبتدئ، متقدم، وافعلها بنفسك", "قصص متحركة وعروض حية واختبارات", "اكسب نقاط الخبرة وارتقِ في الرتب"] },
+    desc:   { en: "Clear lessons on the malware that really targets us, like viruses, worms and ransomware. Each one is told as a short story.", ar: "دروس واضحة عن البرمجيات الخبيثة التي تستهدفنا فعلاً، مثل الفيروسات والديدان وبرامج الفدية. كل درس يُروى كقصة قصيرة." },
+    points: { en: ["Basic, advanced and DIY tracks", "Stories, demos and short quizzes", "Earn points as you go"], ar: ["مسارات: مبتدئ، متقدم، وافعلها بنفسك", "قصص وعروض واختبارات قصيرة", "اكسب النقاط وأنت تتعلّم"] },
     cta:    { en: "Start learning", ar: "ابدأ التعلّم" },
   },
   {
     id: "simulations", route: "/games?view=simulations", Icon: FlaskConical, Mock: SimMock, frame: "sandbox://try-it",
     kicker: { en: "SIMULATIONS", ar: "المحاكاة" },
     motto:  { en: "Don't just read it. Try it.", ar: "لا تكتفِ بالقراءة. جرّبه." },
-    desc:   { en: "Safe, hands-on demos where you drive. Type into a keylogger and watch it capture every word, lock and unlock a machine like ransomware does, or run a program and watch windows multiply — feel how each threat behaves, no code and nothing real ever touched.", ar: "عروض آمنة وتفاعلية أنت من يقودها. اكتب في الكي لوغر وشاهده يلتقط كل كلمة، اقفل جهازًا وافتحه كما تفعل الفدية، أو شغّل برنامجًا وشاهد النوافذ تتكاثر — لتشعر بكيفية عمل كل تهديد، دون أي شفرة ودون المساس بشيء حقيقي." },
-    points: { en: ["You drive the demo — not a script", "Keylogger, ransomware, virus & more", "100% safe — nothing real is touched"], ar: ["أنت تقود العرض — لا شفرة مكتوبة", "كي لوغر، فدية، فيروس وأكثر", "آمن 100% — لا شيء حقيقي يُمَسّ"] },
+    desc:   { en: "Safe, hands-on demos that you control. Type into a keylogger and watch it capture every word. Lock and unlock a machine the way ransomware does. Run a program and watch the windows pile up. You learn how each threat works by trying it.", ar: "عروض آمنة وتفاعلية أنت من يتحكم بها. اكتب في الكي لوغر وشاهده يلتقط كل كلمة. اقفل جهازًا وافتحه كما تفعل برامج الفدية. شغّل برنامجًا وشاهد النوافذ تتكاثر. تتعلّم كيف يعمل كل تهديد بتجربته بنفسك." },
+    points: { en: ["You control the demo, not a script", "7 hands-on simulations", "Totally safe, nothing real is touched"], ar: ["أنت تتحكم بالعرض، لا شفرة مكتوبة", "٧ محاكاة تفاعلية", "آمن تمامًا، لا شيء حقيقي يُمَسّ"] },
     cta:    { en: "Try a simulation", ar: "جرّب محاكاة" },
   },
   {
     id: "soc", route: "/soc", Icon: Radar, Mock: SOCMock, frame: "soc.cybermajlis.qa · training",
     kicker: { en: "SOC SIMULATION", ar: "محاكاة مركز العمليات" },
     motto:  { en: "The watch never sleeps.", ar: "العين الساهرة لا تنام." },
-    desc:   { en: "Sit in a simulated Security Operations Center and practice the real job. Triage realistic — but simulated — alerts, follow the playbook, and respond to an attack scenario as it unfolds. It's training, not a live wire.", ar: "اجلس في مركز عمليات أمنية محاكى وتدرّب على المهمة الحقيقية. افرز تنبيهات واقعية — لكنها محاكاة — واتبع الإجراءات، واستجب لسيناريو هجوم وهو يتطوّر. إنه تدريب، وليست هجمات حقيقية." },
-    points: { en: ["A realistic, simulated SOC", "Practice triage & incident response", "Scenario-based — not real attacks"], ar: ["مركز عمليات محاكى وواقعي", "تدرّب على الفرز والاستجابة للحوادث", "قائم على سيناريوهات — ليست هجمات حقيقية"] },
+    desc:   { en: "Sit in a practice Security Operations Center and try the real job. Sort through realistic alerts, follow the steps a real analyst takes, and respond to an attack as it plays out.", ar: "اجلس في مركز عمليات أمنية للتدريب وجرّب المهمة الحقيقية. افرز التنبيهات الواقعية، واتبع الخطوات التي يتبعها المحلل الحقيقي، واستجب لهجوم وهو يجري." },
+    points: { en: [], ar: [] },
     cta:    { en: "Enter the SOC", ar: "ادخل المركز" },
   },
   {
     id: "news", route: "/news", Icon: Newspaper, Mock: NewsMock, frame: "cybermajlis.qa/news",
     kicker: { en: "NEWS", ar: "الأخبار" },
     motto:  { en: "Stay one step ahead.", ar: "ابقَ متقدّمًا بخطوة." },
-    desc:   { en: "Curated cyber news that actually matters to Qatar — every story decoded into plain language and a clear next step you can act on today.", ar: "أخبار سيبرانية مختارة تهمّ قطر فعلاً — كل خبر مُبسّط بلغة واضحة وخطوة عملية يمكنك اتخاذها اليوم." },
-    points: { en: ["Local & regional threats first", "Jargon translated into plain talk", "Always an action you can take"], ar: ["التهديدات المحلية والإقليمية أولاً", "مصطلحات مترجمة بلغة بسيطة", "دائماً خطوة عملية يمكنك اتخاذها"] },
+    desc:   { en: "Cyber news that actually matters to Qatar. We explain every story in plain words, and tell you the one thing you can do about it today.", ar: "أخبار سيبرانية تهمّ قطر فعلاً. نشرح كل خبر بكلمات بسيطة، ونخبرك بالخطوة الوحيدة التي يمكنك القيام بها اليوم." },
+    points: { en: ["Local and regional threats first", "Plain words, no jargon", "Always something you can do"], ar: ["التهديدات المحلية والإقليمية أولاً", "كلمات بسيطة بلا مصطلحات", "دائمًا خطوة يمكنك القيام بها"] },
     cta:    { en: "Read the news", ar: "اقرأ الأخبار" },
   },
   {
     id: "community", route: "/community", Icon: Users, Mock: CommunityMock, frame: "cybermajlis.qa/community",
     kicker: { en: "COMMUNITY", ar: "المجتمع" },
-    motto:  { en: "Report it. Protect everyone.", ar: "أبلغ عنه. واحمِ الجميع." },
-    desc:   { en: "Spotted a scam call, a phishing text or a suspicious number? Report it here. Every incident you submit warns the whole community and helps protect the people around you before they get caught.", ar: "رصدت اتصال احتيال أو رسالة تصيّد أو رقمًا مشبوهًا؟ أبلغ عنه هنا. كل حادثة ترفعها تحذّر المجتمع كله وتساعد على حماية من حولك قبل أن يقعوا في الفخ." },
-    points: { en: ["Report scams, phishing & incidents", "Warn others before they're hit", "Build a safer community together"], ar: ["أبلغ عن الاحتيال والتصيّد والحوادث", "حذّر الآخرين قبل أن يقعوا ضحية", "ابنِ مجتمعًا أكثر أمانًا معًا"] },
+    motto:  { en: "Be part of protecting Qatar.", ar: "كن جزءًا من حماية قطر." },
+    desc:   { en: "Saw a scam call, a phishing text, or a suspicious number? Report it here. Every report you send warns the whole community and helps protect the people around you before they get caught.", ar: "رأيت اتصال احتيال أو رسالة تصيّد أو رقمًا مشبوهًا؟ أبلغ عنه هنا. كل بلاغ ترسله يحذّر المجتمع كله ويساعد على حماية من حولك قبل أن يقعوا في الفخ." },
+    points: { en: ["Build a safer community together"], ar: ["ابنِ مجتمعًا أكثر أمانًا معًا"] },
     cta:    { en: "Report an incident", ar: "أبلغ عن حادثة" },
   },
   {
     id: "scan", route: "/scan", Icon: ScanLine, Mock: ScanMock, frame: "cybermajlis.qa/scan",
     kicker: { en: "LINK SCANNER", ar: "فاحص الروابط" },
     motto:  { en: "When in doubt, scan it.", ar: "إن شككت، فافحصه." },
-    desc:   { en: "Paste a suspicious link or drop a file and get an instant, clear verdict — safe or dangerous — before you ever click. No guessing, no regret.", ar: "الصق رابطًا مشبوهًا أو أسقِط ملفًا واحصل على حكم فوري وواضح — آمن أم خطر — قبل أن تنقر. لا تخمين ولا ندم." },
-    points: { en: ["Instant link & file analysis", "Plain verdict: safe or danger", "Catches phishing & impersonation"], ar: ["تحليل فوري للروابط والملفات", "حكم واضح: آمن أم خطر", "يكشف التصيّد وانتحال الهوية"] },
+    desc:   { en: "Paste a suspicious link or drop in a file, and get a clear answer right away, safe or dangerous, before you ever click. No more guessing.", ar: "الصق رابطًا مشبوهًا أو أضف ملفًا، واحصل على إجابة واضحة فورًا، آمن أم خطر، قبل أن تنقر. لا مزيد من التخمين." },
+    points: { en: ["Checks links and files in seconds", "A clear answer: safe or dangerous", "Spots phishing and fake brands"], ar: ["يفحص الروابط والملفات في ثوانٍ", "إجابة واضحة: آمن أم خطر", "يكشف التصيّد والعلامات المزيفة"] },
     cta:    { en: "Scan a link", ar: "افحص رابطًا" },
   },
   {
     id: "ctf", route: "/ctf", Icon: Flag, Mock: CTFMock, frame: "ctf.cybermajlis.qa",
     kicker: { en: "CAPTURE THE FLAG", ar: "التقط العلم" },
     motto:  { en: "Prove your skill. Capture the flag.", ar: "أثبت مهارتك. التقط العلم." },
-    desc:   { en: "Real capture-the-flag challenges across five categories — web, crypto, forensics, OSINT and pwn. Solve, submit the flag, and climb the leaderboard.", ar: "تحديات حقيقية لالتقاط العلم عبر خمس فئات — الويب، التشفير، التحقيق الجنائي، الاستخبارات، والاختراق. حلّ، وأرسل العلم، وتصدّر القائمة." },
-    points: { en: ["Five real CTF categories", "From beginner to expert", "Live leaderboard & points"], ar: ["خمس فئات حقيقية لالتقاط العلم", "من المبتدئ إلى الخبير", "قائمة متصدرين ونقاط حيّة"] },
+    desc:   { en: "Real capture-the-flag challenges in five areas: web, crypto, forensics, OSINT and pwn. Solve a challenge, send in the flag, and move up the leaderboard.", ar: "تحديات حقيقية لالتقاط العلم في خمسة مجالات: الويب، التشفير، التحقيق الجنائي، الاستخبارات، والاختراق. حلّ التحدي، وأرسل العلم، وتقدّم في قائمة المتصدرين." },
+    points: { en: ["From beginner to expert", "Live leaderboard and points"], ar: ["من المبتدئ إلى الخبير", "قائمة متصدرين ونقاط حيّة"] },
     cta:    { en: "Take the challenge", ar: "ابدأ التحدي" },
   },
   {
     id: "chatbot", route: "", Icon: MessageCircle, Mock: ChatMock, frame: "Hamad · your guide",
-    kicker: { en: "HAMAD · AI GUIDE", ar: "حمد · الدليل الذكي" },
+    kicker: { en: "HAMAD · YOUR GUIDE", ar: "حمد · دليلك" },
     motto:  { en: "Hamad has your back, 24/7.", ar: "حمد بجانبك، على مدار الساعة." },
-    desc:   { en: "Ask anything, anytime. Is this link safe? Was I scammed? What does this news mean for me? Hamad answers — in Arabic or English — and even speaks back.", ar: "اسأل أي شيء، في أي وقت. هل هذا الرابط آمن؟ هل تعرّضت للاحتيال؟ ماذا يعني هذا الخبر لي؟ حمد يجيب — بالعربية أو الإنجليزية — وحتى يتحدّث إليك." },
-    points: { en: ["Arabic & English, voice or text", "Checks links, numbers & scams", "Always one tap away"], ar: ["عربي وإنجليزي، صوت أو نص", "يفحص الروابط والأرقام والاحتيال", "دائماً على بُعد نقرة واحدة"] },
+    desc:   { en: "Ask anything, anytime. Is this link safe? Was I scammed? What does this news mean for me? Hamad answers in Arabic or English.", ar: "اسأل أي شيء، في أي وقت. هل هذا الرابط آمن؟ هل تعرّضت للاحتيال؟ ماذا يعني هذا الخبر لي؟ يجيبك حمد بالعربية أو الإنجليزية." },
+    points: { en: ["Arabic and English, voice or text", "Checks links, numbers and scams", "Always one tap away"], ar: ["عربي وإنجليزي، صوت أو نص", "يفحص الروابط والأرقام والاحتيال", "دائماً على بُعد نقرة واحدة"] },
     cta:    { en: "Talk to Hamad", ar: "تحدّث مع حمد" },
   },
 ];
@@ -477,7 +477,7 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
         display: "flex", gap: "clamp(40px,6vw,90px)", alignItems: "center",
         flexWrap: "wrap", flexDirection: flip ? "row-reverse" : "row",
       }}>
-        {/* —— Copy —— */}
+        {/* copy */}
         <motion.div
           variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.35 }}
           style={{ flex: "1 1 380px", maxWidth: 520 }}
@@ -513,14 +513,16 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
             {isAR ? f.desc.ar : f.desc.en}
           </motion.p>
 
-          <motion.ul variants={item} style={{ listStyle: "none", padding: 0, margin: "22px 0 30px", display: "flex", flexDirection: "column", gap: 11 }}>
-            {(isAR ? f.points.ar : f.points.en).map((p, i) => (
-              <li key={i} style={{ display: "flex", alignItems: "center", gap: 11, fontFamily: crimson, fontSize: "1rem", color: body }}>
-                <span style={{ width: 6, height: 6, background: C.gold, transform: "rotate(45deg)", flexShrink: 0 }} />
-                {p}
-              </li>
-            ))}
-          </motion.ul>
+          {(isAR ? f.points.ar : f.points.en).length > 0 && (
+            <motion.ul variants={item} style={{ listStyle: "none", padding: 0, margin: "22px 0 30px", display: "flex", flexDirection: "column", gap: 11 }}>
+              {(isAR ? f.points.ar : f.points.en).map((p, i) => (
+                <li key={i} style={{ display: "flex", alignItems: "center", gap: 11, fontFamily: crimson, fontSize: "1rem", color: body }}>
+                  <span style={{ width: 6, height: 6, background: C.gold, transform: "rotate(45deg)", flexShrink: 0 }} />
+                  {p}
+                </li>
+              ))}
+            </motion.ul>
+          )}
 
           <motion.button
             variants={item}
@@ -528,6 +530,7 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
             style={{
               fontFamily: cinzel, fontSize: 12.5, fontWeight: 700, letterSpacing: 1.4,
               padding: "13px 26px", borderRadius: 11, border: "none", cursor: "pointer",
+              marginTop: (isAR ? f.points.ar : f.points.en).length ? 0 : 30,
               display: "inline-flex", alignItems: "center", gap: 10, transition: "all .25s ease", ...btn,
             }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; }}
@@ -538,7 +541,7 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
           </motion.button>
         </motion.div>
 
-        {/* —— Visual —— */}
+        {/* visual */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -597,15 +600,18 @@ function StoreBadge({ kind, isAR }: { kind: "apple" | "play"; isAR: boolean }) {
 
 /* ── Mobile-app section ──────────────────────────────────── */
 function MobileSection({ isAR }: { isAR: boolean }) {
-  const tabs = [
-    { e: "🎮", en: "Games", ar: "ألعاب" },
-    { e: "📰", en: "News", ar: "أخبار" },
-    { e: "🛡", en: "Community", ar: "المجتمع" },
-    { e: "💬", en: "Chat", ar: "محادثة" },
+  const tabs: { Icon: React.ElementType; en: string; ar: string }[] = [
+    { Icon: Gamepad2,      en: "Games",     ar: "ألعاب" },
+    { Icon: Newspaper,     en: "News",      ar: "أخبار" },
+    { Icon: Users,         en: "Community", ar: "المجتمع" },
+    { Icon: MessageCircle, en: "Chat",      ar: "محادثة" },
   ];
-  const points: [string, string][] = isAR
-    ? [["🎮", "ألعاب صغيرة محمولة وحماسية"], ["🔥", "حافظ على سلسلتك اليومية"], ["📰", "أخبار ومجتمع أينما كنت"], ["💬", "تحدّث مع حمد في أي وقت"]]
-    : [["🎮", "Arcade-style mini-games on the go"], ["🔥", "Keep your daily learning streak"], ["📰", "News & community in your pocket"], ["💬", "Chat with Hamad anytime"]];
+  const points: [React.ElementType, string, string][] = [
+    [Gamepad2,      "Arcade-style mini-games on the go", "ألعاب صغيرة محمولة وحماسية"],
+    [Flame,         "Keep your daily learning streak",   "حافظ على سلسلتك اليومية"],
+    [Newspaper,     "News and community in your pocket",  "أخبار ومجتمع أينما كنت"],
+    [MessageCircle, "Chat with Hamad anytime",           "تحدّث مع حمد في أي وقت"],
+  ];
 
   return (
     <section id="mobile" style={{
@@ -625,15 +631,17 @@ function MobileSection({ isAR }: { isAR: boolean }) {
             <div style={{ width: 48, height: 1, background: `linear-gradient(90deg,${C.maroonMid},${C.gold})` }} />
             <div style={{ width: 5, height: 5, background: C.gold, transform: "rotate(45deg)" }} />
           </motion.div>
-          <motion.p variants={item} style={{ fontFamily: crimson, fontSize: "1.12rem", fontStyle: "italic", lineHeight: 1.6, color: "#5a2428", margin: 0 }}>
-            {isAR
-              ? "خذ سايبر مجلس معك أينما ذهبت. العب الألعاب الصغيرة، وحافظ على سلسلتك اليومية، واقرأ الأخبار، وتحدّث مع حمد — كل ذلك من هاتفك."
-              : "Take CyberMajlis everywhere. Play the mini-games, keep your daily streak alive, read the news, and chat with Hamad — all from your phone."}
-          </motion.p>
-          <motion.ul variants={item} style={{ listStyle: "none", padding: 0, margin: "22px 0 28px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 18px" }}>
-            {points.map(([e, txt], i) => (
-              <li key={i} style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: crimson, fontSize: "0.98rem", color: "#5a2428" }}>
-                <span style={{ fontSize: 16 }}>{e}</span>{txt}
+          <motion.ul variants={item} style={{ listStyle: "none", padding: 0, margin: "4px 0 28px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 18px" }}>
+            {points.map(([Icon, en, ar], i) => (
+              <li key={i} style={{ display: "flex", alignItems: "center", gap: 11, fontFamily: crimson, fontSize: "0.98rem", color: "#5a2428" }}>
+                <span style={{
+                  width: 32, height: 32, borderRadius: 9, flexShrink: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  background: "rgba(99,32,36,.07)", border: "1px solid rgba(99,32,36,.18)",
+                }}>
+                  <Icon size={16} color={C.maroonMid} strokeWidth={1.7} />
+                </span>
+                {isAR ? ar : en}
               </li>
             ))}
           </motion.ul>
@@ -642,7 +650,7 @@ function MobileSection({ isAR }: { isAR: boolean }) {
             <StoreBadge kind="play" isAR={isAR} />
           </motion.div>
           <motion.div variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 13, color: "rgba(99,32,36,.55)", marginTop: 14 }}>
-            {isAR ? "متوفر قريبًا على App Store و Google Play." : "Coming soon to the App Store & Google Play."}
+            {isAR ? "متوفر قريبًا على App Store و Google Play." : "Coming soon to the App Store and Google Play."}
           </motion.div>
         </motion.div>
 
@@ -662,8 +670,10 @@ function MobileSection({ isAR }: { isAR: boolean }) {
               <div style={{ padding: "26px 16px 12px", display: "flex", alignItems: "center", gap: 9 }}>
                 <img src="/avatar.png" alt="" style={{ width: 30, height: 30, borderRadius: "50%", objectFit: "cover", border: "1.5px solid rgba(197,165,126,.5)" }} />
                 <div>
-                  <div style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 700, color: C.goldLight }}>{isAR ? "أهلاً 👋" : "Welcome 👋"}</div>
-                  <div style={{ fontFamily: mono, fontSize: 8, color: "#e0a78f" }}>🔥 {isAR ? "سلسلة ٥ أيام" : "5-day streak"}</div>
+                  <div style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 700, color: C.goldLight }}>{isAR ? "أهلاً بك" : "Welcome"}</div>
+                  <div style={{ fontFamily: mono, fontSize: 8, color: "#e0a78f", display: "flex", alignItems: "center", gap: 3 }}>
+                    <Flame size={9} color="#e0a78f" /> {isAR ? "سلسلة ٥ أيام" : "5-day streak"}
+                  </div>
                 </div>
               </div>
               {/* featured card */}
@@ -685,12 +695,15 @@ function MobileSection({ isAR }: { isAR: boolean }) {
               </div>
               {/* bottom tab bar */}
               <div style={{ display: "flex", justifyContent: "space-around", padding: "10px 8px 16px", borderTop: "1px solid rgba(197,165,126,.16)", background: "rgba(0,0,0,.2)" }}>
-                {tabs.map((tb, i) => (
-                  <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, opacity: i === 0 ? 1 : 0.5 }}>
-                    <span style={{ fontSize: 15 }}>{tb.e}</span>
-                    <span style={{ fontFamily: cinzel, fontSize: 7, letterSpacing: 0.5, color: i === 0 ? C.gold : "rgba(232,212,188,.5)" }}>{isAR ? tb.ar : tb.en}</span>
-                  </div>
-                ))}
+                {tabs.map((tb, i) => {
+                  const TIcon = tb.Icon;
+                  return (
+                    <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, opacity: i === 0 ? 1 : 0.55 }}>
+                      <TIcon size={15} color={i === 0 ? C.gold : "rgba(232,212,188,.7)"} strokeWidth={1.7} />
+                      <span style={{ fontFamily: cinzel, fontSize: 7, letterSpacing: 0.5, color: i === 0 ? C.gold : "rgba(232,212,188,.5)" }}>{isAR ? tb.ar : tb.en}</span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -715,13 +728,13 @@ function SideRail({ ids, labels, active, isAR }: { ids: string[]; labels: string
               background: "none", border: "none", cursor: "pointer",
             }}
           >
-            {/* dot — fixed-size box keeps every dot perfectly aligned */}
+            {/* dot: fixed-size box keeps every dot perfectly aligned */}
             <span style={{
               width: on ? 10 : 7, height: on ? 10 : 7, borderRadius: "50%",
               background: on ? C.maroonMid : "rgba(99,32,36,.26)",
               boxShadow: on ? "0 0 0 4px rgba(99,32,36,.12)" : "none", transition: "all .3s ease",
             }} />
-            {/* label — absolutely positioned so it never pushes the dot */}
+            {/* label: absolutely positioned so it never pushes the dot */}
             <span className="cm-rail-label" style={{
               position: "absolute", [isAR ? "left" : "right"]: 20, top: "50%",
               transform: "translateY(-50%)", whiteSpace: "nowrap",
@@ -861,8 +874,8 @@ export default function HomePage() {
               fontFamily: crimson, fontSize: "1.25rem", fontStyle: "italic", color: "#5a2428", lineHeight: 1.55, maxWidth: 500,
             }}>
               {isAR
-                ? "كل ما تحتاجه لتتعلّم الأمن السيبراني وتعيشه وتدافع به — في مكان واحد. مرّر للأسفل لتكتشف كل ميزة."
-                : "Everything you need to learn cybersecurity, live it, and defend with it — in one place. Scroll to meet every feature."}
+                ? "كل ما تحتاجه لتتعلّم الأمن السيبراني وتتدرّب عليه في مكان واحد. مرّر للأسفل لترى ما بالداخل."
+                : "Everything you need to learn and practice cybersecurity, all in one place. Scroll down to see what's inside."}
             </motion.p>
 
             <motion.div variants={item} style={{ display: "flex", gap: 14, marginTop: 30, flexWrap: "wrap" }}>
@@ -974,8 +987,8 @@ export default function HomePage() {
           </motion.div>
           <motion.p variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.2rem", color: "rgba(232,212,188,.78)", lineHeight: 1.6, margin: "0 auto 36px", maxWidth: 560 }}>
             {isAR
-              ? "ابدأ مجانًا اليوم. تعلّم، العب، حاكِ، وراقب — وكن جزءًا من المجلس الذي يحمي قطر."
-              : "Start free today. Learn, play, simulate and watch — and become part of the majlis that keeps Qatar safe."}
+              ? "ابدأ مجانًا اليوم، وكن جزءًا من المجلس الذي يساعد في حماية قطر."
+              : "Start for free today, and become part of the majlis that helps keep Qatar safe."}
           </motion.p>
           <motion.div variants={item} style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <button

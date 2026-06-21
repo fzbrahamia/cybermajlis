@@ -23,7 +23,7 @@ interface LessonDetailProps {
   };
 }
 
-// Tab order and icons stay in code — only the visible labels come from JSON
+// Tab order and icons stay in code, only the visible labels come from JSON
 const TAB_META = {
   Story:  { icon: BookOpen,   step: 1 },
   Demo:   { icon: Monitor,    step: 2 },

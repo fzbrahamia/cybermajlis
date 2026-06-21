@@ -1,5 +1,5 @@
 // ============================================================
-// INBOX INSPECTOR — Spot phishing emails
+// INBOX INSPECTOR, Spot phishing emails
 // ============================================================
 
 import { useState, useEffect } from "react";
@@ -214,7 +214,7 @@ export default function InboxInspector({ onHome }: { onHome: (xp?: number) => vo
 
       <div style={{ padding: "24px 40px", maxWidth: 780, margin: "0 auto" }}>
 
-        {/* Fixed-height slot — no jumping */}
+        {/* Fixed-height slot, no jumping */}
         <div style={{ minHeight: 480 }}>
 
           {/* Email card */}

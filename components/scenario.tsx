@@ -10,10 +10,10 @@ interface PhaseScore { score: number; max: number; detail: string }
 // ── Character config ──────────────────────────────────────────────────────────
 const CHARS = {
   hamad:  { name:"Hamad",    role:"Employee",   color:"#60a5fa", img:"/avatar.png",   emoji:"👤" },
-  saqr:   { name:"Saqr",     role:"Tier 1 — Alert Triage",   color:"#D5B893", img:"/characters/saqr.GIF",    emoji:"🦅" },
-  thalab: { name:"Tha'lab",  role:"Tier 2 — Forensics",      color:"#f59e0b", img:"/characters/fox.GIF",     emoji:"🦊" },
-  hisan:  { name:"Hisan",    role:"Tier 2 — Incident Response", color:"#f87171", img:"/characters/hisan.GIF",   emoji:"🐎" },
-  oryx:   { name:"Oryx",     role:"Tier 3 — Risk Assessment", color:"#818cf8", img:"/characters/oryx.GIF",    emoji:"🦌" },
+  saqr:   { name:"Saqr",     role:"Tier 1, Alert Triage",   color:"#D5B893", img:"/characters/saqr.GIF",    emoji:"🦅" },
+  thalab: { name:"Tha'lab",  role:"Tier 2, Forensics",      color:"#f59e0b", img:"/characters/fox.GIF",     emoji:"🦊" },
+  hisan:  { name:"Hisan",    role:"Tier 2, Incident Response", color:"#f87171", img:"/characters/hisan.GIF",   emoji:"🐎" },
+  oryx:   { name:"Oryx",     role:"Tier 3, Risk Assessment", color:"#818cf8", img:"/characters/oryx.GIF",    emoji:"🦌" },
 };
 
 // ── Shared UI ─────────────────────────────────────────────────────────────────
@@ -42,13 +42,13 @@ function CharBubble({ charId, message }: { charId: keyof typeof CHARS; message: 
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// HAMAD PHASE — Spot the red flags in the phishing email
+// HAMAD PHASE, Spot the red flags in the phishing email
 // ══════════════════════════════════════════════════════════════════════════════
 const RED_FLAGS = [
   { id:"sender",  label:"Sender domain",    highlight:"it-support@company-helpdesk.net", x:"14%",  y:"18%", w:"46%", h:"4%",  tip:"'company-helpdesk.net' is NOT the company's real domain. Attackers register lookalike domains." },
   { id:"urgency", label:"Urgency language", highlight:"will be suspended in 2 hours",    x:"8%",   y:"38%", w:"55%", h:"4%",  tip:"Creating panic stops you from thinking clearly. Legitimate IT never gives 2-hour ultimatums." },
-  { id:"url",     label:"Fake link URL",    highlight:"company-portal-update.net",        x:"14%",  y:"56%", w:"52%", h:"4%",  tip:"The link goes to a completely different domain — not the company's. This is the phishing trap." },
-  { id:"logo",    label:"Off-brand logo",   highlight:"Microsoft",                        x:"72%",  y:"12%", w:"20%", h:"10%", tip:"The logo is slightly wrong — wrong shade, wrong font weight. Attackers copy logos imperfectly." },
+  { id:"url",     label:"Fake link URL",    highlight:"company-portal-update.net",        x:"14%",  y:"56%", w:"52%", h:"4%",  tip:"The link goes to a completely different domain, not the company's. This is the phishing trap." },
+  { id:"logo",    label:"Off-brand logo",   highlight:"Microsoft",                        x:"72%",  y:"12%", w:"20%", h:"10%", tip:"The logo is slightly wrong, wrong shade, wrong font weight. Attackers copy logos imperfectly." },
 ];
 
 function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
@@ -87,7 +87,7 @@ function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
           <div style={{ width:10, height:10, borderRadius:"50%", background:"#ff5f57" }} />
           <div style={{ width:10, height:10, borderRadius:"50%", background:"#febc2e" }} />
           <div style={{ width:10, height:10, borderRadius:"50%", background:"#28c840" }} />
-          <span style={{ marginLeft:8, fontSize:11, color:"#666", fontFamily:"monospace" }}>Inbox — Mail Client</span>
+          <span style={{ marginLeft:8, fontSize:11, color:"#666", fontFamily:"monospace" }}>Inbox, Mail Client</span>
         </div>
 
         {/* Email content */}
@@ -168,7 +168,7 @@ function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
       {revealed && (
         <div style={{ background:"rgba(239,68,68,0.08)", border:"1px solid rgba(239,68,68,0.25)", borderRadius:12, padding:"14px 16px", animation:"slideIn .3s ease" }}>
           <div style={{ fontSize:12, fontWeight:700, color:"#f87171", marginBottom:8 }}>📨 Hamad clicked the link.</div>
-          <div style={{ fontSize:13, color:"#f5ede0aa", lineHeight:1.7 }}>Despite the warning signs, he clicked. The link opened a fake login page — he entered his password. A malware payload silently installed on his work laptop in the background. The attack has begun.</div>
+          <div style={{ fontSize:13, color:"#f5ede0aa", lineHeight:1.7 }}>Despite the warning signs, he clicked. The link opened a fake login page, he entered his password. A malware payload silently installed on his work laptop in the background. The attack has begun.</div>
         </div>
       )}
     </div>
@@ -176,13 +176,13 @@ function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// SAQR PHASE — Alert triage queue
+// SAQR PHASE, Alert triage queue
 // ══════════════════════════════════════════════════════════════════════════════
 const ALERTS = [
-  { id:1, time:"09:03", type:"Encoded PowerShell — OUTLOOK.EXE parent", src:"WKSTN-14 (h.alqatari)", sev:"critical", correct:"real",  why:"Outlook spawning encoded PowerShell is the malware executing after Hamad clicked. This is the key alert." },
-  { id:2, time:"08:55", type:"Antivirus: PUA quarantined",               src:"WKSTN-55 (it.admin)",  sev:"low",      correct:"fp",    why:"Advanced IP Scanner flagged as PUA — legitimate IT tool used by the admin team. Safe to close." },
-  { id:3, time:"09:17", type:"Mass file writes — .locked extension",     src:"FILESERVER-01",        sev:"critical", correct:"real",  why:"Ransomware encryption in progress. Hamad's malware has spread to the file server via mapped drives." },
-  { id:4, time:"09:00", type:"Scheduled task: Defender update",          src:"All workstations",     sev:"info",     correct:"fp",    why:"Routine Windows Defender definition update. Completely normal — close this." },
+  { id:1, time:"09:03", type:"Encoded PowerShell, OUTLOOK.EXE parent", src:"WKSTN-14 (h.alqatari)", sev:"critical", correct:"real",  why:"Outlook spawning encoded PowerShell is the malware executing after Hamad clicked. This is the key alert." },
+  { id:2, time:"08:55", type:"Antivirus: PUA quarantined",               src:"WKSTN-55 (it.admin)",  sev:"low",      correct:"fp",    why:"Advanced IP Scanner flagged as PUA, legitimate IT tool used by the admin team. Safe to close." },
+  { id:3, time:"09:17", type:"Mass file writes, .locked extension",     src:"FILESERVER-01",        sev:"critical", correct:"real",  why:"Ransomware encryption in progress. Hamad's malware has spread to the file server via mapped drives." },
+  { id:4, time:"09:00", type:"Scheduled task: Defender update",          src:"All workstations",     sev:"info",     correct:"fp",    why:"Routine Windows Defender definition update. Completely normal, close this." },
   { id:5, time:"09:15", type:"DNS query to ghost.update-service.xyz",    src:"WKSTN-14",             sev:"high",     correct:"real",  why:"Malware beaconing to its C2 server. 6-day-old domain in threat intel feeds. Escalate immediately." },
   { id:6, time:"09:10", type:"Internal port scan from WKSTN-12",         src:"WKSTN-12 (m.hassan)",  sev:"medium",   correct:"inv",   why:"Could be IT or lateral movement. Standard employee account doing a scan warrants investigation, not immediate escalation." },
 ];
@@ -242,7 +242,7 @@ function SaqrPhase({ onComplete }: { onComplete: (score: number) => void }) {
 
   return (
     <div style={{ maxWidth:700, margin:"0 auto", padding:"24px 20px" }}>
-      <CharBubble charId="saqr" message="Alert queue is filling up. I need you to triage these — fast. Mark each as REAL THREAT, FALSE POSITIVE, or INVESTIGATE. The malware is active right now." />
+      <CharBubble charId="saqr" message="Alert queue is filling up. I need you to triage these, fast. Mark each as REAL THREAT, FALSE POSITIVE, or INVESTIGATE. The malware is active right now." />
 
       {/* Timer */}
       <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:16 }}>
@@ -298,17 +298,17 @@ function SaqrPhase({ onComplete }: { onComplete: (score: number) => void }) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// THA'LAB PHASE — Digital evidence collection
+// THA'LAB PHASE, Digital evidence collection
 // ══════════════════════════════════════════════════════════════════════════════
 const EVIDENCE = [
-  { id:1, icon:"📧", title:"Phishing email with malicious link",       type:"Email Client",     relevant:true,  label:"Origin of attack — Hamad's credential theft and malware delivery vector" },
-  { id:2, icon:"⚙️", title:"OUTLOOK.EXE → CMD.EXE → powershell.exe",   type:"Process Monitor",  relevant:true,  label:"Malware execution chain — confirms the payload ran after clicking the link" },
-  { id:3, icon:"🌐", title:"DNS: ghost.update-service.xyz (C2 beacon)", type:"Network Monitor",  relevant:true,  label:"Active C2 communication — malware calling home for instructions" },
-  { id:4, icon:"📁", title:"Mass file writes: .locked extension",       type:"File Activity",    relevant:true,  label:"Ransomware encryption in progress — attack has reached the file server" },
-  { id:5, icon:"🛡", title:"Defender definition update — v1.403.1",     type:"System Events",    relevant:false, label:"Routine AV update, unrelated to the incident" },
-  { id:6, icon:"🗑", title:"vssadmin delete shadows /all /quiet",       type:"Process Monitor",  relevant:true,  label:"Shadow copies deleted — attacker removing recovery options before demanding ransom" },
+  { id:1, icon:"📧", title:"Phishing email with malicious link",       type:"Email Client",     relevant:true,  label:"Origin of attack, Hamad's credential theft and malware delivery vector" },
+  { id:2, icon:"⚙️", title:"OUTLOOK.EXE → CMD.EXE → powershell.exe",   type:"Process Monitor",  relevant:true,  label:"Malware execution chain, confirms the payload ran after clicking the link" },
+  { id:3, icon:"🌐", title:"DNS: ghost.update-service.xyz (C2 beacon)", type:"Network Monitor",  relevant:true,  label:"Active C2 communication, malware calling home for instructions" },
+  { id:4, icon:"📁", title:"Mass file writes: .locked extension",       type:"File Activity",    relevant:true,  label:"Ransomware encryption in progress, attack has reached the file server" },
+  { id:5, icon:"🛡", title:"Defender definition update, v1.403.1",     type:"System Events",    relevant:false, label:"Routine AV update, unrelated to the incident" },
+  { id:6, icon:"🗑", title:"vssadmin delete shadows /all /quiet",       type:"Process Monitor",  relevant:true,  label:"Shadow copies deleted, attacker removing recovery options before demanding ransom" },
   { id:7, icon:"📅", title:"Scheduled task: nightly backup ran OK",     type:"Task Scheduler",   relevant:false, label:"Routine backup, predates the attack. Not relevant to the investigation." },
-  { id:8, icon:"🔑", title:"Anomalous login from 185.220.x.x at 03:14", type:"Auth Logs",        relevant:true,  label:"Stolen credentials used — attacker accessed corporate systems overnight" },
+  { id:8, icon:"🔑", title:"Anomalous login from 185.220.x.x at 03:14", type:"Auth Logs",        relevant:true,  label:"Stolen credentials used, attacker accessed corporate systems overnight" },
 ];
 
 const TIMELINE_STEPS = [
@@ -344,7 +344,7 @@ function ThalabPhase({ onComplete }: { onComplete: (score: number) => void }) {
       {!showTimeline ? (
         <>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
-            <span style={{ fontSize:10, color:"rgba(245,158,11,0.6)", fontFamily:"'JetBrains Mono'", letterSpacing:"0.1em" }}>EVIDENCE BOARD — {collected.size} COLLECTED</span>
+            <span style={{ fontSize:10, color:"rgba(245,158,11,0.6)", fontFamily:"'JetBrains Mono'", letterSpacing:"0.1em" }}>EVIDENCE BOARD, {collected.size} COLLECTED</span>
             <span style={{ fontSize:10, color:"rgba(255,255,255,0.3)", fontFamily:"'JetBrains Mono'" }}>{collectedRelevant}/{relevantCount} relevant items found</span>
           </div>
 
@@ -400,13 +400,13 @@ function ThalabPhase({ onComplete }: { onComplete: (score: number) => void }) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// HISAN PHASE — Network containment
+// HISAN PHASE, Network containment
 // ══════════════════════════════════════════════════════════════════════════════
 const ACTIONS = [
   { id:"isolate_hamad",   icon:"🔌", label:"Isolate Hamad's laptop",        correct:true,  consequence:"Hamad's machine is cut from the network. Ransomware can no longer access mapped drives. Encryption stops immediately." },
   { id:"block_c2",        icon:"🛡", label:"Block C2 IP at firewall",        correct:true,  consequence:"The malware loses its connection to the attacker's server. It can't receive new commands or exfiltrate data." },
   { id:"reset_creds",     icon:"🔑", label:"Reset Hamad's credentials",      correct:true,  consequence:"The stolen password is invalidated. The attacker's access via Hamad's account is cut off." },
-  { id:"shutdown_network",icon:"⚡", label:"Shut down entire office network", correct:false, consequence:"Business operations halt completely. 200 employees can't work. The incident could have been contained without this — this is disproportionate." },
+  { id:"shutdown_network",icon:"⚡", label:"Shut down entire office network", correct:false, consequence:"Business operations halt completely. 200 employees can't work. The incident could have been contained without this, this is disproportionate." },
   { id:"delete_files",    icon:"🗑", label:"Delete all files on WKSTN-14",   correct:false, consequence:"You've destroyed forensic evidence needed to understand the full attack. The malware's persistence mechanism might still be on the system anyway." },
   { id:"snapshot",        icon:"📸", label:"Take memory snapshot of WKSTN-14",correct:true,  consequence:"Volatile memory captured before any reboots. This preserves encryption keys and attack artifacts for deeper forensic analysis." },
 ];
@@ -428,7 +428,7 @@ function HisanPhase({ onComplete }: { onComplete: (score: number) => void }) {
 
   return (
     <div style={{ maxWidth:700, margin:"0 auto", padding:"24px 20px" }}>
-      <CharBubble charId="hisan" message="The attack is confirmed. I have containment actions available — choose 3 that you'd execute right now. Some will stop the attack, others will make things worse. Choose carefully." />
+      <CharBubble charId="hisan" message="The attack is confirmed. I have containment actions available, choose 3 that you'd execute right now. Some will stop the attack, others will make things worse. Choose carefully." />
 
       <div style={{ fontSize:10, color:"rgba(248,113,113,0.6)", fontFamily:"'JetBrains Mono'", letterSpacing:"0.1em", marginBottom:14 }}>
         SELECT 3 CONTAINMENT ACTIONS ({chosen.length}/3 selected)
@@ -474,7 +474,7 @@ function HisanPhase({ onComplete }: { onComplete: (score: number) => void }) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// ORYX PHASE — Risk decision
+// ORYX PHASE, Risk decision
 // ══════════════════════════════════════════════════════════════════════════════
 const NOTIFICATION_OPTIONS = [
   { id:"internal",  label:"Internal report only",                correct:false, why:"Data was exfiltrated and credentials were compromised. Affected individuals have a legal right to be notified under Qatar's data protection framework." },
@@ -512,16 +512,16 @@ function OryxPhase({ onComplete }: { onComplete: (score: number) => void }) {
 
   return (
     <div style={{ maxWidth:680, margin:"0 auto", padding:"24px 20px" }}>
-      <CharBubble charId="oryx" message="The incident is contained. Now I need to assess the organisational risk and decide how we respond. Based on the forensics report — 47 files accessed, Hamad's credentials stolen, possible data exfiltration — how do you rate this?" />
+      <CharBubble charId="oryx" message="The incident is contained. Now I need to assess the organisational risk and decide how we respond. Based on the forensics report, 47 files accessed, Hamad's credentials stolen, possible data exfiltration, how do you rate this?" />
 
       <div style={{ background:"rgba(255,255,255,0.03)", borderRadius:12, border:"1px solid rgba(255,255,255,0.08)", padding:"16px 18px", marginBottom:16 }}>
         <div style={{ fontSize:10, color:"rgba(255,255,255,0.35)", letterSpacing:"0.12em", marginBottom:10 }}>INCIDENT SUMMARY FROM THA'LAB</div>
         {[
-          "47 files accessed on file server — includes client contracts and HR records",
+          "47 files accessed on file server, includes client contracts and HR records",
           "Hamad's credentials stolen and used from Amsterdam at 03:14",
           "Malware communicated with C2 server for approx. 6 hours before detection",
-          "Ransomware encrypted 847GB — now contained, backup restoration ready",
-          "No database breach confirmed — PII database access logs show no anomaly",
+          "Ransomware encrypted 847GB, now contained, backup restoration ready",
+          "No database breach confirmed, PII database access logs show no anomaly",
         ].map((item, i) => (
           <div key={i} style={{ fontSize:12, color:"#f5ede0aa", lineHeight:1.7, paddingLeft:12, borderLeft:"2px solid rgba(129,140,248,0.3)", marginBottom:4 }}>{item}</div>
         ))}
@@ -529,12 +529,12 @@ function OryxPhase({ onComplete }: { onComplete: (score: number) => void }) {
 
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginBottom:16 }}>
         <div style={{ background:"rgba(255,255,255,0.025)", borderRadius:10, padding:"14px 16px", border:"1px solid rgba(255,255,255,0.06)" }}>
-          <div style={{ fontSize:9, color:"rgba(255,255,255,0.35)", letterSpacing:"0.15em", marginBottom:10 }}>LIKELIHOOD (1–5)</div>
+          <div style={{ fontSize:9, color:"rgba(255,255,255,0.35)", letterSpacing:"0.15em", marginBottom:10 }}>LIKELIHOOD (1-5)</div>
           {ratingBtn(likelihood, likelihood, setLikelihood, submitted)}
           {submitted && <div style={{ marginTop:8, fontSize:11, color:Math.abs(likelihood-expertL)<=1?"#22c55e":"#f87171" }}>Your: {likelihood} · Expert: {expertL}</div>}
         </div>
         <div style={{ background:"rgba(255,255,255,0.025)", borderRadius:10, padding:"14px 16px", border:"1px solid rgba(255,255,255,0.06)" }}>
-          <div style={{ fontSize:9, color:"rgba(255,255,255,0.35)", letterSpacing:"0.15em", marginBottom:10 }}>IMPACT (1–5)</div>
+          <div style={{ fontSize:9, color:"rgba(255,255,255,0.35)", letterSpacing:"0.15em", marginBottom:10 }}>IMPACT (1-5)</div>
           {ratingBtn(impact, impact, setImpact, submitted)}
           {submitted && <div style={{ marginTop:8, fontSize:11, color:Math.abs(impact-expertI)<=1?"#22c55e":"#f87171" }}>Your: {impact} · Expert: {expertI}</div>}
         </div>
@@ -579,7 +579,7 @@ function OryxPhase({ onComplete }: { onComplete: (score: number) => void }) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// RESULT — Full scenario debrief
+// RESULT, Full scenario debrief
 // ══════════════════════════════════════════════════════════════════════════════
 function ResultPhase({ scores, onBack }: { scores: Record<string, number>; onBack: () => void }) {
   const layers = [
@@ -598,7 +598,7 @@ function ResultPhase({ scores, onBack }: { scores: Record<string, number>; onBac
   return (
     <div style={{ maxWidth:580, margin:"0 auto", padding:"32px 20px", textAlign:"center" }}>
       <div style={{ fontSize:52, marginBottom:16 }}>{pct>=85?"🎖":pct>=65?"🥈":pct>=40?"📋":"📚"}</div>
-      <div style={{ fontSize:9, color:"rgba(197,165,126,0.5)", letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:10, textTransform:"uppercase" }}>Scenario Complete — Phishing Incident</div>
+      <div style={{ fontSize:9, color:"rgba(197,165,126,0.5)", letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:10, textTransform:"uppercase" }}>Scenario Complete, Phishing Incident</div>
       <h1 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:32, color:"#f5ede0", margin:"0 0 8px", fontWeight:600 }}>{grade}</h1>
       <div style={{ fontSize:48, fontWeight:700, color:gradeColor, margin:"16px 0 6px", fontFamily:"'JetBrains Mono'" }}>
         {total}<span style={{ fontSize:22, color:`${gradeColor}70` }}>/{maxTotal}</span>
@@ -613,7 +613,7 @@ function ResultPhase({ scores, onBack }: { scores: Record<string, number>; onBac
             <div key={l.key} style={{ display:"flex", alignItems:"center", gap:12, padding:"10px 14px", background:"rgba(255,255,255,0.03)", borderRadius:10, border:"1px solid rgba(255,255,255,0.07)" }}>
               <img src={l.char.img} alt={l.char.name} style={{ width:28, height:28, borderRadius:"50%", objectFit:"cover", border:`2px solid ${l.char.color}40` }} />
               <div style={{ flex:1 }}>
-                <div style={{ fontSize:11, fontWeight:600, color:"#f5ede0", marginBottom:3 }}>{l.char.name} — {l.label}</div>
+                <div style={{ fontSize:11, fontWeight:600, color:"#f5ede0", marginBottom:3 }}>{l.char.name}, {l.label}</div>
                 <div style={{ width:"100%", height:4, background:"rgba(255,255,255,0.06)", borderRadius:2 }}>
                   <div style={{ height:"100%", width:`${p}%`, background:l.char.color, borderRadius:2, transition:"width 1s ease" }} />
                 </div>
@@ -636,36 +636,36 @@ function ResultPhase({ scores, onBack }: { scores: Record<string, number>; onBac
 
 // ── WHATSAPP data ──────────────────────────────────────────────────────────────
 const WHATSAPP_ALERTS = [
-  { id:1, time:"10:14", type:"Successful login from new country",   src:"h.alqatari → VPN (Amsterdam)", sev:"high",   correct:"real", why:"Hamad's account just logged in from the Netherlands — he's in Doha. This is the attacker using stolen credentials." },
-  { id:2, time:"10:15", type:"MFA bypass attempt flagged",          src:"Auth service — h.alqatari",    sev:"high",   correct:"real", why:"The attacker tried to bypass MFA. Confirms the credentials were stolen and attacker is trying to escalate access." },
+  { id:1, time:"10:14", type:"Successful login from new country",   src:"h.alqatari → VPN (Amsterdam)", sev:"high",   correct:"real", why:"Hamad's account just logged in from the Netherlands, he's in Doha. This is the attacker using stolen credentials." },
+  { id:2, time:"10:15", type:"MFA bypass attempt flagged",          src:"Auth service, h.alqatari",    sev:"high",   correct:"real", why:"The attacker tried to bypass MFA. Confirms the credentials were stolen and attacker is trying to escalate access." },
   { id:3, time:"10:08", type:"Scheduled backup completed OK",       src:"BACKUP-SRV-01",                sev:"info",   correct:"fp",   why:"Routine backup, completed before the incident. Nothing to do here." },
   { id:4, time:"10:16", type:"File access: /HR/salary/ (10 files)", src:"h.alqatari (Amsterdam)",       sev:"medium", correct:"real", why:"Attacker is accessing sensitive HR files using Hamad's credentials. Active data exfiltration in progress." },
-  { id:5, time:"10:12", type:"AV scan completed — no threats",      src:"WKSTN-14",                     sev:"info",   correct:"fp",   why:"Routine AV scan on Hamad's work laptop. The attack here is credential-based, not device-based. False lead." },
+  { id:5, time:"10:12", type:"AV scan completed, no threats",      src:"WKSTN-14",                     sev:"info",   correct:"fp",   why:"Routine AV scan on Hamad's work laptop. The attack here is credential-based, not device-based. False lead." },
 ];
 
 // ── USB data ───────────────────────────────────────────────────────────────────
 const USB_EVIDENCE = [
-  { id:1, icon:"💾", title:"Unknown USB device mounted — WKSTN-14",             relevant:true,  label:"The USB was plugged in. Confirms physical access attack (baiting) as the infection vector." },
-  { id:2, icon:"⚙️", title:"autorun.exe executed silently on USB mount",          relevant:true,  label:"Malware auto-executed the moment the USB was inserted — no user interaction beyond plugging it in." },
-  { id:3, icon:"🌐", title:"Outbound connection: 45.142.x.x — port 443",        relevant:true,  label:"Malware established a covert C2 channel. Reporting to attacker daily for 14 days without detection." },
+  { id:1, icon:"💾", title:"Unknown USB device mounted, WKSTN-14",             relevant:true,  label:"The USB was plugged in. Confirms physical access attack (baiting) as the infection vector." },
+  { id:2, icon:"⚙️", title:"autorun.exe executed silently on USB mount",          relevant:true,  label:"Malware auto-executed the moment the USB was inserted, no user interaction beyond plugging it in." },
+  { id:3, icon:"🌐", title:"Outbound connection: 45.142.x.x, port 443",        relevant:true,  label:"Malware established a covert C2 channel. Reporting to attacker daily for 14 days without detection." },
   { id:4, icon:"📸", title:"Keylogger active: 14 days of keystrokes captured",   relevant:true,  label:"Every password, message, and document Hamad typed for 14 days was exfiltrated to the attacker." },
   { id:5, icon:"🗂", title:"Routine file access: daily work documents",           relevant:false, label:"Normal file access patterns before the USB incident. Not relevant to the investigation." },
-  { id:6, icon:"🔑", title:"Registry persistence: HKCU\\Run — svchost32.exe",  relevant:true,  label:"Malware added itself to startup. Survives reboots — has been running silently for 14 days." },
-  { id:7, icon:"📅", title:"Meeting calendar: weekly team sync — recurring",      relevant:false, label:"Normal calendar activity, predates the attack. Irrelevant." },
-  { id:8, icon:"📡", title:"DNS queries to update-checker.info — 14 days",      relevant:true,  label:"Consistent daily beaconing over 14 days — the C2 pattern. High-confidence indicator of persistent infection." },
+  { id:6, icon:"🔑", title:"Registry persistence: HKCU\\Run, svchost32.exe",  relevant:true,  label:"Malware added itself to startup. Survives reboots, has been running silently for 14 days." },
+  { id:7, icon:"📅", title:"Meeting calendar: weekly team sync, recurring",      relevant:false, label:"Normal calendar activity, predates the attack. Irrelevant." },
+  { id:8, icon:"📡", title:"DNS queries to update-checker.info, 14 days",      relevant:true,  label:"Consistent daily beaconing over 14 days, the C2 pattern. High-confidence indicator of persistent infection." },
 ];
 
 // ── Scenario list ──────────────────────────────────────────────────────────────
 const SCENARIO_LIST = [
-  { id:"phishing", icon:"📧", title:"The Phishing Email",   tiers:"Hamad + All 3 Tiers", color:"#D5B893", desc:"Hamad clicks a malicious link on his work laptop. Full SOC escalation — from the first alert to the risk decision." },
-  { id:"whatsapp", icon:"📱", title:"The WhatsApp Vishing", tiers:"Hamad + Tier 1 Only", color:"#60a5fa", desc:"Hamad gives his password to a fake IT caller. Credential-based attack contained at Tier 1 — no malware, no escalation." },
-  { id:"usb",      icon:"💾", title:"The USB Drop",          tiers:"Hamad + Tiers 2 & 3", color:"#f59e0b", desc:"Hamad plugs in a USB found in the car park. 14 days of undetected access — discovered in a forensic sweep, not a SIEM alert." },
+  { id:"phishing", icon:"📧", title:"The Phishing Email",   tiers:"Hamad + All 3 Tiers", color:"#D5B893", desc:"Hamad clicks a malicious link on his work laptop. Full SOC escalation, from the first alert to the risk decision." },
+  { id:"whatsapp", icon:"📱", title:"The WhatsApp Vishing", tiers:"Hamad + Tier 1 Only", color:"#60a5fa", desc:"Hamad gives his password to a fake IT caller. Credential-based attack contained at Tier 1, no malware, no escalation." },
+  { id:"usb",      icon:"💾", title:"The USB Drop",          tiers:"Hamad + Tiers 2 & 3", color:"#f59e0b", desc:"Hamad plugs in a USB found in the car park. 14 days of undetected access, discovered in a forensic sweep, not a SIEM alert." },
 ];
 
 // ── WhatsApp Hamad phase ───────────────────────────────────────────────────────
 function WhatsappHamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
   const FLAGS = [
-    { id:"number",  tip:"Unknown number — IT never calls via personal WhatsApp. Always verify through official channels.", clickText:"unknown number" },
+    { id:"number",  tip:"Unknown number, IT never calls via personal WhatsApp. Always verify through official channels.", clickText:"unknown number" },
     { id:"request", tip:"Real IT staff NEVER ask for passwords over any channel, ever. This is the core red flag.", clickText:"need your password" },
     { id:"urgency", tip:"'Within 10 minutes' is manufactured urgency, designed to stop you thinking carefully.", clickText:"within 10 minutes" },
   ];
@@ -674,7 +674,7 @@ function WhatsappHamadPhase({ onComplete }: { onComplete: (score: number) => voi
   const toggle=(id:string)=>setFlagged(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);return n;});
   return (
     <div style={{maxWidth:680,margin:"0 auto",padding:"24px 20px"}}>
-      <CharBubble charId="hamad" message="I got a WhatsApp from someone saying they're from IT. They said my account was compromised and needed my password urgently. I didn't think — I gave it to them." />
+      <CharBubble charId="hamad" message="I got a WhatsApp from someone saying they're from IT. They said my account was compromised and needed my password urgently. I didn't think, I gave it to them." />
       <div style={{background:"#0a1628",borderRadius:14,overflow:"hidden",border:"1px solid rgba(96,165,250,0.2)",marginBottom:16}}>
         <div style={{background:"#0d2137",padding:"10px 16px",display:"flex",alignItems:"center",gap:8,borderBottom:"1px solid rgba(96,165,250,0.1)"}}>
           <div style={{width:32,height:32,borderRadius:"50%",background:"rgba(96,165,250,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>👤</div>
@@ -697,7 +697,7 @@ function WhatsappHamadPhase({ onComplete }: { onComplete: (score: number) => voi
             {" "}or your access will be locked.
           </div>
           <div style={{background:"#1a2d45",borderRadius:"12px 12px 12px 2px",padding:"10px 14px",maxWidth:"80%",fontSize:13,color:"#f5ede0",lineHeight:1.6}}>
-            Please share your current password — we{" "}
+            Please share your current password, we{" "}
             <span onClick={()=>toggle("request")} style={{cursor:"pointer",background:flagged.has("request")?"rgba(239,68,68,0.15)":"rgba(239,68,68,0.08)",padding:"1px 3px",borderRadius:3,fontWeight:700}}>
               need your password
             </span>
@@ -763,7 +763,7 @@ function WhatsappSaqrPhase({ onComplete }: { onComplete: (score: number) => void
   };
   return(
     <div style={{maxWidth:700,margin:"0 auto",padding:"24px 20px"}}>
-      <CharBubble charId="saqr" message="Credential attack — no malware. If we move fast we can contain this at Tier 1. Triage these alerts, identify the real threats, and we stop it here." />
+      <CharBubble charId="saqr" message="Credential attack, no malware. If we move fast we can contain this at Tier 1. Triage these alerts, identify the real threats, and we stop it here." />
       <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14}}>
         <div style={{flex:1,height:5,background:"rgba(255,255,255,0.06)",borderRadius:3,overflow:"hidden"}}>
           <div style={{height:"100%",width:`${(timer/60)*100}%`,background:timerColor,borderRadius:3,transition:"width 1s linear"}}/>
@@ -813,7 +813,7 @@ function WhatsappSaqrPhase({ onComplete }: { onComplete: (score: number) => void
 // ── USB Hamad phase ────────────────────────────────────────────────────────────
 function UsbHamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
   const FLAGS=[
-    {id:"found",  tip:"Never plug in USB drives you find — 'baiting' attacks work by planting enticing USB drives deliberately.",clickText:"found in the car park"},
+    {id:"found",  tip:"Never plug in USB drives you find, 'baiting' attacks work by planting enticing USB drives deliberately.",clickText:"found in the car park"},
     {id:"label",  tip:"'Salary Bonuses' is engineered curiosity bait. The more tempting the label, the more suspicious you should be.",clickText:"SALARY BONUSES Q2"},
     {id:"plugged",tip:"Plugging an unknown USB into a work device can silently install malware before you see any files.",clickText:"plugged it into his work laptop"},
   ];
@@ -822,9 +822,9 @@ function UsbHamadPhase({ onComplete }: { onComplete: (score: number) => void }) 
   const toggle=(id:string)=>setFlagged(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);return n;});
   return(
     <div style={{maxWidth:680,margin:"0 auto",padding:"24px 20px"}}>
-      <CharBubble charId="hamad" message="Two weeks ago I found a USB drive in the car park. It said 'SALARY BONUSES Q2 — CONFIDENTIAL'. I thought someone dropped it. I plugged it into my work laptop. Nothing seemed to happen. I forgot about it. Then Tha'lab found something." />
+      <CharBubble charId="hamad" message="Two weeks ago I found a USB drive in the car park. It said 'SALARY BONUSES Q2, CONFIDENTIAL'. I thought someone dropped it. I plugged it into my work laptop. Nothing seemed to happen. I forgot about it. Then Tha'lab found something." />
       <div style={{background:"rgba(245,158,11,0.05)",borderRadius:14,border:"1px solid rgba(245,158,11,0.2)",padding:"20px 22px",marginBottom:16,lineHeight:1.8,fontSize:13,color:"#f5ede0cc"}}>
-        <div style={{fontSize:10,color:"rgba(245,158,11,0.6)",fontFamily:"'JetBrains Mono'",letterSpacing:"0.1em",marginBottom:10}}>INCIDENT NARRATIVE — CLICK SUSPICIOUS ELEMENTS</div>
+        <div style={{fontSize:10,color:"rgba(245,158,11,0.6)",fontFamily:"'JetBrains Mono'",letterSpacing:"0.1em",marginBottom:10}}>INCIDENT NARRATIVE, CLICK SUSPICIOUS ELEMENTS</div>
         <p>
           Hamad arrived at the car park and noticed a USB drive near his car. It was{" "}
           <span onClick={()=>toggle("found")} style={{cursor:"pointer",background:flagged.has("found")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.08)",padding:"1px 4px",borderRadius:3,border:flagged.has("found")?"1px solid #ef444440":"1px solid rgba(245,158,11,0.2)"}}>
@@ -832,7 +832,7 @@ function UsbHamadPhase({ onComplete }: { onComplete: (score: number) => void }) 
           </span>
           {flagged.has("found")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}. Label read:{" "}
           <span onClick={()=>toggle("label")} style={{cursor:"pointer",fontWeight:700,background:flagged.has("label")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.08)",padding:"1px 4px",borderRadius:3,border:flagged.has("label")?"1px solid #ef444440":"1px solid rgba(245,158,11,0.2)"}}>
-            "SALARY BONUSES Q2 — CONFIDENTIAL"
+            "SALARY BONUSES Q2, CONFIDENTIAL"
           </span>
           {flagged.has("label")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}. He assumed a colleague dropped it. He{" "}
           <span onClick={()=>toggle("plugged")} style={{cursor:"pointer",background:flagged.has("plugged")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.08)",padding:"1px 4px",borderRadius:3,border:flagged.has("plugged")?"1px solid #ef444440":"1px solid rgba(245,158,11,0.2)"}}>
@@ -855,7 +855,7 @@ function UsbHamadPhase({ onComplete }: { onComplete: (score: number) => void }) 
       {revealed&&(
         <div style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.25)",borderRadius:12,padding:"14px 16px",animation:"slideIn .3s ease"}}>
           <div style={{fontSize:12,fontWeight:700,color:"#f87171",marginBottom:6}}>⚠️ 14 days of undetected access. Keylogger active. C2 communication confirmed.</div>
-          <div style={{fontSize:13,color:"#f5ede0aa",lineHeight:1.7}}>No SIEM alert fired — malware evaded detection entirely. Tha'lab found it during a routine sweep. This is a far more serious attack than it initially appeared.</div>
+          <div style={{fontSize:13,color:"#f5ede0aa",lineHeight:1.7}}>No SIEM alert fired, malware evaded detection entirely. Tha'lab found it during a routine sweep. This is a far more serious attack than it initially appeared.</div>
         </div>
       )}
     </div>
@@ -901,17 +901,17 @@ function UsbThalabPhase({ onComplete }: { onComplete: (score: number) => void })
   const collectedRelevant = [...collected].filter(id => USB_EVIDENCE.find(e => e.id === id)?.relevant).length;
   const USB_TIMELINE = [
     "💾 Attacker placed USB in the car park (deliberate bait)",
-    "🔌 Hamad plugged it in — malware auto-executed silently",
+    "🔌 Hamad plugged it in, malware auto-executed silently",
     "⚙️ Keylogger installed + persistence via registry",
     "📡 Daily beaconing to C2 server for 14 days",
-    "🔑 All credentials captured — passwords, MFA codes, emails",
+    "🔑 All credentials captured, passwords, MFA codes, emails",
     "📸 Tha'lab discovers the infection during routine forensic sweep",
   ];
   return (
     <div style={{ maxWidth:700, margin:"0 auto", padding:"24px 20px" }}>
-      <CharBubble charId="thalab" message="This one was hiding for 14 days. Routine sweep, nothing triggered — I found it manually. The evidence is all there if you look for the right things. Go through each artifact." />
+      <CharBubble charId="thalab" message="This one was hiding for 14 days. Routine sweep, nothing triggered, I found it manually. The evidence is all there if you look for the right things. Go through each artifact." />
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
-        <span style={{ fontSize:10, color:"rgba(245,158,11,0.6)", fontFamily:"'JetBrains Mono'", letterSpacing:"0.1em" }}>FORENSIC ARTIFACTS — {collected.size} COLLECTED</span>
+        <span style={{ fontSize:10, color:"rgba(245,158,11,0.6)", fontFamily:"'JetBrains Mono'", letterSpacing:"0.1em" }}>FORENSIC ARTIFACTS, {collected.size} COLLECTED</span>
         <span style={{ fontSize:10, color:"rgba(255,255,255,0.3)", fontFamily:"'JetBrains Mono'" }}>{collectedRelevant}/{relevantCount} relevant</span>
       </div>
       {!showTimeline ? (
@@ -964,7 +964,7 @@ function UsbThalabPhase({ onComplete }: { onComplete: (score: number) => void })
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
-// MAIN SCENARIO COMPONENT — handles all 3 scenarios
+// MAIN SCENARIO COMPONENT, handles all 3 scenarios
 // ══════════════════════════════════════════════════════════════════════════════
 type ScenarioId = "phishing" | "whatsapp" | "usb";
 
@@ -1052,7 +1052,7 @@ export default function Scenario() {
       <div style={{ maxWidth:580, margin:"0 auto", padding:"32px 20px", textAlign:"center" }}>
         <div style={{ fontSize:52, marginBottom:16 }}>{pct>=85?"🎖":pct>=65?"🥈":pct>=40?"📋":"📚"}</div>
         <div style={{ fontSize:9, color:`${meta?.color ?? "#D5B893"}70`, letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:10, textTransform:"uppercase" }}>
-          {meta?.icon} Scenario Complete — {meta?.title}
+          {meta?.icon} Scenario Complete, {meta?.title}
         </div>
         <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:32, color:"#f5ede0", margin:"0 0 8px", fontWeight:600 }}>{grade}</h1>
         <div style={{ fontSize:48, fontWeight:700, color:gradeColor, margin:"16px 0 6px", fontFamily:"'JetBrains Mono'" }}>
@@ -1067,7 +1067,7 @@ export default function Scenario() {
               <div key={l.key} style={{ display:"flex", alignItems:"center", gap:12, padding:"10px 14px", background:"rgba(255,255,255,0.03)", borderRadius:10, border:"1px solid rgba(255,255,255,0.07)" }}>
                 <img src={l.char.img} alt={l.char.name} style={{ width:28, height:28, borderRadius:"50%", objectFit:"cover", border:`2px solid ${l.char.color}40` }} />
                 <div style={{ flex:1 }}>
-                  <div style={{ fontSize:11, fontWeight:600, color:"#f5ede0", marginBottom:3 }}>{l.char.name} — {l.label}</div>
+                  <div style={{ fontSize:11, fontWeight:600, color:"#f5ede0", marginBottom:3 }}>{l.char.name}, {l.label}</div>
                   <div style={{ width:"100%", height:4, background:"rgba(255,255,255,0.06)", borderRadius:2 }}>
                     <div style={{ height:"100%", width:`${p}%`, background:l.char.color, borderRadius:2, transition:"width 1s ease" }} />
                   </div>
@@ -1079,7 +1079,7 @@ export default function Scenario() {
         </div>
         {pct >= 50 && (
           <div style={{ background:"rgba(34,197,94,0.07)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:12, padding:"10px 14px", marginBottom:20, fontSize:12, color:"rgba(34,197,94,0.8)" }}>
-            🎖 Scenario badge awarded — analyst training tracks unlocked
+            🎖 Scenario badge awarded, analyst training tracks unlocked
           </div>
         )}
         <div style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap" }}>
@@ -1129,7 +1129,7 @@ export default function Scenario() {
 
       {currentPhase === "intro" && scenarioId && (
         <div style={{ maxWidth:600, margin:"0 auto", padding:"48px 20px", textAlign:"center" }}>
-          <div style={{ fontSize:9, color:`${meta?.color ?? "#D5B893"}60`, letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:14, textTransform:"uppercase" }}>Live Incident — In Progress</div>
+          <div style={{ fontSize:9, color:`${meta?.color ?? "#D5B893"}60`, letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:14, textTransform:"uppercase" }}>Live Incident, In Progress</div>
           <div style={{ fontSize:48, marginBottom:16 }}>{meta?.icon}</div>
           <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:36, color:"#f5ede0", margin:"0 0 10px", fontWeight:600 }}>{meta?.title}</h1>
           <div style={{ width:48, height:1, background:`${meta?.color ?? "#D5B893"}40`, margin:"18px auto" }} />

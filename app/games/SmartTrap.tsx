@@ -1,5 +1,5 @@
 // ============================================================
-// SMART TRAP — Secure IoT devices room by room
+// SMART TRAP, Secure IoT devices room by room
 // ============================================================
 
 import { useState, useEffect, useRef } from "react";
@@ -140,7 +140,7 @@ export default function SmartTrap({ onHome }: { onHome: (xp?: number) => void })
           <div style={{ fontSize: 16, color: "#2c1810", lineHeight: 1.7, fontWeight: 500 }}>{room.puzzle}</div>
         </div>
 
-        {/* Fixed-height slot — no jumping */}
+        {/* Fixed-height slot, no jumping */}
         <div style={{ minHeight: 320 }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {room.opts.map((opt, i) => {

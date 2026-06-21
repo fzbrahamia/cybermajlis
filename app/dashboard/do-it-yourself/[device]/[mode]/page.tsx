@@ -49,7 +49,7 @@ export default function LessonModePage() {
     );
   }
 
-  // Router lesson has platform guides — show device selector
+  // Router lesson has platform guides, show device selector
   if (lesson.platformGuides?.length) {
     return (
       <main style={{ ...pageShellStyle, padding: "80px 2rem 2rem", direction: isRtl ? "rtl" : "ltr" }}>

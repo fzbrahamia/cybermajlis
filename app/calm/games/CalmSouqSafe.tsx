@@ -11,17 +11,17 @@ const BORDER  = "#BFDBFE";
 interface Item { en: string; ar: string; protect: boolean; enWhy: string; arWhy: string }
 
 const ITEMS: Item[] = [
-  { en: "Your password",          ar: "كلمة مرورك",             protect: true,  enWhy: "Never share your password — it's like the key to your house.", arWhy: "لا تشارك كلمة مرورك أبداً — إنها مثل مفتاح بيتك." },
-  { en: "Your favorite color",    ar: "لونك المفضل",             protect: false, enWhy: "This is fine to share — it's not private information.", arWhy: "هذا الاشتراك يعد أمراً جيداً — ليست معلومات خاصة." },
-  { en: "Your home address",      ar: "عنوان بيتك",              protect: true,  enWhy: "Your address tells strangers where you live — keep it private.", arWhy: "عنوانك يخبر الغرباء أين تسكن — احتفظ به لنفسك." },
+  { en: "Your password",          ar: "كلمة مرورك",             protect: true,  enWhy: "Never share your password, it's like the key to your house.", arWhy: "لا تشارك كلمة مرورك أبداً، إنها مثل مفتاح بيتك." },
+  { en: "Your favorite color",    ar: "لونك المفضل",             protect: false, enWhy: "This is fine to share, it's not private information.", arWhy: "هذا الاشتراك يعد أمراً جيداً، ليست معلومات خاصة." },
+  { en: "Your home address",      ar: "عنوان بيتك",              protect: true,  enWhy: "Your address tells strangers where you live, keep it private.", arWhy: "عنوانك يخبر الغرباء أين تسكن، احتفظ به لنفسك." },
   { en: "Your favorite sport",    ar: "رياضتك المفضلة",          protect: false, enWhy: "Sharing what sport you like is completely safe.", arWhy: "مشاركة رياضتك المفضلة أمر آمن تماماً." },
   { en: "Your phone number",      ar: "رقم هاتفك",               protect: true,  enWhy: "Only share your phone number with people you trust.", arWhy: "شارك رقم هاتفك مع الأشخاص الذين تثق بهم فقط." },
   { en: "Your nickname online",   ar: "لقبك على الإنترنت",       protect: false, enWhy: "A friendly nickname is usually fine to use online.", arWhy: "اللقب الودي عادةً أمر جيد لاستخدامه على الإنترنت." },
-  { en: "Your bank card PIN",     ar: "الرقم السري لبطاقتك",     protect: true,  enWhy: "Never share your PIN with anyone — ever!", arWhy: "لا تشارك الرقم السري مع أحد — أبداً!" },
+  { en: "Your bank card PIN",     ar: "الرقم السري لبطاقتك",     protect: true,  enWhy: "Never share your PIN with anyone, ever!", arWhy: "لا تشارك الرقم السري مع أحد، أبداً!" },
   { en: "Your favorite food",     ar: "طعامك المفضل",             protect: false, enWhy: "Telling people your favorite food is perfectly safe.", arWhy: "إخبار الناس بطعامك المفضل آمن تماماً." },
   { en: "Your school name",       ar: "اسم مدرستك",               protect: true,  enWhy: "Sharing your school name with strangers can help them find you.", arWhy: "مشاركة اسم مدرستك مع الغرباء قد يساعدهم على إيجادك." },
   { en: "Your favorite movie",    ar: "فيلمك المفضل",             protect: false, enWhy: "Movie preferences are safe and fun to share.", arWhy: "تفضيلات الأفلام آمنة ومحببة للمشاركة." },
-  { en: "Your national ID number",ar: "رقم هويتك الوطنية",        protect: true,  enWhy: "ID numbers are very private — never share them online.", arWhy: "أرقام الهوية خاصة جداً — لا تشاركها على الإنترنت." },
+  { en: "Your national ID number",ar: "رقم هويتك الوطنية",        protect: true,  enWhy: "ID numbers are very private, never share them online.", arWhy: "أرقام الهوية خاصة جداً، لا تشاركها على الإنترنت." },
   { en: "Your pet's name",        ar: "اسم حيوانك الأليف",        protect: false, enWhy: "Sharing your pet's name is harmless and fun!", arWhy: "مشاركة اسم حيوانك الأليف أمر بسيط وممتع!" },
 ];
 
@@ -44,7 +44,7 @@ const UI = {
     resultTitle: "Great job!",
     resultGood: "Excellent! You know what to keep private online.",
     resultOk: "Good work! You got most of them right.",
-    resultTryAgain: "Keep practising — you're learning!",
+    resultTryAgain: "Keep practising, you're learning!",
     again: "Play Again", home: "← Back to Games",
   },
   ar: {
@@ -63,7 +63,7 @@ const UI = {
     resultTitle: "عمل رائع!",
     resultGood: "ممتاز! تعرف ما يجب إخفاؤه على الإنترنت.",
     resultOk: "عمل جيد! أجبت على معظمها بشكل صحيح.",
-    resultTryAgain: "استمر في التدريب — أنت تتعلم!",
+    resultTryAgain: "استمر في التدريب، أنت تتعلم!",
     again: "العب مجدداً", home: "← العودة للألعاب",
   },
 };

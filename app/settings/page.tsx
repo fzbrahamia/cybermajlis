@@ -137,7 +137,7 @@ export default function SettingsPage() {
         font-weight: 300;
       }
 
-      /* ── Cards — cream gradient like lesson cards ── */
+      /* ── Cards, cream gradient like lesson cards ── */
       .s-card {
         background: linear-gradient(160deg, #f5ede0 0%, #ede0cc 100%);
         border: 1px solid rgba(99,32,36,0.15);

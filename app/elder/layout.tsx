@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "CyberMajlis — Stay Safe Online",
+  title: "CyberMajlis, Stay Safe Online",
   description: "Simple, clear cybersecurity guidance for everyone.",
 };
 

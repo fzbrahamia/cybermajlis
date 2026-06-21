@@ -19,7 +19,7 @@ What's on your mind?`;
 const SUGGESTIONS = [
   { ar: true,  text: "هل هذا الرابط آمن؟ الرابط: " },
   { ar: false, text: "I got a suspicious message from this number: " },
-  { ar: true,  text: "أظن أنني تعرضت للاختراق — " },
+  { ar: true,  text: "أظن أنني تعرضت للاختراق، " },
   { ar: false, text: "Explain this threat to me: " },
 ];
 
@@ -120,7 +120,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
       ]);
       reports = rSnap.docs.map(d => {
         const r = d.data();
-        return `[${r.type}] "${r.title}"${r.detail ? ` — ${r.detail}` : ""}: ${r.content?.slice(0,120)}`;
+        return `[${r.type}] "${r.title}"${r.detail ? `, ${r.detail}` : ""}: ${r.content?.slice(0,120)}`;
       }).join("\n");
       news = nSnap.docs.map(d => {
         const n = d.data();
@@ -142,7 +142,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
       setMessages(prev => [...prev, { role: "assistant", content: assistantReply }]);
       if (speakAfterReply) speakReply(assistantReply);
     } catch {
-      const errorReply = speechLang === "ar-QA" ? "حدثت مشكلة في الاتصال — حاول مرة أخرى." : "Connection issue — please try again.";
+      const errorReply = speechLang === "ar-QA" ? "حدثت مشكلة في الاتصال، حاول مرة أخرى." : "Connection issue, please try again.";
       setMessages(prev => [...prev, { role: "assistant", content: errorReply }]);
       if (speakAfterReply) speakReply(errorReply);
     }
@@ -405,7 +405,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 // const SUGGESTIONS = [
 //   { ar: true,  text: "هل هذا الرابط آمن؟ الرابط: " },
 //   { ar: false, text: "I got a suspicious message from this number: " },
-//   { ar: true,  text: "أظن أنني تعرضت للاختراق — " },
+//   { ar: true,  text: "أظن أنني تعرضت للاختراق، " },
 //   { ar: false, text: "Explain this threat to me: " },
 // ];
 
@@ -444,7 +444,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //       ]);
 //       reports = rSnap.docs.map(d => {
 //         const r = d.data();
-//         return `[${r.type}] "${r.title}"${r.detail ? ` — ${r.detail}` : ""}: ${r.content?.slice(0,120)}`;
+//         return `[${r.type}] "${r.title}"${r.detail ? `, ${r.detail}` : ""}: ${r.content?.slice(0,120)}`;
 //       }).join("\n");
 //       news = nSnap.docs.map(d => {
 //         const n = d.data();
@@ -464,7 +464,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //       const data = await res.json();
 //       setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
 //     } catch {
-//       setMessages(prev => [...prev, { role: "assistant", content: "Connection issue — please try again." }]);
+//       setMessages(prev => [...prev, { role: "assistant", content: "Connection issue, please try again." }]);
 //     }
 //     setLoading(false);
 //   };

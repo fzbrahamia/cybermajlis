@@ -34,11 +34,12 @@ function buildPrompt(title: string, content: string): string {
     '  "severity": "critical | high | medium | low",\n' +
     '  "action_steps": ["Clear action"],\n' +
     '  "action_steps_ar": ["إجراء واضح بصيغة الأمر"],\n' +
-    '  "qatar_relevant": true,\n' +
-    '  "qatar_note": "One sentence for Qatar residents or empty string",\n' +
-    '  "qatar_note_ar": "جملة لسكان قطر أو نص فارغ"\n' +
+    '  "qatar_relevant": false,\n' +
+    '  "qatar_note": "",\n' +
+    '  "qatar_note_ar": ""\n' +
     "}\n" +
     "Severity: critical=act today · high=act this week · medium=good to know · low=awareness\n" +
+    "QATAR RELEVANCE: keep qatar_relevant false by default. Set it true ONLY when the story has a direct, concrete link to Qatar or the Gulf, for example software, apps or services widely used here (iOS/iPhone, Android, WhatsApp, Microsoft, Google, banking apps, Ooredoo, Vodafone Qatar) or a target/victim in Qatar or the GCC. Do NOT mark it relevant just because Qataris might travel or be abroad. When false, leave qatar_note and qatar_note_ar as empty strings.\n" +
     "\nTitle: " + title + "\nContent: " + content
   );
 }
@@ -84,7 +85,7 @@ export async function GET(req: Request) {
     const summaries: object[] = [];
 
     for (const source of SOURCES) {
-      if (summaries.length >= 8) break;
+      if (summaries.length >= 9) break;
       try {
         const rssRes = await fetch(source.url, {
           headers: { "User-Agent": "CyberMajlis/1.0" },
@@ -94,7 +95,7 @@ export async function GET(req: Request) {
         const xml = await rssRes.text();
         const items = parseRSS(xml)
           .filter(i => !existingUrls.has(i.link))
-          .slice(0, 2);
+          .slice(0, 3);
 
         for (const item of items) {
           try {

@@ -1,5 +1,5 @@
 // ============================================================
-// HUB — The Digital Souq
+// HUB, The Digital Souq
 // Migrated to next-intl. All strings come from messages/en.json
 // or messages/ar.json depending on the locale cookie.
 //
@@ -7,7 +7,7 @@
 //   setLocaleCookie() writes a 'locale' cookie and reloads.
 //   The server reads the cookie in src/i18n/request.ts and
 //   serves the correct JSON. The <html dir> in layout.tsx
-//   flips automatically — no manual RTL CSS needed.
+//   flips automatically, no manual RTL CSS needed.
 // ============================================================
 
 'use client';
@@ -31,7 +31,7 @@ function setLocaleCookie(locale: string) {
 }
 
 
-// ─── Simulation IDs — metadata now lives in messages JSON ────
+// ─── Simulation IDs, metadata now lives in messages JSON ────
 const SIM_IDS = ['virus', 'rootkit', 'keylogger', 'worm', 'polymorphic', 'metamorphic', 'ransomware'] as const;
 type SimId = (typeof SIM_IDS)[number];
 
@@ -139,7 +139,7 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
           Object.entries(userXP).map(async ([uid, xp]) => {
             // Guests can't read other users' docs (rules require auth), so a
             // single denied read must not abort the whole leaderboard. Fall back
-            // to an anonymised entry — the XP ranking still renders for everyone.
+            // to an anonymised entry, the XP ranking still renders for everyone.
             let data: { username?: string; avatar?: string } = {};
             try {
               const userSnap = await getDoc(doc(db, 'user', uid));
@@ -254,7 +254,7 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
             >
               {t('tabs.rankings')}
             </button>
-            {/* Language toggle — switches locale cookie and reloads */}
+            {/* Language toggle, switches locale cookie and reloads */}
             <button
               onClick={() => setLocaleCookie(isRtl ? 'en' : 'ar')}
               className="px-3 py-1.5 rounded-lg border border-white/10 bg-white/5 text-[#D5B893] text-xs font-bold cursor-pointer hover:bg-white/10 transition-colors"
@@ -601,7 +601,7 @@ export default function Hub({ totalXP, onSelectGame, onDashboard, gameMap, simMa
         </div>
       </div>
 
-      {/* XP circle — fixed bottom-left */}
+      {/* XP circle, fixed bottom-left */}
       <div className="fixed bottom-6 left-6 z-50 group">
         <div className="absolute inset-0 rounded-full bg-[#D5B893] opacity-20 blur-lg scale-110" />
         <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-[#D5B893] to-[#B8935A] border-2 border-[#D5B893]/50 flex flex-col items-center justify-center shadow-xl shadow-black/40 cursor-default">

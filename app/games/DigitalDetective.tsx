@@ -1,5 +1,5 @@
 // ============================================================
-// DIGITAL DETECTIVE — Forensic investigation game
+// DIGITAL DETECTIVE, Forensic investigation game
 // ============================================================
 
 import { useState } from "react";
@@ -137,7 +137,7 @@ export default function DigitalDetective({ onHome }: { onHome: (xp?: number) => 
           <div style={{ fontSize: 14, color: "#5a4a3e", lineHeight: 1.6 }}>{caseData.intro}</div>
         </div>
 
-        {/* Fixed-height area — no jumping */}
+        {/* Fixed-height area, no jumping */}
         <div style={{ minHeight: 420 }}>
           {!guess ? (
             <>

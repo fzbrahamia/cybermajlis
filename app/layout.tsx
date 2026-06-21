@@ -20,7 +20,7 @@ const crimsonPro = Crimson_Pro({
   style: ["normal", "italic"],
 });
 
-// AR brand font: Noto Naskh Arabic — classical style, pairs with Cinzel
+// AR brand font: Noto Naskh Arabic, classical style, pairs with Cinzel
 const notoNaskhArabic = Noto_Naskh_Arabic({
   variable: "--font-arabic",
   subsets: ["arabic"],

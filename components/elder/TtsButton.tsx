@@ -23,7 +23,7 @@ export default function TtsButton({ getText, lang = "en" }: Props) {
     if (!text) return;
 
     // Create Audio element synchronously inside the click handler to satisfy
-    // browser autoplay policy — must happen before any await
+    // browser autoplay policy, must happen before any await
     const audio = new Audio();
     audioRef.current = audio;
 

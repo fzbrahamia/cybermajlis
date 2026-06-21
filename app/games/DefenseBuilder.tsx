@@ -1,5 +1,5 @@
 // ============================================================
-// DEFENSE BUILDER — Build a security wall to block threat waves
+// DEFENSE BUILDER, Build a security wall to block threat waves
 // ============================================================
 
 import { useState, useEffect, useRef } from "react";

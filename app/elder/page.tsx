@@ -12,30 +12,30 @@ const body   = "'Crimson Pro', Georgia, serif";
 const content = {
   en: {
     hero: "Stay Safe in the Digital World",
-    heroSub: "This space was made for you — no jargon, no rushing. Just clear guidance to help you and your family stay safe online.",
-    thenNowTitle: "The world changed. The threats didn't — they just moved online.",
+    heroSub: "This space was made for you, no jargon, no rushing. Just clear guidance to help you and your family stay safe online.",
+    thenNowTitle: "The world changed. The threats didn't, they just moved online.",
     cards: [
       {
         then: "A stranger called on the landline, pretending to be from your bank.",
-        now: "Today that same stranger sends a WhatsApp message — or an email — that looks exactly like it came from your bank.",
+        now: "Today that same stranger sends a WhatsApp message, or an email, that looks exactly like it came from your bank.",
         lesson: "Never click a link sent to you. Go to your bank's website by typing it yourself.",
         topic: "phishing",
       },
       {
         then: "You locked your front door with a key only you had.",
-        now: "Your accounts need the same protection — a strong password only you know, changed regularly.",
+        now: "Your accounts need the same protection, a strong password only you know, changed regularly.",
         lesson: "Use a long phrase you remember, like: MyGrandchildren2Hamad!",
         topic: "passwords",
       },
       {
         then: "You wouldn't let a stranger photograph you in your home without permission.",
-        now: "Apps on your phone can access your camera, location, and contacts — unless you tell them not to.",
+        now: "Apps on your phone can access your camera, location, and contacts, unless you tell them not to.",
         lesson: "Check which apps have permission to your camera and location in your phone settings.",
         topic: "privacy",
       },
       {
         then: "If a deal at the market sounded too good to be true, you walked away.",
-        now: "Online scams use the same trick — 'You won!', 'Limited offer!', 'Act now!'",
+        now: "Online scams use the same trick, 'You won!', 'Limited offer!', 'Act now!'",
         lesson: "If something feels too good to be true online, it almost always is.",
         topic: "scams",
       },
@@ -50,30 +50,30 @@ const content = {
   },
   ar: {
     hero: "ابقَ آمناً في العالم الرقمي",
-    heroSub: "هذا المكان صُنع من أجلك — بلا مصطلحات معقدة، وبلا تسرّع. إرشادات واضحة لتحميك أنت وعائلتك على الإنترنت.",
-    thenNowTitle: "تغيّر العالم. والتهديدات لم تختفِ — انتقلت فقط إلى الإنترنت.",
+    heroSub: "هذا المكان صُنع من أجلك، بلا مصطلحات معقدة، وبلا تسرّع. إرشادات واضحة لتحميك أنت وعائلتك على الإنترنت.",
+    thenNowTitle: "تغيّر العالم. والتهديدات لم تختفِ، انتقلت فقط إلى الإنترنت.",
     cards: [
       {
         then: "كان غريب يتصل على الهاتف الأرضي متظاهراً بأنه من البنك.",
-        now: "اليوم، نفس الشخص يرسل رسالة واتساب — أو بريداً إلكترونياً — تبدو تماماً كأنها من بنكك.",
+        now: "اليوم، نفس الشخص يرسل رسالة واتساب، أو بريداً إلكترونياً، تبدو تماماً كأنها من بنكك.",
         lesson: "لا تضغط على أي رابط يُرسل إليك. اكتب عنوان البنك بنفسك في المتصفح.",
         topic: "phishing",
       },
       {
         then: "كنت تغلق بابك بمفتاح خاص بك وحدك.",
-        now: "حساباتك تحتاج نفس الحماية — كلمة مرور قوية تعرفها أنت فقط، تُغيّرها بانتظام.",
+        now: "حساباتك تحتاج نفس الحماية، كلمة مرور قوية تعرفها أنت فقط، تُغيّرها بانتظام.",
         lesson: "استخدم جملة طويلة تتذكرها، مثل: عائلتي_حمد_2025!",
         topic: "passwords",
       },
       {
         then: "لم تكن تسمح لغريب بتصويرك في بيتك دون إذن.",
-        now: "التطبيقات على هاتفك تستطيع الوصول إلى كاميرتك وموقعك وجهات اتصالك — إلا إذا منعتها.",
+        now: "التطبيقات على هاتفك تستطيع الوصول إلى كاميرتك وموقعك وجهات اتصالك، إلا إذا منعتها.",
         lesson: "افتح إعدادات هاتفك وتحقق من التطبيقات التي تملك صلاحية الكاميرا والموقع.",
         topic: "privacy",
       },
       {
         then: "إذا بدت صفقة في السوق مريبة، كنت تمضي في حالك.",
-        now: "نفس الحيلة على الإنترنت — 'ربحت جائزة!'، 'عرض محدود!'، 'تصرف الآن!'",
+        now: "نفس الحيلة على الإنترنت، 'ربحت جائزة!'، 'عرض محدود!'، 'تصرف الآن!'",
         lesson: "إذا شعرت أن شيئاً ما جيد أكثر مما ينبغي، فالغالب أنه احتيال.",
         topic: "scams",
       },
@@ -123,7 +123,7 @@ export default function ElderPage() {
     <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#3e1316", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
       <ElderNav lang={lang} onLangChange={setLang} />
 
-      {/* contentRef wraps only page body — nav and footer are excluded from TTS */}
+      {/* contentRef wraps only page body, nav and footer are excluded from TTS */}
       <div ref={contentRef}>
 
       {/* ── Hero ── */}
@@ -234,7 +234,7 @@ export default function ElderPage() {
 
       {/* ── Footer ── */}
       <footer style={{ textAlign: "center", padding: "2.5rem", fontSize: "0.95rem", color: "#8B6555", background: "#F7F3EE", borderTop: "1px solid rgba(99,32,36,0.1)" }}>
-        {isRtl ? "مجلس الأمن السيبراني — قطر" : "CyberMajlis — Qatar"} ·{" "}
+        {isRtl ? "مجلس الأمن السيبراني، قطر" : "CyberMajlis, Qatar"} ·{" "}
         <a href="/" style={{ color: "#632024", textDecoration: "none" }}>
           {isRtl ? "العودة للموقع الرئيسي" : "Return to main site"}
         </a>

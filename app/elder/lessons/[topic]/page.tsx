@@ -22,7 +22,7 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
   phishing: {
     en: {
       title: "Email & Message Scams",
-      intro: "Scammers send fake messages pretending to be from banks, the government, or well-known companies. These messages are designed to trick you into handing over your personal details — or your money.",
+      intro: "Scammers send fake messages pretending to be from banks, the government, or well-known companies. These messages are designed to trick you into handing over your personal details, or your money.",
       videoUrl: "/lessons/vids/virus.mp4",
       videoLabel: "Watch: How malware enters your device through a malicious link",
       sections: [
@@ -44,7 +44,7 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
     },
     ar: {
       title: "الرسائل والبريد الاحتيالي",
-      intro: "يرسل المحتالون رسائل مزيفة يتظاهرون فيها بأنهم من البنك أو الحكومة أو شركات معروفة. هذه الرسائل مصممة لخداعك وسرقة بياناتك الشخصية — أو أموالك.",
+      intro: "يرسل المحتالون رسائل مزيفة يتظاهرون فيها بأنهم من البنك أو الحكومة أو شركات معروفة. هذه الرسائل مصممة لخداعك وسرقة بياناتك الشخصية، أو أموالك.",
       videoUrl: "/lessons/vids/virus.mp4",
       videoLabel: "شاهد: كيف يدخل البرنامج الخبيث إلى جهازك عبر رابط ضار",
       sections: [
@@ -77,11 +77,11 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
         },
         {
           heading: "Never share your password",
-          body: "Your password should only be known to you — not your children, not your doctor, and certainly not someone who called asking for it.\n\nIf anyone asks for your password, they are trying to steal from you.",
+          body: "Your password should only be known to you, not your children, not your doctor, and certainly not someone who called asking for it.\n\nIf anyone asks for your password, they are trying to steal from you.",
         },
         {
           heading: "Using the same password everywhere is dangerous",
-          body: "If you use the same password on multiple websites and one of them is hacked, criminals can then access all your other accounts — including your email and your bank.\n\nAt minimum, have a different password for your email and your bank accounts.",
+          body: "If you use the same password on multiple websites and one of them is hacked, criminals can then access all your other accounts, including your email and your bank.\n\nAt minimum, have a different password for your email and your bank accounts.",
         },
       ],
       remember: "You would never give your house key to a stranger. Your password deserves the same protection.",
@@ -97,11 +97,11 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
         },
         {
           heading: "لا تشارك كلمة مرورك أبداً",
-          body: "كلمة مرورك يجب أن تعرفها أنت وحدك — ليس أبناؤك، وليس طبيبك، وبالتأكيد ليس من اتصل بك يطلبها.\n\nإذا طلب منك أحد كلمة مرورك، فهو يحاول سرقتك.",
+          body: "كلمة مرورك يجب أن تعرفها أنت وحدك، ليس أبناؤك، وليس طبيبك، وبالتأكيد ليس من اتصل بك يطلبها.\n\nإذا طلب منك أحد كلمة مرورك، فهو يحاول سرقتك.",
         },
         {
           heading: "استخدام نفس كلمة المرور في كل مكان خطر",
-          body: "إذا استخدمت نفس كلمة المرور في عدة مواقع وتعرّض أحدها للاختراق، يستطيع المجرمون الدخول على جميع حساباتك الأخرى — بما فيها بريدك وحسابك البنكي.\n\nعلى الأقل، اجعل كلمة مرور بريدك وحسابك البنكي مختلفة عن غيرها.",
+          body: "إذا استخدمت نفس كلمة المرور في عدة مواقع وتعرّض أحدها للاختراق، يستطيع المجرمون الدخول على جميع حساباتك الأخرى، بما فيها بريدك وحسابك البنكي.\n\nعلى الأقل، اجعل كلمة مرور بريدك وحسابك البنكي مختلفة عن غيرها.",
         },
       ],
       remember: "لن تعطي مفتاح بيتك لغريب. كلمة مرورك تستحق نفس الحماية.",
@@ -110,7 +110,7 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
   privacy: {
     en: {
       title: "Your Phone & Privacy",
-      intro: "Your phone knows more about you than almost anyone — where you go, who you call, what you buy, and sometimes even what you say nearby. Understanding what it shares and with whom puts you back in control.",
+      intro: "Your phone knows more about you than almost anyone, where you go, who you call, what you buy, and sometimes even what you say nearby. Understanding what it shares and with whom puts you back in control.",
       sections: [
         {
           heading: "What apps can access",
@@ -130,7 +130,7 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
     },
     ar: {
       title: "هاتفك وخصوصيتك",
-      intro: "هاتفك يعرف عنك أكثر من أي شخص تقريباً — أين تذهب، من تتصل به، ماذا تشتري، وأحياناً حتى ما تقوله بالقرب منه. فهم ما يشاركه ومع من يُعيد إليك السيطرة.",
+      intro: "هاتفك يعرف عنك أكثر من أي شخص تقريباً، أين تذهب، من تتصل به، ماذا تشتري، وأحياناً حتى ما تقوله بالقرب منه. فهم ما يشاركه ومع من يُعيد إليك السيطرة.",
       sections: [
         {
           heading: "ما يمكن للتطبيقات الوصول إليه",
@@ -152,47 +152,47 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
   scams: {
     en: {
       title: "Recognising Online Scams",
-      intro: "Scammers are skilled at making their traps look real. But once you know the patterns, they become easy to spot — and easy to avoid.",
+      intro: "Scammers are skilled at making their traps look real. But once you know the patterns, they become easy to spot, and easy to avoid.",
       videoUrl: "/lessons/vids/ransomware.mp4",
-      videoLabel: "Watch: How ransomware works — the digital equivalent of a hostage demand",
+      videoLabel: "Watch: How ransomware works, the digital equivalent of a hostage demand",
       sections: [
         {
           heading: "The most common scam tricks",
-          body: "• Prize scams: 'You have won!' — you never entered a competition\n• Urgency scams: 'Your account will be locked in 2 hours!'\n• Impersonation: Someone claims to be a doctor, police officer, or government official\n• Romance scams: Someone online becomes very friendly very quickly, then asks for money\n• Investment scams: 'Guaranteed returns' — nothing in investing is ever guaranteed",
+          body: "• Prize scams: 'You have won!', you never entered a competition\n• Urgency scams: 'Your account will be locked in 2 hours!'\n• Impersonation: Someone claims to be a doctor, police officer, or government official\n• Romance scams: Someone online becomes very friendly very quickly, then asks for money\n• Investment scams: 'Guaranteed returns', nothing in investing is ever guaranteed",
         },
         {
           heading: "The 30-second rule",
-          body: "When something unexpected arrives — a call, message, or email — wait 30 seconds before doing anything. Ask yourself:\n\n• Was I expecting this?\n• Does this feel too urgent?\n• Is someone asking me for money or personal details?\n\nIf any answer is yes — stop and call a family member first.",
+          body: "When something unexpected arrives, a call, message, or email, wait 30 seconds before doing anything. Ask yourself:\n\n• Was I expecting this?\n• Does this feel too urgent?\n• Is someone asking me for money or personal details?\n\nIf any answer is yes, stop and call a family member first.",
           tip: "Scammers rely on panic. The moment you slow down, their trap loses its power.",
         },
         {
           heading: "It is okay to hang up",
-          body: "If someone calls and you feel uncertain — hang up. You can always call back using a number you know and trust. A real bank or government office will not mind you verifying who they are.",
+          body: "If someone calls and you feel uncertain, hang up. You can always call back using a number you know and trust. A real bank or government office will not mind you verifying who they are.",
         },
       ],
-      remember: "If it feels wrong, it probably is. Trust your instincts — they have kept you safe your whole life.",
+      remember: "If it feels wrong, it probably is. Trust your instincts, they have kept you safe your whole life.",
     },
     ar: {
       title: "كيف تتعرف على عمليات الاحتيال",
-      intro: "المحتالون بارعون في جعل فخاخهم تبدو حقيقية. لكن حين تعرف الأنماط، يصبح من السهل اكتشافها — وتجنّبها.",
+      intro: "المحتالون بارعون في جعل فخاخهم تبدو حقيقية. لكن حين تعرف الأنماط، يصبح من السهل اكتشافها، وتجنّبها.",
       videoUrl: "/lessons/vids/ransomware.mp4",
-      videoLabel: "شاهد: كيف يعمل برنامج الفدية — النسخة الرقمية من احتجاز الرهائن",
+      videoLabel: "شاهد: كيف يعمل برنامج الفدية، النسخة الرقمية من احتجاز الرهائن",
       sections: [
         {
           heading: "أكثر حيل الاحتيال شيوعاً",
-          body: "• احتيال الجوائز: 'لقد فزت!' — أنت لم تشترك في أي مسابقة\n• احتيال الإلحاح: 'سيُغلق حسابك خلال ساعتين!'\n• انتحال الشخصية: شخص يدّعي أنه طبيب أو ضابط شرطة أو مسؤول حكومي\n• احتيال العواطف: شخص غريب يصادقك بسرعة ثم يطلب مالاً\n• احتيال الاستثمار: 'أرباح مضمونة' — لا شيء في الاستثمار مضمون أبداً",
+          body: "• احتيال الجوائز: 'لقد فزت!', أنت لم تشترك في أي مسابقة\n• احتيال الإلحاح: 'سيُغلق حسابك خلال ساعتين!'\n• انتحال الشخصية: شخص يدّعي أنه طبيب أو ضابط شرطة أو مسؤول حكومي\n• احتيال العواطف: شخص غريب يصادقك بسرعة ثم يطلب مالاً\n• احتيال الاستثمار: 'أرباح مضمونة', لا شيء في الاستثمار مضمون أبداً",
         },
         {
           heading: "قاعدة الثلاثين ثانية",
-          body: "حين يصلك شيء غير متوقع — مكالمة أو رسالة أو بريد — انتظر ثلاثين ثانية قبل أي فعل. اسأل نفسك:\n\n• هل كنت أتوقع هذا؟\n• هل يبدو الأمر ملحاً جداً؟\n• هل يطلب أحد مني مالاً أو بياناتي الشخصية؟\n\nإذا كانت إجابتك نعم على أي منها — توقف واتصل بأحد أفراد عائلتك أولاً.",
+          body: "حين يصلك شيء غير متوقع، مكالمة أو رسالة أو بريد، انتظر ثلاثين ثانية قبل أي فعل. اسأل نفسك:\n\n• هل كنت أتوقع هذا؟\n• هل يبدو الأمر ملحاً جداً؟\n• هل يطلب أحد مني مالاً أو بياناتي الشخصية؟\n\nإذا كانت إجابتك نعم على أي منها، توقف واتصل بأحد أفراد عائلتك أولاً.",
           tip: "المحتالون يعتمدون على الذعر. حين تتمهّل، يفقد فخّهم قوته.",
         },
         {
           heading: "إغلاق الخط حق مشروع",
-          body: "إذا اتصل بك أحد وشعرت بالتردد — أغلق الخط. يمكنك دائماً الاتصال مجدداً على رقم تثق به. البنك الحقيقي أو الجهة الحكومية لن تمانع إن طلبت التحقق من هويتهم.",
+          body: "إذا اتصل بك أحد وشعرت بالتردد، أغلق الخط. يمكنك دائماً الاتصال مجدداً على رقم تثق به. البنك الحقيقي أو الجهة الحكومية لن تمانع إن طلبت التحقق من هويتهم.",
         },
       ],
-      remember: "إذا شعرت أن شيئاً ما خطأ، فالغالب أنه كذلك. ثق بغريزتك — فقد حمتك طوال حياتك.",
+      remember: "إذا شعرت أن شيئاً ما خطأ، فالغالب أنه كذلك. ثق بغريزتك، فقد حمتك طوال حياتك.",
     },
   },
   shopping: {
@@ -202,12 +202,12 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
       sections: [
         {
           heading: "Signs a website is trustworthy",
-          body: "• The address uses https:// and shows a padlock — this keeps your connection private, but on its own it does NOT prove the shop is honest (scam sites use it too)\n• The website has clear contact information and a physical address\n• It has realistic reviews — not all five stars with vague praise",
+          body: "• The address uses https:// and shows a padlock, this keeps your connection private, but on its own it does NOT prove the shop is honest (scam sites use it too)\n• The website has clear contact information and a physical address\n• It has realistic reviews, not all five stars with vague praise",
           tip: "When in doubt, use well-known websites you have heard of before, or ask a family member to help.",
         },
         {
           heading: "How to pay safely",
-          body: "• Use a credit card when possible — it offers more protection than a debit card\n• Never transfer money directly to an individual seller\n• Check your bank statement regularly and call your bank immediately if you see a charge you do not recognise",
+          body: "• Use a credit card when possible, it offers more protection than a debit card\n• Never transfer money directly to an individual seller\n• Check your bank statement regularly and call your bank immediately if you see a charge you do not recognise",
         },
         {
           heading: "Deals that are too good to be true",
@@ -222,12 +222,12 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
       sections: [
         {
           heading: "علامات الموقع الموثوق",
-          body: "• عنوان الموقع يستخدم https:// ويظهر رمز قفل — هذا يحافظ على خصوصية اتصالك، لكنه وحده لا يثبت أن المتجر صادق (مواقع الاحتيال تستخدمه أيضاً)\n• الموقع يحتوي على معلومات تواصل واضحة وعنوان فعلي\n• التقييمات تبدو حقيقية — ليست كلها خمس نجوم بمدح مبهم",
+          body: "• عنوان الموقع يستخدم https:// ويظهر رمز قفل، هذا يحافظ على خصوصية اتصالك، لكنه وحده لا يثبت أن المتجر صادق (مواقع الاحتيال تستخدمه أيضاً)\n• الموقع يحتوي على معلومات تواصل واضحة وعنوان فعلي\n• التقييمات تبدو حقيقية، ليست كلها خمس نجوم بمدح مبهم",
           tip: "عند الشك، استخدم المواقع الكبيرة المعروفة التي سمعت بها من قبل، أو اطلب من أحد أفراد عائلتك المساعدة.",
         },
         {
           heading: "كيف تدفع بأمان",
-          body: "• استخدم بطاقة الائتمان إن أمكن — توفر حماية أكبر من بطاقة الحساب\n• لا تحوّل المال مباشرةً إلى بائع فرد\n• راجع كشف حسابك البنكي بانتظام واتصل ببنكك فوراً إن رأيت مبلغاً لا تتذكره",
+          body: "• استخدم بطاقة الائتمان إن أمكن، توفر حماية أكبر من بطاقة الحساب\n• لا تحوّل المال مباشرةً إلى بائع فرد\n• راجع كشف حسابك البنكي بانتظام واتصل ببنكك فوراً إن رأيت مبلغاً لا تتذكره",
         },
         {
           heading: "العروض الخيالية دائماً مشبوهة",
@@ -240,12 +240,12 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
   family: {
     en: {
       title: "Keeping Your Family Safe",
-      intro: "As a parent or grandparent, you play a powerful role in your family's online safety. Here is how to protect your loved ones — and how to open the conversation with them.",
+      intro: "As a parent or grandparent, you play a powerful role in your family's online safety. Here is how to protect your loved ones, and how to open the conversation with them.",
       sections: [
         {
           heading: "Talk openly about online dangers",
-          body: "Many people — young and old — feel embarrassed to admit they were almost fooled by a scam. Create a safe environment where family members can share suspicious messages without judgement.\n\nA simple family rule: 'Before you click, show me.'",
-          tip: "Children and teenagers are also targeted — by gaming scams, fake friendships, and inappropriate content.",
+          body: "Many people, young and old, feel embarrassed to admit they were almost fooled by a scam. Create a safe environment where family members can share suspicious messages without judgement.\n\nA simple family rule: 'Before you click, show me.'",
+          tip: "Children and teenagers are also targeted, by gaming scams, fake friendships, and inappropriate content.",
         },
         {
           heading: "Set up family safety features",
@@ -253,19 +253,19 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
         },
         {
           heading: "When something goes wrong",
-          body: "If you or a family member has been scammed:\n• Stay calm\n• Call your bank immediately — they can often stop the transaction\n• Report it to the Ministry of Interior in Qatar: 2347444\n• Do not be embarrassed — scammers are professionals at deception",
+          body: "If you or a family member has been scammed:\n• Stay calm\n• Call your bank immediately, they can often stop the transaction\n• Report it to the Ministry of Interior in Qatar: 2347444\n• Do not be embarrassed, scammers are professionals at deception",
         },
       ],
       remember: "Protecting each other is the strongest form of security. You do not need to face the digital world alone.",
     },
     ar: {
       title: "حماية عائلتك",
-      intro: "بوصفك أباً أو أماً أو جداً، دورك في حماية عائلتك على الإنترنت قوي جداً. إليك كيف تحمي أحبائك — وكيف تفتح الحديث معهم.",
+      intro: "بوصفك أباً أو أماً أو جداً، دورك في حماية عائلتك على الإنترنت قوي جداً. إليك كيف تحمي أحبائك، وكيف تفتح الحديث معهم.",
       sections: [
         {
           heading: "تحدّث بصراحة عن مخاطر الإنترنت",
-          body: "كثير من الناس — صغاراً وكباراً — يشعرون بالحرج من الاعتراف بأنهم كادوا يقعون في فخ احتيال. أنشئ بيئة عائلية آمنة يستطيع فيها أفراد العائلة مشاركة الرسائل المشبوهة دون خوف من الحكم عليهم.\n\nقاعدة عائلية بسيطة: 'قبل أن تضغط، أرِني.'",
-          tip: "الأطفال والمراهقون أيضاً يُستهدفون — عبر احتيال الألعاب وصداقات وهمية ومحتوى غير لائق.",
+          body: "كثير من الناس، صغاراً وكباراً، يشعرون بالحرج من الاعتراف بأنهم كادوا يقعون في فخ احتيال. أنشئ بيئة عائلية آمنة يستطيع فيها أفراد العائلة مشاركة الرسائل المشبوهة دون خوف من الحكم عليهم.\n\nقاعدة عائلية بسيطة: 'قبل أن تضغط، أرِني.'",
+          tip: "الأطفال والمراهقون أيضاً يُستهدفون، عبر احتيال الألعاب وصداقات وهمية ومحتوى غير لائق.",
         },
         {
           heading: "فعّل ميزات الأمان العائلي",
@@ -273,7 +273,7 @@ const lessons: Record<string, { en: Lesson; ar: Lesson }> = {
         },
         {
           heading: "حين تقع مشكلة",
-          body: "إذا تعرضت أنت أو أحد أفراد عائلتك لعملية احتيال:\n• تحلَّ بالهدوء\n• اتصل ببنكك فوراً — كثيراً ما يستطيعون إيقاف المعاملة\n• أبلغ وزارة الداخلية في قطر: 2347444\n• لا تشعر بالحرج — المحتالون محترفون في الخداع",
+          body: "إذا تعرضت أنت أو أحد أفراد عائلتك لعملية احتيال:\n• تحلَّ بالهدوء\n• اتصل ببنكك فوراً، كثيراً ما يستطيعون إيقاف المعاملة\n• أبلغ وزارة الداخلية في قطر: 2347444\n• لا تشعر بالحرج، المحتالون محترفون في الخداع",
         },
       ],
       remember: "حماية بعضنا البعض هي أقوى أشكال الأمن. لست وحدك في مواجهة العالم الرقمي.",
@@ -306,7 +306,7 @@ export default function ElderLessonPage() {
     const root = contentRef.current;
     if (!root) return "";
     // Hide control buttons (Back, Read-aloud) so the TTS reads only the lesson,
-    // then restore — synchronous, so there is no visible flicker.
+    // then restore, synchronous, so there is no visible flicker.
     const skip = Array.from(root.querySelectorAll<HTMLElement>("[data-tts-skip]"));
     const prev = skip.map((el) => el.style.display);
     skip.forEach((el) => { el.style.display = "none"; });
@@ -346,7 +346,7 @@ export default function ElderLessonPage() {
           <TtsButton getText={getPageText} lang={lang} />
         </div>
 
-        {/* Video — uses the same MP4s as the main site */}
+        {/* Video, uses the same MP4s as the main site */}
         {lesson.videoUrl && (
           <div style={{ marginBottom: "2.5rem" }}>
             {lesson.videoLabel && (

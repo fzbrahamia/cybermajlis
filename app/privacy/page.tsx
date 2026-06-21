@@ -1,6 +1,6 @@
 "use client";
 
-// Privacy Policy — bilingual (EN/AR). Discloses what CyberMajlis collects, how
+// Privacy Policy, bilingual (EN/AR). Discloses what CyberMajlis collects, how
 // it is used, the third-party processors involved, and the rights of learners
 // and their guardians. Plain language, suitable for a children's platform.
 
@@ -32,23 +32,23 @@ const SECTIONS: Section[] = [
     body: [
       "We collect only what we need to run the learning experience:",
       [
-        "Account details — your email, a username, and the guardian character you pick. Your password is stored securely by Firebase and is never visible to us.",
-        "Learning progress — lessons completed, quiz scores, game scores and XP, the CTF flags you capture (by skill area), and how you do in SOC scenarios.",
-        "Usage analytics — which pages and features you open. These are anonymous counts tied to your account, not the content of anything you write.",
-        "Community posts — any warning or report you choose to share in the Community.",
-        "AI assistant — messages you send to the assistant, kept for safety and abuse monitoring, together with a one-way hashed network identifier (not your real IP address).",
-        "Scanner — links or files you submit for a safety check.",
+        "Account details, your email, a username, and the guardian character you pick. Your password is stored securely by Firebase and is never visible to us.",
+        "Learning progress, lessons completed, quiz scores, game scores and XP, the CTF flags you capture (by skill area), and how you do in SOC scenarios.",
+        "Usage analytics, which pages and features you open. These are anonymous counts tied to your account, not the content of anything you write.",
+        "Community posts, any warning or report you choose to share in the Community.",
+        "AI assistant, messages you send to the assistant, kept for safety and abuse monitoring, together with a one-way hashed network identifier (not your real IP address).",
+        "Scanner, links or files you submit for a safety check.",
       ],
     ],
     bodyAr: [
       "نجمع فقط ما نحتاجه لتشغيل تجربة التعلّم:",
       [
-        "بيانات الحساب — بريدك الإلكتروني واسم المستخدم والشخصية الحارسة التي تختارها. تُخزَّن كلمة مرورك بأمان عبر Firebase ولا نراها أبداً.",
-        "تقدّم التعلّم — الدروس المكتملة ونتائج الاختبارات ونقاط الألعاب وXP والأعلام التي تلتقطها في التحدّيات (حسب المهارة) وأداؤك في سيناريوهات مركز العمليات.",
-        "تحليلات الاستخدام — أي الصفحات والميزات التي تفتحها. وهي أعداد مجهولة مرتبطة بحسابك، وليست محتوى ما تكتبه.",
-        "منشورات المجتمع — أي تحذير أو بلاغ تختار مشاركته في المجتمع.",
-        "المساعد الذكي — الرسائل التي ترسلها للمساعد، تُحفظ للأمان ومراقبة إساءة الاستخدام، مع معرّف شبكة مُجزّأ باتجاه واحد (وليس عنوان IP الحقيقي).",
-        "الماسح — الروابط أو الملفات التي ترسلها للفحص.",
+        "بيانات الحساب، بريدك الإلكتروني واسم المستخدم والشخصية الحارسة التي تختارها. تُخزَّن كلمة مرورك بأمان عبر Firebase ولا نراها أبداً.",
+        "تقدّم التعلّم، الدروس المكتملة ونتائج الاختبارات ونقاط الألعاب وXP والأعلام التي تلتقطها في التحدّيات (حسب المهارة) وأداؤك في سيناريوهات مركز العمليات.",
+        "تحليلات الاستخدام، أي الصفحات والميزات التي تفتحها. وهي أعداد مجهولة مرتبطة بحسابك، وليست محتوى ما تكتبه.",
+        "منشورات المجتمع، أي تحذير أو بلاغ تختار مشاركته في المجتمع.",
+        "المساعد الذكي، الرسائل التي ترسلها للمساعد، تُحفظ للأمان ومراقبة إساءة الاستخدام، مع معرّف شبكة مُجزّأ باتجاه واحد (وليس عنوان IP الحقيقي).",
+        "الماسح، الروابط أو الملفات التي ترسلها للفحص.",
       ],
     ],
   },
@@ -70,21 +70,21 @@ const SECTIONS: Section[] = [
     body: [
       "We rely on a small number of trusted providers to deliver the service:",
       [
-        "Google Firebase — accounts, database and hosting.",
-        "Anthropic (Claude) — powers the AI assistant, news summaries, and scenario generation.",
-        "ElevenLabs — turns lesson text into audio for the read-aloud feature.",
-        "VirusTotal — analyses links and files you submit to the scanner.",
-        "Public security news sources (The Hacker News, BleepingComputer, Krebs on Security) — we read their public feeds; we never send them your information.",
+        "Google Firebase, accounts, database and hosting.",
+        "Anthropic (Claude), powers the AI assistant, news summaries, and scenario generation.",
+        "ElevenLabs, turns lesson text into audio for the read-aloud feature.",
+        "VirusTotal, analyses links and files you submit to the scanner.",
+        "Public security news sources (The Hacker News, BleepingComputer, Krebs on Security), we read their public feeds; we never send them your information.",
       ],
     ],
     bodyAr: [
       "نعتمد على عدد قليل من مزوّدي الخدمات الموثوقين لتقديم الخدمة:",
       [
-        "Google Firebase — الحسابات وقاعدة البيانات والاستضافة.",
-        "Anthropic (Claude) — يشغّل المساعد الذكي وملخّصات الأخبار وتوليد السيناريوهات.",
-        "ElevenLabs — يحوّل نص الدرس إلى صوت لميزة القراءة الصوتية.",
-        "VirusTotal — يحلّل الروابط والملفات التي ترسلها للماسح.",
-        "مصادر أخبار أمنية عامة (The Hacker News وBleepingComputer وKrebs on Security) — نقرأ خلاصاتها العامة ولا نرسل إليها معلوماتك أبداً.",
+        "Google Firebase, الحسابات وقاعدة البيانات والاستضافة.",
+        "Anthropic (Claude), يشغّل المساعد الذكي وملخّصات الأخبار وتوليد السيناريوهات.",
+        "ElevenLabs, يحوّل نص الدرس إلى صوت لميزة القراءة الصوتية.",
+        "VirusTotal, يحلّل الروابط والملفات التي ترسلها للماسح.",
+        "مصادر أخبار أمنية عامة (The Hacker News وBleepingComputer وKrebs on Security), نقرأ خلاصاتها العامة ولا نرسل إليها معلوماتك أبداً.",
       ],
     ],
   },
@@ -158,8 +158,8 @@ export default function PrivacyPage() {
 
         <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 13.5, color: "#7a5c2e", textAlign: "center", marginTop: "2rem", lineHeight: 1.7 }}>
           {isAR
-            ? "نعتني ببياناتك كما نعلّمك أن تعتني ببياناتك — بحذر واحترام."
-            : "We look after your data the same way we teach you to look after yours — carefully, and with respect."}
+            ? "نعتني ببياناتك كما نعلّمك أن تعتني ببياناتك، بحذر واحترام."
+            : "We look after your data the same way we teach you to look after yours, carefully, and with respect."}
         </p>
       </div>
     </div>

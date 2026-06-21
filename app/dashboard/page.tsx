@@ -54,7 +54,7 @@ export default function DashboardPage() {
   // XP: 100 per completed lesson
   const totalXP = completedLessons * 100;
 
-  // Level — determined after BADGE_DEFS are computed, so use a derived value below
+  // Level, determined after BADGE_DEFS are computed, so use a derived value below
   // Overall progress %
   const overallPct = Math.round((completedLessons / totalLessons) * 100);
 

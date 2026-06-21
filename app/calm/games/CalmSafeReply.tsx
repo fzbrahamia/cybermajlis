@@ -29,7 +29,7 @@ const SCENARIOS: Scenario[] = [
     enMsg: "Congratulations! You won a free iPhone! Click here to claim your prize: bit.ly/win-now",
     arMsg: "تهانينا! لقد فزت بـ iPhone مجاني! اضغط هنا للمطالبة بجائزتك: bit.ly/win-now",
     opts: [
-      { en: "I won't click that — this looks like a scam.", ar: "لن أضغط على ذلك — هذا يبدو احتيالاً.", correct: true,  enTip: "You didn't enter any contest, so you can't have won. Random prize messages are almost always scams.", arTip: "لم تشترك في أي مسابقة، لذا لا يمكنك الفوز. رسائل الجوائز العشوائية دائماً تقريباً عمليات احتيال." },
+      { en: "I won't click that, this looks like a scam.", ar: "لن أضغط على ذلك، هذا يبدو احتيالاً.", correct: true,  enTip: "You didn't enter any contest, so you can't have won. Random prize messages are almost always scams.", arTip: "لم تشترك في أي مسابقة، لذا لا يمكنك الفوز. رسائل الجوائز العشوائية دائماً تقريباً عمليات احتيال." },
       { en: "Let me click and see what it is!", ar: "سأضغط عليه لأرى ما هو!", correct: false, enTip: "Clicking unknown links can give hackers access to your phone or personal info.", arTip: "الضغط على روابط غير معروفة قد يمنح المخترقين الوصول إلى هاتفك أو معلوماتك الشخصية." },
       { en: "Cool! I'll share it with my friends too.", ar: "رائع! سأشاركه مع أصدقائي أيضاً.", correct: false, enTip: "Sharing a scam link spreads the danger to your friends too.", arTip: "مشاركة رابط الاحتيال ينشر الخطر على أصدقائك أيضاً." },
     ],
@@ -51,7 +51,7 @@ const SCENARIOS: Scenario[] = [
     enMsg: "⚠️ Your account will be CLOSED in 24 hours! Click here and enter your password to save it.",
     arMsg: "⚠️ سيتم إغلاق حسابك خلال 24 ساعة! اضغط هنا وأدخل كلمة مرورك لحفظه.",
     opts: [
-      { en: "Delete this — real banks never ask for your password by email.", ar: "احذف هذا — البنوك الحقيقية لا تطلب كلمة مرورك أبداً عبر البريد الإلكتروني.", correct: true, enTip: "Banks NEVER ask for your password by email. This is called phishing — a trick to steal your info.", arTip: "البنوك لا تطلب كلمة مرورك أبداً عبر البريد الإلكتروني. هذا يسمى التصيد — حيلة لسرقة معلوماتك." },
+      { en: "Delete this, real banks never ask for your password by email.", ar: "احذف هذا، البنوك الحقيقية لا تطلب كلمة مرورك أبداً عبر البريد الإلكتروني.", correct: true, enTip: "Banks NEVER ask for your password by email. This is called phishing, a trick to steal your info.", arTip: "البنوك لا تطلب كلمة مرورك أبداً عبر البريد الإلكتروني. هذا يسمى التصيد، حيلة لسرقة معلوماتك." },
       { en: "I'll enter my password to save my account!", ar: "سأدخل كلمة مروري لحماية حسابي!", correct: false, enTip: "This is a fake email. Entering your password gives it directly to the scammer.", arTip: "هذا بريد إلكتروني مزيف. إدخال كلمة مرورك يعطيها مباشرة للمحتال." },
       { en: "I'll reply and ask if it's from the real bank.", ar: "سأرد وأسأل إذا كانت من البنك الحقيقي.", correct: false, enTip: "Replying to a phishing email confirms your address is active. Delete it and call your bank directly instead.", arTip: "الرد على رسالة تصيد يؤكد أن عنوانك نشط. احذفها واتصل ببنكك مباشرة." },
     ],
@@ -62,8 +62,8 @@ const SCENARIOS: Scenario[] = [
     enMsg: "We need your account username and password to fix a problem with your account.",
     arMsg: "نحتاج اسم مستخدمك وكلمة مرورك لإصلاح مشكلة في حسابك.",
     opts: [
-      { en: "Real admins never need your password — this is a trick.", ar: "المشرفون الحقيقيون لا يحتاجون كلمة مرورك أبداً — هذه حيلة.", correct: true, enTip: "Legitimate staff can fix accounts without your password. Anyone asking for it is trying to steal your account.", arTip: "الموظفون الشرعيون يمكنهم إصلاح الحسابات بدون كلمة مرورك. من يطلبها يحاول سرقة حسابك." },
-      { en: "Okay! Username: me123, Password: secret!", ar: "حسناً! اسم المستخدم: me123، كلمة المرور: secret!", correct: false, enTip: "Never share your password with anyone — even someone claiming to be an admin.", arTip: "لا تشارك كلمة مرورك مع أحد — حتى من يدّعي أنه مشرف." },
+      { en: "Real admins never need your password, this is a trick.", ar: "المشرفون الحقيقيون لا يحتاجون كلمة مرورك أبداً، هذه حيلة.", correct: true, enTip: "Legitimate staff can fix accounts without your password. Anyone asking for it is trying to steal your account.", arTip: "الموظفون الشرعيون يمكنهم إصلاح الحسابات بدون كلمة مرورك. من يطلبها يحاول سرقة حسابك." },
+      { en: "Okay! Username: me123, Password: secret!", ar: "حسناً! اسم المستخدم: me123، كلمة المرور: secret!", correct: false, enTip: "Never share your password with anyone, even someone claiming to be an admin.", arTip: "لا تشارك كلمة مرورك مع أحد، حتى من يدّعي أنه مشرف." },
       { en: "Let me DM you the info.", ar: "سأرسل لك المعلومات برسالة خاصة.", correct: false, enTip: "Sharing your password in DMs is just as dangerous as sharing it publicly.", arTip: "مشاركة كلمة مرورك في رسالة خاصة بنفس الخطورة كمشاركتها علناً." },
     ],
   },
@@ -91,7 +91,7 @@ const UI = {
     introLines: [
       "Someone sends you a message online. What do you say back?",
       "Read each message and choose the safest reply.",
-      "No timer — take your time and think it through!",
+      "No timer, take your time and think it through!",
     ],
     start: "Let's Play!",
     resultTitle: "Well done!",
@@ -108,7 +108,7 @@ const UI = {
     introLines: [
       "أحد ما أرسل لك رسالة على الإنترنت. ماذا ستقول في ردك؟",
       "اقرأ كل رسالة واختر الرد الأكثر أماناً.",
-      "لا يوجد مؤقت — خذ وقتك وفكّر بعناية!",
+      "لا يوجد مؤقت، خذ وقتك وفكّر بعناية!",
     ],
     start: "هيا نلعب!",
     resultTitle: "أحسنت!",

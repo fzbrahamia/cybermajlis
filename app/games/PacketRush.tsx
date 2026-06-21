@@ -1,5 +1,5 @@
 // ============================================================
-// PACKET RUSH — Filter network packets as a firewall
+// PACKET RUSH, Filter network packets as a firewall
 // ============================================================
 
 import { useState, useEffect, useRef } from "react";

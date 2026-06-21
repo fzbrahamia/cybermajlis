@@ -48,7 +48,7 @@ export default function ElderNewsPage() {
           {isRtl ? "آخر أخبار الأمان" : "Latest Safety News"}
         </h1>
         <p style={{ fontSize: "1.1rem", color: "#5C4033", marginBottom: "2.5rem" }}>
-          {isRtl ? "تهديدات حقيقية تحدث الآن — ابقَ على اطلاع." : "Real threats happening now — stay informed."}
+          {isRtl ? "تهديدات حقيقية تحدث الآن، ابقَ على اطلاع." : "Real threats happening now, stay informed."}
         </p>
 
         {loading && <p style={{ color: "#8B6555" }}>{isRtl ? "جاري التحميل…" : "Loading…"}</p>}

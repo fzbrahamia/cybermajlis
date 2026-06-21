@@ -67,9 +67,9 @@ export default function App() {
     trackGameComplete(gameSlug, earnedXP);
     if (earnedXP <= 0) return;
 
-    const currentUser = userRef.current; // use ref — never stale
+    const currentUser = userRef.current; // use ref, never stale
     if (currentUser) {
-      // Logged in — persist to Firestore
+      // Logged in, persist to Firestore
       await setDoc(doc(db, "user", currentUser.uid), { xp: increment(earnedXP) }, { merge: true });
       const scoreData = {
         userID: currentUser.uid,
@@ -83,7 +83,7 @@ export default function App() {
       ]);
       setTotalXP((x) => x + earnedXP);
     } else {
-      // Guest — session only
+      // Guest, session only
       setTotalXP((prev) => {
         const next = prev + earnedXP;
         sessionStorage.setItem("guestXP", String(next));

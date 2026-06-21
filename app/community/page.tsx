@@ -245,7 +245,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
                 {isAR ? "تقاريرك ساعدت في حماية أشخاص حقيقيين في قطر. شكرًا لك." : "Your reports have helped protect real people in Qatar. Thank you."}
               </div>
               <button suppressHydrationWarning style={{padding:"11px 28px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3e1316,#632024)",color:"#E8D4BC",fontFamily:"'Cinzel',serif",fontSize:"0.7rem",letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",fontWeight:700,marginBottom:8,width:"100%"}}>
-                {isAR ? "اشترك — مستوى الحارس" : "Subscribe — Guardian Tier"}
+                {isAR ? "اشترك، مستوى الحارس" : "Subscribe, Guardian Tier"}
               </button>
               <button suppressHydrationWarning onClick={onClose} style={{background:"none",border:"none",color:"rgba(99,32,36,0.4)",fontSize:12,cursor:"pointer"}}>
                 {isAR ? "ربما لاحقًا" : "Maybe later"}
@@ -481,7 +481,7 @@ export default function CommunityPage() {
                 <div>
                   <div style={{fontSize:12,fontWeight:700,color:t.color}}>{isAR ? t.labelAr : t.label}</div>
                   <div style={{fontSize:10,color:"rgba(99,32,36,0.4)"}}>
-                    {k==="guardian" ? (isAR ? "اشتراك · أي عدد من التقارير" : "Subscription · any report count") : k==="trusted" ? (isAR ? "7 تقارير معتمدة أو أكثر" : "7+ approved reports") : (isAR ? "3-6 تقارير معتمدة" : "3–6 approved reports")}
+                    {k==="guardian" ? (isAR ? "اشتراك · أي عدد من التقارير" : "Subscription · any report count") : k==="trusted" ? (isAR ? "7 تقارير معتمدة أو أكثر" : "7+ approved reports") : (isAR ? "3-6 تقارير معتمدة" : "3-6 approved reports")}
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 // ============================================================
-// CTF CONTENT — "The Majlis Trials" (main-site kids CTF)
+// CTF CONTENT, "The Majlis Trials" (main-site kids CTF)
 //
 // A gentle, real-feeling Capture-The-Flag. Five tracks, each
 // mapped to a genuine CTF category so young learners meet the
@@ -65,7 +65,7 @@ export interface Challenge {
   puzzle: Puzzle;
   hints: string[]; hintsAr: string[];   // revealed one at a time
   flag: string;                          // canonical inner answer (no majlis{})
-  explain: string; explainAr: string;   // shown after capture — the takeaway
+  explain: string; explainAr: string;   // shown after capture, the takeaway
 }
 
 export interface Section {
@@ -112,8 +112,8 @@ export const SECTIONS: Section[] = [
           "I → F، D → A … أكمل.",
         ],
         flag: "FALCON",
-        explain: "You just used the Caesar cipher — one of the oldest codes in history. It is weak because there are only 25 possible shifts, but it is where every cryptographer begins.",
-        explainAr: "لقد استخدمت شيفرة قيصر — من أقدم الشيفرات في التاريخ. هي ضعيفة لأن الإزاحات الممكنة 25 فقط، لكنها بداية كل خبير تعمية.",
+        explain: "You just used the Caesar cipher, one of the oldest codes in history. It is weak because there are only 25 possible shifts, but it is where every cryptographer begins.",
+        explainAr: "لقد استخدمت شيفرة قيصر، من أقدم الشيفرات في التاريخ. هي ضعيفة لأن الإزاحات الممكنة 25 فقط، لكنها بداية كل خبير تعمية.",
       },
       {
         id: "crypto-reverse",
@@ -154,8 +154,8 @@ export const SECTIONS: Section[] = [
           "−− هو M، ·− هو A … تابع المطابقة مع الجدول.",
         ],
         flag: "MAJLIS",
-        explain: "Morse code is an encoding — a way of representing letters, not a secret. Telling the difference between encoding (anyone can reverse it) and encryption (you need a key) is a core idea in cybersecurity.",
-        explainAr: "شيفرة مورس «ترميز» — طريقة لتمثيل الأحرف وليست سرّاً. التمييز بين الترميز (يفكّه أي أحد) والتشفير (يحتاج مفتاحاً) فكرة أساسية في الأمن السيبراني.",
+        explain: "Morse code is an encoding, a way of representing letters, not a secret. Telling the difference between encoding (anyone can reverse it) and encryption (you need a key) is a core idea in cybersecurity.",
+        explainAr: "شيفرة مورس «ترميز», طريقة لتمثيل الأحرف وليست سرّاً. التمييز بين الترميز (يفكّه أي أحد) والتشفير (يحتاج مفتاحاً) فكرة أساسية في الأمن السيبراني.",
       },
     ],
   },
@@ -178,8 +178,8 @@ export const SECTIONS: Section[] = [
         sectionId: "forensics",
         points: 150, difficulty: 2,
         title: "Hidden in the Details", titleAr: "مخفي في التفاصيل",
-        story: "A photo is more than the picture you see — it secretly stores extra details called metadata: the camera, the date, even who made it. Open this photo's details and find what the owner hid.",
-        storyAr: "الصورة أكثر من المشهد الذي تراه — فهي تخزّن سرّاً تفاصيل إضافية تُسمّى «البيانات الوصفية»: الكاميرا، التاريخ، وحتى صاحبها. افتح تفاصيل هذه الصورة واعثر على ما أخفاه المالك.",
+        story: "A photo is more than the picture you see, it secretly stores extra details called metadata: the camera, the date, even who made it. Open this photo's details and find what the owner hid.",
+        storyAr: "الصورة أكثر من المشهد الذي تراه، فهي تخزّن سرّاً تفاصيل إضافية تُسمّى «البيانات الوصفية»: الكاميرا، التاريخ، وحتى صاحبها. افتح تفاصيل هذه الصورة واعثر على ما أخفاه المالك.",
         puzzle: {
           kind: "table",
           rows: [
@@ -217,7 +217,7 @@ export const SECTIONS: Section[] = [
             { time: "08:14", user: "owner", location: "Doha, Qatar", locationAr: "الدوحة، قطر", code: "majlis{SAFE_01}" },
             { time: "12:30", user: "owner", location: "Doha, Qatar", locationAr: "الدوحة، قطر", code: "majlis{SAFE_02}" },
             { time: "13:05", user: "owner", location: "Doha, Qatar", locationAr: "الدوحة، قطر", code: "majlis{SAFE_03}" },
-            { time: "03:47", user: "owner", location: "Unknown — 6,800 km away", locationAr: "غير معروف — على بُعد 6,800 كم", code: "majlis{ROGUE_LOGIN}" },
+            { time: "03:47", user: "owner", location: "Unknown, 6,800 km away", locationAr: "غير معروف، على بُعد 6,800 كم", code: "majlis{ROGUE_LOGIN}" },
             { time: "18:22", user: "owner", location: "Doha, Qatar", locationAr: "الدوحة، قطر", code: "majlis{SAFE_04}" },
             { time: "21:10", user: "owner", location: "Doha, Qatar", locationAr: "الدوحة، قطر", code: "majlis{SAFE_05}" },
           ],
@@ -278,16 +278,16 @@ export const SECTIONS: Section[] = [
           "اسم القطة يظهر في منشور عيد الميلاد.",
         ],
         flag: "SIMBA",
-        explain: "Attackers really do read public posts to guess passwords and security answers. Pet names, birthdays and school names are favourite targets — keep them out of your passwords.",
-        explainAr: "المهاجمون يقرؤون فعلاً المنشورات العامة لتخمين كلمات المرور وأسئلة الأمان. أسماء الحيوانات والمواليد وأسماء المدارس أهداف مفضّلة — أبقِها بعيداً عن كلمات مرورك.",
+        explain: "Attackers really do read public posts to guess passwords and security answers. Pet names, birthdays and school names are favourite targets, keep them out of your passwords.",
+        explainAr: "المهاجمون يقرؤون فعلاً المنشورات العامة لتخمين كلمات المرور وأسئلة الأمان. أسماء الحيوانات والمواليد وأسماء المدارس أهداف مفضّلة، أبقِها بعيداً عن كلمات مرورك.",
       },
       {
         id: "osint-geo",
         sectionId: "osint",
         points: 200, difficulty: 2,
         title: "Where Was This Taken?", titleAr: "أين التُقطت هذه؟",
-        story: "Investigators can work out where a photo was taken just from clues in it — this is called geolocation. Read this caption and name the city. Submit the city as the flag.",
-        storyAr: "يستطيع المحققون معرفة مكان التقاط الصورة من الأدلة داخلها فقط — وهذا يُسمّى تحديد الموقع الجغرافي. اقرأ الوصف وسمِّ المدينة. أرسل اسم المدينة كعلَم.",
+        story: "Investigators can work out where a photo was taken just from clues in it, this is called geolocation. Read this caption and name the city. Submit the city as the flag.",
+        storyAr: "يستطيع المحققون معرفة مكان التقاط الصورة من الأدلة داخلها فقط، وهذا يُسمّى تحديد الموقع الجغرافي. اقرأ الوصف وسمِّ المدينة. أرسل اسم المدينة كعلَم.",
         puzzle: {
           kind: "posts",
           name: "Travel Diary", nameAr: "مذكرة سفر",
@@ -331,8 +331,8 @@ export const SECTIONS: Section[] = [
         sectionId: "web",
         points: 150, difficulty: 2,
         title: "View the Source", titleAr: "اعرض المصدر",
-        story: "Real hackers press 'View Source' to read the hidden code behind a page. Developers sometimes leave notes to themselves — called comments — that they forget to delete. Read the page code and find the comment.",
-        storyAr: "يضغط المخترقون الحقيقيون «عرض المصدر» لقراءة الشيفرة المخفية خلف الصفحة. أحياناً يترك المطوّرون ملاحظات لأنفسهم — تُسمّى «تعليقات» — وينسون حذفها. اقرأ شيفرة الصفحة واعثر على التعليق.",
+        story: "Real hackers press 'View Source' to read the hidden code behind a page. Developers sometimes leave notes to themselves, called comments, that they forget to delete. Read the page code and find the comment.",
+        storyAr: "يضغط المخترقون الحقيقيون «عرض المصدر» لقراءة الشيفرة المخفية خلف الصفحة. أحياناً يترك المطوّرون ملاحظات لأنفسهم، تُسمّى «تعليقات», وينسون حذفها. اقرأ شيفرة الصفحة واعثر على التعليق.",
         puzzle: {
           kind: "code",
           label: "index.html",
@@ -348,11 +348,11 @@ export const SECTIONS: Section[] = [
 </html>`,
         },
         hints: [
-          "Anything between <!-- and --> is a comment — invisible on the page, but visible in the code.",
+          "Anything between <!-- and --> is a comment, invisible on the page, but visible in the code.",
           "Look at the line that starts with <!-- TODO.",
         ],
         hintsAr: [
-          "كل ما بين <!-- و --> هو تعليق — غير مرئي على الصفحة لكنه ظاهر في الشيفرة.",
+          "كل ما بين <!-- و --> هو تعليق، غير مرئي على الصفحة لكنه ظاهر في الشيفرة.",
           "انظر إلى السطر الذي يبدأ بـ <!-- TODO.",
         ],
         flag: "VIEW_SOURCE",
@@ -364,8 +364,8 @@ export const SECTIONS: Section[] = [
         sectionId: "web",
         points: 250, difficulty: 3,
         title: "The Password in the Code", titleAr: "كلمة المرور داخل الشيفرة",
-        story: "This login page checks the password using code that runs inside your own browser — which means you can read it! Find the password the code is looking for and submit it as the flag.",
-        storyAr: "صفحة الدخول هذه تفحص كلمة المرور بشيفرة تعمل داخل متصفّحك أنت — أي أنه يمكنك قراءتها! اعثر على كلمة المرور التي تبحث عنها الشيفرة وأرسلها كعلَم.",
+        story: "This login page checks the password using code that runs inside your own browser, which means you can read it! Find the password the code is looking for and submit it as the flag.",
+        storyAr: "صفحة الدخول هذه تفحص كلمة المرور بشيفرة تعمل داخل متصفّحك أنت، أي أنه يمكنك قراءتها! اعثر على كلمة المرور التي تبحث عنها الشيفرة وأرسلها كعلَم.",
         puzzle: {
           kind: "code",
           label: "login.js",
@@ -404,8 +404,8 @@ export const SECTIONS: Section[] = [
     title: "Hidden Messages", titleAr: "الرسائل المخفية",
     tagline: "A message inside a message", taglineAr: "رسالة داخل رسالة",
     realName: "Steganography", realNameAr: "إخفاء المعلومات (Steganography)",
-    intro: "Cryptography scrambles a message so you cannot read it. Steganography goes further — it hides the fact that there is a message at all, tucked inside something ordinary. Find the secret hidden in each one.",
-    introAr: "التعمية تشوّش الرسالة فلا تقرأها. أما إخفاء المعلومات فيذهب أبعد — يُخفي وجود الرسالة أصلاً، مدسوسةً داخل شيء عادي. اعثر على السرّ المخبّأ في كل منها.",
+    intro: "Cryptography scrambles a message so you cannot read it. Steganography goes further, it hides the fact that there is a message at all, tucked inside something ordinary. Find the secret hidden in each one.",
+    introAr: "التعمية تشوّش الرسالة فلا تقرأها. أما إخفاء المعلومات فيذهب أبعد، يُخفي وجود الرسالة أصلاً، مدسوسةً داخل شيء عادي. اعثر على السرّ المخبّأ في كل منها.",
     challenges: [
       {
         id: "stego-acrostic",
@@ -425,24 +425,24 @@ Riders cross the open land.
 Travellers always find their way.`,
         },
         hints: [
-          "Ignore whole words — take just the first letter of every line.",
+          "Ignore whole words, take just the first letter of every line.",
           "D, E, S … what six-letter word is forming?",
         ],
         hintsAr: [
-          "تجاهل الكلمات كاملة — خذ الحرف الأول من كل سطر فقط.",
+          "تجاهل الكلمات كاملة، خذ الحرف الأول من كل سطر فقط.",
           "D، E، S … ما الكلمة المكوّنة من ستة أحرف التي تتشكّل؟",
         ],
         flag: "DESERT",
-        explain: "Hiding a word in the first letters of lines is called an acrostic — a simple form of steganography. The message is in plain sight, yet invisible until you know the trick.",
-        explainAr: "إخفاء كلمة في الأحرف الأولى للأسطر يُسمّى «أكروستيك» — صورة بسيطة من إخفاء المعلومات. الرسالة أمام عينيك، لكنها خفية حتى تعرف الحيلة.",
+        explain: "Hiding a word in the first letters of lines is called an acrostic, a simple form of steganography. The message is in plain sight, yet invisible until you know the trick.",
+        explainAr: "إخفاء كلمة في الأحرف الأولى للأسطر يُسمّى «أكروستيك», صورة بسيطة من إخفاء المعلومات. الرسالة أمام عينيك، لكنها خفية حتى تعرف الحيلة.",
       },
       {
         id: "stego-invisible",
         sectionId: "stego",
         points: 250, difficulty: 3,
         title: "Invisible Ink", titleAr: "الحبر السرّي",
-        story: "An old trick is to write a secret in the same colour as the paper, so it is invisible until you highlight it. Drag your mouse across the note below — or tap and hold — to reveal the hidden flag.",
-        storyAr: "حيلة قديمة هي كتابة السرّ بلون الورقة نفسه، فيكون خفياً حتى تظلّله. اسحب الفأرة فوق الملاحظة أدناه — أو اضغط مطوّلاً — لتكشف العلَم المخفي.",
+        story: "An old trick is to write a secret in the same colour as the paper, so it is invisible until you highlight it. Drag your mouse across the note below, or tap and hold, to reveal the hidden flag.",
+        storyAr: "حيلة قديمة هي كتابة السرّ بلون الورقة نفسه، فيكون خفياً حتى تظلّله. اسحب الفأرة فوق الملاحظة أدناه، أو اضغط مطوّلاً، لتكشف العلَم المخفي.",
         puzzle: {
           kind: "hidden",
           before: "Dear member, thank you for visiting the Majlis. There is nothing more to see here… ",

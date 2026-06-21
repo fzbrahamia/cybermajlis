@@ -42,8 +42,8 @@ const COLUMNS: { title_en: string; title_ar: string; links: Link[] }[] = [
 ];
 
 const SPECIAL = [
-  { href: "/elder", en: "Seniors Mode", ar: "وضع كبار السن", desc_en: "A slower, simpler experience — larger text, read-aloud audio and a clutter-free layout.", desc_ar: "تجربة أبطأ وأبسط — نص أكبر، وقراءة صوتية، وواجهة خالية من الزحام." },
-  { href: "/calm",  en: "Calm Mode",    ar: "الوضع الهادئ",  desc_en: "A quiet, soothing space — soft colors, a gentle pace and no animations.",                  desc_ar: "مساحة هادئة ومريحة — ألوان ناعمة، وإيقاع لطيف، وبدون أي حركة." },
+  { href: "/elder", en: "Seniors Mode", ar: "وضع كبار السن", desc_en: "A slower, simpler experience with larger text, read-aloud audio and a clutter-free layout.", desc_ar: "تجربة أبطأ وأبسط، بنص أكبر وقراءة صوتية وواجهة خالية من الزحام." },
+  { href: "/calm",  en: "Calm Mode",    ar: "الوضع الهادئ",  desc_en: "A quiet, soothing space with soft colors, a gentle pace and no animations.",                  desc_ar: "مساحة هادئة ومريحة، بألوان ناعمة وإيقاع لطيف وبدون أي حركة." },
 ];
 
 export default function Footer() {
@@ -158,7 +158,7 @@ export default function Footer() {
         display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem",
       }}>
         <span style={{ fontFamily: crimson, fontSize: 12.5, color: "rgba(232,212,188,.35)" }}>
-          {isAR ? "© 2026 المجلس السيبراني — قطر" : "© 2026 CyberMajlis — Qatar"}
+          {isAR ? "© 2026 المجلس السيبراني، قطر" : "© 2026 CyberMajlis, Qatar"}
         </span>
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
           <a href="/privacy" style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(197,165,126,.75)", textDecoration: "none" }}>

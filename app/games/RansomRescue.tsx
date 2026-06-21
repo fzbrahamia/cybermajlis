@@ -1,5 +1,5 @@
 // ============================================================
-// RANSOM RESCUE — Navigate a ransomware incident step by step
+// RANSOM RESCUE, Navigate a ransomware incident step by step
 // Each playthrough picks a random scenario
 // ============================================================
 

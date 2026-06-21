@@ -10,18 +10,18 @@ const body   = "'Crimson Pro', Georgia, serif";
 
 const topics = {
   en: [
-    { id: "phishing",  icon: "🎣", title: "Email & Message Scams",   desc: "How scammers trick you through messages — and how to spot them every time.",  mins: 5 },
+    { id: "phishing",  icon: "🎣", title: "Email & Message Scams",   desc: "How scammers trick you through messages, and how to spot them every time.",  mins: 5 },
     { id: "passwords", icon: "🔐", title: "Protecting Your Accounts",  desc: "Why strong passwords matter and the easiest way to create them.",              mins: 4 },
     { id: "privacy",   icon: "👁", title: "Your Phone & Privacy",      desc: "What your phone shares about you and how to take control.",                    mins: 5 },
-    { id: "scams",     icon: "⚠️", title: "Recognising Online Scams",  desc: "The tricks scammers use online — and why they feel so convincing.",            mins: 5 },
+    { id: "scams",     icon: "⚠️", title: "Recognising Online Scams",  desc: "The tricks scammers use online, and why they feel so convincing.",            mins: 5 },
     { id: "shopping",  icon: "🛒", title: "Safe Online Shopping",      desc: "How to know if a website is trustworthy before you enter your card details.",   mins: 6 },
     { id: "family",    icon: "👨‍👩‍👧", title: "Keeping Your Family Safe", desc: "How to help your children and grandchildren stay safe online too.",           mins: 4 },
   ],
   ar: [
-    { id: "phishing",  icon: "🎣", title: "الرسائل والبريد الاحتيالي",  desc: "كيف يخدعك المحتالون عبر الرسائل — وكيف تتعرف عليهم في كل مرة.",        mins: 5 },
+    { id: "phishing",  icon: "🎣", title: "الرسائل والبريد الاحتيالي",  desc: "كيف يخدعك المحتالون عبر الرسائل، وكيف تتعرف عليهم في كل مرة.",        mins: 5 },
     { id: "passwords", icon: "🔐", title: "حماية حساباتك",               desc: "لماذا كلمات المرور القوية مهمة وأسهل طريقة لإنشائها.",                 mins: 4 },
     { id: "privacy",   icon: "👁", title: "هاتفك وخصوصيتك",             desc: "ما الذي يشاركه هاتفك عنك وكيف تتحكم في ذلك.",                          mins: 5 },
-    { id: "scams",     icon: "⚠️", title: "كيف تتعرف على عمليات الاحتيال", desc: "الحيل التي يستخدمها المحتالون — ولماذا تبدو مقنعة جداً.",            mins: 5 },
+    { id: "scams",     icon: "⚠️", title: "كيف تتعرف على عمليات الاحتيال", desc: "الحيل التي يستخدمها المحتالون، ولماذا تبدو مقنعة جداً.",            mins: 5 },
     { id: "shopping",  icon: "🛒", title: "التسوق الآمن عبر الإنترنت",   desc: "كيف تعرف أن الموقع موثوق قبل إدخال بيانات بطاقتك.",                   mins: 6 },
     { id: "family",    icon: "👨‍👩‍👧", title: "حماية عائلتك",               desc: "كيف تساعد أبناءك وأحفادك على البقاء آمنين على الإنترنت.",             mins: 4 },
   ],
@@ -44,8 +44,8 @@ export default function ElderLessonsPage() {
         </h1>
         <p style={{ fontSize: "1.15rem", color: "#5C4033", marginBottom: "3rem", lineHeight: 1.75 }}>
           {isRtl
-            ? "اختر أي موضوع يهمك. كل درس قصير وواضح — بفيديو وشرح بسيط."
-            : "Pick any topic that interests you. Every lesson is short and clear — with a video and simple explanation."}
+            ? "اختر أي موضوع يهمك. كل درس قصير وواضح، بفيديو وشرح بسيط."
+            : "Pick any topic that interests you. Every lesson is short and clear, with a video and simple explanation."}
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>

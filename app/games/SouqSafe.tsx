@@ -1,6 +1,6 @@
 "use client";
 // ============================================================
-// SOUQ SAFE — Drag & Drop Data Protection Game
+// SOUQ SAFE, Drag & Drop Data Protection Game
 // ============================================================
 
 import { useState, useEffect } from "react";
@@ -123,7 +123,7 @@ export default function SouqSafe({ onHome }: { onHome: (xp?: number) => void }) 
 
       <div className="px-6 py-6 max-w-2xl mx-auto">
 
-        {/* ── Fixed-height interaction area — no jumping ── */}
+        {/* ── Fixed-height interaction area, no jumping ── */}
         <div style={{ minHeight: 180 }} className="mb-6 flex flex-col items-center justify-center">
           {!feedback ? (
             /* Draggable item card */
@@ -137,7 +137,7 @@ export default function SouqSafe({ onHome }: { onHome: (xp?: number) => void }) 
               <div className="text-xs text-stone-400 mt-3">{t("dragHint")}</div>
             </div>
           ) : (
-            /* Feedback — same height slot */
+            /* Feedback, same height slot */
             <div className="w-full animate-fade-in">
               <div className={`text-center text-xl font-bold mb-3 ${feedback.correct ? "text-emerald-600" : "text-red-500"}`}>
                 {feedback.correct ? t("correct") : t("wrong")}
@@ -157,7 +157,7 @@ export default function SouqSafe({ onHome }: { onHome: (xp?: number) => void }) 
           )}
         </div>
 
-        {/* ── Drop zones — always visible below ── */}
+        {/* ── Drop zones, always visible below ── */}
         <div className="grid grid-cols-2 gap-4">
           {zones.map((z) => (
             <div

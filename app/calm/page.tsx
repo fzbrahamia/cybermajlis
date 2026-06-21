@@ -34,7 +34,7 @@ const content = {
     heroSub: "Learn simple rules to stay safe on the internet. No rush. No pressure. Just easy steps.",
     topicsTitle: "Choose a topic to learn about",
     gamesTitle: "Play & Learn",
-    gamesSub: "Fun games that teach you how to stay safe online. Take your time — there is no timer pressure.",
+    gamesSub: "Fun games that teach you how to stay safe online. Take your time, there is no timer pressure.",
     gamesBtn: "Open the game room →",
     games: [
       { id: "souq",  title: "Safe or Not Safe?",   desc: "Sort things into safe and not-safe piles. Simple drag and drop!" },
@@ -62,7 +62,7 @@ const content = {
     heroSub: "تعلّم قواعد بسيطة للبقاء آمناً على الإنترنت. بدون تسرّع. بدون ضغط. خطوات سهلة فقط.",
     topicsTitle: "اختر موضوعاً لتتعلم عنه",
     gamesTitle: "العب وتعلّم",
-    gamesSub: "ألعاب ممتعة تعلّمك كيف تبقى آمناً على الإنترنت. خذ وقتك — لا يوجد عداد للوقت.",
+    gamesSub: "ألعاب ممتعة تعلّمك كيف تبقى آمناً على الإنترنت. خذ وقتك، لا يوجد عداد للوقت.",
     gamesBtn: "افتح غرفة الألعاب →",
     games: [
       { id: "souq",  title: "آمن أم لا؟",          desc: "رتّب الأشياء في مجموعتين: آمنة وغير آمنة. سحب وإفلات بسيط!" },
@@ -316,7 +316,7 @@ export default function CalmPage() {
         background: "#F0F9FF",
         borderTop: "2px solid #BFDBFE",
       }}>
-        {isRtl ? "مجلس الأمن السيبراني — قطر" : "CyberMajlis — Qatar"} ·{" "}
+        {isRtl ? "مجلس الأمن السيبراني، قطر" : "CyberMajlis, Qatar"} ·{" "}
         <a href="/" style={{ color: "#1D7FCC", textDecoration: "none" }}>
           {c.backToMain}
         </a>

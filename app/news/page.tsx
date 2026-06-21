@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "@/app/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { newsDocId } from "@/lib/newsId";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type Severity = "critical" | "high" | "medium" | "low";
@@ -102,7 +103,7 @@ function NewsCard({ item }: { item: NewsItem }) {
           {headline}
         </h2>
 
-        {/* Qatar note — always show when relevant */}
+        {/* Qatar note, always show when relevant */}
         {qnote && (
           <div style={{ fontStyle:"italic", color:"rgba(99,32,36,0.65)", marginBottom:8,
             fontSize:"0.8rem", fontFamily:"'Crimson Pro',serif", lineHeight:1.5,
@@ -111,7 +112,7 @@ function NewsCard({ item }: { item: NewsItem }) {
           </div>
         )}
 
-        {/* Action steps — always visible, this is what the user needs */}
+        {/* Action steps, always visible, this is what the user needs */}
         {steps && steps.length > 0 && (
           <div style={{ background:s.bg, borderRadius:8, padding:"8px 10px",
             border:"1px solid " + s.color + "25", marginBottom: expanded ? 8 : 0 }}>
@@ -206,8 +207,7 @@ export default function NewsPage() {
         // Write with stable IDs so same article never gets a fresh timestamp
         for (const s of data.summaries) {
           if (!seen.has(s.source_url)) {
-            const id = btoa(encodeURIComponent(s.source_url || Date.now().toString()))
-              .replace(/[^a-zA-Z0-9]/g, "").slice(0, 28);
+            const id = newsDocId(s.source_url || Date.now().toString());
             await setDoc(fsDoc(db, "securityNews", id), {
               ...s, createdAt: serverTimestamp(), auto_generated: true,
             }).catch(() => {});
@@ -237,8 +237,7 @@ export default function NewsPage() {
     const data = res ? await res.json().catch(() => ({})) : {};
     if (data.success && data.summaries?.length > 0) {
       for (const s of data.summaries) {
-        const id = btoa(encodeURIComponent(s.source_url || Date.now().toString()))
-          .replace(/[^a-zA-Z0-9]/g, "").slice(0, 28);
+        const id = newsDocId(s.source_url || Date.now().toString());
         await setDoc(fsDoc(db, "securityNews", id), {
           ...s, createdAt: serverTimestamp(), auto_generated: true,
         }).catch(() => {});
@@ -300,8 +299,8 @@ export default function NewsPage() {
             <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.88rem", color:"#5C4033",
               lineHeight:1.65, margin:"0 0 12px" }}>
               {isAr
-                ? "أحدث التهديدات بلغة بسيطة — مع خطوات يستطيع الجميع اتباعها."
-                : "Latest threats translated into plain language — with steps anyone can follow."}
+                ? "أحدث التهديدات بلغة بسيطة، مع خطوات يستطيع الجميع اتباعها."
+                : "Latest threats translated into plain language, with steps anyone can follow."}
             </p>
 
             {/* Live indicator + buttons */}
@@ -390,7 +389,7 @@ export default function NewsPage() {
           {!loading && filtered.length === 0 && (
             <div style={{ textAlign:"center", padding:"3rem", color:"rgba(99,32,36,0.4)",
               fontFamily:"'Cinzel',serif", fontSize:"0.7rem" }}>
-              {isAr ? "لا توجد نشرات حتى الآن" : "No briefings yet — refresh to fetch latest news."}
+              {isAr ? "لا توجد نشرات حتى الآن" : "No briefings yet, refresh to fetch latest news."}
             </div>
           )}
           {!loading && filtered.map((item, i) => (

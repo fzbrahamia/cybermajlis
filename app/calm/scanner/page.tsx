@@ -13,7 +13,7 @@ type Result = { severity: string; detected: number; total: number; url?: string 
 const content = {
   en: {
     title: "Is this link safe?",
-    sub: "If someone sent you a link and you are not sure — paste it here and we will check it for you.",
+    sub: "If someone sent you a link and you are not sure, paste it here and we will check it for you.",
     placeholder: "Paste the link here…",
     btn: "Check this link",
     checking: "Checking… please wait",
@@ -21,7 +21,7 @@ const content = {
     suspicious: "This link looks a bit strange. Ask a grown-up before clicking.",
     malicious: "This link is dangerous! Do not click it. Tell a grown-up right away.",
     unknown: "We could not check this link. When you are not sure, do not click it.",
-    tip: "If the link came from someone you do not know — do not click it, even if it looks safe.",
+    tip: "If the link came from someone you do not know, do not click it, even if it looks safe.",
     detectedBy: "Flagged by",
     engines: "security engines",
     tryAnother: "← Check another link",
@@ -29,7 +29,7 @@ const content = {
   },
   ar: {
     title: "هل هذا الرابط آمن؟",
-    sub: "إذا أرسل لك أحد رابطاً ولست متأكداً — الصقه هنا وسنفحصه لك.",
+    sub: "إذا أرسل لك أحد رابطاً ولست متأكداً، الصقه هنا وسنفحصه لك.",
     placeholder: "الصق الرابط هنا…",
     btn: "افحص هذا الرابط",
     checking: "جاري الفحص… انتظر قليلاً",
@@ -37,7 +37,7 @@ const content = {
     suspicious: "هذا الرابط يبدو غريباً قليلاً. اسأل شخصاً كبيراً قبل الضغط عليه.",
     malicious: "هذا الرابط خطير! لا تضغط عليه. أخبر شخصاً كبيراً الآن.",
     unknown: "لم نستطع فحص هذا الرابط. عندما لا تكون متأكداً، لا تضغط عليه.",
-    tip: "إذا جاء الرابط من شخص لا تعرفه — لا تضغط عليه، حتى لو بدا آمناً.",
+    tip: "إذا جاء الرابط من شخص لا تعرفه، لا تضغط عليه، حتى لو بدا آمناً.",
     detectedBy: "رُصد بواسطة",
     engines: "محرك أمني",
     tryAnother: "افحص رابطاً آخر →",
