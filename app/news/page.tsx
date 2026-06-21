@@ -5,7 +5,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useLocale } from "next-intl";
 import {
   collection, addDoc, setDoc, getDocs, query,
-  orderBy, serverTimestamp, deleteDoc, doc as fsDoc,
+  orderBy, serverTimestamp, doc as fsDoc,
 } from "firebase/firestore";
 import { auth, db } from "@/app/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -223,30 +223,6 @@ export default function NewsPage() {
     setFetching(false);
   }, [loadNews]);
 
-  // Force refresh: clear everything and re-fetch bilingual
-  const forceRefresh = useCallback(async () => {
-    if (fetching) return;
-    localStorage.removeItem("cm-news-seen");
-    try {
-      const snap = await getDocs(query(collection(db, "securityNews"), orderBy("createdAt", "asc")));
-      await Promise.all(snap.docs.map(d => deleteDoc(fsDoc(db, "securityNews", d.id)).catch(() => {})));
-    } catch { /* silent */ }
-    setItems([]);
-    setFetching(true);
-    const res  = await fetch("/api/news/fetch?existing=").catch(() => null);
-    const data = res ? await res.json().catch(() => ({})) : {};
-    if (data.success && data.summaries?.length > 0) {
-      for (const s of data.summaries) {
-        const id = newsDocId(s.source_url || Date.now().toString());
-        await setDoc(fsDoc(db, "securityNews", id), {
-          ...s, createdAt: serverTimestamp(), auto_generated: true,
-        }).catch(() => {});
-      }
-      await loadNews();
-    }
-    setFetching(false);
-  }, [fetching, loadNews]);
-
   // On mount: load cache then fetch if stale (> 1h)
   useEffect(() => {
     setLoading(true);
@@ -313,24 +289,6 @@ export default function NewsPage() {
                   ? (isAr ? "جارٍ التحديث…" : "Updating…")
                   : (isAr ? "مباشر · " : "Live feed · ") + timeAgo(lastUpdated)}
               </span>
-            </div>
-            <div style={{ display:"flex", gap:6 }}>
-              <button onClick={() => loadNews().then(c => fetchFresh(c))} disabled={fetching}
-                style={{ flex:1, padding:"5px 8px", borderRadius:7,
-                  border:"1px solid rgba(99,32,36,0.2)", background:"transparent",
-                  color:"rgba(99,32,36,0.55)", fontFamily:"'Cinzel',serif", fontSize:"0.55rem",
-                  letterSpacing:"0.1em", textTransform:"uppercase",
-                  cursor:fetching?"not-allowed":"pointer", opacity:fetching?0.5:1 }}>
-                ⟳ {isAr ? "تحديث" : "Refresh"}
-              </button>
-              <button onClick={forceRefresh} disabled={fetching}
-                title={isAr ? "إعادة جلب جميع المقالات بالعربية والإنجليزية" : "Re-fetch all with Arabic + English"}
-                style={{ padding:"5px 10px", borderRadius:7,
-                  border:"1px solid rgba(99,32,36,0.25)", background:"rgba(99,32,36,0.05)",
-                  color:"rgba(99,32,36,0.7)", fontSize:13,
-                  cursor:fetching?"not-allowed":"pointer", opacity:fetching?0.5:1 }}>
-                🌐
-              </button>
             </div>
           </div>
 
