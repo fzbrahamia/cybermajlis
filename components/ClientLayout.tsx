@@ -14,11 +14,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const t = useTranslations("SessionTimeout");
 
   const isMainOrAuthPage = pathname === "/" || pathname.startsWith("/auth");
-  const isGamesPage = pathname.startsWith("/games");
   const isSocPage = pathname.startsWith("/soc");
   const isCalmPage = pathname.startsWith("/calm");
-  const showFooter = !isMainOrAuthPage && !isGamesPage && !isSocPage && !isCalmPage;
-  const hideChatbot = isGamesPage || isSocPage || isCalmPage;
+  const showFooter = !isMainOrAuthPage && !isSocPage && !isCalmPage;
+  const hideChatbot = isSocPage || isCalmPage;
 
   const isLoggedIn = !isMainOrAuthPage && !hideChatbot;
 
@@ -45,7 +44,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      {!isGamesPage && !isSocPage && !isCalmPage && <Navbar />}
+      {!isSocPage && !isCalmPage && <Navbar />}
       {!hideChatbot && <Chatbot isLoggedIn={isLoggedIn} />}
       <div>{children}</div>
       {showFooter && <Footer />}

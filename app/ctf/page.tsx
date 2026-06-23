@@ -90,7 +90,7 @@ export default function CtfPage() {
           border: `1px solid ${GOLD}33`, borderRadius: 22, padding: "2.6rem 2rem",
           boxShadow: "0 24px 64px rgba(62,19,22,0.4)",
         }}>
-          <div style={{ height: 3, width: 60, margin: "0 auto 1.4rem", background: `linear-gradient(90deg, ${GOLD}, transparent)` }} />
+          <div style={{ height: 2, width: 80, margin: "0 auto 1.6rem", borderRadius: 2, background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
             <div style={{ width: 70, height: 70, borderRadius: "50%", background: `${GOLD}1f`, border: `1px solid ${GOLD}55`, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Lock size={30} color={GOLD2} strokeWidth={1.5} />

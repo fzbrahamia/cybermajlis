@@ -362,8 +362,9 @@
       "logout_failed_message": "تعذّر تسجيل الخروج. يرجى المحاولة مجددًا.",
       "nav_links": {
         "dashboard": "لوحة التحكم",
+        "lessons": "الدروس",
         "community": "المجتمع",
-        "games": "الألعاب",
+        "simulations": "المحاكاة",
         "ctf": "تحدّيات CTF",
         "news": "الأخبار",
         "scanner": "الماسح",

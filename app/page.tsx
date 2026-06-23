@@ -349,7 +349,7 @@ const FEATURES: Feature[] = [
     cta:    { en: "Start learning", ar: "ابدأ التعلّم" },
   },
   {
-    id: "simulations", route: "/games?view=simulations", Icon: FlaskConical, Mock: SimMock, frame: "sandbox://try-it",
+    id: "simulations", route: "/simulations", Icon: FlaskConical, Mock: SimMock, frame: "sandbox://try-it",
     kicker: { en: "SIMULATIONS", ar: "المحاكاة" },
     motto:  { en: "Don't just read it. Try it.", ar: "لا تكتفِ بالقراءة. جرّبه." },
     desc:   { en: "Safe, hands-on demos that you control. Type into a keylogger and watch it capture every word. Lock and unlock a machine the way ransomware does. Run a program and watch the windows pile up. You learn how each threat works by trying it.", ar: "عروض آمنة وتفاعلية أنت من يتحكم بها. اكتب في الكي لوغر وشاهده يلتقط كل كلمة. اقفل جهازًا وافتحه كما تفعل برامج الفدية. شغّل برنامجًا وشاهد النوافذ تتكاثر. تتعلّم كيف يعمل كل تهديد بتجربته بنفسك." },

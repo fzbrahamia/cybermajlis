@@ -11,32 +11,30 @@ type Link = { href?: string; chat?: boolean; en: string; ar: string };
 
 const COLUMNS: { title_en: string; title_ar: string; links: Link[] }[] = [
   {
+    // Three different ways to learn: read it, try it, do the real job.
     title_en: "Learn", title_ar: "تعلّم",
     links: [
-      { href: "/dashboard",              en: "Lessons",     ar: "الدروس" },
-      { href: "/games?view=simulations", en: "Simulations", ar: "المحاكاة" },
+      { href: "/dashboard",   en: "Lessons",     ar: "الدروس" },
+      { href: "/simulations", en: "Simulations", ar: "المحاكاة" },
+      { href: "/soc",         en: "Live SOC",    ar: "مركز العمليات" },
     ],
   },
   {
-    title_en: "Defend", title_ar: "دافع",
+    // Everyday, real-world safety: stay informed, warn others, check before you click.
+    title_en: "Protect", title_ar: "احمِ نفسك",
     links: [
-      { href: "/soc",  en: "Live SOC",     ar: "مركز العمليات" },
-      { href: "/scan", en: "Link Scanner", ar: "فاحص الروابط" },
-      { href: "/news", en: "News",         ar: "الأخبار" },
+      { href: "/scan",      en: "Link Scanner", ar: "فاحص الروابط" },
+      { href: "/news",      en: "News",         ar: "الأخبار" },
+      { href: "/community", en: "Community",    ar: "المجتمع" },
+      { chat: true,         en: "Ask Hamad",    ar: "اسأل حمد" },
     ],
   },
   {
-    title_en: "Compete", title_ar: "تنافس",
+    // Self-directed, hands-on: prove your skill and secure your own devices.
+    title_en: "Practice", title_ar: "تدرّب",
     links: [
-      { href: "/ctf",   en: "Capture the Flag", ar: "التقط العلم" },
-      { href: "/games", en: "Games",            ar: "الألعاب" },
-    ],
-  },
-  {
-    title_en: "Connect", title_ar: "تواصل",
-    links: [
-      { href: "/community", en: "Community", ar: "المجتمع" },
-      { chat: true,         en: "Ask Hamad", ar: "اسأل حمد" },
+      { href: "/ctf",                      en: "Capture the Flag", ar: "التقط العلم" },
+      { href: "/dashboard/do-it-yourself", en: "Do It Yourself",   ar: "افعلها بنفسك" },
     ],
   },
 ];
@@ -75,7 +73,7 @@ export default function Footer() {
       <style>{`
         .cm-footer-grid {
           display: grid;
-          grid-template-columns: 1.5fr repeat(4, minmax(96px,0.85fr)) 1.5fr;
+          grid-template-columns: 1.5fr repeat(3, minmax(110px,0.9fr)) 1.5fr;
           gap: 2.5rem 1.8rem;
         }
         @media (max-width: 1024px){ .cm-footer-grid{ grid-template-columns: 1fr 1fr 1fr; } }

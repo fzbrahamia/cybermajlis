@@ -3,6 +3,7 @@
 import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useRef } from "react";
 import { useLocale } from "next-intl";
+import { CircleCheck, TriangleAlert, ShieldAlert, CircleHelp, Link2, Upload, FileText, Search, Hash, Shield, type LucideIcon } from "lucide-react";
 
 type ScanType = "url" | "file" | "hash";
 type Severity  = "clean" | "suspicious" | "malicious" | "unknown";
@@ -17,20 +18,20 @@ interface ScanResult {
   permalink?: string;
 }
 
-const SEV: Record<Severity, { color: string; bg: string; border: string; icon: string; label: string; labelAr: string; summary: (d:number,t:number,type:string)=>string; summaryAr: (d:number,t:number,type:string)=>string }> = {
-  clean:      { color:"#16a34a", bg:"rgba(22,163,74,0.07)",   border:"rgba(22,163,74,0.25)",   icon:"✅",
+const SEV: Record<Severity, { color: string; bg: string; border: string; Icon: LucideIcon; label: string; labelAr: string; summary: (d:number,t:number,type:string)=>string; summaryAr: (d:number,t:number,type:string)=>string }> = {
+  clean:      { color:"#16a34a", bg:"rgba(22,163,74,0.07)",   border:"rgba(22,163,74,0.25)",   Icon:CircleCheck,
     label:"Clean",      labelAr:"آمن",
     summary:(d,t,tp)=>`All ${t} security tools checked this ${tp} and found nothing harmful.`,
     summaryAr:(d,t,tp)=>`فحصت ${t} أداة أمنية هذا ${tp} ولم تجد شيئاً ضاراً.` },
-  suspicious: { color:"#ca8a04", bg:"rgba(202,138,4,0.07)",   border:"rgba(202,138,4,0.25)",   icon:"⚠️",
+  suspicious: { color:"#ca8a04", bg:"rgba(202,138,4,0.07)",   border:"rgba(202,138,4,0.25)",   Icon:TriangleAlert,
     label:"Suspicious", labelAr:"مشبوه",
     summary:(d,t,tp)=>`${d} of ${t} tools flagged this ${tp}. It may be a false alarm, but don't open it until you're certain.`,
     summaryAr:(d,t,tp)=>`أشارت ${d} من أصل ${t} أداة إلى هذا ${tp}. قد يكون إنذاراً كاذباً، لكن لا تفتحه حتى تتأكد.` },
-  malicious:  { color:"#dc2626", bg:"rgba(220,38,38,0.07)",   border:"rgba(220,38,38,0.25)",   icon:"🚨",
+  malicious:  { color:"#dc2626", bg:"rgba(220,38,38,0.07)",   border:"rgba(220,38,38,0.25)",   Icon:ShieldAlert,
     label:"Malicious",  labelAr:"خطير",
     summary:(d,t,tp)=>`${d} of ${t} security tools confirmed this ${tp} is dangerous. Do not open it.`,
     summaryAr:(d,t,tp)=>`أكدت ${d} من أصل ${t} أداة أمنية أن هذا ${tp} خطير. لا تفتحه.` },
-  unknown:    { color:"#6b7280", bg:"rgba(107,114,128,0.07)", border:"rgba(107,114,128,0.2)",  icon:"❓",
+  unknown:    { color:"#6b7280", bg:"rgba(107,114,128,0.07)", border:"rgba(107,114,128,0.2)",  Icon:CircleHelp,
     label:"Unknown",    labelAr:"غير معروف",
     summary:()=>`No scan results found. The file may not have been analysed before, try uploading it directly.`,
     summaryAr:()=>`لم يتم العثور على نتائج فحص. قد لا يكون الملف قد تم تحليله من قبل، جرّب رفعه مباشرةً.` },
@@ -132,10 +133,10 @@ export default function ScanPage() {
   const flagged = result?.engines.filter(e => e.detected) || [];
   const clean   = result?.engines.filter(e => !e.detected) || [];
 
-  const modeTabs: [ScanType, string, string][] = [
-    ["url",  "🔗 Paste Link",   "🔗 الصق رابطاً"],
-    ["hash", "#️⃣ File Hash",   "#️⃣ بصمة الملف"],
-    ["file", "📁 Upload File",  "📁 رفع ملف"],
+  const modeTabs: [ScanType, LucideIcon, string, string][] = [
+    ["url",  Link2,  "Paste Link",  "الصق رابطاً"],
+    ["hash", Hash,   "File Hash",   "بصمة الملف"],
+    ["file", Upload, "Upload File", "رفع ملف"],
   ];
 
   return (
@@ -166,10 +167,10 @@ export default function ScanPage() {
 
             {/* Mode tabs */}
             <div style={{ display:"flex", gap:5, background:"#f5ede2", borderRadius:10, padding:4, marginBottom:"1.4rem" }}>
-              {modeTabs.map(([m, labelEn, labelAr]) => (
+              {modeTabs.map(([m, Icon, labelEn, labelAr]) => (
                 <button key={m} onClick={()=>{setMode(m);setInput("");setFile(null);setError("");}}
-                  style={{ flex:1, padding:"8px 4px", borderRadius:8, border:"none", background:mode===m?"white":"transparent", color:mode===m?"#3e1316":"rgba(99,32,36,0.5)", fontSize:12, fontWeight:mode===m?700:400, cursor:"pointer", boxShadow:mode===m?"0 1px 6px rgba(99,32,36,0.1)":"none", transition:"all .2s" }}>
-                  {isAR ? labelAr : labelEn}
+                  style={{ flex:1, padding:"8px 4px", borderRadius:8, border:"none", background:mode===m?"white":"transparent", color:mode===m?"#3e1316":"rgba(99,32,36,0.5)", fontSize:12, fontWeight:mode===m?700:400, cursor:"pointer", boxShadow:mode===m?"0 1px 6px rgba(99,32,36,0.1)":"none", transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}>
+                  <Icon size={14} /> {isAR ? labelAr : labelEn}
                 </button>
               ))}
             </div>
@@ -184,7 +185,7 @@ export default function ScanPage() {
                 <input ref={fileRef} type="file" style={{display:"none"}} onChange={e=>{if(e.target.files?.[0])setFile(e.target.files[0]);}}/>
                 {file ? (
                   <>
-                    <div style={{ fontSize:32, marginBottom:8 }}>📄</div>
+                    <div style={{ marginBottom:8, display:"flex", justifyContent:"center" }}><FileText size={30} color="#632024" /></div>
                     <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.75rem", color:"#3e1316", fontWeight:700 }}>{file.name}</div>
                     <div style={{ fontSize:11, color:"rgba(99,32,36,0.4)", marginTop:4 }}>
                       {(file.size/1024).toFixed(1)} KB · {isAR ? "انقر للتغيير" : "Click to change"}
@@ -192,7 +193,7 @@ export default function ScanPage() {
                   </>
                 ) : (
                   <>
-                    <div style={{ fontSize:36, marginBottom:8 }}>📁</div>
+                    <div style={{ marginBottom:8, display:"flex", justifyContent:"center" }}><Upload size={32} color="rgba(99,32,36,0.55)" /></div>
                     <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.68rem", color:"rgba(99,32,36,0.55)", letterSpacing:"0.12em" }}>
                       {isAR ? "اسحب وأفلت أو انقر للاختيار" : "DRAG & DROP OR CLICK TO SELECT"}
                     </div>
@@ -212,7 +213,7 @@ export default function ScanPage() {
 
             <button onClick={handleScan} disabled={!canScan||loading}
               style={{ width:"100%", padding:"0.95rem", borderRadius:11, border:"none", background:canScan&&!loading?"linear-gradient(135deg,#3e1316,#632024)":"rgba(99,32,36,0.1)", color:canScan&&!loading?"#E8D4BC":"rgba(99,32,36,0.3)", fontFamily:"'Cinzel',serif", fontSize:"0.7rem", letterSpacing:"0.18em", textTransform:"uppercase", fontWeight:700, cursor:canScan&&!loading?"pointer":"not-allowed", transition:"all .2s" }}>
-              {isAR ? "🔍 فحص الآن" : "🔍 Scan Now"}
+              <Search size={14} style={{verticalAlign:"-2px"}} /> {isAR ? "فحص الآن" : "Scan Now"}
             </button>
 
             {error && (
@@ -238,7 +239,7 @@ export default function ScanPage() {
         {/* Loading */}
         {loading && (
           <div style={{ background:"white", borderRadius:18, padding:"3rem 2rem", textAlign:"center", boxShadow:"0 4px 24px rgba(99,32,36,0.08)", border:"1px solid rgba(99,32,36,0.09)" }}>
-            <div style={{ fontSize:44, marginBottom:16, display:"inline-block", animation:"spin 2.5s linear infinite" }}>🔍</div>
+            <div style={{ marginBottom:16, display:"inline-block", animation:"spin 2.5s linear infinite" }}><Search size={40} color="#632024" /></div>
             <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
             <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.72rem", letterSpacing:"0.15em", color:"rgba(99,32,36,0.7)", marginBottom:6 }}>{loadMsg}</div>
             {mode === "file" && <div style={{ fontSize:11, color:"rgba(99,32,36,0.35)", marginTop:4 }}>
@@ -256,7 +257,7 @@ export default function ScanPage() {
               <div style={{ height:4, background:s.color }}/>
               <div style={{ padding:"1.6rem" }}>
                 <div style={{ display:"flex", alignItems:"flex-start", gap:16, marginBottom:14 }}>
-                  <div style={{ fontSize:48, flexShrink:0 }}>{s.icon}</div>
+                  <div style={{ flexShrink:0 }}><s.Icon size={44} color={s.color} /></div>
                   <div style={{ flex:1 }}>
                     <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.58rem", letterSpacing:"0.25em", color:s.color, textTransform:"uppercase", marginBottom:5 }}>
                       {isAR ? "الحكم" : "Verdict"}
@@ -276,7 +277,7 @@ export default function ScanPage() {
                 </div>
 
                 <div style={{ background:"#faf6f1", borderRadius:8, padding:"8px 12px", fontFamily:"'JetBrains Mono',monospace", fontSize:11, color:"#5C4033", wordBreak:"break-all", marginBottom:14 }}>
-                  {result.type === "url" ? "🔗" : result.type === "file" ? "📄" : "#️⃣"} {result.target}
+                  {result.type === "url" ? <Link2 size={12} style={{verticalAlign:"-2px"}} /> : result.type === "file" ? <FileText size={12} style={{verticalAlign:"-2px"}} /> : <Hash size={12} style={{verticalAlign:"-2px"}} />} {result.target}
                 </div>
 
                 <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"1.05rem", color:"#3e1316", lineHeight:1.75, margin:"0 0 16px" }}>
@@ -366,7 +367,7 @@ export default function ScanPage() {
             {/* CERT banner for malicious */}
             {result.severity === "malicious" && (
               <div style={{ background:"rgba(99,32,36,0.04)", borderRadius:14, padding:"1.2rem 1.4rem", border:"1px solid rgba(99,32,36,0.12)", display:"flex", gap:14, alignItems:"flex-start" }}>
-                <div style={{ fontSize:28, flexShrink:0 }}>🛡</div>
+                <div style={{ flexShrink:0 }}><Shield size={26} color="#632024" /></div>
                 <div>
                   <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.68rem", fontWeight:700, color:"#3e1316", marginBottom:5 }}>
                     {isAR ? "أبلغ الجهة الوطنية للأمن السيبراني في قطر" : "Report to Qatar's Cybersecurity Authority"}

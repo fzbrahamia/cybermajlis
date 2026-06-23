@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { collection, getDocs, query, orderBy, limit, where } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
+import { Settings, X, Pencil, Headphones, Volume2, Mic } from "lucide-react";
 
 interface Message { role: "user" | "assistant"; content: string; }
 type SpeechLang = "ar-QA" | "en-US";
@@ -260,12 +261,12 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
             <button onClick={() => setVoiceSettingsOpen(v => !v)}
               aria-label="Voice settings"
               title="Voice settings"
-              style={{ background:"rgba(255,255,255,0.1)", border:"none", color:"rgba(232,212,188,0.85)", fontSize:15, width:28, height:28, borderRadius:"50%", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>
-              ⚙️
+              style={{ background:"rgba(255,255,255,0.1)", border:"none", color:"rgba(232,212,188,0.85)", width:28, height:28, borderRadius:"50%", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <Settings size={15} />
             </button>
             <button onClick={() => setOpen(false)}
-              style={{ background:"rgba(255,255,255,0.1)", border:"none", color:"rgba(232,212,188,0.7)", fontSize:16, width:28, height:28, borderRadius:"50%", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>
-              ✕
+              style={{ background:"rgba(255,255,255,0.1)", border:"none", color:"rgba(232,212,188,0.7)", width:28, height:28, borderRadius:"50%", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <X size={16} />
             </button>
           </div>
 
@@ -340,7 +341,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
                   <button key={i} className="hamad-suggest"
                     onClick={() => { setInput(s.text); setTimeout(() => inputRef.current?.focus(), 50); }}
                     style={{ padding:"8px 12px", borderRadius:10, border:"1px solid rgba(99,32,36,0.15)", background:"white", color:"rgba(99,32,36,0.7)", fontSize:s.ar?14:12, textAlign: s.ar?"right":"left", cursor:"pointer", fontFamily: s.ar?"'Noto Sans Arabic',sans-serif":"'Crimson Pro',serif", direction: s.ar?"rtl":"ltr", transition:"all .15s" }}>
-                    {s.text}<span style={{ color:"rgba(99,32,36,0.35)", fontSize:10 }}>✏️</span>
+                    {s.text}<Pencil size={11} style={{ color:"rgba(99,32,36,0.35)", marginInlineStart:4, flexShrink:0 }} />
                   </button>
                 ))}
               </div>
@@ -372,7 +373,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
               aria-label="Start voice interaction"
               title={speechLang === "ar-QA" ? "تحدث مع حمد بالعربية" : "Talk to Hamad in English"}
               style={{ width:36, height:36, borderRadius:"50%", border:"none", background: listening ? "#22c55e" : speaking ? "#c5a57e" : "rgba(99,32,36,0.12)", color:"#632024", fontSize:15, cursor: loading || listening || speaking ? "default" : "pointer", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center" }}>
-              {listening ? "🎧" : speaking ? "🔊" : "🎙️"}
+              {listening ? <Headphones size={16} /> : speaking ? <Volume2 size={16} /> : <Mic size={16} />}
             </button>
             <button onClick={() => sendMessage()} disabled={!input.trim() || loading} className="hamad-send"
               style={{ width:36, height:36, borderRadius:"50%", border:"none", background: input.trim() && !loading ? "#632024" : "rgba(99,32,36,0.12)", color: input.trim() && !loading ? "white" : "rgba(99,32,36,0.3)", fontSize:15, cursor: input.trim() && !loading ? "pointer" : "default", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center" }}>

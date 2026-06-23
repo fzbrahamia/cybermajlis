@@ -362,8 +362,9 @@
       "logout_failed_message": "Failed to log out. Please try again.",
       "nav_links": {
         "dashboard": "Dashboard",
+        "lessons": "Lessons",
         "community": "Community",
-        "games": "Games",
+        "simulations": "Simulations",
         "ctf": "CTF",
         "news": "News",
         "scanner": "Scanner",

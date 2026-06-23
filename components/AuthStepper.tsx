@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Check, Circle } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import CharacterSelection from "./CharacterSelection";
 import { auth, db } from "../app/lib/firebase";
@@ -263,7 +263,7 @@ export default function StepperFlow() {
                 <React.Fragment key={index}>
                   {index > 0 && <div className="step-line" />}
                   <div className={`step-dot ${isCompleted ? "completed" : isActive ? "active" : "inactive"}`}>
-                    {isCompleted ? "✓" : index + 1}
+                    {isCompleted ? <Check size={15} /> : index + 1}
                   </div>
                 </React.Fragment>
               );
@@ -329,8 +329,8 @@ export default function StepperFlow() {
                   {password && (
                     <ul className="pw-checks">
                       {(Object.entries(passwordChecks) as [keyof typeof passwordChecks, boolean][]).map(([rule, valid]) => (
-                        <li key={rule} className={`pw-check ${valid ? "valid" : "invalid"}`}>
-                          {valid ? "✓" : "○"} {t(`signup.pw_checks.${rule}`)}
+                        <li key={rule} className={`pw-check ${valid ? "valid" : "invalid"}`} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          {valid ? <Check size={13} /> : <Circle size={13} />} {t(`signup.pw_checks.${rule}`)}
                         </li>
                       ))}
                     </ul>

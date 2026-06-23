@@ -69,13 +69,13 @@ describe("ClientLayout — Navbar", () => {
     expect(screen.getByTestId("navbar")).toBeInTheDocument();
   });
 
-  it("hides Navbar on /games", () => {
-    renderLayout("/games");
-    expect(screen.queryByTestId("navbar")).not.toBeInTheDocument();
+  it("shows Navbar on /simulations", () => {
+    renderLayout("/simulations");
+    expect(screen.getByTestId("navbar")).toBeInTheDocument();
   });
 
-  it("hides Navbar on /games/souq", () => {
-    renderLayout("/games/souq");
+  it("hides Navbar on /calm", () => {
+    renderLayout("/calm");
     expect(screen.queryByTestId("navbar")).not.toBeInTheDocument();
   });
 
@@ -93,13 +93,13 @@ describe("ClientLayout — Chatbot", () => {
     expect(screen.getByTestId("chatbot")).toBeInTheDocument();
   });
 
-  it("hides Chatbot on /games", () => {
-    renderLayout("/games");
-    expect(screen.queryByTestId("chatbot")).not.toBeInTheDocument();
+  it("shows Chatbot on /simulations", () => {
+    renderLayout("/simulations");
+    expect(screen.getByTestId("chatbot")).toBeInTheDocument();
   });
 
-  it("hides Chatbot on /games/inbox", () => {
-    renderLayout("/games/inbox");
+  it("hides Chatbot on /calm", () => {
+    renderLayout("/calm");
     expect(screen.queryByTestId("chatbot")).not.toBeInTheDocument();
   });
 

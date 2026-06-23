@@ -9,6 +9,7 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/app/lib/firebase";
 import { useLocale } from "next-intl";
+import { Fish, Phone, Mail, MessageCircle, BookText, Link2, Shield, Star, Award, Search, X, Lock, TriangleAlert, Printer, type LucideIcon } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type WType = "phishing_site"|"scam_call"|"phishing_email"|"social_media"|"story"|"suspicious_link";
@@ -21,19 +22,19 @@ interface Report {
 }
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const TYPES: Record<WType,{icon:string;label:string;labelAr:string;color:string;bg:string;detailLabel:string;detailLabelAr:string;placeholder:string;placeholderAr:string}> = {
-  phishing_site:  {icon:"🎣",label:"Phishing Website",   labelAr:"موقع تصيد احتيالي",       color:"#c5253a",bg:"rgba(197,37,58,0.08)",  detailLabel:"Website URL",    detailLabelAr:"رابط الموقع",    placeholder:"e.g. qnb-secure.net",       placeholderAr:"مثال: qnb-secure.net"},
-  scam_call:      {icon:"📞",label:"Scam Call / SMS",    labelAr:"مكالمة/رسالة احتيالية",   color:"#d4882a",bg:"rgba(212,136,42,0.08)", detailLabel:"Phone Number",   detailLabelAr:"رقم الهاتف",     placeholder:"e.g. +974 XXXX XXXX",       placeholderAr:"مثال: +974 XXXX XXXX"},
-  phishing_email: {icon:"📧",label:"Phishing Email",     labelAr:"بريد تصيد احتيالي",       color:"#4b7bec",bg:"rgba(75,123,236,0.08)", detailLabel:"Sender Email",   detailLabelAr:"بريد المُرسِل",  placeholder:"e.g. support@qnb-help.com", placeholderAr:"مثال: support@qnb-help.com"},
-  social_media:   {icon:"💬",label:"Social Media Scam",  labelAr:"احتيال عبر وسائل التواصل",color:"#7b68ee",bg:"rgba(123,104,238,0.08)",detailLabel:"Account Handle", detailLabelAr:"معرّف الحساب",   placeholder:"e.g. @fake_qatar_support",  placeholderAr:"مثال: @fake_qatar_support"},
-  story:          {icon:"📖",label:"Story / Lesson",     labelAr:"قصة / درس",               color:"#22a05a",bg:"rgba(34,160,90,0.08)",  detailLabel:"",               detailLabelAr:"",               placeholder:"",                          placeholderAr:""},
-  suspicious_link:{icon:"🔗",label:"Suspicious Link",    labelAr:"رابط مشبوه",              color:"#f59e0b",bg:"rgba(245,158,11,0.08)", detailLabel:"The Link",       detailLabelAr:"الرابط",         placeholder:"e.g. bit.ly/win-iphone",    placeholderAr:"مثال: bit.ly/win-iphone"},
+const TYPES: Record<WType,{Icon:LucideIcon;label:string;labelAr:string;color:string;bg:string;detailLabel:string;detailLabelAr:string;placeholder:string;placeholderAr:string}> = {
+  phishing_site:  {Icon:Fish,          label:"Phishing Website",   labelAr:"موقع تصيد احتيالي",       color:"#c5253a",bg:"rgba(197,37,58,0.08)",  detailLabel:"Website URL",    detailLabelAr:"رابط الموقع",    placeholder:"e.g. qnb-secure.net",       placeholderAr:"مثال: qnb-secure.net"},
+  scam_call:      {Icon:Phone,         label:"Scam Call / SMS",    labelAr:"مكالمة/رسالة احتيالية",   color:"#d4882a",bg:"rgba(212,136,42,0.08)", detailLabel:"Phone Number",   detailLabelAr:"رقم الهاتف",     placeholder:"e.g. +974 XXXX XXXX",       placeholderAr:"مثال: +974 XXXX XXXX"},
+  phishing_email: {Icon:Mail,          label:"Phishing Email",     labelAr:"بريد تصيد احتيالي",       color:"#4b7bec",bg:"rgba(75,123,236,0.08)", detailLabel:"Sender Email",   detailLabelAr:"بريد المُرسِل",  placeholder:"e.g. support@qnb-help.com", placeholderAr:"مثال: support@qnb-help.com"},
+  social_media:   {Icon:MessageCircle, label:"Social Media Scam",  labelAr:"احتيال عبر وسائل التواصل",color:"#7b68ee",bg:"rgba(123,104,238,0.08)",detailLabel:"Account Handle", detailLabelAr:"معرّف الحساب",   placeholder:"e.g. @fake_qatar_support",  placeholderAr:"مثال: @fake_qatar_support"},
+  story:          {Icon:BookText,      label:"Story / Lesson",     labelAr:"قصة / درس",               color:"#22a05a",bg:"rgba(34,160,90,0.08)",  detailLabel:"",               detailLabelAr:"",               placeholder:"",                          placeholderAr:""},
+  suspicious_link:{Icon:Link2,         label:"Suspicious Link",    labelAr:"رابط مشبوه",              color:"#f59e0b",bg:"rgba(245,158,11,0.08)", detailLabel:"The Link",       detailLabelAr:"الرابط",         placeholder:"e.g. bit.ly/win-iphone",    placeholderAr:"مثال: bit.ly/win-iphone"},
 };
 
-const TIERS: Record<NonNullable<Tier>,{icon:string;label:string;labelAr:string;color:string;min:number;max:number}> = {
-  watchman: {icon:"🛡",label:"Watchman",         labelAr:"حارس",          color:"#60a5fa",min:3, max:6},
-  trusted:  {icon:"⭐",label:"Trusted Reporter", labelAr:"مُبلِّغ موثوق", color:"#f59e0b",min:7, max:Infinity},
-  guardian: {icon:"🎖",label:"Verified Guardian",labelAr:"حارس معتمد",   color:"#22c55e",min:0, max:0},
+const TIERS: Record<NonNullable<Tier>,{Icon:LucideIcon;label:string;labelAr:string;color:string;min:number;max:number}> = {
+  watchman: {Icon:Shield,label:"Watchman",         labelAr:"حارس",          color:"#60a5fa",min:3, max:6},
+  trusted:  {Icon:Star,  label:"Trusted Reporter", labelAr:"مُبلِّغ موثوق", color:"#f59e0b",min:7, max:Infinity},
+  guardian: {Icon:Award, label:"Verified Guardian",labelAr:"حارس معتمد",   color:"#22c55e",min:0, max:0},
 };
 
 const getTier = (count: number, isSubscribed: boolean = false): Tier =>
@@ -57,7 +58,7 @@ function TierBadge({tier,count,isAR}:{tier:Tier;count:number;isAR:boolean}) {
   const t = TIERS[tier];
   return (
     <span style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:10,fontWeight:700,padding:"2px 8px",borderRadius:20,background:`${t.color}15`,border:`1px solid ${t.color}40`,color:t.color}}>
-      {t.icon} {isAR ? t.labelAr : t.label} · {count}
+      <t.Icon size={12} /> {isAR ? t.labelAr : t.label} · {count}
     </span>
   );
 }
@@ -101,7 +102,7 @@ function Certificate({displayName,count,date,onClose,isAR}:{displayName:string;c
             <h1 style={{fontSize:36,fontWeight:700,color:"#E8D4BC",margin:"0 0 14px",letterSpacing:"0.05em"}}>{displayName}</h1>
             <div style={{width:100,height:1,background:"linear-gradient(90deg,transparent,#c5a57e,transparent)",margin:"0 auto 18px"}}/>
             <div style={{fontSize:11,letterSpacing:"0.2em",color:"#22c55e",marginBottom:14}}>
-              {isAR ? "🎖 حارس معتمد" : "🎖 VERIFIED GUARDIAN"}
+              <Award size={13} style={{verticalAlign:"-2px"}} /> {isAR ? "حارس معتمد" : "VERIFIED GUARDIAN"}
             </div>
             <p style={{fontFamily:"'Crimson Pro',serif",fontSize:15,color:"rgba(232,212,188,0.7)",lineHeight:1.8,maxWidth:480,margin:"0 auto 24px",fontWeight:300}}>
               {isAR
@@ -114,7 +115,7 @@ function Certificate({displayName,count,date,onClose,isAR}:{displayName:string;c
                 <div style={{fontSize:8,letterSpacing:"0.2em",color:"rgba(197,165,126,0.4)"}}>{isAR ? "تاريخ المنح" : "DATE AWARDED"}</div>
                 <div style={{fontSize:11,color:"rgba(197,165,126,0.7)",marginTop:2}}>{date}</div>
               </div>
-              <div style={{fontSize:28}}>🛡</div>
+              <div style={{display:"flex",alignItems:"center"}}><Shield size={28} color="#c5a57e" /></div>
               <div style={{textAlign:"center"}}>
                 <div style={{width:80,height:1,background:"rgba(197,165,126,0.3)",marginBottom:6}}/>
                 <div style={{fontSize:8,letterSpacing:"0.2em",color:"rgba(197,165,126,0.4)"}}>{isAR ? "التقارير المعتمدة" : "REPORTS APPROVED"}</div>
@@ -125,7 +126,7 @@ function Certificate({displayName,count,date,onClose,isAR}:{displayName:string;c
         </div>
         <div style={{display:"flex",gap:10,justifyContent:"center",marginTop:16}}>
           <button suppressHydrationWarning onClick={handlePrint} style={{padding:"10px 24px",borderRadius:8,border:"1.5px solid rgba(197,165,126,0.5)",background:"transparent",color:"#D5B893",fontSize:11,fontWeight:700,letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",fontFamily:"'Cinzel',serif"}}>
-            {isAR ? "🖨 طباعة / حفظ" : "🖨 Print / Save"}
+            <Printer size={13} style={{verticalAlign:"-2px"}} /> {isAR ? "طباعة / حفظ" : "Print / Save"}
           </button>
           <button suppressHydrationWarning onClick={onClose} style={{padding:"10px 24px",borderRadius:8,border:"1px solid rgba(255,255,255,0.15)",background:"transparent",color:"rgba(255,255,255,0.5)",fontSize:11,cursor:"pointer",fontFamily:"'Cinzel',serif",letterSpacing:"0.1em"}}>
             {isAR ? "إغلاق" : "Close"}
@@ -138,7 +139,9 @@ function Certificate({displayName,count,date,onClose,isAR}:{displayName:string;c
 
 // ── Report Card ───────────────────────────────────────────────────────────────
 function ReportCard({r,userId,onUpvote,isAR}:{r:Report;userId:string|null;onUpvote:(id:string)=>void;isAR:boolean}) {
-  const cfg = TYPES[r.type];
+  // Reports submitted from the mobile app (or older docs) may lack a known `type`.
+  // Fall back to a neutral style so an approved report never crashes the feed.
+  const cfg = TYPES[r.type] ?? {Icon:TriangleAlert,label:"Report",labelAr:"بلاغ",color:"#8B2635",bg:"rgba(139,38,53,0.08)",detailLabel:"",detailLabelAr:"",placeholder:"",placeholderAr:""};
   const hasVoted = userId ? r.upvotedBy?.includes(userId) : false;
   return (
     <div style={{background:"white",borderRadius:14,border:"1px solid rgba(99,32,36,0.09)",boxShadow:"0 2px 14px rgba(99,32,36,0.06)",padding:"1.2rem 1.4rem",transition:"box-shadow .2s",position:"relative",overflow:"hidden"}}
@@ -147,8 +150,8 @@ function ReportCard({r,userId,onUpvote,isAR}:{r:Report;userId:string|null;onUpvo
       <div style={{position:"absolute",top:0,left:0,bottom:0,width:3,background:`linear-gradient(to bottom,${cfg.color},${cfg.color}40)`}}/>
       <div style={{paddingLeft:8}}>
         <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8,flexWrap:"wrap"}}>
-          <span style={{fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:cfg.bg,color:cfg.color,letterSpacing:"0.04em",flexShrink:0}}>
-            {cfg.icon} {isAR ? cfg.labelAr : cfg.label}
+          <span style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:11,fontWeight:700,padding:"2px 9px",borderRadius:20,background:cfg.bg,color:cfg.color,letterSpacing:"0.04em",flexShrink:0}}>
+            <cfg.Icon size={12} /> {isAR ? cfg.labelAr : cfg.label}
           </span>
           {r.tier&&<TierBadge tier={r.tier} count={r.approvedCount} isAR={isAR}/>}
           <span style={{marginLeft:"auto",fontSize:10,color:"rgba(99,32,36,0.35)",fontFamily:"'Cinzel',serif",letterSpacing:"0.08em",flexShrink:0}}>
@@ -159,8 +162,8 @@ function ReportCard({r,userId,onUpvote,isAR}:{r:Report;userId:string|null;onUpvo
         <p style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"0.93rem",color:"#5C4033",lineHeight:1.65,margin:"0 0 10px"}}>{r.content}</p>
         <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
           {r.detail&&(
-            <div style={{background:"rgba(99,32,36,0.04)",borderRadius:7,padding:"5px 10px",border:"1px solid rgba(99,32,36,0.09)",fontFamily:"monospace",fontSize:11,color:cfg.color,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>
-              {cfg.icon} {r.detail}
+            <div style={{display:"flex",alignItems:"center",gap:5,background:"rgba(99,32,36,0.04)",borderRadius:7,padding:"5px 10px",border:"1px solid rgba(99,32,36,0.09)",fontFamily:"monospace",fontSize:11,color:cfg.color,flex:1,minWidth:0,overflow:"hidden",whiteSpace:"nowrap"}}>
+              <cfg.Icon size={12} style={{flexShrink:0}} /> <span style={{overflow:"hidden",textOverflow:"ellipsis"}}>{r.detail}</span>
             </div>
           )}
           <button suppressHydrationWarning onClick={()=>userId&&onUpvote(r.id)}
@@ -212,14 +215,14 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
                 {isAR ? "بلاغ أمني مجتمعي" : "Community Security Report"}
               </h2>
             </div>
-            <button suppressHydrationWarning onClick={onClose} style={{background:"rgba(255,255,255,0.1)",border:"none",color:"rgba(232,212,188,0.6)",fontSize:18,width:30,height:30,borderRadius:"50%",cursor:"pointer"}}>✕</button>
+            <button suppressHydrationWarning onClick={onClose} style={{background:"rgba(255,255,255,0.1)",border:"none",color:"rgba(232,212,188,0.6)",width:30,height:30,borderRadius:"50%",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><X size={16} /></button>
           </div>
         </div>
 
         <div style={{padding:"1.5rem"}}>
           {step==="login"&&(
             <div style={{textAlign:"center",padding:"1.5rem 0"}}>
-              <div style={{fontSize:44,marginBottom:12}}>🔐</div>
+              <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><Lock size={40} color="#632024" /></div>
               <h3 style={{fontFamily:"'Cinzel',serif",color:"#3e1316",marginBottom:8}}>
                 {isAR ? "يلزم تسجيل الدخول" : "Login Required"}
               </h3>
@@ -234,7 +237,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
 
           {step==="gate"&&(
             <div style={{textAlign:"center",padding:"1rem 0"}}>
-              <div style={{fontSize:40,marginBottom:12}}>🎖</div>
+              <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><Award size={38} color="#c5a57e" /></div>
               <h3 style={{fontFamily:"'Cinzel',serif",color:"#3e1316",marginBottom:8}}>
                 {isAR ? "وصلت إلى مستوى الحارس المعتمد" : "You've reached Verified Guardian"}
               </h3>
@@ -264,7 +267,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
                     style={{padding:"0.9rem",borderRadius:12,border:`1.5px solid ${type===k?c.color:"rgba(99,32,36,0.15)"}`,background:type===k?c.bg:"white",cursor:"pointer",textAlign:"center",transition:"all .2s"}}
                     onMouseEnter={e=>(e.currentTarget.style.borderColor=c.color)}
                     onMouseLeave={e=>(e.currentTarget.style.borderColor=type===k?c.color:"rgba(99,32,36,0.15)")}>
-                    <div style={{fontSize:20,marginBottom:3}}>{c.icon}</div>
+                    <div style={{marginBottom:5,display:"flex",justifyContent:"center"}}><c.Icon size={22} color={c.color} /></div>
                     <div style={{fontFamily:"'Cinzel',serif",fontSize:"0.6rem",letterSpacing:"0.08em",color:c.color,fontWeight:700}}>{isAR ? c.labelAr : c.label}</div>
                   </button>
                 ))}
@@ -275,7 +278,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
           {step==="form"&&cfg&&(
             <div style={{display:"flex",flexDirection:"column",gap:"0.9rem"}}>
               <div style={{display:"flex",alignItems:"center",gap:8,padding:"7px 11px",background:cfg.bg,borderRadius:9,border:`1px solid ${cfg.color}30`}}>
-                <span style={{fontSize:15}}>{cfg.icon}</span>
+                <cfg.Icon size={16} color={cfg.color} />
                 <span style={{fontFamily:"'Cinzel',serif",fontSize:"0.65rem",letterSpacing:"0.1em",color:cfg.color,fontWeight:700,flex:1}}>{isAR ? cfg.labelAr : cfg.label}</span>
                 <button suppressHydrationWarning onClick={()=>setStep("type")} style={{background:"none",border:"none",color:"rgba(99,32,36,0.4)",fontSize:10,cursor:"pointer",fontFamily:"'Cinzel',serif"}}>
                   {isAR ? "تغيير" : "change"}
@@ -342,7 +345,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
 
           {step==="done"&&(
             <div style={{textAlign:"center",padding:"1.5rem 0"}}>
-              <div style={{fontSize:48,marginBottom:12}}>🛡</div>
+              <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><Shield size={44} color="#22c55e" /></div>
               <h3 style={{fontFamily:"'Cinzel',serif",color:"#3e1316",marginBottom:8}}>
                 {isAR ? "تم تقديم البلاغ" : "Report Filed"}
               </h3>
@@ -425,8 +428,8 @@ export default function CommunityPage() {
   const certDate = new Date().toLocaleDateString("en-GB",{year:"numeric",month:"long",day:"numeric"});
 
   const allFilters = [
-    {key:"all",icon:"🛡",label:"All Reports",labelAr:"جميع التقارير",color:"#632024"},
-    ...(Object.entries(TYPES) as [WType,typeof TYPES[WType]][]).map(([k,c])=>({key:k,icon:c.icon,label:c.label,labelAr:c.labelAr,color:c.color}))
+    {key:"all",Icon:Shield,label:"All Reports",labelAr:"جميع التقارير",color:"#632024"},
+    ...(Object.entries(TYPES) as [WType,typeof TYPES[WType]][]).map(([k,c])=>({key:k,Icon:c.Icon,label:c.label,labelAr:c.labelAr,color:c.color}))
   ];
 
   return(
@@ -464,7 +467,7 @@ export default function CommunityPage() {
                 <TierBadge tier={userTier} count={approvedCount} isAR={isAR}/>
                 {userTier==="guardian"&&(
                   <button suppressHydrationWarning onClick={()=>setShowCert(true)} style={{padding:"5px",borderRadius:8,border:"1px solid rgba(34,197,94,0.4)",background:"rgba(34,197,94,0.07)",color:"#22c55e",fontSize:11,fontWeight:700,cursor:"pointer",width:"100%"}}>
-                    {isAR ? "🎖 عرض شهادتي" : "🎖 View My Certificate"}
+                    <Award size={13} style={{verticalAlign:"-2px"}} /> {isAR ? "عرض شهادتي" : "View My Certificate"}
                   </button>
                 )}
               </div>
@@ -477,7 +480,7 @@ export default function CommunityPage() {
             </div>
             {(Object.entries(TIERS) as [NonNullable<Tier>,typeof TIERS[NonNullable<Tier>]][]).map(([k,t])=>(
               <div key={k} style={{display:"flex",alignItems:"center",gap:8,padding:"8px 0",borderBottom:k!=="guardian"?"1px solid rgba(99,32,36,0.06)":"none"}}>
-                <span style={{fontSize:16}}>{t.icon}</span>
+                <t.Icon size={16} color={t.color} />
                 <div>
                   <div style={{fontSize:12,fontWeight:700,color:t.color}}>{isAR ? t.labelAr : t.label}</div>
                   <div style={{fontSize:10,color:"rgba(99,32,36,0.4)"}}>
@@ -489,7 +492,7 @@ export default function CommunityPage() {
           </div>
 
           <div style={{position:"relative"}}>
-            <span style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",fontSize:13,opacity:.35}}>🔍</span>
+            <span style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",opacity:.4,display:"flex",alignItems:"center",color:"#632024"}}><Search size={14} /></span>
             <input suppressHydrationWarning value={search} onChange={e=>setSearch(e.target.value)}
               placeholder={isAR ? "بحث في التقارير..." : "Search reports…"}
               style={{width:"100%",padding:"0.65rem 1rem 0.65rem 2.3rem",borderRadius:10,border:"1.5px solid rgba(99,32,36,0.14)",fontFamily:"'Crimson Pro',serif",fontSize:"0.95rem",color:"#3e1316",background:"white",outline:"none",boxSizing:"border-box",boxShadow:"0 2px 10px rgba(99,32,36,0.05)"}}
@@ -501,7 +504,7 @@ export default function CommunityPage() {
             {allFilters.map(f=>(
               <button suppressHydrationWarning key={f.key} onClick={()=>setFilter(f.key as WType|"all")}
                 style={{padding:"8px 12px",borderRadius:9,border:"none",background:filter===f.key?`${f.color}12`:"transparent",color:filter===f.key?f.color:"rgba(99,32,36,0.55)",fontSize:12,fontWeight:filter===f.key?700:400,cursor:"pointer",textAlign:"left",transition:"all .15s",display:"flex",alignItems:"center",gap:8}}>
-                <span>{f.icon}</span> {isAR ? f.labelAr : f.label}
+                <f.Icon size={14} /> {isAR ? f.labelAr : f.label}
                 {filter===f.key&&<span style={{marginLeft:"auto",fontSize:10,background:`${f.color}20`,color:f.color,padding:"1px 7px",borderRadius:10,fontWeight:700}}>{filtered.length}</span>}
               </button>
             ))}
@@ -520,7 +523,7 @@ export default function CommunityPage() {
             </div>
           ):filtered.length===0?(
             <div style={{textAlign:"center",padding:"4rem",background:"white",borderRadius:16,border:"1px solid rgba(99,32,36,0.08)"}}>
-              <div style={{fontSize:36,marginBottom:10}}>🛡</div>
+              <div style={{marginBottom:10,display:"flex",justifyContent:"center"}}><Shield size={34} color="rgba(99,32,36,0.4)" /></div>
               <p style={{fontFamily:"'Cinzel',serif",fontSize:"0.75rem",letterSpacing:"0.15em",color:"rgba(99,32,36,0.4)"}}>
                 {isAR ? "لا توجد تقارير" : "No reports found"}
               </p>

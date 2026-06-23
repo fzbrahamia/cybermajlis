@@ -2,6 +2,26 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { trackSocComplete } from "@/app/lib/analytics";
+import {
+  KeyRound, Mail, MailOpen, HardDrive, Globe, Settings, Trash2, Camera, Award, Shield,
+  Plug, Smartphone, RadioTower, BookOpen, ClipboardList, Calendar, Folder, FolderOpen,
+  Zap, Medal, Flag, Check, X, TriangleAlert, User, type LucideIcon,
+} from "lucide-react";
+
+// Data rows carry an emoji in their `icon` field; this maps each to a lucide
+// icon so the UI renders crisp icons (FE0F variation selectors are stripped).
+const EMOJI_ICON: Record<string, LucideIcon> = {
+  "🔑": KeyRound, "📧": Mail, "📨": MailOpen, "💾": HardDrive, "🌐": Globe,
+  "⚙": Settings, "🗑": Trash2, "📸": Camera, "🎖": Award, "🛡": Shield,
+  "🔌": Plug, "📱": Smartphone, "📡": RadioTower, "📚": BookOpen, "📋": ClipboardList,
+  "📅": Calendar, "📁": Folder, "🗂": FolderOpen, "⚡": Zap, "🥈": Medal,
+  "⚠": TriangleAlert, "🚩": Flag, "✓": Check, "✗": X,
+};
+function EmojiIcon({ e, size = 18, color, style }: { e?: string; size?: number; color?: string; style?: React.CSSProperties }) {
+  const I = e ? EMOJI_ICON[e.replace(/️/g, "")] : undefined;
+  if (!I) return null;
+  return <I size={size} color={color} style={{ verticalAlign: "-2px", ...style }} />;
+}
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type Phase = "intro" | "hamad" | "saqr" | "thalab" | "hisan" | "oryx" | "result";
@@ -101,7 +121,7 @@ function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
               <span style={{ fontSize:18, fontWeight:900, color:"#00a2ed", letterSpacing:-1 }}>M</span>
               <span style={{ fontSize:12, fontWeight:700, color:"#666", marginLeft:3 }}>icrosoft</span>
             </div>
-            {flagged.has("logo") && <div style={{ fontSize:9, color:"#ef4444", textAlign:"center", marginTop:2 }}>🚩 FLAGGED</div>}
+            {flagged.has("logo") && <div style={{ fontSize:9, color:"#ef4444", textAlign:"center", marginTop:2, display:"flex", alignItems:"center", justifyContent:"center", gap:3 }}><Flag size={9} /> FLAGGED</div>}
           </div>
 
           {/* From field */}
@@ -113,7 +133,7 @@ function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
             >
               it-support@company-helpdesk.net
             </span>
-            {flagged.has("sender") && <span style={{ fontSize:9, color:"#ef4444", marginLeft:6 }}>🚩</span>}
+            {flagged.has("sender") && <Flag size={10} color="#ef4444" style={{marginLeft:6}} />}
           </div>
 
           <p style={{ fontWeight:700, marginBottom:10 }}>Security Notice: Immediate Action Required</p>
@@ -125,7 +145,7 @@ function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
             >
               will be suspended in 2 hours
             </span>
-            {flagged.has("urgency") && <span style={{ fontSize:9, color:"#ef4444" }}> 🚩</span>}
+            {flagged.has("urgency") && <Flag size={10} color="#ef4444" style={{marginLeft:3}} />}
             {" "}unless you verify your identity immediately.
           </p>
           <p>Please click the link below to secure your account:</p>
@@ -137,7 +157,7 @@ function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
             >
               https://company-portal-update.net/verify
             </span>
-            {flagged.has("url") && <span style={{ fontSize:9, color:"#ef4444", marginLeft:4 }}>🚩</span>}
+            {flagged.has("url") && <Flag size={10} color="#ef4444" style={{marginLeft:4}} />}
           </div>
           <p style={{ fontSize:12, color:"#999" }}>IT Security Team</p>
         </div>
@@ -146,7 +166,7 @@ function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
       {/* Tip popup */}
       {tip && (
         <div style={{ background:"rgba(239,68,68,0.1)", border:"1px solid rgba(239,68,68,0.3)", borderRadius:10, padding:"10px 14px", marginBottom:12, fontSize:12, color:"#f87171", lineHeight:1.6, animation:"slideIn .2s ease" }}>
-          🚩 <strong>Red flag:</strong> {tip}
+          <Flag size={11} style={{verticalAlign:"-2px"}} /> <strong>Red flag:</strong> {tip}
         </div>
       )}
 
@@ -167,7 +187,7 @@ function HamadPhase({ onComplete }: { onComplete: (score: number) => void }) {
       {/* Reveal */}
       {revealed && (
         <div style={{ background:"rgba(239,68,68,0.08)", border:"1px solid rgba(239,68,68,0.25)", borderRadius:12, padding:"14px 16px", animation:"slideIn .3s ease" }}>
-          <div style={{ fontSize:12, fontWeight:700, color:"#f87171", marginBottom:8 }}>📨 Hamad clicked the link.</div>
+          <div style={{ fontSize:12, fontWeight:700, color:"#f87171", marginBottom:8, display:"flex", alignItems:"center", gap:6 }}><MailOpen size={13} /> Hamad clicked the link.</div>
           <div style={{ fontSize:13, color:"#f5ede0aa", lineHeight:1.7 }}>Despite the warning signs, he clicked. The link opened a fake login page, he entered his password. A malware payload silently installed on his work laptop in the background. The attack has begun.</div>
         </div>
       )}
@@ -270,14 +290,14 @@ function SaqrPhase({ onComplete }: { onComplete: (score: number) => void }) {
                   <div style={{ fontSize:11, color:"rgba(255,255,255,0.4)", fontFamily:"'JetBrains Mono'" }}>{alert.src}</div>
                 </div>
                 <div style={{ display:"flex", gap:5, flexShrink:0, marginLeft:10 }}>
-                  <button style={btnStyle(alert.id,"real","REAL","#ef4444")} onClick={() => assign(alert.id,"real")}>⚠ REAL</button>
-                  <button style={btnStyle(alert.id,"fp","FP","#22c55e")} onClick={() => assign(alert.id,"fp")}>✓ FALSE POS</button>
+                  <button style={btnStyle(alert.id,"real","REAL","#ef4444")} onClick={() => assign(alert.id,"real")}><TriangleAlert size={11} style={{verticalAlign:"-1px"}} /> REAL</button>
+                  <button style={btnStyle(alert.id,"fp","FP","#22c55e")} onClick={() => assign(alert.id,"fp")}><Check size={11} style={{verticalAlign:"-1px"}} /> FALSE POS</button>
                   <button style={btnStyle(alert.id,"inv","INV","#f59e0b")} onClick={() => assign(alert.id,"inv")}>? INVESTIGATE</button>
                 </div>
               </div>
               {revealed.has(alert.id) && (
                 <div style={{ fontSize:11, color: assignments[alert.id]===alert.correct?"rgba(34,197,94,0.8)":"rgba(239,68,68,0.8)", lineHeight:1.6, paddingTop:8, borderTop:"1px solid rgba(255,255,255,0.05)", animation:"fadeIn .3s ease" }}>
-                  {assignments[alert.id]===alert.correct?"✓":"✗"} {alert.why}
+                  {assignments[alert.id]===alert.correct? <Check size={12} style={{verticalAlign:"-1px"}} /> : <X size={12} style={{verticalAlign:"-1px"}} />} {alert.why}
                 </div>
               )}
             </div>
@@ -359,8 +379,8 @@ function ThalabPhase({ onComplete }: { onComplete: (score: number) => void }) {
                   onMouseLeave={e => { if (!isCollected) (e.currentTarget as HTMLElement).style.borderColor="rgba(255,255,255,0.08)"; }}
                 >
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-                    <span style={{ fontSize:20, marginBottom:6, display:"block" }}>{ev.icon}</span>
-                    {isCollected && <span style={{ fontSize:11, color: ev.relevant?"#f59e0b":"#ef4444" }}>{ev.relevant?"✓ Evidence":"✗ Irrelevant"}</span>}
+                    <span style={{ marginBottom:6, display:"block" }}><EmojiIcon e={ev.icon} size={20} /></span>
+                    {isCollected && <span style={{ fontSize:11, color: ev.relevant?"#f59e0b":"#ef4444" }}>{ev.relevant? <><Check size={11} style={{verticalAlign:"-1px"}} /> Evidence</> : <><X size={11} style={{verticalAlign:"-1px"}} /> Irrelevant</>}</span>}
                   </div>
                   <div style={{ fontSize:12, fontWeight:600, color:"#f5ede0", marginBottom:4 }}>{ev.title}</div>
                   <div style={{ fontSize:10, color:"rgba(255,255,255,0.35)", fontFamily:"'JetBrains Mono'" }}>{ev.type}</div>
@@ -444,12 +464,12 @@ function HisanPhase({ onComplete }: { onComplete: (score: number) => void }) {
               style={{ padding:"12px 16px", borderRadius:10, border:`1.5px solid ${isChosen ? (done?(action.correct?"rgba(34,197,94,0.5)":"rgba(239,68,68,0.5)"):"rgba(248,113,113,0.5)") : "rgba(255,255,255,0.08)"}`, background: isChosen ? (done?(action.correct?"rgba(34,197,94,0.08)":"rgba(239,68,68,0.08)"):"rgba(248,113,113,0.08)") : "rgba(255,255,255,0.02)", cursor:(done || (chosen.length>=3 && !isChosen)) ? "default":"pointer", transition:"all .2s", opacity:(chosen.length>=3 && !isChosen && !done) ? 0.4 : 1 }}
             >
               <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-                <span style={{ fontSize:18 }}>{action.icon}</span>
+                <EmojiIcon e={action.icon} size={18} />
                 <div style={{ flex:1 }}>
                   <div style={{ fontSize:13, fontWeight:600, color:"#f5ede0" }}>{action.label}</div>
                 </div>
                 {isChosen && !done && <span style={{ fontSize:11, color:"#f87171", fontWeight:700 }}>SELECTED</span>}
-                {showResult && <span style={{ fontSize:11, fontWeight:700, color:action.correct?"#22c55e":"#ef4444" }}>{action.correct?"✓ CORRECT":"✗ WRONG"}</span>}
+                {showResult && <span style={{ fontSize:11, fontWeight:700, color:action.correct?"#22c55e":"#ef4444" }}>{action.correct? <><Check size={11} style={{verticalAlign:"-1px"}} /> CORRECT</> : <><X size={11} style={{verticalAlign:"-1px"}} /> WRONG</>}</span>}
               </div>
               {showResult && (
                 <div style={{ marginTop:8, fontSize:12, color: action.correct?"rgba(34,197,94,0.8)":"rgba(239,68,68,0.8)", lineHeight:1.6, paddingTop:8, borderTop:"1px solid rgba(255,255,255,0.06)" }}>
@@ -559,7 +579,7 @@ function OryxPhase({ onComplete }: { onComplete: (score: number) => void }) {
                 <div style={{ fontSize:12, color: opt.correct?"rgba(34,197,94,0.8)":"rgba(239,68,68,0.7)", lineHeight:1.6, paddingLeft:4, marginBottom:8 }}>{opt.why}</div>
               )}
               {submitted && opt.correct && !isChosen && (
-                <div style={{ fontSize:12, color:"rgba(34,197,94,0.6)", lineHeight:1.6, paddingLeft:4, marginBottom:8 }}>✓ {opt.why}</div>
+                <div style={{ fontSize:12, color:"rgba(34,197,94,0.6)", lineHeight:1.6, paddingLeft:4, marginBottom:8 }}><Check size={12} style={{verticalAlign:"-2px"}} /> {opt.why}</div>
               )}
             </div>
           );
@@ -597,7 +617,7 @@ function ResultPhase({ scores, onBack }: { scores: Record<string, number>; onBac
 
   return (
     <div style={{ maxWidth:580, margin:"0 auto", padding:"32px 20px", textAlign:"center" }}>
-      <div style={{ fontSize:52, marginBottom:16 }}>{pct>=85?"🎖":pct>=65?"🥈":pct>=40?"📋":"📚"}</div>
+      <div style={{ marginBottom:16, display:"flex", justifyContent:"center" }}>{pct>=85?<Award size={50}/>:pct>=65?<Medal size={50}/>:pct>=40?<ClipboardList size={50}/>:<BookOpen size={50}/>}</div>
       <div style={{ fontSize:9, color:"rgba(197,165,126,0.5)", letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:10, textTransform:"uppercase" }}>Scenario Complete, Phishing Incident</div>
       <h1 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:32, color:"#f5ede0", margin:"0 0 8px", fontWeight:600 }}>{grade}</h1>
       <div style={{ fontSize:48, fontWeight:700, color:gradeColor, margin:"16px 0 6px", fontFamily:"'JetBrains Mono'" }}>
@@ -677,12 +697,12 @@ function WhatsappHamadPhase({ onComplete }: { onComplete: (score: number) => voi
       <CharBubble charId="hamad" message="I got a WhatsApp from someone saying they're from IT. They said my account was compromised and needed my password urgently. I didn't think, I gave it to them." />
       <div style={{background:"#0a1628",borderRadius:14,overflow:"hidden",border:"1px solid rgba(96,165,250,0.2)",marginBottom:16}}>
         <div style={{background:"#0d2137",padding:"10px 16px",display:"flex",alignItems:"center",gap:8,borderBottom:"1px solid rgba(96,165,250,0.1)"}}>
-          <div style={{width:32,height:32,borderRadius:"50%",background:"rgba(96,165,250,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>👤</div>
+          <div style={{width:32,height:32,borderRadius:"50%",background:"rgba(96,165,250,0.2)",display:"flex",alignItems:"center",justifyContent:"center"}}><User size={15} color="#60a5fa" /></div>
           <div>
             <div style={{fontSize:12,fontWeight:700,color:"#f5ede0"}}>
               <span onClick={()=>toggle("number")} style={{cursor:"pointer",background:flagged.has("number")?"rgba(239,68,68,0.15)":"transparent",padding:"1px 3px",borderRadius:3,border:flagged.has("number")?"1px solid #ef444440":"1px solid transparent"}}>
                 +974 5566 XXXX (Unknown)
-              </span>{flagged.has("number")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}
+              </span>{flagged.has("number")&&<Flag size={10} color="#ef4444" style={{marginLeft:4}} />}
             </div>
             <div style={{fontSize:10,color:"rgba(96,165,250,0.5)"}}>WhatsApp · Unknown number</div>
           </div>
@@ -693,7 +713,7 @@ function WhatsappHamadPhase({ onComplete }: { onComplete: (score: number) => voi
             <span onClick={()=>toggle("urgency")} style={{cursor:"pointer",background:flagged.has("urgency")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.1)",padding:"1px 3px",borderRadius:3}}>
               within 10 minutes
             </span>
-            {flagged.has("urgency")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}
+            {flagged.has("urgency")&&<Flag size={10} color="#ef4444" style={{marginLeft:4}} />}
             {" "}or your access will be locked.
           </div>
           <div style={{background:"#1a2d45",borderRadius:"12px 12px 12px 2px",padding:"10px 14px",maxWidth:"80%",fontSize:13,color:"#f5ede0",lineHeight:1.6}}>
@@ -701,7 +721,7 @@ function WhatsappHamadPhase({ onComplete }: { onComplete: (score: number) => voi
             <span onClick={()=>toggle("request")} style={{cursor:"pointer",background:flagged.has("request")?"rgba(239,68,68,0.15)":"rgba(239,68,68,0.08)",padding:"1px 3px",borderRadius:3,fontWeight:700}}>
               need your password
             </span>
-            {flagged.has("request")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}
+            {flagged.has("request")&&<Flag size={10} color="#ef4444" style={{marginLeft:4}} />}
             {" "}to verify before resetting.
           </div>
           <div style={{background:"#1e3a52",borderRadius:"12px 12px 12px 2px",padding:"10px 14px",maxWidth:"80%",fontSize:12,color:"rgba(255,255,255,0.5)"}}>Hamad replied: "My password is Hamad@2024"</div>
@@ -710,7 +730,7 @@ function WhatsappHamadPhase({ onComplete }: { onComplete: (score: number) => voi
       <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginBottom:12,fontFamily:"'JetBrains Mono'"}}>{flagged.size}/3 red flags spotted</div>
       {flagged.size>0&&!revealed&&(
         <div style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:10,padding:"10px 14px",marginBottom:14,fontSize:12,color:"#f87171",lineHeight:1.6}}>
-          {FLAGS.filter(f=>flagged.has(f.id)).map(f=><div key={f.id}>🚩 <strong>{f.clickText}:</strong> {f.tip}</div>)}
+          {FLAGS.filter(f=>flagged.has(f.id)).map(f=><div key={f.id}><Flag size={11} style={{verticalAlign:"-2px"}} /> <strong>{f.clickText}:</strong> {f.tip}</div>)}
         </div>
       )}
       {!revealed&&(
@@ -721,7 +741,7 @@ function WhatsappHamadPhase({ onComplete }: { onComplete: (score: number) => voi
       )}
       {revealed&&(
         <div style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.25)",borderRadius:12,padding:"14px 16px"}}>
-          <div style={{fontSize:12,fontWeight:700,color:"#f87171",marginBottom:6}}>🔑 Password stolen. Attacker now has full access to Hamad's account.</div>
+          <div style={{fontSize:12,fontWeight:700,color:"#f87171",marginBottom:6,display:"flex",alignItems:"center",gap:6}}><KeyRound size={13} /> Password stolen. Attacker now has full access to Hamad's account.</div>
           <div style={{fontSize:13,color:"#f5ede0aa",lineHeight:1.7}}>The attacker is already logging in from Amsterdam. A SIEM alert just fired. Saqr needs to act before more damage is done.</div>
         </div>
       )}
@@ -785,14 +805,14 @@ function WhatsappSaqrPhase({ onComplete }: { onComplete: (score: number) => void
                   <div style={{fontSize:10,color:"rgba(255,255,255,0.35)",fontFamily:"'JetBrains Mono'"}}>{alert.src}</div>
                 </div>
                 <div style={{display:"flex",gap:4,flexShrink:0,marginLeft:8}}>
-                  <button style={btnS(alert.id,"real")} onClick={()=>assign(alert.id,"real")}>⚠ REAL</button>
-                  <button style={btnS(alert.id,"fp")} onClick={()=>assign(alert.id,"fp")}>✓ FALSE POS</button>
+                  <button style={btnS(alert.id,"real")} onClick={()=>assign(alert.id,"real")}><TriangleAlert size={11} style={{verticalAlign:"-1px"}} /> REAL</button>
+                  <button style={btnS(alert.id,"fp")} onClick={()=>assign(alert.id,"fp")}><Check size={11} style={{verticalAlign:"-1px"}} /> FALSE POS</button>
                   <button style={btnS(alert.id,"inv")} onClick={()=>assign(alert.id,"inv")}>? INVESTIGATE</button>
                 </div>
               </div>
               {revealed.has(alert.id)&&(
                 <div style={{fontSize:11,color:assignments[alert.id]===alert.correct?"rgba(34,197,94,0.8)":"rgba(239,68,68,0.8)",lineHeight:1.6,paddingTop:6,borderTop:"1px solid rgba(255,255,255,0.05)"}}>
-                  {assignments[alert.id]===alert.correct?"✓":"✗"} {alert.why}
+                  {assignments[alert.id]===alert.correct? <Check size={12} style={{verticalAlign:"-1px"}} /> : <X size={12} style={{verticalAlign:"-1px"}} />} {alert.why}
                 </div>
               )}
             </div>
@@ -830,20 +850,20 @@ function UsbHamadPhase({ onComplete }: { onComplete: (score: number) => void }) 
           <span onClick={()=>toggle("found")} style={{cursor:"pointer",background:flagged.has("found")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.08)",padding:"1px 4px",borderRadius:3,border:flagged.has("found")?"1px solid #ef444440":"1px solid rgba(245,158,11,0.2)"}}>
             found in the car park
           </span>
-          {flagged.has("found")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}. Label read:{" "}
+          {flagged.has("found")&&<Flag size={10} color="#ef4444" style={{marginLeft:4}} />}. Label read:{" "}
           <span onClick={()=>toggle("label")} style={{cursor:"pointer",fontWeight:700,background:flagged.has("label")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.08)",padding:"1px 4px",borderRadius:3,border:flagged.has("label")?"1px solid #ef444440":"1px solid rgba(245,158,11,0.2)"}}>
             "SALARY BONUSES Q2, CONFIDENTIAL"
           </span>
-          {flagged.has("label")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}. He assumed a colleague dropped it. He{" "}
+          {flagged.has("label")&&<Flag size={10} color="#ef4444" style={{marginLeft:4}} />}. He assumed a colleague dropped it. He{" "}
           <span onClick={()=>toggle("plugged")} style={{cursor:"pointer",background:flagged.has("plugged")?"rgba(239,68,68,0.15)":"rgba(245,158,11,0.08)",padding:"1px 4px",borderRadius:3,border:flagged.has("plugged")?"1px solid #ef444440":"1px solid rgba(245,158,11,0.2)"}}>
             plugged it into his work laptop
           </span>
-          {flagged.has("plugged")&&<span style={{fontSize:9,color:"#ef4444",marginLeft:4}}>🚩</span>}. No files appeared. He forgot about it. Fourteen days later, a routine forensic sweep found something very wrong.
+          {flagged.has("plugged")&&<Flag size={10} color="#ef4444" style={{marginLeft:4}} />}. No files appeared. He forgot about it. Fourteen days later, a routine forensic sweep found something very wrong.
         </p>
       </div>
       {flagged.size>0&&(
         <div style={{background:"rgba(239,68,68,0.07)",border:"1px solid rgba(239,68,68,0.2)",borderRadius:10,padding:"10px 14px",marginBottom:14,fontSize:12,color:"#f87171",lineHeight:1.7}}>
-          {FLAGS.filter(f=>flagged.has(f.id)).map(f=><div key={f.id} style={{marginBottom:3}}>🚩 <strong>{f.clickText}:</strong> {f.tip}</div>)}
+          {FLAGS.filter(f=>flagged.has(f.id)).map(f=><div key={f.id} style={{marginBottom:3}}><Flag size={11} style={{verticalAlign:"-2px"}} /> <strong>{f.clickText}:</strong> {f.tip}</div>)}
         </div>
       )}
       {!revealed&&(
@@ -854,7 +874,7 @@ function UsbHamadPhase({ onComplete }: { onComplete: (score: number) => void }) 
       )}
       {revealed&&(
         <div style={{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.25)",borderRadius:12,padding:"14px 16px",animation:"slideIn .3s ease"}}>
-          <div style={{fontSize:12,fontWeight:700,color:"#f87171",marginBottom:6}}>⚠️ 14 days of undetected access. Keylogger active. C2 communication confirmed.</div>
+          <div style={{fontSize:12,fontWeight:700,color:"#f87171",marginBottom:6,display:"flex",alignItems:"center",gap:6}}><TriangleAlert size={13} /> 14 days of undetected access. Keylogger active. C2 communication confirmed.</div>
           <div style={{fontSize:13,color:"#f5ede0aa",lineHeight:1.7}}>No SIEM alert fired, malware evaded detection entirely. Tha'lab found it during a routine sweep. This is a far more serious attack than it initially appeared.</div>
         </div>
       )}
@@ -879,7 +899,7 @@ function ScenarioSelector({ onSelect }: { onSelect: (id: string) => void }) {
           >
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
               <div style={{display:"flex",alignItems:"center",gap:10}}>
-                <span style={{fontSize:22}}>{sc.icon}</span>
+                <EmojiIcon e={sc.icon} size={22} />
                 <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,color:"#f5ede0",fontWeight:600}}>{sc.title}</span>
               </div>
               <span style={{fontSize:9,fontWeight:700,padding:"2px 9px",borderRadius:10,background:`${sc.color}12`,color:sc.color,border:`1px solid ${sc.color}30`,letterSpacing:"0.06em",flexShrink:0,marginLeft:8}}>{sc.tiers}</span>
@@ -926,8 +946,8 @@ function UsbThalabPhase({ onComplete }: { onComplete: (score: number) => void })
                   onMouseLeave={e => { if (!isC) (e.currentTarget as HTMLElement).style.borderColor="rgba(255,255,255,0.08)"; }}
                 >
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
-                    <span style={{ fontSize:20, marginBottom:6, display:"block" }}>{ev.icon}</span>
-                    {isC && <span style={{ fontSize:11, color:ev.relevant?"#f59e0b":"#ef4444" }}>{ev.relevant?"✓ Evidence":"✗ Irrelevant"}</span>}
+                    <span style={{ marginBottom:6, display:"block" }}><EmojiIcon e={ev.icon} size={20} /></span>
+                    {isC && <span style={{ fontSize:11, color:ev.relevant?"#f59e0b":"#ef4444" }}>{ev.relevant? <><Check size={11} style={{verticalAlign:"-1px"}} /> Evidence</> : <><X size={11} style={{verticalAlign:"-1px"}} /> Irrelevant</>}</span>}
                   </div>
                   <div style={{ fontSize:12, fontWeight:600, color:"#f5ede0", marginBottom:3 }}>{ev.title}</div>
                   {isC && <div style={{ fontSize:11, color:ev.relevant?"rgba(245,158,11,0.8)":"rgba(239,68,68,0.6)", marginTop:6, lineHeight:1.5 }}>{ev.label}</div>}
@@ -1050,9 +1070,9 @@ export default function Scenario() {
     };
     return (
       <div style={{ maxWidth:580, margin:"0 auto", padding:"32px 20px", textAlign:"center" }}>
-        <div style={{ fontSize:52, marginBottom:16 }}>{pct>=85?"🎖":pct>=65?"🥈":pct>=40?"📋":"📚"}</div>
+        <div style={{ marginBottom:16, display:"flex", justifyContent:"center" }}>{pct>=85?<Award size={50}/>:pct>=65?<Medal size={50}/>:pct>=40?<ClipboardList size={50}/>:<BookOpen size={50}/>}</div>
         <div style={{ fontSize:9, color:`${meta?.color ?? "#D5B893"}70`, letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:10, textTransform:"uppercase" }}>
-          {meta?.icon} Scenario Complete, {meta?.title}
+          <EmojiIcon e={meta?.icon} size={16} /> Scenario Complete, {meta?.title}
         </div>
         <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:32, color:"#f5ede0", margin:"0 0 8px", fontWeight:600 }}>{grade}</h1>
         <div style={{ fontSize:48, fontWeight:700, color:gradeColor, margin:"16px 0 6px", fontFamily:"'JetBrains Mono'" }}>
@@ -1079,7 +1099,7 @@ export default function Scenario() {
         </div>
         {pct >= 50 && (
           <div style={{ background:"rgba(34,197,94,0.07)", border:"1px solid rgba(34,197,94,0.2)", borderRadius:12, padding:"10px 14px", marginBottom:20, fontSize:12, color:"rgba(34,197,94,0.8)" }}>
-            🎖 Scenario badge awarded, analyst training tracks unlocked
+            <Award size={13} style={{verticalAlign:"-2px"}} /> Scenario badge awarded, analyst training tracks unlocked
           </div>
         )}
         <div style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap" }}>
@@ -1112,7 +1132,7 @@ export default function Scenario() {
         </button>
         <div style={{ width:1, height:20, background:"rgba(255,255,255,0.1)" }} />
         <span style={{ fontSize:11, color: meta?.color ?? "#D5B893", fontFamily:"'JetBrains Mono'", letterSpacing:"0.15em" }}>
-          {meta ? `${meta.icon} ${meta.title.toUpperCase()}` : "SCENARIOS"}
+          {meta ? <><EmojiIcon e={meta.icon} size={14} /> {meta.title.toUpperCase()}</> : "SCENARIOS"}
         </span>
         {/* Layer progress dots */}
         {tierPhases.length > 0 && (
@@ -1130,7 +1150,7 @@ export default function Scenario() {
       {currentPhase === "intro" && scenarioId && (
         <div style={{ maxWidth:600, margin:"0 auto", padding:"48px 20px", textAlign:"center" }}>
           <div style={{ fontSize:9, color:`${meta?.color ?? "#D5B893"}60`, letterSpacing:"0.3em", fontFamily:"'JetBrains Mono'", marginBottom:14, textTransform:"uppercase" }}>Live Incident, In Progress</div>
-          <div style={{ fontSize:48, marginBottom:16 }}>{meta?.icon}</div>
+          <div style={{ marginBottom:16, display:"flex", justifyContent:"center" }}><EmojiIcon e={meta?.icon} size={46} /></div>
           <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:36, color:"#f5ede0", margin:"0 0 10px", fontWeight:600 }}>{meta?.title}</h1>
           <div style={{ width:48, height:1, background:`${meta?.color ?? "#D5B893"}40`, margin:"18px auto" }} />
           <div style={{ display:"flex", justifyContent:"center", gap:8, marginBottom:28, flexWrap:"wrap" }}>

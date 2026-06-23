@@ -3,6 +3,7 @@
 import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useEffect, useCallback } from "react";
 import { useLocale } from "next-intl";
+import { Shield } from "lucide-react";
 import {
   collection, addDoc, setDoc, getDocs, query,
   orderBy, serverTimestamp, doc as fsDoc,
@@ -316,7 +317,7 @@ export default function NewsPage() {
                   {dot
                     ? <span style={{ width:12, height:12, borderRadius:"50%",
                         background:dot, flexShrink:0, display:"inline-block" }}/>
-                    : <span style={{ fontSize:14 }}>🛡</span>}
+                    : <Shield size={13} color="#632024" />}
                   <span style={{ flex:1, fontFamily:"'Cinzel',serif", fontSize:"0.75rem",
                     fontWeight: active ? 700 : 400, color: active ? "#3e1316" : "rgba(99,32,36,0.55)" }}>
                     {String(label)}

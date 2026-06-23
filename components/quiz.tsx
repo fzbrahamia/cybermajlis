@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { Star, Check, X } from "lucide-react";
 import { trackQuizComplete } from "@/app/lib/analytics";
 
 interface QuizProps {
@@ -189,7 +190,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
             </div>
             <div style={{ display: "flex", justifyContent: "center", gap: 4, margin: "0.8rem 0" }}>
               {[1,2,3].map(s => (
-                <span key={s} style={{ fontSize: "1.4rem", opacity: s <= stars ? 1 : 0.2, transition: "all 0.3s" }}>⭐</span>
+                <Star key={s} size={26} style={{ transition: "all 0.3s" }} color={s <= stars ? "#e8b84a" : "#cbb89a"} fill={s <= stars ? "#e8b84a" : "none"} />
               ))}
             </div>
             <p style={{ fontFamily: "'Crimson Pro', serif", fontStyle: "italic", color: "#5C4033", fontSize: "0.95rem" }}>
@@ -296,10 +297,10 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
                   <span>{opt}</span>
                 </span>
                 {selected && isCorrect && (isSelected || attemptsUsed >= 2) && (
-                  <span style={{ float: "right", color: "#3a5c2e" }}>✓</span>
+                  <Check size={16} color="#3a5c2e" style={{ float: "right" }} />
                 )}
                 {selected && isSelected && !isCorrect && (
-                  <span style={{ float: "right", color: "#b85c5c" }}>✗</span>
+                  <X size={16} color="#b85c5c" style={{ float: "right" }} />
                 )}
               </button>
             );

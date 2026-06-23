@@ -4,6 +4,30 @@ import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
+import {
+  Paperclip, FileText, RefreshCw, Zap, Mail, KeyRound, Map as MapIcon, Lock, Banknote,
+  Shield, Monitor, Globe, ClipboardList, Folder, MessageCircle, BarChart3, MessageSquare,
+  Ghost, Target, Waves, Magnet, Anchor, Brain, Bug, Bot, Siren, CircleDot, Wrench, Plug,
+  Radio, Newspaper, Inbox, TrendingDown, Laptop, Skull, User, Drama, Fish, Award, Settings,
+  Check, X, Play, CircleCheck, type LucideIcon,
+} from "lucide-react";
+
+// Data rows (threats, defenses, steps, tour) carry an emoji in their icon field.
+// This maps each to a lucide icon (FE0F variation selectors stripped on lookup).
+const EMOJI_ICON: Record<string, LucideIcon> = {
+  "📎": Paperclip, "📄": FileText, "🔄": RefreshCw, "💥": Zap, "📧": Mail, "✉": Mail,
+  "🔑": KeyRound, "🗺": MapIcon, "🔒": Lock, "🔐": Lock, "💰": Banknote, "🛡": Shield,
+  "🖥": Monitor, "💻": Laptop, "🌐": Globe, "📋": ClipboardList, "📁": Folder, "📥": Inbox,
+  "💬": MessageCircle, "💭": MessageSquare, "📊": BarChart3, "📉": TrendingDown, "👻": Ghost,
+  "🎯": Target, "🌊": Waves, "🪤": Magnet, "🪝": Anchor, "🧠": Brain, "🦠": Bug, "🤖": Bot,
+  "🚨": Siren, "🔴": CircleDot, "🔩": Wrench, "🔧": Wrench, "🔌": Plug, "📻": Radio,
+  "📰": Newspaper, "💀": Skull, "👤": User, "🎭": Drama, "🎣": Fish, "🎖": Award, "⚙": Settings,
+};
+function EmojiIcon({ e, size = 18, color, style }: { e?: string; size?: number; color?: string; style?: React.CSSProperties }) {
+  const I = e ? (EMOJI_ICON[e.replace(/️/g, "")] ?? CircleDot) : undefined;
+  if (!I) return null;
+  return <I size={size} color={color} style={{ verticalAlign: "-2px", ...style }} />;
+}
 
 const rand = (a: number, b: number): number => Math.floor(Math.random() * (b - a + 1)) + a;
 const pick = <T,>(a: T[]): T => a[Math.floor(Math.random() * a.length)];
@@ -1119,7 +1143,7 @@ export default function ThreatAcademy() {
                 )}
                 {attackState && attackState.step === -1 && attackState.done.size === 5 && (
                   <span style={{ fontSize: 9, color: "#22c55e", fontWeight: 700, letterSpacing: "0.12em", background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", padding: "2px 10px", borderRadius: 5 }}>
-                    ✓ CONTAINED
+                    <Check size={12} style={{verticalAlign:"-1px"}} /> CONTAINED
                   </span>
                 )}
                 {attackState && !showQatarMap && (
@@ -1127,7 +1151,7 @@ export default function ThreatAcademy() {
                     onClick={() => setReplayStep(prev => prev !== null ? null : 0)}
                     style={{ background: replayStep !== null ? "rgba(197,165,126,0.18)" : "rgba(197,165,126,0.08)", border: "1px solid rgba(197,165,126,0.3)", borderRadius: 6, color: "#D5B893", fontSize: 9, fontWeight: 700, cursor: "pointer", padding: "3px 10px", letterSpacing: "0.1em", flexShrink: 0 }}
                   >
-                    {replayStep !== null ? "✕ EXIT" : "▶ WATCH STORY"}
+                    {replayStep !== null ? <><X size={11} style={{verticalAlign:"-1px"}} /> EXIT</> : <><Play size={11} style={{verticalAlign:"-1px"}} /> WATCH STORY</>}
                   </button>
                 )}
               </div>
@@ -1277,7 +1301,7 @@ export default function ThreatAcademy() {
                           {sa && (
                             <div style={{ marginTop:4, padding:"11px 13px", borderRadius:10, background:"rgba(18,6,8,0.92)", border:`1px solid ${sevColor}28`, animation:"slideIn .2s ease" }}>
                               <div style={{ display:"flex", alignItems:"center", gap:7, marginBottom:8, padding:"5px 9px", background:"rgba(197,165,126,0.05)", borderRadius:7, border:"1px solid rgba(197,165,126,0.1)" }}>
-                                <span style={{ fontSize:14 }}>{sa.entity.icon}</span>
+                                <EmojiIcon e={sa.entity.icon} size={14} />
                                 <span style={{ fontSize:9, color:"rgba(197,165,126,0.5)", fontWeight:700, letterSpacing:"0.12em", textTransform:"uppercase", flexShrink:0 }}>{sa.entity.type}</span>
                                 <span style={{ fontSize:10, color:"#f5ede0cc", fontFamily:"monospace", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{sa.entity.name}</span>
                               </div>
@@ -1308,9 +1332,9 @@ export default function ThreatAcademy() {
                         const badgeText = isLive ? "● LIVE" : isPast ? "✓ PASSED" : `STEP ${clickedStep + 1}`;
                         return (
                           <div style={{ marginTop: 10, padding: "11px 14px", borderRadius: 10, background: "rgba(42,14,16,0.88)", border: `1px solid ${isLive ? color + "30" : "rgba(197,165,126,0.12)"}`, animation: "slideIn .2s ease", position: "relative" }}>
-                            <button onClick={(e) => { e.stopPropagation(); setClickedStep(null); }} style={{ position: "absolute", top: 8, ...(isAr ? {left:10} : {right:10}), background: "none", border: "none", color: "rgba(197,165,126,0.35)", cursor: "pointer", fontSize: 15, lineHeight: 1, padding: 2 }}>✕</button>
+                            <button onClick={(e) => { e.stopPropagation(); setClickedStep(null); }} style={{ position: "absolute", top: 8, ...(isAr ? {left:10} : {right:10}), background: "none", border: "none", color: "rgba(197,165,126,0.35)", cursor: "pointer", lineHeight: 1, padding: 2, display:"flex", alignItems:"center", justifyContent:"center" }}><X size={15} /></button>
                             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, paddingRight: 20 }}>
-                              <span style={{ fontSize: 16 }}>{cst.i}</span>
+                              <EmojiIcon e={cst.i} size={16} />
                               <span style={{ fontSize: 13, color: "#f5ede0", fontWeight: 700 }}>{cst.s}</span>
                               <span style={{ fontSize: 9, color: "rgba(197,165,126,0.5)", marginLeft: 2, letterSpacing: "0.1em", textTransform: "uppercase" }}>{isAr ? STAGE_LABELS_AR[clickedStep] : STAGE_LABELS[clickedStep]}</span>
                               <span style={{ marginLeft: "auto", fontSize: 8, fontWeight: 700, letterSpacing: "0.12em", color: badgeColor, background: badgeBg, border: badgeBorder, padding: "2px 8px", borderRadius: 4, animation: isLive ? "blink 1.8s ease-in-out infinite" : "none" }}>{badgeText}</span>
@@ -1339,7 +1363,7 @@ export default function ThreatAcademy() {
                       {/* Contained state */}
                       {step === -1 && done.size === 5 && clickedStep === null && (
                         <div style={{ marginTop: 10, padding: "9px 14px", borderRadius: 10, background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.22)", display: "flex", alignItems: "center", gap: 10 }}>
-                          <span style={{ fontSize: 16 }}>✅</span>
+                          <CircleCheck size={16} color="#22c55e" />
                           <span style={{ fontSize: 12, color: "#86efac", fontWeight: 600 }}>Attack contained, all stages logged. Monitoring for next incident.</span>
                         </div>
                       )}
@@ -1395,7 +1419,7 @@ export default function ThreatAcademy() {
                       {scenarioDone && (
                         <div style={{ display:"flex", alignItems:"center", gap:5, marginTop:3 }}>
                           <span style={{ fontSize: 9, color: trainingBadges.has(a.id) ? "#22c55e" : "rgba(255,255,255,0.28)", letterSpacing: "0.12em" }}>
-                            {trainingBadges.has(a.id) ? "✓ TRAINED" : "CLICK TO TRAIN"}
+                            {trainingBadges.has(a.id) ? <><Check size={11} style={{verticalAlign:"-1px"}} /> TRAINED</> : "CLICK TO TRAIN"}
                           </span>
                           {trainingBadges.has(a.id) && <span style={{ fontSize:11 }}>🎖</span>}
                         </div>
@@ -1559,7 +1583,7 @@ export default function ThreatAcademy() {
                       <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
                         <span style={{ fontSize: 13 }}>{a.threat.icon}</span>
                         <span style={{ fontSize: 13, color: a.threat.color, fontWeight: 600 }}>{localizedThreat.type}</span>
-                        {completed.has(a.threat.typeKey) && <span style={{ fontSize: 10, color: "#22c55e" }}>✓</span>}
+                        {completed.has(a.threat.typeKey) && <Check size={12} color="#22c55e" />}
                       </div>
                       <span style={{ fontSize: 10, color: "#f5ede025", fontFamily: "'JetBrains Mono'" }}>{a.time}</span>
                     </div>
@@ -1596,7 +1620,7 @@ export default function ThreatAcademy() {
         return (
           <DraggableFloater key={key} onClose={() => closeLesson(key)} width={540} initialX={250 + pi * 35} initialY={60 + pi * 35} isRtl={isAr}>
             <div style={{ padding: "14px 18px", borderBottom: "1px solid rgba(197,165,126,0.12)", display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ fontSize: 32 }}>{threat.icon}</span>
+              <EmojiIcon e={threat.icon} size={30} />
               <div style={{ flex: 1 }}>
                 <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: "#f5ede0", margin: 0 }}>{threat.type}</h2>
                 <div style={{ fontSize: 12, color: threat.color, fontWeight: 600 }}>{threat.tagline}</div>
@@ -1626,7 +1650,7 @@ export default function ThreatAcademy() {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
                   {threat.defenses.map((d: string, di: number) => (
                     <div key={di} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 10px", background: "#22c55e06", borderRadius: 8, border: "1px solid #22c55e12", fontSize: 12, color: "#f5ede0aa" }}>
-                      <span style={{ color: "#22c55e" }}>✓</span>{d}
+                      <Check size={12} color="#22c55e" style={{verticalAlign:"-2px",marginInlineEnd:4}} />{d}
                     </div>
                   ))}
                 </div>
@@ -1647,7 +1671,7 @@ export default function ThreatAcademy() {
             return next;
           }); } }} style={{ width: "100%", padding: "10px 14px", borderRadius: 10, textAlign: "left", marginBottom: 5, fontSize: 13, color: "#f5ede0", fontWeight: isS ? 700 : 400, cursor: done ? "default" : "pointer", border: `1.5px solid ${done?(isC?"#22c55e30":isS?"#ef444430":"#ffffff08"):"#ffffff08"}`, background: done?(isC?"#22c55e08":isS?"#ef444408":"transparent"):"#ffffff04" }}>
                       <span style={{ opacity: .4, marginRight: 8 }}>{String.fromCharCode(65+oi)}.</span>{opt}
-                      {done && isC && <span style={{ float: "right", color: "#22c55e" }}>✓</span>}
+                      {done && isC && <Check size={13} color="#22c55e" style={{ float: "right" }} />}
                       {done && isS && !isC && <span style={{ float: "right", color: "#ef4444" }}>✗</span>}
                     </button>
                   );
@@ -1697,7 +1721,7 @@ export default function ThreatAcademy() {
                 </div>
               )}
               <div style={{ textAlign:"center", marginBottom: tourStep === 0 ? 22 : 14 }}>
-                <div style={{ fontSize: tourStep === 0 ? 40 : 30, marginBottom:8 }}>{s.icon}</div>
+                <div style={{ marginBottom:8, display:"flex", justifyContent:"center" }}><EmojiIcon e={s.icon} size={tourStep === 0 ? 38 : 28} /></div>
                 <div style={{ fontSize:9, color:"#D5B89345", letterSpacing:"0.28em", textTransform:"uppercase", fontFamily:"'JetBrains Mono'", marginBottom:8 }}>{s.label}</div>
                 <h2 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize: tourStep === 0 ? 34 : 24, color:"#f5ede0", margin:0, fontWeight:600 }}>{s.title}</h2>
               </div>
@@ -1741,13 +1765,13 @@ export default function ThreatAcademy() {
                 const loc = getLocalizedThreat(def);
                 return (
                   <div key={key} style={{ display:"flex", alignItems:"center", gap:14, padding:"11px 15px", background:`rgba(255,255,255,${learned ? "0.04" : "0.02"})`, borderRadius:10, border:`1px solid ${learned ? "rgba(34,197,94,0.2)" : "rgba(197,165,126,0.07)"}`, transition:"all .3s" }}>
-                    <span style={{ fontSize:20 }}>{def.icon}</span>
+                    <EmojiIcon e={def.icon} size={20} />
                     <div style={{ flex:1 }}>
                       <div style={{ fontSize:13, color:"#f5ede0", fontWeight:600 }}>{loc?.type ?? key}</div>
                       <div style={{ fontSize:10, color:"#f5ede035", fontFamily:"'JetBrains Mono'" }}>Contained</div>
                     </div>
                     {learned
-                      ? <span style={{ fontSize:10, color:"#22c55e", fontWeight:700, background:"rgba(34,197,94,0.1)", border:"1px solid rgba(34,197,94,0.25)", padding:"3px 10px", borderRadius:5, letterSpacing:"0.08em" }}>✓ MASTERED</span>
+                      ? <span style={{ fontSize:10, color:"#22c55e", fontWeight:700, background:"rgba(34,197,94,0.1)", border:"1px solid rgba(34,197,94,0.25)", padding:"3px 10px", borderRadius:5, letterSpacing:"0.08em" }}><Check size={11} style={{verticalAlign:"-1px"}} /> MASTERED</span>
                       : <span style={{ fontSize:10, color:"rgba(197,165,126,0.35)", background:"rgba(197,165,126,0.05)", border:"1px solid rgba(197,165,126,0.1)", padding:"3px 10px", borderRadius:5, letterSpacing:"0.08em" }}>REVIEW</span>
                     }
                   </div>
@@ -1844,7 +1868,7 @@ function QatarMap({ attackState }: {
           />
           {/* Icon */}
           <text x={tgt[0]} y={tgt[1] + 4} textAnchor="middle" fontSize="8">
-            {contained ? "✓" : attackState.def.icon}
+            {contained ? <Check size={18} /> : <EmojiIcon e={attackState.def.icon} size={18} />}
           </text>
           {/* Attack badge, pill label to the right */}
           <rect x={tgt[0] + 12} y={tgt[1] - 10} width="62" height="18" rx="4"
@@ -1942,7 +1966,7 @@ function DraggableFloater({
         borderRadius: 8, color: "rgba(197,165,126,0.55)", fontSize: 16, lineHeight: 1,
         cursor: "pointer", width: 30, height: 30,
         display: "flex", alignItems: "center", justifyContent: "center",
-      }}>✕</button>
+      }}><X size={16} /></button>
       <div style={{ overflowY: "auto", flex: 1 }}>{children}</div>
     </div>
   );

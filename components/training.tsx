@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Target, Check, X, Flag, Siren, Award, Medal, BookOpen } from "lucide-react";
 
 // ── Character config ─────────────────────────────────────────────────────────
 const CHARS = {
@@ -301,10 +302,10 @@ function IntroPhase({ char, onBegin }: { char: CharConfig; onBegin: () => void }
 // ── Result Phase ──────────────────────────────────────────────────────────────
 function ResultPhase({ char, score, total, onBack }: { char: CharConfig; score: number; total: number; onBack: () => void }) {
   const pct = Math.round((score / total) * 100);
-  const grade = pct >= 87 ? { label:"Expert Analyst", icon:"🎖", color:"#22c55e" } : pct >= 62 ? { label:"Competent Analyst", icon:"🥈", color:"#f59e0b" } : { label:"Keep Practising", icon:"📚", color:"#f87171" };
+  const grade = pct >= 87 ? { label:"Expert Analyst", Icon:Award, color:"#22c55e" } : pct >= 62 ? { label:"Competent Analyst", Icon:Medal, color:"#f59e0b" } : { label:"Keep Practising", Icon:BookOpen, color:"#f87171" };
   return (
     <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"calc(100vh - 62px)", padding:"40px 20px", textAlign:"center" }}>
-      <div style={{ fontSize:56, marginBottom:16 }}>{grade.icon}</div>
+      <div style={{ marginBottom:16, display:"flex", justifyContent:"center" }}><grade.Icon size={52} color={grade.color} /></div>
       <div style={{ fontSize:9, color:`${char.color}70`, letterSpacing:"0.28em", textTransform:"uppercase", marginBottom:10, fontFamily:"'JetBrains Mono'" }}>Training Complete</div>
       <h1 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:38, color:"#f5ede0", margin:"0 0 8px", fontWeight:600 }}>{grade.label}</h1>
       <div style={{ fontSize:52, fontWeight:700, color:grade.color, margin:"18px 0 6px", fontFamily:"'JetBrains Mono'" }}>
@@ -351,7 +352,7 @@ function SaqrTraining({ char, onComplete, overrideAlerts }: { char: CharConfig; 
   return (
     <div style={{ maxWidth:680, margin:"0 auto", padding:"32px 20px" }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24 }}>
-        <span style={{ fontSize:10, color:`${char.color}70`, fontFamily:"'JetBrains Mono'", letterSpacing:"0.15em" }}>{overrideAlerts ? "🎯 ADAPTIVE" : "ALERT"} {idx + 1} OF {ALERTS_DATA.length}</span>
+        <span style={{ fontSize:10, color:`${char.color}70`, fontFamily:"'JetBrains Mono'", letterSpacing:"0.15em" }}>{overrideAlerts ? <><Target size={11} style={{verticalAlign:"-1px"}} /> ADAPTIVE</> : "ALERT"} {idx + 1} OF {ALERTS_DATA.length}</span>
         <div style={{ display:"flex", gap:4 }}>
           {ALERTS_DATA.map((_: any, i: number) => (
             <div key={i} style={{ width:20, height:4, borderRadius:2, background: i < idx ? (answers[i] === SAQR_ALERTS[i].correct ? "#22c55e" : "#ef4444") : i === idx ? char.color : "rgba(255,255,255,0.1)" }} />
@@ -383,7 +384,7 @@ function SaqrTraining({ char, onComplete, overrideAlerts }: { char: CharConfig; 
       </div>
       {chosen && (
         <div style={{ background: isCorrect ? "rgba(34,197,94,0.08)" : "rgba(239,68,68,0.08)", borderRadius:12, padding:"16px 18px", border:`1px solid ${isCorrect ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}`, marginBottom:20, animation:"fadeIn .3s ease" }}>
-          <div style={{ fontSize:12, fontWeight:700, color: isCorrect ? "#22c55e" : "#f87171", marginBottom:8 }}>{isCorrect ? "✓ Correct" : "✗ Incorrect"}</div>
+          <div style={{ fontSize:12, fontWeight:700, color: isCorrect ? "#22c55e" : "#f87171", marginBottom:8 }}>{isCorrect ? <><Check size={13} style={{verticalAlign:"-2px"}} /> Correct</> : <><X size={13} style={{verticalAlign:"-2px"}} /> Incorrect</>}</div>
           <div style={{ fontSize:13, color:"#f5ede0aa", lineHeight:1.7 }}>{a.why}</div>
         </div>
       )}
@@ -450,12 +451,12 @@ function OryxTraining({ char, onComplete, overrideScenarios }: { char: CharConfi
         <div style={{ background:"rgba(255,255,255,0.025)", borderRadius:12, padding:"16px 18px", border:"1px solid rgba(255,255,255,0.07)" }}>
           <div style={{ fontSize:10, color:"rgba(255,255,255,0.4)", letterSpacing:"0.15em", marginBottom:12 }}>LIKELIHOOD (1-5)</div>
           {ratingBtns(likelihood, setLikelihood, submitted)}
-          {submitted && <div style={{ marginTop:10, fontSize:11, color: expertColor(likelihood, sc.expertL) }}>Your: {likelihood} · Expert: {sc.expertL} {Math.abs(likelihood - sc.expertL) <= 1 ? "✓" : `(off by ${Math.abs(likelihood - sc.expertL)})`}</div>}
+          {submitted && <div style={{ marginTop:10, fontSize:11, color: expertColor(likelihood, sc.expertL) }}>Your: {likelihood} · Expert: {sc.expertL} {Math.abs(likelihood - sc.expertL) <= 1 ? <Check size={12} style={{verticalAlign:"-1px"}} /> : `(off by ${Math.abs(likelihood - sc.expertL)})`}</div>}
         </div>
         <div style={{ background:"rgba(255,255,255,0.025)", borderRadius:12, padding:"16px 18px", border:"1px solid rgba(255,255,255,0.07)" }}>
           <div style={{ fontSize:10, color:"rgba(255,255,255,0.4)", letterSpacing:"0.15em", marginBottom:12 }}>IMPACT (1-5)</div>
           {ratingBtns(impact, setImpact, submitted)}
-          {submitted && <div style={{ marginTop:10, fontSize:11, color: expertColor(impact, sc.expertI) }}>Your: {impact} · Expert: {sc.expertI} {Math.abs(impact - sc.expertI) <= 1 ? "✓" : `(off by ${Math.abs(impact - sc.expertI)})`}</div>}
+          {submitted && <div style={{ marginTop:10, fontSize:11, color: expertColor(impact, sc.expertI) }}>Your: {impact} · Expert: {sc.expertI} {Math.abs(impact - sc.expertI) <= 1 ? <Check size={12} style={{verticalAlign:"-1px"}} /> : `(off by ${Math.abs(impact - sc.expertI)})`}</div>}
         </div>
       </div>
       <div style={{ background:"rgba(255,255,255,0.025)", borderRadius:12, padding:"16px 18px", border:"1px solid rgba(255,255,255,0.07)", marginBottom:20 }}>
@@ -547,7 +548,7 @@ function ThalabTraining({ char, onComplete }: { char: CharConfig; onComplete: (s
                   </div>
                 )}
                 {revealed && (
-                  <span style={{ fontSize:10, fontWeight:700, color: userCorrect ? "#22c55e" : "#f87171", flexShrink:0 }}>{userCorrect ? "✓" : "✗"}</span>
+                  <span style={{ fontSize:10, fontWeight:700, color: userCorrect ? "#22c55e" : "#f87171", flexShrink:0 }}>{userCorrect ? <Check size={13} /> : <X size={13} />}</span>
                 )}
               </div>
               {revealed && !userCorrect && (
@@ -608,7 +609,7 @@ function HisanTraining({ char, onComplete }: { char: CharConfig; onComplete: (s:
         </div>
       </div>
       <div style={{ background:"rgba(239,68,68,0.06)", borderRadius:14, border:"1px solid rgba(239,68,68,0.2)", padding:"20px 22px", marginBottom:20 }}>
-        <div style={{ fontSize:10, color:"rgba(239,68,68,0.7)", letterSpacing:"0.15em", fontFamily:"'JetBrains Mono'", marginBottom:8 }}>🚨 ACTIVE INCIDENT</div>
+        <div style={{ fontSize:10, color:"rgba(239,68,68,0.7)", letterSpacing:"0.15em", fontFamily:"'JetBrains Mono'", marginBottom:8, display:"flex", alignItems:"center", gap:6 }}><Siren size={13} /> ACTIVE INCIDENT</div>
         <p style={{ fontSize:13.5, color:"#f5ede0cc", lineHeight:1.8, margin:0 }}>{step.situation}</p>
       </div>
       <div style={{ fontSize:13, fontWeight:600, color:"#f5ede0", marginBottom:14 }}>{step.question}</div>
@@ -631,7 +632,7 @@ function HisanTraining({ char, onComplete }: { char: CharConfig; onComplete: (s:
       </div>
       {selected && chosen && (
         <div style={{ background: isCorrect ? "rgba(34,197,94,0.07)" : "rgba(239,68,68,0.07)", borderRadius:12, border:`1px solid ${isCorrect ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}`, padding:"16px 18px", marginBottom:16, animation:"fadeIn .3s ease" }}>
-          <div style={{ fontSize:11, fontWeight:700, color: isCorrect ? "#22c55e" : "#f87171", marginBottom:8 }}>{isCorrect ? "✓ Correct" : "✗ Wrong decision"}</div>
+          <div style={{ fontSize:11, fontWeight:700, color: isCorrect ? "#22c55e" : "#f87171", marginBottom:8 }}>{isCorrect ? <><Check size={13} style={{verticalAlign:"-2px"}} /> Correct</> : <><X size={13} style={{verticalAlign:"-2px"}} /> Wrong decision</>}</div>
           <div style={{ fontSize:13, color:"#f5ede0aa", lineHeight:1.7, marginBottom:10 }}><strong>Consequence: </strong>{chosen.consequence}</div>
           <div style={{ fontSize:12, color:`${char.color}cc`, lineHeight:1.7, borderTop:"1px solid rgba(255,255,255,0.06)", paddingTop:10 }}><strong>Lesson: </strong>{step.lesson}</div>
         </div>
@@ -714,12 +715,12 @@ function HamadTraining({ char, onComplete, overrideScenarios }: { char: CharConf
       {chosen && chosenOpt && (
         <div style={{ animation:"fadeIn .3s ease" }}>
           <div style={{ background: chosenOpt.correct ? "rgba(34,197,94,0.07)" : "rgba(239,68,68,0.07)", borderRadius:12, border:`1px solid ${chosenOpt.correct ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}`, padding:"14px 16px", marginBottom:14 }}>
-            <div style={{ fontSize:11, fontWeight:700, color: chosenOpt.correct ? "#22c55e" : "#f87171", marginBottom:6 }}>{chosenOpt.correct ? "✓ Good call" : "✗ Not quite"}</div>
+            <div style={{ fontSize:11, fontWeight:700, color: chosenOpt.correct ? "#22c55e" : "#f87171", marginBottom:6 }}>{chosenOpt.correct ? <><Check size={12} style={{verticalAlign:"-2px"}} /> Good call</> : <><X size={12} style={{verticalAlign:"-2px"}} /> Not quite</>}</div>
             <div style={{ fontSize:13, color:"#f5ede0aa", lineHeight:1.7 }}>{chosenOpt.why}</div>
           </div>
           {/* Red flags */}
           <div style={{ background:"rgba(245,158,11,0.05)", borderRadius:10, border:"1px solid rgba(245,158,11,0.2)", padding:"12px 15px", marginBottom:16 }}>
-            <div style={{ fontSize:10, fontWeight:700, color:"#f59e0b", letterSpacing:"0.12em", marginBottom:8 }}>🚩 RED FLAGS IN THIS SCENARIO</div>
+            <div style={{ fontSize:10, fontWeight:700, color:"#f59e0b", letterSpacing:"0.12em", marginBottom:8, display:"flex", alignItems:"center", gap:6 }}><Flag size={12} /> RED FLAGS IN THIS SCENARIO</div>
             {sc.redFlags.map((f, i) => <div key={i} style={{ fontSize:12, color:"#f5ede0aa", lineHeight:1.7, paddingLeft:12, borderLeft:"2px solid rgba(245,158,11,0.3)", marginBottom:4 }}>{f}</div>)}
           </div>
           <button onClick={handleNext}
@@ -840,7 +841,7 @@ export default function Training({ characterId }: { characterId: string }) {
           {userHistory && (["saqr","oryx","hamad"].includes(id)) && (
             <div style={{ maxWidth:520, background:`${char.color}08`, borderRadius:12, padding:"16px 20px", border:`1px solid ${char.color}25`, marginBottom:24, width:"100%" }}>
               <div style={{ fontSize:11, color:char.color, fontWeight:700, marginBottom:6, letterSpacing:"0.1em" }}>
-                🎯 Welcome back, {userHistory.attempts} attempt{userHistory.attempts!==1?"s":""} · Last score: {userHistory.lastScore}
+                <Target size={13} style={{verticalAlign:"-2px"}} /> Welcome back, {userHistory.attempts} attempt{userHistory.attempts!==1?"s":""} · Last score: {userHistory.lastScore}
               </div>
               <p style={{ fontSize:13, color:"#f5ede0aa", lineHeight:1.6, margin:"0 0 14px" }}>
                 Want a personalised set of questions based on your previous performance? Claude will generate fresh challenges targeting your weak areas.
@@ -848,7 +849,7 @@ export default function Training({ characterId }: { characterId: string }) {
               <div style={{ display:"flex", gap:8, justifyContent:"center" }}>
                 <button onClick={loadAdaptive}
                   style={{ padding:"9px 22px", borderRadius:8, border:`1.5px solid ${char.color}70`, background:`${char.color}15`, color:char.color, fontSize:11, fontWeight:700, letterSpacing:"0.15em", textTransform:"uppercase", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}>
-                  🎯 Adaptive Mode
+                  <Target size={12} style={{verticalAlign:"-2px"}} /> Adaptive Mode
                 </button>
                 <button onClick={() => setPhase("training")}
                   style={{ padding:"9px 22px", borderRadius:8, border:"1.5px solid rgba(255,255,255,0.12)", background:"transparent", color:"rgba(255,255,255,0.4)", fontSize:11, letterSpacing:"0.1em", cursor:"pointer", fontFamily:"'JetBrains Mono'" }}>
@@ -869,7 +870,7 @@ export default function Training({ characterId }: { characterId: string }) {
 
       {phase === "adaptive_loading" && (
         <div style={{ display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"calc(100vh - 62px)", gap:20, textAlign:"center", padding:"40px 20px" }}>
-          <div style={{ fontSize:48, animation:"pulse 2s ease-in-out infinite" }}>🎯</div>
+          <div style={{ display:"flex", justifyContent:"center", animation:"pulse 2s ease-in-out infinite" }}><Target size={46} color="#D5B893" /></div>
           <h2 style={{ fontFamily:"'Cormorant Garamond', serif", fontSize:28, color:"#f5ede0", margin:0, fontWeight:600 }}>Generating Your Training</h2>
           <p style={{ fontSize:13, color:"#f5ede0aa", maxWidth:400, lineHeight:1.8 }}>
             Claude is analysing your previous performance and creating personalised challenges targeting your weak areas. This takes about 15 seconds.

@@ -1,25 +1,21 @@
 "use client";
 import { useTrackView } from "@/hooks/useTrackView";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLessonProgress } from "@/hooks/useLessonProgress";
 import { useTranslations, useLocale } from "next-intl";
 import { seedLessonsData } from "@/app/lib/seedLessons";
+import LessonLeaderboard from "@/components/LessonLeaderboard";
+import {
+  Award, Medal, Brain, BookOpen, Swords, MonitorDot, Wrench, ScanSearch,
+  Globe, Trophy, Target, ShieldCheck, TrendingUp, ArrowRight, type LucideIcon,
+} from "lucide-react";
 
-type Category = {
-  nameKey: string;
-  descKey: string;
-  href?: string;
-  badgeKey?: string;
-  icon: string;
-  locked?: boolean;
-  progress?: string;
-};
+type Track = { nameKey: string; descKey: string; href: string; Icon: LucideIcon; progress: string; fill: number };
 
 export default function DashboardPage() {
   useTrackView("dashboard");
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const t = useTranslations("Dashboard");
   const tAuth = useTranslations("Auth");
   const locale = useLocale();
@@ -46,85 +42,53 @@ export default function DashboardPage() {
   const { progress: ransomwareProgress } = useLessonProgress("ransomware");
   const { progress: polyProgress } = useLessonProgress("polymorphic-metamorphic");
 
-  // Count completed lessons (all 4 tabs done = 1 complete lesson)
   const isLessonComplete = (p: any) => p.storyDone && p.demoDone && p.posterDone && p.quizDone;
   const completedLessons = [virusProgress, wormProgress, ransomwareProgress, polyProgress].filter(isLessonComplete).length;
   const totalLessons = 4;
-
-  // XP: 100 per completed lesson
   const totalXP = completedLessons * 100;
-
-  // Level, determined after BADGE_DEFS are computed, so use a derived value below
-  // Overall progress %
   const overallPct = Math.round((completedLessons / totalLessons) * 100);
 
-  // Per-category progress
-  const basicLessons = [virusProgress, wormProgress, ransomwareProgress];
-  const basicCompleted = basicLessons.filter(isLessonComplete).length;
+  const basicCompleted = [virusProgress, wormProgress, ransomwareProgress].filter(isLessonComplete).length;
   const advancedCompleted = [polyProgress].filter(isLessonComplete).length;
 
-  // ── Badge conditions (computed from localStorage + lesson progress) ──
+  const tracks: Track[] = [
+    { nameKey: "basic.name",    descKey: "basic.description",    href: "/dashboard/basic",          Icon: ShieldCheck, progress: `${basicCompleted}/3`,    fill: Math.round((basicCompleted / 3) * 100) },
+    { nameKey: "advanced.name", descKey: "advanced.description", href: "/dashboard/advanced",       Icon: TrendingUp,  progress: `${advancedCompleted}/3`, fill: Math.round((advancedCompleted / 3) * 100) },
+    { nameKey: "diy.name",      descKey: "diy.description",      href: "/dashboard/do-it-yourself", Icon: Wrench,      progress: "0/5",                    fill: 0 },
+  ];
+
+  // ── Badge conditions ──
   const [badgeState, setBadgeState] = useState({
-    socDone: false, diyDone: false, gamesPlayed: false,
-    scannerUsed: false, communityPost: false,
+    socDone: false, diyDone: false, scannerUsed: false, communityPost: false,
   });
   useEffect(() => {
     if (typeof window === "undefined") return;
     const socDone = parseInt(localStorage.getItem("cm-attacks-mitigated") || "0") >= 1;
     const diyDone = Object.keys(localStorage).some(k => k.startsWith("diy-checklist-") && localStorage.getItem(k));
-    const gamesPlayed = Object.keys(localStorage).some(k => k.startsWith("cm-game-"));
     const scannerUsed = !!localStorage.getItem("cm-scan-used");
     const communityPost = !!localStorage.getItem("cm-community-posted");
-    setBadgeState({ socDone, diyDone, gamesPlayed, scannerUsed, communityPost });
+    setBadgeState({ socDone, diyDone, scannerUsed, communityPost });
   }, []);
 
-  const BADGE_DEFS = [
-    { id: "first_step", icon: "🎖", earned: completedLessons >= 1 },
-    { id: "aware",      icon: "🧠", earned: completedLessons >= 3 },
-    { id: "basic",      icon: "📚", earned: basicCompleted >= 3   },
-    { id: "advanced",   icon: "⚔️", earned: advancedCompleted >= 1 },
-    { id: "soc",        icon: "🖥️", earned: badgeState.socDone   },
-    { id: "diy",        icon: "🏠", earned: badgeState.diyDone    },
-    { id: "gamer",      icon: "🎮", earned: badgeState.gamesPlayed },
-    { id: "scanner",    icon: "🔍", earned: badgeState.scannerUsed },
-    { id: "community",  icon: "🌐", earned: badgeState.communityPost },
-    { id: "veteran",    icon: "🏆", earned: false /* set below */ },
+  const BADGE_DEFS: { id: string; Icon: LucideIcon; earned: boolean }[] = [
+    { id: "first_step", Icon: Award,      earned: completedLessons >= 1 },
+    { id: "aware",      Icon: Brain,      earned: completedLessons >= 3 },
+    { id: "basic",      Icon: BookOpen,   earned: basicCompleted >= 3   },
+    { id: "advanced",   Icon: Swords,     earned: advancedCompleted >= 1 },
+    { id: "soc",        Icon: MonitorDot, earned: badgeState.socDone   },
+    { id: "diy",        Icon: Wrench,     earned: badgeState.diyDone    },
+    { id: "scanner",    Icon: ScanSearch, earned: badgeState.scannerUsed },
+    { id: "community",  Icon: Globe,      earned: badgeState.communityPost },
+    { id: "veteran",    Icon: Trophy,     earned: false /* set below */ },
   ];
   const earnedCount = BADGE_DEFS.filter(b => b.earned).length;
-  BADGE_DEFS[9].earned = earnedCount >= 6;
+  BADGE_DEFS[BADGE_DEFS.length - 1].earned = earnedCount >= 6;
   const totalBadges = BADGE_DEFS.filter(b => b.earned).length;
 
   const level = totalBadges === 0 ? t("levels.beginner")
     : totalBadges <= 2 ? t("levels.aware")
     : totalBadges <= 5 ? t("levels.defender")
     : t("levels.guardian");
-
-  const categories: Category[] = [
-    {
-      nameKey: "basic.name",
-      descKey: "basic.description",
-      href: "/dashboard/basic",
-      badgeKey: "basic.badge",
-      icon: "/icons/webProtection.gif",
-      progress: `${basicCompleted}/3`,
-    },
-    {
-      nameKey: "advanced.name",
-      descKey: "advanced.description",
-      href: "/dashboard/advanced",
-      badgeKey: "advanced.badge",
-      icon: "/icons/growthIcon.gif",
-      progress: `${advancedCompleted}/3`,
-    },
-    {
-      nameKey: "diy.name",
-      descKey: "diy.description",
-      href: "/dashboard/do-it-yourself",
-      badgeKey: "diy.badge",
-      icon: "/icons/lock.gif",
-      progress: "0/5",
-    },
-  ];
 
   useEffect(() => {
     if (!localStorage.getItem("lessonsSeeded")) {
@@ -138,442 +102,91 @@ export default function DashboardPage() {
     const style = document.createElement("style");
     style.textContent = `
       @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap');
-
       :root {
-        --maroon: #632024;
-        --maroon-deep: #3e1316;
-        --maroon-mid: #8B2635;
-        --gold: #c5a57e;
-        --gold-light: #E8D4BC;
-        --cream: #E3DAC9;
-        --cream-dark: #d4c5b0;
-        --sand: #FDF8F0;
-        --text-dark: #2a0d0f;
+        --maroon: #632024; --maroon-deep: #3e1316; --maroon-mid: #8B2635;
+        --gold: #c5a57e; --gold-light: #E8D4BC; --cream: #E3DAC9; --sand: #FDF8F0;
       }
-
-      .dashboard-root *, .dashboard-root *::before, .dashboard-root *::after { 
-        box-sizing: border-box; 
-      }
-
-      body {
-        font-family: 'Crimson Pro', Georgia, serif;
-        background-color: var(--cream);
-        color: var(--maroon);
-        overflow-x: hidden;
-      }
-
-      .dashboard-root {
-        min-height: 100vh;
-        position: relative;
-        padding: 0 2rem 6rem;
-        overflow: hidden;
-      }
-
-      .bg-pattern {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
+      .dash-root *, .dash-root *::before, .dash-root *::after { box-sizing: border-box; }
+      body { font-family: 'Crimson Pro', Georgia, serif; background-color: var(--cream); color: var(--maroon); overflow-x: hidden; }
+      .dash-root { min-height: 100vh; position: relative; padding: 0 2rem 6rem; overflow: hidden; }
+      .dash-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0;
         background:
           radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,32,36,0.12) 0%, transparent 70%),
-          radial-gradient(ellipse 60% 40% at 100% 80%, rgba(197,165,126,0.15) 0%, transparent 60%);
-      }
+          radial-gradient(ellipse 60% 40% at 100% 80%, rgba(197,165,126,0.15) 0%, transparent 60%); }
+      .dash-orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(80px); opacity: 0.18; animation: dorb 18s ease-in-out infinite alternate; }
+      .dash-orb-1 { width: 420px; height: 420px; background: var(--maroon); top: -120px; left: -100px; }
+      .dash-orb-2 { width: 280px; height: 280px; background: var(--gold); top: 38%; right: -80px; animation-delay: -6s; }
+      .dash-orb-3 { width: 200px; height: 200px; background: var(--maroon-mid); bottom: 8%; left: 28%; animation-delay: -12s; }
+      @keyframes dorb { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(30px,40px) scale(1.08); } }
 
-      .orb {
-        position: fixed;
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 0;
-        filter: blur(80px);
-        opacity: 0.18;
-        animation: orb-drift 18s ease-in-out infinite alternate;
-      }
-      .orb-1 { width: 420px; height: 420px; background: var(--maroon); top: -120px; left: -100px; animation-delay: 0s; }
-      .orb-2 { width: 280px; height: 280px; background: var(--gold); top: 40%; right: -80px; animation-delay: -6s; }
-      .orb-3 { width: 200px; height: 200px; background: var(--maroon-mid); bottom: 10%; left: 30%; animation-delay: -12s; }
+      .dash-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
 
-      @keyframes orb-drift {
-        0% { transform: translate(0, 0) scale(1); }
-        100% { transform: translate(30px, 40px) scale(1.08); }
-      }
+      /* Centered header */
+      .dash-header { text-align: center; padding: 6.5rem 0 2.4rem; }
+      .dash-eyebrow { display: inline-block; font-family: 'Cinzel', serif; font-size: 0.66rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--maroon-mid); background: linear-gradient(135deg, rgba(99,32,36,0.08), rgba(197,165,126,0.18)); border: 1px solid rgba(99,32,36,0.2); padding: 0.4rem 1.3rem; border-radius: 999px; margin-bottom: 0.9rem; }
+      .dash-header h1 { font-family: 'Cinzel', serif; font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 900; line-height: 1.08; color: var(--maroon-deep); margin: 0 0 0.7rem; }
+      .dash-header h1 span { color: var(--maroon-mid); }
+      .dash-header p { font-size: 1.08rem; color: #5C4033; font-style: italic; font-weight: 300; margin: 0; }
 
-      .content {
-        position: relative;
-        z-index: 1;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-
-      .header {
-        text-align: center;
-        padding: 7rem 0 3.5rem;
-      }
-
-      .header-eyebrow {
-        display: inline-block;
-        font-family: 'Cinzel', serif;
-        font-size: 0.7rem;
-        letter-spacing: 0.35em;
-        text-transform: uppercase;
-        color: var(--maroon-mid);
-        background: linear-gradient(135deg, rgba(99,32,36,0.08), rgba(197,165,126,0.18));
-        border: 1px solid rgba(99,32,36,0.2);
-        padding: 0.45rem 1.4rem;
-        border-radius: 999px;
-        margin-bottom: 1rem;
-      }
-
-      .header h1 {
-        font-family: 'Cinzel', serif;
-        font-size: clamp(2.4rem, 5vw, 4rem);
-        font-weight: 900;
-        line-height: 1.1;
-        color: var(--maroon-deep);
-        letter-spacing: -0.01em;
-        margin-bottom: 1.2rem;
-      }
-
-      .header h1 span { color: var(--maroon-mid); }
-
-      .header p {
-        font-size: 1.15rem;
-        color: #5C4033;
-        font-style: italic;
-        font-weight: 300;
-        letter-spacing: 0.01em;
-      }
-
-      .tracker {
+      /* Hero: ring | stats */
+      .hero { display: grid; grid-template-columns: 300px 1fr; gap: 1.6rem;
         background: linear-gradient(135deg, var(--maroon-deep) 0%, var(--maroon) 60%, #7a1e22 100%);
-        border-radius: 24px;
-        padding: 2.5rem 3rem;
-        margin-bottom: 3.5rem;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(99,32,36,0.3), 0 2px 0 rgba(255,255,255,0.08) inset;
-      }
+        border-radius: 26px; padding: 2.2rem; margin-bottom: 1.6rem; position: relative; overflow: hidden;
+        box-shadow: 0 24px 64px rgba(99,32,36,0.32), 0 2px 0 rgba(255,255,255,0.08) inset; }
+      .hero::after { content:''; position:absolute; top:-70px; ${isRtl ? "left" : "right"}:-70px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); }
+      @media (max-width: 820px){ .hero { grid-template-columns: 1fr; text-align: center; } }
+      .hero-ring-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem;
+        ${isRtl ? "border-left" : "border-right"}: 1px solid rgba(197,165,126,0.18); }
+      @media (max-width: 820px){ .hero-ring-wrap { border: none; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(197,165,126,0.18); } }
+      .hero-ring { width: 168px; height: 168px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+      .hero-ring-inner { width: 132px; height: 132px; border-radius: 50%; background: linear-gradient(160deg, #4a181b, #2c1011); display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(197,165,126,0.2); }
+      .hero-xp { font-family: 'Cinzel', serif; font-size: 2.3rem; font-weight: 900; color: var(--gold-light); line-height: 1; }
+      .hero-xp-label { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.3em; color: var(--gold); margin-top: 4px; }
+      .hero-level-name { font-family: 'Cinzel', serif; font-size: 1.25rem; font-weight: 700; color: var(--gold-light); }
+      .hero-level-label { font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(227,218,201,0.5); margin-top: 2px; }
+      .hero-stats { display: flex; flex-direction: column; justify-content: center; gap: 1rem; }
+      .hero-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+      @media (max-width: 480px){ .hero-stat-row { grid-template-columns: 1fr; } }
+      .hero-stat { background: rgba(253,248,240,0.07); border: 1px solid rgba(232,212,188,0.15); border-radius: 16px; padding: 1.2rem 1.1rem; transition: background .2s, transform .2s; position: relative; overflow: hidden; }
+      .hero-stat::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),transparent); opacity:.4; }
+      .hero-stat:hover { background: rgba(253,248,240,0.12); transform: translateY(-2px); }
+      .hero-stat-ic { color: var(--gold); margin-bottom: 0.5rem; }
+      .hero-stat-value { font-family: 'Cinzel', serif; font-size: 1.7rem; font-weight: 700; color: var(--gold-light); line-height: 1; }
+      .hero-stat-label { font-size: 0.72rem; color: rgba(227,218,201,0.55); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 0.3rem; }
+      .hero-progress-meta { display: flex; justify-content: space-between; font-size: 0.74rem; color: rgba(227,218,201,0.6); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem; }
+      .hero-progress-track { width: 100%; height: 7px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; }
+      .hero-progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--gold), #e8b87a); transition: width 1s ease; box-shadow: 0 0 8px rgba(197,165,126,0.5); }
 
-      .tracker::before {
-        content: '';
-        position: absolute;
-        top: -60px; right: -60px;
-        width: 200px; height: 200px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.06);
-      }
-      .tracker::after {
-        content: '';
-        position: absolute;
-        bottom: -40px; left: -40px;
-        width: 140px; height: 140px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.02);
-        border: 1px solid rgba(255,255,255,0.05);
-      }
+      /* Middle: lessons | leaderboard */
+      .dash-mid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.6rem; align-items: stretch; margin-bottom: 1.6rem; }
+      @media (max-width: 980px){ .dash-mid { grid-template-columns: 1fr; } }
+      .panel { background: rgba(253,248,240,0.55); border: 1px solid rgba(99,32,36,0.12); border-radius: 24px; padding: 1.7rem; backdrop-filter: blur(4px); }
+      .panel-head h2 { font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 700; color: var(--maroon-deep); margin: 0; }
+      .panel-head p { font-size: 0.84rem; color: #5C4033; font-style: italic; margin: 0.25rem 0 1.3rem; }
 
-      .tracker-header {
-        margin-bottom: 1.8rem;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
+      .lc { display: flex; align-items: center; gap: 14px; text-decoration: none; background: rgba(255,255,255,0.6); border: 1px solid rgba(99,32,36,0.1); border-radius: 16px; padding: 1rem 1.1rem; margin-bottom: 0.9rem; transition: transform .25s, box-shadow .25s, border-color .25s; }
+      .lc:last-child { margin-bottom: 0; }
+      .lc:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(99,32,36,0.14); border-color: rgba(197,165,126,0.6); }
+      .lc-ic { width: 50px; height: 50px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--gold-light); background: linear-gradient(150deg, var(--maroon-deep), var(--maroon)); border: 1px solid rgba(197,165,126,0.25); }
+      .lc-main { flex: 1; min-width: 0; }
+      .lc-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem; color: var(--maroon-deep); }
+      .lc-sub { font-size: 0.8rem; color: #5C4033; line-height: 1.4; margin: 2px 0 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .lc-track { height: 5px; background: rgba(99,32,36,0.1); border-radius: 999px; overflow: hidden; }
+      .lc-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--maroon-mid), var(--gold)); }
+      .lc-meta { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--maroon-mid); flex-shrink: 0; }
+      .lc-prog { font-family: monospace; font-size: 0.8rem; font-weight: 700; }
 
-      .tracker-header h2 {
-        font-family: 'Cinzel', serif;
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: var(--cream);
-        letter-spacing: 0.05em;
-      }
+      /* Bottom: achievements */
+      .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.9rem; }
 
-      .tracker-header p {
-        font-size: 0.85rem;
-        color: rgba(227,218,201,0.55);
-        font-style: italic;
-      }
-
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1rem;
-        margin-bottom: 2rem;
-      }
-
-      @media (max-width: 640px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-
-      .stat-card {
-        background: rgba(253,248,240,0.07);
-        border: 1px solid rgba(232,212,188,0.15);
-        border-radius: 16px;
-        padding: 1.4rem 1.2rem;
-        transition: background 0.2s, transform 0.2s;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .stat-card:hover {
-        background: rgba(253,248,240,0.12);
-        transform: translateY(-2px);
-      }
-
-      .stat-card::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 2px;
-        background: linear-gradient(90deg, var(--gold), transparent);
-        opacity: 0.4;
-      }
-
-      .stat-emoji { font-size: 1.6rem; margin-bottom: 0.5rem; display: block; }
-
-      .stat-value {
-        font-family: 'Cinzel', serif;
-        font-size: 1.7rem;
-        font-weight: 700;
-        color: var(--gold-light);
-        line-height: 1;
-        margin-bottom: 0.3rem;
-      }
-
-      .stat-label {
-        font-size: 0.75rem;
-        color: rgba(227,218,201,0.55);
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-      }
-
-      .progress-meta {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.8rem;
-        color: rgba(227,218,201,0.6);
-        margin-bottom: 0.6rem;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-      }
-
-      .progress-track {
-        width: 100%;
-        height: 6px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 999px;
-        overflow: hidden;
-      }
-
-      .progress-fill {
-        height: 100%;
-        border-radius: 999px;
-        background: linear-gradient(90deg, var(--gold), #e8b87a);
-        width: 0%;
-        transition: width 1s ease;
-        box-shadow: 0 0 8px rgba(197,165,126,0.5);
-      }
-
-      .section-label {
-        font-family: 'Cinzel', serif;
-        font-size: 0.65rem;
-        letter-spacing: 0.4em;
-        text-transform: uppercase;
-        color: var(--maroon-mid);
-        opacity: 0.6;
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-
-      .cards-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
-        align-items: stretch;
-      }
-
-      @media (max-width: 900px) { .cards-grid { grid-template-columns: 1fr; } }
-
-      .card-wrap { text-decoration: none; display: block; height: 100%; }
-
-      .card {
-        position: relative;
-        height: 100%;
-        min-height: 380px;
-        border-radius: 22px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease;
-        border: 1px solid rgba(99,32,36,0.18);
-      }
-
-      .card:not(.card--locked):hover {
-        transform: translateY(-10px) scale(1.01);
-        box-shadow: 0 30px 70px rgba(99,32,36,0.22), 0 0 0 1px rgba(197,165,126,0.3);
-      }
-
-      .card--basic { background: linear-gradient(160deg, #f5ede0 0%, #e8d3b8 100%); }
-      .card--advanced { background: linear-gradient(160deg, var(--maroon-deep) 0%, var(--maroon) 100%); }
-      .card--locked { background: linear-gradient(160deg, #d4c5b0 0%, #c8b89a 100%); opacity: 0.6; cursor: not-allowed; }
-
-      .card-stripe { height: 4px; width: 100%; }
-      .card--basic .card-stripe { background: linear-gradient(90deg, var(--maroon), var(--gold)); }
-      .card--advanced .card-stripe { background: linear-gradient(90deg, var(--gold), var(--maroon-mid)); }
-      .card--locked .card-stripe { background: linear-gradient(90deg, #aaa, #888); }
-
-      .card-inner {
-        padding: 2rem 2rem 2.2rem;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        gap: 0;
-      }
-
-      .card-badge {
-        display: inline-block;
-        font-family: 'Cinzel', serif;
-        font-size: 0.6rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        padding: 0.3rem 0.9rem;
-        border-radius: 999px;
-        font-weight: 700;
-        align-self: flex-start;
-        margin-bottom: 1.4rem;
-      }
-
-      .card--basic .card-badge { background: rgba(99,32,36,0.1); color: var(--maroon); border: 1px solid rgba(99,32,36,0.2); }
-      .card--advanced .card-badge { background: rgba(197,165,126,0.15); color: var(--gold-light); border: 1px solid rgba(197,165,126,0.25); }
-      .card--locked .card-badge { background: rgba(0,0,0,0.1); color: #666; border: 1px solid rgba(0,0,0,0.1); }
-
-      .card-icon-wrap {
-        width: 72px; height: 72px;
-        border-radius: 18px;
-        display: flex; align-items: center; justify-content: center;
-        margin-bottom: 1.5rem;
-        position: relative;
-      }
-      .card--basic .card-icon-wrap { background: rgba(99,32,36,0.08); border: 1px solid rgba(99,32,36,0.12); }
-      .card--advanced .card-icon-wrap { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); }
-      .card--locked .card-icon-wrap { background: rgba(0,0,0,0.07); border: 1px solid rgba(0,0,0,0.1); }
-      .card-icon-wrap img { width: 44px; height: 44px; }
-      .card--advanced .card-icon-wrap img { filter: brightness(0) invert(1); opacity: 0.85; }
-
-      .card-title {
-        font-family: 'Cinzel', serif;
-        font-size: 1.55rem;
-        font-weight: 700;
-        letter-spacing: 0.01em;
-        line-height: 1.15;
-        margin-bottom: 0.9rem;
-      }
-      .card--basic .card-title { color: var(--maroon-deep); }
-      .card--advanced .card-title { color: var(--cream); }
-      .card--locked .card-title { color: #5C4033; }
-
-      .card-desc { font-size: 0.95rem; line-height: 1.7; flex: 1; font-weight: 300; }
-      .card--basic .card-desc { color: #5C4033; }
-      .card--advanced .card-desc { color: rgba(227,218,201,0.75); }
-      .card--locked .card-desc { color: #7a6050; }
-
-      .card-progress { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid rgba(99,32,36,0.1); }
-      .card--advanced .card-progress { border-top-color: rgba(255,255,255,0.1); }
-
-      .card-progress-meta {
-        display: flex; justify-content: space-between;
-        font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.6rem;
-      }
-      .card--basic .card-progress-meta { color: var(--maroon-mid); }
-      .card--advanced .card-progress-meta { color: rgba(227,218,201,0.5); }
-
-      .card-track { width: 100%; height: 5px; border-radius: 999px; overflow: hidden; }
-      .card--basic .card-track { background: rgba(99,32,36,0.12); }
-      .card--advanced .card-track { background: rgba(255,255,255,0.1); }
-
-      .card-fill { height: 100%; border-radius: 999px; width: 0%; }
-      .card--basic .card-fill { background: linear-gradient(90deg, var(--maroon-mid), var(--gold)); }
-      .card--advanced .card-fill { background: linear-gradient(90deg, var(--gold), #e8b87a); }
-
-      .card-locked-footer {
-        margin-top: 1.6rem; padding-top: 1.2rem;
-        border-top: 1px solid rgba(0,0,0,0.08);
-        font-size: 0.85rem; color: #7a6050;
-        display: flex; align-items: center; gap: 0.5rem;
-      }
-
-      .card-arrow {
-        position: absolute; bottom: 1.5rem; right: 1.8rem;
-        opacity: 0; transform: translateX(-6px);
-        transition: opacity 0.25s, transform 0.25s;
-        font-size: 1.1rem;
-      }
-      .card--basic .card-arrow { color: var(--maroon-mid); }
-      .card--advanced .card-arrow { color: var(--gold); }
-      .card:not(.card--locked):hover .card-arrow { opacity: 1; transform: translateX(0); }
-
-      .card-number {
-        position: absolute; top: 1.4rem;
-        font-family: 'Cinzel', serif; font-size: 7rem; font-weight: 900;
-        line-height: 1; pointer-events: none; user-select: none;
-      }
-      .card--basic .card-number { color: rgba(99,32,36,0.13); }
-      .card--advanced .card-number { color: rgba(255,255,255,0.10); }
-      .card--locked .card-number { color: rgba(0,0,0,0.09); }
-      @keyframes fadeSlideDown {
-        from { opacity: 0; transform: translateX(-50%) translateY(-16px); }
-        to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-      }
+      @keyframes fadeSlideDown { from { opacity:0; transform: translateX(-50%) translateY(-16px);} to { opacity:1; transform: translateX(-50%) translateY(0);} }
     `;
     document.head.appendChild(style);
     return () => { document.head.removeChild(style); };
-  }, []);
-
-  const cardClass = (cat: Category) => {
-    if (cat.locked) return "card card--locked";
-    if (cat.nameKey === "basic.name") return "card card--basic";
-    if (cat.nameKey === "advanced.name") return "card card--advanced";
-    return "card";
-  };
-
-  const renderCard = (cat: Category, index: number) => (
-    <div
-      ref={(el) => { cardsRef.current[index] = el; }}
-      className={cardClass(cat)}
-    >
-      <div className="card-stripe" />
-      <div className="card-inner">
-        <span className="card-number" style={isRtl ? { left: "1.6rem" } : { right: "1.6rem" }}>{index + 1}</span>
-        {cat.badgeKey && <span className="card-badge">{t(cat.badgeKey)}</span>}
-        <div className="card-icon-wrap">
-          <img src={cat.icon} alt={t(cat.nameKey)} />
-        </div>
-        <h2 className="card-title">{t(cat.nameKey)}</h2>
-        <p className="card-desc">{t(cat.descKey)}</p>
-        {!cat.locked && cat.progress && (
-          <div className="card-progress">
-            <div className="card-progress-meta">
-              <span>{t("progress")}</span>
-              <span>{cat.progress}</span>
-            </div>
-            <div className="card-track">
-              <div className="card-fill" style={{ width: cat.nameKey === "basic.name" ? `${Math.round((basicCompleted/3)*100)}%` : cat.nameKey === "advanced.name" ? `${Math.round((advancedCompleted/3)*100)}%` : "0%" }} />
-            </div>
-          </div>
-        )}
-        {cat.locked && (
-          <div className="card-locked-footer">
-            <span>🚀</span>
-            <span>{t("comingSoon")}</span>
-          </div>
-        )}
-      </div>
-      {!cat.locked && <span className="card-arrow">→</span>}
-    </div>
-  );
+  }, [isRtl]);
 
   return (
-    <div className="dashboard-root">
+    <div className="dash-root" dir={isRtl ? "rtl" : "ltr"}>
       {showLoginToast && (
         <div
           style={{
@@ -590,140 +203,135 @@ export default function DashboardPage() {
           {tAuth("login.success")}
         </div>
       )}
-      <div className="bg-pattern" />
-      <div className="orb orb-1" />
-      <div className="orb orb-2" />
-      <div className="orb orb-3" />
 
-      <div className="content">
+      <div className="dash-bg" />
+      <div className="dash-orb dash-orb-1" />
+      <div className="dash-orb dash-orb-2" />
+      <div className="dash-orb dash-orb-3" />
 
-        {/* ── Header ── */}
-        <header className="header">
-          <div className="header-eyebrow">{t("headerEyebrow")}</div>
+      <div className="dash-content">
+        {/* ── Centered header ── */}
+        <header className="dash-header">
+          <div className="dash-eyebrow">{t("headerEyebrow")}</div>
           <h1>{t("brand")} <span>{t("headerTitle")}</span></h1>
           <p>{t("headerSubtitle")}</p>
         </header>
 
-        {/* ── Progress Tracker ── */}
-        <div className="tracker">
-          <div className="tracker-header">
-            <div>
-              <h2>{t("trackerTitle")}</h2>
-              <p>{t("trackerSubtitle")}</p>
-            </div>
-          </div>
-          <div className="stats-grid">
-            <div className="stat-card">
-              <span className="stat-emoji">📚</span>
-              <div className="stat-value">{completedLessons}</div>
-              <div className="stat-label">{t("lessonsCompleted")}</div>
-            </div>
-            <div className="stat-card">
-              <span className="stat-emoji">⚡</span>
-              <div className="stat-value">{totalXP} XP</div>
-              <div className="stat-label">{t("totalXP")}</div>
-            </div>
-            <div className="stat-card">
-              <span className="stat-emoji">🏅</span>
-              <div className="stat-value">{totalBadges}</div>
-              <div className="stat-label">{t("badges")}</div>
-            </div>
-            <div className="stat-card">
-              <span className="stat-emoji">🛡️</span>
-              <div className="stat-value" style={{ fontSize: "1.3rem" }}>{level}</div>
-              <div className="stat-label">{t("currentLevel")}</div>
-            </div>
-          </div>
-          <div className="progress-section">
-            <div className="progress-meta">
-              <span>{t("levelProgress")}</span>
-              <span>{overallPct}%</span>
-            </div>
-            <div className="progress-track">
-              <div className="progress-fill" style={{ width: `${overallPct}%` }} />
-            </div>
-          </div>
-        </div>
-
-        {/* ── Cards ── */}
-        <p className="section-label">{t("selectPath")}</p>
-        <div className="cards-grid">
-          {categories.map((cat, index) =>
-            cat.locked ? (
-              <div key={index} className="card-wrap" style={{ pointerEvents: "none" }}>
-                {renderCard(cat, index)}
+        {/* ── Hero: progress overview ── */}
+        <section className="hero">
+          <div className="hero-ring-wrap">
+            <div
+              className="hero-ring"
+              style={{ background: `conic-gradient(#c5a57e ${overallPct * 3.6}deg, rgba(255,255,255,0.10) ${overallPct * 3.6}deg)` }}
+            >
+              <div className="hero-ring-inner">
+                <span className="hero-xp">{totalXP}</span>
+                <span className="hero-xp-label">XP</span>
               </div>
-            ) : (
-              <Link key={index} href={cat.href!} className="card-wrap">
-                {renderCard(cat, index)}
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div className="hero-level-name">{level}</div>
+              <div className="hero-level-label">{t("currentLevel")}</div>
+            </div>
+          </div>
+
+          <div className="hero-stats">
+            <div className="hero-stat-row">
+              <div className="hero-stat">
+                <BookOpen className="hero-stat-ic" size={26} />
+                <div className="hero-stat-value">{completedLessons}/{totalLessons}</div>
+                <div className="hero-stat-label">{t("lessonsCompleted")}</div>
+              </div>
+              <div className="hero-stat">
+                <Medal className="hero-stat-ic" size={26} />
+                <div className="hero-stat-value">{totalBadges}</div>
+                <div className="hero-stat-label">{t("badges")}</div>
+              </div>
+              <div className="hero-stat">
+                <Target className="hero-stat-ic" size={26} />
+                <div className="hero-stat-value">{overallPct}%</div>
+                <div className="hero-stat-label">{t("levelProgress")}</div>
+              </div>
+            </div>
+            <div>
+              <div className="hero-progress-meta">
+                <span>{t("levelProgress")}</span>
+                <span>{completedLessons}/{totalLessons}</span>
+              </div>
+              <div className="hero-progress-track">
+                <div className="hero-progress-fill" style={{ width: `${overallPct}%` }} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Middle: lessons (left) | leaderboard (right) ── */}
+        <div className="dash-mid">
+          <section className="panel">
+            <div className="panel-head">
+              <h2>{isRtl ? "دروسك" : "Your Lessons"}</h2>
+              <p>{isRtl ? "اختر مسارًا وواصل التعلّم" : "Pick a track and keep learning"}</p>
+            </div>
+            {tracks.map((tr) => (
+              <Link key={tr.href} href={tr.href} className="lc">
+                <span className="lc-ic"><tr.Icon size={24} /></span>
+                <div className="lc-main">
+                  <div className="lc-name">{t(tr.nameKey)}</div>
+                  <div className="lc-sub">{t(tr.descKey)}</div>
+                  <div className="lc-track"><div className="lc-fill" style={{ width: `${tr.fill}%` }} /></div>
+                </div>
+                <div className="lc-meta">
+                  <span className="lc-prog">{tr.progress}</span>
+                  <ArrowRight size={16} style={isRtl ? { transform: "scaleX(-1)" } : undefined} />
+                </div>
               </Link>
-            )
-          )}
+            ))}
+          </section>
+
+          <aside>
+            <LessonLeaderboard youXP={totalXP} listLimit={4} />
+          </aside>
         </div>
 
-        {/* ── Badges Section ── */}
-        <div style={{ marginTop: "3rem" }}>
-          <p className="section-label" style={{ marginBottom: "0.3rem" }}>{t("badgesSection")}</p>
-          <p style={{ fontSize: "0.9rem", color: "#5C4033", marginBottom: "1.8rem", fontStyle: "italic" }}>{t("badgesSectionSub")}</p>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-            gap: "1rem",
-            direction: isRtl ? "rtl" : "ltr",
-          }}>
+        {/* ── Bottom: achievements ── */}
+        <section className="panel">
+          <div className="panel-head">
+            <h2>{t("badgesSection")}</h2>
+            <p>{t("badgesSectionSub")}</p>
+          </div>
+          <div className="badge-grid">
             {BADGE_DEFS.map((badge) => {
               const badgeT = t.raw(`badgeList.${badge.id}`) as { title: string; desc: string };
+              const Icon = badge.Icon;
               return (
                 <div key={badge.id} style={{
-                  background: badge.earned
-                    ? "linear-gradient(135deg, #3e1316, #632024)"
-                    : "rgba(62,19,22,0.05)",
-                  border: badge.earned
-                    ? "1px solid rgba(197,165,126,0.4)"
-                    : "1px solid rgba(62,19,22,0.12)",
-                  borderRadius: 16,
-                  padding: "1.1rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  gap: "0.5rem",
-                  opacity: badge.earned ? 1 : 0.55,
-                  transition: "opacity 0.2s, transform 0.2s",
-                  position: "relative",
-                  overflow: "hidden",
+                  background: badge.earned ? "linear-gradient(135deg, #3e1316, #632024)" : "rgba(62,19,22,0.05)",
+                  border: badge.earned ? "1px solid rgba(197,165,126,0.4)" : "1px solid rgba(62,19,22,0.12)",
+                  borderRadius: 16, padding: "1.2rem 1.1rem", display: "flex", flexDirection: "column",
+                  alignItems: "center", textAlign: "center", gap: "0.55rem",
+                  opacity: badge.earned ? 1 : 0.6, position: "relative", overflow: "hidden",
                 }}>
                   {badge.earned && (
-                    <div style={{
-                      position: "absolute", top: 0, left: 0, right: 0,
-                      height: 2,
-                      background: "linear-gradient(90deg, #c5a57e, rgba(197,165,126,0.2))",
-                    }} />
+                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, #c5a57e, rgba(197,165,126,0.2))" }} />
                   )}
-                  <span style={{ fontSize: "1.8rem", filter: badge.earned ? "none" : "grayscale(1)" }}>
-                    {badge.icon}
-                  </span>
                   <div style={{
-                    fontFamily: "'Cinzel', serif",
-                    fontSize: "0.72rem",
-                    fontWeight: 700,
-                    letterSpacing: "0.05em",
-                    color: badge.earned ? "#E8D4BC" : "#5C4033",
+                    width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center",
+                    background: badge.earned ? "rgba(197,165,126,0.18)" : "rgba(99,32,36,0.06)",
+                    border: badge.earned ? "1px solid rgba(197,165,126,0.35)" : "1px solid rgba(99,32,36,0.12)",
                   }}>
+                    <Icon size={22} color={badge.earned ? "#E8D4BC" : "#9a7a68"} />
+                  </div>
+                  <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", color: badge.earned ? "#E8D4BC" : "#5C4033" }}>
                     {badgeT.title}
                   </div>
-                  <div style={{
-                    fontSize: "0.72rem",
-                    color: badge.earned ? "rgba(232,212,188,0.7)" : "#7a5a4a",
-                    lineHeight: 1.4,
-                  }}>
+                  <div style={{ fontSize: "0.72rem", color: badge.earned ? "rgba(232,212,188,0.7)" : "#7a5a4a", lineHeight: 1.4 }}>
                     {badge.earned ? badgeT.desc : t("badgeNotEarned")}
                   </div>
                 </div>
               );
             })}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
