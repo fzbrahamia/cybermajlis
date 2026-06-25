@@ -92,7 +92,7 @@ export const lessons: Record<string, Lesson> = {
     videoUrl: "/videos/router-security.mp4",
     readingTitle: "Protect your home Wi-Fi step by step",
     readingIntro:
-      "The router is the digital gate for the smart home. The first part changes depending on the device you use, then the protection steps become the same for everyone.",
+      "",
     platformGuides: [
       {
         label: "Windows",
