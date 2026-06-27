@@ -316,12 +316,18 @@ const isMobileGuide =
 
 const sharedFolder = isMobileGuide ? "mobile-common" : "common";
 
-const commonSteps = lesson.readingSections.map((section, index) => ({
-  title: section.title,
-  body: section.body ?? "",
-  bullets: section.bullets,
-  image: `/diy-manual/${deviceId}/${sharedFolder}/${pad(index + 1)}.png`,
-}));
+const commonSteps = lesson.readingSections.map((section, index) => {
+  const imagePath = selectedGuide
+    ? `/diy-manual/${deviceId}/${sharedFolder}/${pad(index + 1)}.png`
+    : `/diy-manual/${deviceId}/${pad(index + 1)}.png`;
+
+  return {
+    title: section.title,
+    body: section.body ?? "",
+    bullets: section.bullets,
+    image: imagePath,
+  };
+});
 
   const steps = selectedGuide ? [...platformSteps, ...commonSteps] : commonSteps;
 

@@ -284,8 +284,7 @@ export const lessons: Record<string, Lesson> = {
       },
       {
         title: "2. Update the TV system",
-        body: "Look for one of these update options. If an official update is available, install it.",
-        bullets: ["Software Update", "System Update", "Update System"],
+        body: "Check System, Support, or About TV. Look for Software Update, System Update, or Update System. If an official update is available, install it.",
       },
       {
         title: "3. Download apps from the official store only",
@@ -842,8 +841,7 @@ export const lessonsAr: Record<string, Lesson> = {
       },
       {
         title: "٢. حدّث نظام التلفاز",
-        body: "ابحث عن أحد خيارات التحديث التالية. إذا كان تحديث رسمي متاحاً، ثبّته.",
-        bullets: ["تحديث البرنامج", "تحديث النظام", "تحسين النظام"],
+        body: "تحقق من System أو Support أو About TV. ابحث عن Software Update أو System Update أو Update System. إذا كان هناك تحديث رسمي متاح، قم بتثبيته.",
         whyItMatters: "التحديثات تُصلح نقاط الضعف الأمنية وتحسّن طريقة عمل التلفاز بأمان.",
       },
       {
