@@ -311,11 +311,17 @@ function VisualManualPageContent({
       }))
     : [];
 
-  const commonSteps = lesson.readingSections.map((section, index) => ({
-    body: section.body || "",
-    bullets: section.bullets,
-    image: `/diy-manual/${deviceId}/common/${pad(index + 1)}.png`,
-  }));
+const isMobileGuide =
+  selectedGuide?.label === "iPhone" || selectedGuide?.label === "Android";
+
+const sharedFolder = isMobileGuide ? "mobile-common" : "common";
+
+const commonSteps = lesson.readingSections.map((section, index) => ({
+  title: section.title,
+  body: section.body ?? "",
+  bullets: section.bullets,
+  image: `/diy-manual/${deviceId}/${sharedFolder}/${pad(index + 1)}.png`,
+}));
 
   const steps = selectedGuide ? [...platformSteps, ...commonSteps] : commonSteps;
 
