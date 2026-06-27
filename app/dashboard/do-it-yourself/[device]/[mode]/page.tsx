@@ -286,15 +286,18 @@ function VisualManualPageContent({
         visualManual: "الدليل المصوّر",
         chooseDevice: "اختر جهازك",
         step: "الخطوة",
+        screenshotNote:
+          "",
       }
     : {
         visualManual: "Visual Manual",
         chooseDevice: "Choose your device",
         step: "Step",
+        screenshotNote:
+          "",
       };
 
   const pad = (num: number) => String(num).padStart(2, "0");
-
   const toSlug = (value: string) => value.toLowerCase().replace(/\s+/g, "-");
 
   const hasPlatformGuides = Boolean(lesson.platformGuides?.length);
@@ -314,11 +317,6 @@ function VisualManualPageContent({
     image: `/diy-manual/${deviceId}/common/${pad(index + 1)}.png`,
   }));
 
-  /*
-    Important:
-    The displayed step number is calculated later from the final combined list.
-    This prevents the numbering from restarting at Step 1 after platform steps.
-  */
   const steps = selectedGuide ? [...platformSteps, ...commonSteps] : commonSteps;
 
   return (
@@ -364,31 +362,43 @@ function VisualManualPageContent({
         }
 
         .manual-step-title {
-          margin-bottom: 0.85rem;
+          margin-bottom: 1rem;
         }
 
         .manual-step-title h2 {
           font-family: 'Cinzel', serif;
           color: #3e1316;
           margin: 0;
-          font-size: clamp(1.08rem, 2vw, 1.38rem);
+          font-size: clamp(1.08rem, 2vw, 1.4rem);
           letter-spacing: 0.02em;
         }
 
         .manual-layout {
           display: grid;
-          grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
-          gap: 1.25rem;
-          align-items: start;
+          grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+          gap: 2rem;
+          align-items: center;
+        }
+
+        .manual-layout.reverse {
+          grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.2fr);
+        }
+
+        .manual-layout.reverse .manual-image-wrap {
+          order: 2;
+        }
+
+        .manual-layout.reverse .manual-text {
+          order: 1;
         }
 
         .manual-image-wrap {
-  background: transparent;
-  border: none;
-  border-radius: 18px;
-  overflow: visible;
-  box-shadow: none;
-}
+          background: transparent;
+          border: none;
+          border-radius: 18px;
+          overflow: visible;
+          box-shadow: none;
+        }
 
         .manual-image {
           width: 100%;
@@ -397,75 +407,101 @@ function VisualManualPageContent({
         }
 
         .manual-text {
-          padding-top: 0.1rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          min-height: 100%;
+          padding: 0 0.4rem;
+        }
+
+        .manual-text.short {
+          text-align: center;
+          align-items: center;
         }
 
         .manual-text p {
           margin: 0;
           color: #5C4033;
-          line-height: 1.75;
-          font-size: 1rem;
+          line-height: 1.8;
+          font-size: 1.08rem;
+          max-width: 430px;
+        }
+
+        .manual-text.short p {
+          font-size: 1.18rem;
+          line-height: 1.9;
+          max-width: 500px;
         }
 
         .manual-text ul {
-  list-style: none;
-  margin: 0.9rem 0 0;
-  padding: 0;
-  color: #5C4033;
-  line-height: 1.8;
-}
+          list-style: none;
+          margin: 1rem 0 0;
+          padding: 0;
+          color: #5C4033;
+          line-height: 1.9;
+          max-width: 500px;
+        }
 
-.manual-text li {
-  position: relative;
-  margin-bottom: 0.35rem;
-  padding-inline-start: 1.1rem;
-}
+        .manual-text li {
+          position: relative;
+          margin-bottom: 0.45rem;
+          padding-inline-start: 1.1rem;
+          font-size: 1rem;
+        }
 
-.manual-text li::before {
-  content: "-";
-  position: absolute;
-  inset-inline-start: 0;
-  color: #8B2635;
-  font-weight: 700;
-}
+        .manual-text li::before {
+          content: "-";
+          position: absolute;
+          inset-inline-start: 0;
+          color: #8B2635;
+          font-weight: 700;
+        }
 
         .manual-connector {
           display: flex;
           justify-content: center;
           align-items: center;
-          margin: 1rem 0 1.7rem;
+          margin: 1.2rem 0 2rem;
           pointer-events: none;
         }
 
-        .manual-connector {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 1rem 0 1.7rem;
-  pointer-events: none;
-}
+        .manual-simple-arrow {
+          width: 54px;
+          height: 70px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0.9;
+        }
 
-.manual-simple-arrow {
-  width: 54px;
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.9;
-}
+        .manual-simple-arrow svg {
+          display: block;
+          filter: drop-shadow(0 6px 10px rgba(62,19,22,0.10));
+        }
 
-.manual-simple-arrow svg {
-  display: block;
-  filter: drop-shadow(0 6px 10px rgba(62,19,22,0.10));
-}
-
-        @media (max-width: 900px) {
-          .manual-layout {
+        @media (max-width: 980px) {
+          .manual-layout,
+          .manual-layout.reverse {
             grid-template-columns: 1fr;
+            gap: 1rem;
           }
 
-          .manual-text {
-            padding-top: 0;
+          .manual-layout.reverse .manual-image-wrap,
+          .manual-layout.reverse .manual-text {
+            order: initial;
+          }
+
+          .manual-text,
+          .manual-text.short {
+            text-align: start;
+            align-items: flex-start;
+            padding: 0;
+          }
+
+          .manual-text p,
+          .manual-text.short p,
+          .manual-text ul {
+            max-width: 100%;
           }
         }
 
@@ -474,9 +510,12 @@ function VisualManualPageContent({
             padding: 0.95rem;
           }
 
-          .manual-maze-arrow {
-            width: 110px;
-            height: 72px;
+          .manual-text p {
+            font-size: 1rem;
+          }
+
+          .manual-text.short p {
+            font-size: 1.08rem;
           }
         }
       `}</style>
@@ -546,70 +585,78 @@ function VisualManualPageContent({
         )}
       </div>
 
-      {steps.map((step, index) => (
-        <div key={`${deviceId}-visual-step-${index}`}>
-          <section id={`manual-step-${index}`} className="manual-step">
-            <div className="manual-step-title">
-              <h2>
-                {ui.step} {index + 1}:
-              </h2>
-            </div>
+      {steps.map((step, index) => {
+        const isShortStep =
+          (!step.bullets || step.bullets.length === 0) &&
+          step.body.trim().length <= 120;
 
-            <div className="manual-layout">
-              <div className="manual-image-wrap">
-                <img
-                  src={step.image}
-                  alt={`${ui.step} ${index + 1}`}
-                  className="manual-image"
-                  onError={(event) => {
-                    const img = event.currentTarget;
-                    if (!img.src.includes("placeholder")) {
-                      img.src = "/diy-manual/placeholder.png";
-                    }
-                  }}
-                />
+        return (
+          <div key={`${deviceId}-visual-step-${index}`}>
+            <section id={`manual-step-${index}`} className="manual-step">
+              <div className="manual-step-title">
+                <h2>
+                  {ui.step} {index + 1}:
+                </h2>
               </div>
 
-              <div className="manual-text">
-                <p>{step.body}</p>
+              <div
+                className={`manual-layout ${index % 2 === 1 ? "reverse" : ""}`}
+              >
+                <div className="manual-image-wrap">
+                  <img
+                    src={step.image}
+                    alt={`${ui.step} ${index + 1}`}
+                    className="manual-image"
+                    onError={(event) => {
+                      const img = event.currentTarget;
+                      if (!img.src.includes("placeholder")) {
+                        img.src = "/diy-manual/placeholder.png";
+                      }
+                    }}
+                  />
+                </div>
 
-                {step.bullets && step.bullets.length > 0 && (
-                  <ul>
-                    {step.bullets.map((bullet) => (
-                      <li key={bullet}>{bullet}</li>
-                    ))}
-                  </ul>
-                )}
+                <div className={`manual-text ${isShortStep ? "short" : ""}`}>
+                  <p>{step.body}</p>
+
+                  {step.bullets && step.bullets.length > 0 && (
+                    <ul>
+                      {step.bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
 
-          {index < steps.length - 1 && (
-            <div className="manual-connector" aria-hidden="true">
-  <div className="manual-simple-arrow">
-    <svg viewBox="0 0 54 70" width="54" height="70">
-      <path
-        d="M27 6 V52"
-        fill="none"
-        stroke="#8B2635"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <path
-        d="M16 42 L27 53 L38 42"
-        fill="none"
-        stroke="#8B2635"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="27" cy="6" r="3.5" fill="#c5a57e" />
-    </svg>
-  </div>
-</div>
-          )}
-        </div>
-      ))}
+            {index < steps.length - 1 && (
+              <div className="manual-connector" aria-hidden="true">
+                <div className="manual-simple-arrow">
+                  <svg viewBox="0 0 54 70" width="54" height="70">
+                    <path
+                      d="M27 6 V52"
+                      fill="none"
+                      stroke="#8B2635"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M16 42 L27 53 L38 42"
+                      fill="none"
+                      stroke="#8B2635"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <circle cx="27" cy="6" r="3.5" fill="#c5a57e" />
+                  </svg>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
     </section>
   );
 }
