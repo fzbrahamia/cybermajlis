@@ -7,6 +7,7 @@ import { onAuthStateChanged, updateProfile } from "firebase/auth";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { lessonsData } from "@/app/lib/lessonsData";
 import CharacterSelection from "@/components/CharacterSelection";
+import { Trophy, UserRound, Sparkles } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 
 export default function ProfilePage() {
@@ -20,6 +21,7 @@ export default function ProfilePage() {
   const [newAvatar, setNewAvatar] = useState("");
   const [completedLessons, setCompletedLessons] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [avatarBroken, setAvatarBroken] = useState(false);
   const t = useTranslations("Profile");
   const locale = useLocale();
 
@@ -59,6 +61,8 @@ export default function ProfilePage() {
       unsubscribeSnapshot?.();
     };
   }, []);
+
+  useEffect(() => { setAvatarBroken(false); }, [userData?.avatar]);
 
   const handleSaveUsername = async () => {
     if (!newUsername || newUsername.length < 3) return;
@@ -279,11 +283,11 @@ export default function ProfilePage() {
 
       /* ── Section Cards ── */
       .section-card {
-        background: rgba(253,248,240,0.6);
+        background: rgba(253,248,240,0.72);
         border: 1px solid rgba(99,32,36,0.12);
-        border-radius: 20px;
-        padding: 2rem 2.2rem;
-        margin-bottom: 1.2rem;
+        border-radius: 22px;
+        padding: 2.2rem 2.4rem;
+        margin-bottom: 1.5rem;
         position: relative;
         overflow: hidden;
         backdrop-filter: blur(4px);
@@ -298,45 +302,78 @@ export default function ProfilePage() {
         opacity: 0.5;
       }
 
+      /* Section header: icon + readable title */
+      .section-head {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        margin-bottom: 1.6rem;
+      }
+
+      .section-icon {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--maroon);
+        background: linear-gradient(135deg, rgba(99,32,36,0.10), rgba(197,165,126,0.22));
+        border: 1px solid rgba(99,32,36,0.16);
+      }
+
       .section-title {
         font-family: 'Cinzel', serif;
-        font-size: 0.72rem;
-        letter-spacing: 0.3em;
+        font-size: 0.92rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: var(--maroon-mid);
-        opacity: 0.7;
-        margin-bottom: 1.2rem;
-      }
-
-      /* XP row */
-      .xp-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.4rem;
-      }
-
-      .xp-label {
-        font-family: 'Cinzel', serif;
-        font-size: 1rem;
         color: var(--maroon-deep);
+        opacity: 0.95;
+        margin-bottom: 0;
       }
 
-      .xp-value {
+      /* Stat tiles */
+      .stat-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.6rem;
+      }
+
+      .stat-tile {
+        background: linear-gradient(160deg, #ffffff 0%, #f6eee1 100%);
+        border: 1px solid rgba(99,32,36,0.12);
+        border-radius: 16px;
+        padding: 1.2rem 1.3rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .stat-tile-value {
         font-family: 'Cinzel', serif;
-        font-size: 1.6rem;
+        font-size: 1.9rem;
         font-weight: 700;
         color: var(--maroon-mid);
+        line-height: 1;
+      }
+
+      .stat-tile-label {
+        font-size: 0.9rem;
+        color: #5C4033;
+        letter-spacing: 0.02em;
       }
 
       /* Progress bar */
       .progress-meta {
         display: flex;
         justify-content: space-between;
-        font-size: 0.8rem;
+        font-size: 0.92rem;
         color: #5C4033;
-        margin-bottom: 0.5rem;
-        letter-spacing: 0.03em;
+        margin-bottom: 0.55rem;
+        letter-spacing: 0.02em;
       }
 
       .progress-track {
@@ -358,9 +395,9 @@ export default function ProfilePage() {
 
       .progress-pct {
         text-align: right;
-        font-size: 0.75rem;
+        font-size: 0.88rem;
         color: #5C4033;
-        opacity: 0.7;
+        opacity: 0.75;
       }
 
       /* Edit rows */
@@ -372,9 +409,9 @@ export default function ProfilePage() {
       }
 
       .edit-value {
-        font-size: 1.05rem;
+        font-size: 1.2rem;
         color: var(--maroon-deep);
-        font-weight: 300;
+        font-weight: 400;
       }
 
       .edit-input {
@@ -529,8 +566,12 @@ export default function ProfilePage() {
         {/* ── Avatar Card ── */}
         <div className="avatar-card">
           <div className="avatar-ring">
-            {userData?.avatar ? (
-              <img src={userData.avatar} alt="avatar" />
+            {userData?.avatar && !avatarBroken ? (
+              <img
+                src={userData.avatar}
+                alt="avatar"
+                onError={() => setAvatarBroken(true)}
+              />
             ) : (
               <div className="avatar-ring-placeholder">
                 {userData?.username?.charAt(0).toUpperCase()}
@@ -544,11 +585,20 @@ export default function ProfilePage() {
 
         {/* ── XP + Progress ── */}
         <div className="section-card">
-          <div className="section-title">{t("progress_title")}</div>
+          <div className="section-head">
+            <span className="section-icon"><Trophy size={20} strokeWidth={1.6} /></span>
+            <div className="section-title">{t("progress_title")}</div>
+          </div>
 
-          <div className="xp-row">
-            <span className="xp-label">{t("xp_label")}</span>
-            <span className="xp-value">{userData?.xp ?? 0} XP</span>
+          <div className="stat-grid">
+            <div className="stat-tile">
+              <span className="stat-tile-value">{userData?.xp ?? 0}</span>
+              <span className="stat-tile-label">{t("xp_label")}</span>
+            </div>
+            <div className="stat-tile">
+              <span className="stat-tile-value">{completedLessons}/{totalLessons}</span>
+              <span className="stat-tile-label">{t("progress_label")}</span>
+            </div>
           </div>
 
           <div className="progress-meta">
@@ -563,7 +613,10 @@ export default function ProfilePage() {
 
         {/* ── Username ── */}
         <div className="section-card">
-          <div className="section-title">{t("username_title")}</div>
+          <div className="section-head">
+            <span className="section-icon"><UserRound size={20} strokeWidth={1.6} /></span>
+            <div className="section-title">{t("username_title")}</div>
+          </div>
           {editingUsername ? (
             <div className="edit-row">
               <input
@@ -598,7 +651,10 @@ export default function ProfilePage() {
 
         {/* ── Character / Avatar ── */}
         <div className="section-card">
-          <div className="section-title">{t("character_title")}</div>
+          <div className="section-head">
+            <span className="section-icon"><Sparkles size={20} strokeWidth={1.6} /></span>
+            <div className="section-title">{t("character_title")}</div>
+          </div>
           {editingAvatar ? (
             <div>
               <CharacterSelection onSelect={setNewAvatar} value={newAvatar} />
@@ -621,7 +677,13 @@ export default function ProfilePage() {
           ) : (
             <div className="edit-row">
               <div className="avatar-preview">
-                {userData?.avatar && <img src={userData.avatar} alt="avatar" />}
+                {userData?.avatar && !avatarBroken && (
+                  <img
+                    src={userData.avatar}
+                    alt="avatar"
+                    onError={() => setAvatarBroken(true)}
+                  />
+                )}
               </div>
               <button onClick={() => setEditingAvatar(true)} className="btn-primary">{t("change")}</button>
             </div>

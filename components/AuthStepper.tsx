@@ -115,8 +115,8 @@ export default function StepperFlow() {
       .signup-error { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: rgba(232,212,188,0.75); margin: -0.4rem 0 0.6rem 0.2rem; }
       .pw-checks { list-style: none; margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 4px; }
       .pw-check { font-family: 'Crimson Pro', serif; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
-      .pw-check.valid { color: #6a8f5a; text-decoration: line-through; opacity: 0.7; }
-      .pw-check.invalid { color: var(--maroon-mid); }
+      .pw-check.valid { color: #a9c79a; text-decoration: line-through; opacity: 0.85; }
+      .pw-check.invalid { color: rgba(232,212,188,0.92); }
       .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.8rem; }
       .btn-step-back { display: flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.7rem 1.4rem; border-radius: 10px; border: 1px solid rgba(227,218,201,0.25); background: transparent; color: var(--cream); cursor: pointer; transition: background 0.2s; }
       .btn-step-back:hover { background: linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%); }

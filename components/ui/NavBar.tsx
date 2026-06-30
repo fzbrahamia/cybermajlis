@@ -304,7 +304,12 @@ export default function Navbar() {
                       }}
                     >
                       {userAvatar ? (
-                        <img src={userAvatar} alt="avatar" className="w-full h-full object-cover rounded-full" />
+                        <img
+                          src={userAvatar}
+                          alt="avatar"
+                          className="w-full h-full object-cover rounded-full"
+                          onError={() => setUserAvatar("")}
+                        />
                       ) : (
                         username.charAt(0).toUpperCase() || "U"
                       )}

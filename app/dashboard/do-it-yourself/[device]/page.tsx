@@ -141,53 +141,10 @@ export default function DeviceLessonPage() {
             className="choice-grid"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
               gap: "1rem",
             }}
           >
-            <button
-              disabled
-              aria-disabled="true"
-              className="lesson-card locked-card"
-              style={{ background: "#f4eee8", color: "#3e1316" }}
-            >
-              <span className="coming-soon-pill">{ui.comingSoon}</span>
-
-              <h3
-                style={{
-                  fontFamily: "'Cinzel', serif",
-                  fontSize: "1.05rem",
-                  margin: "0 0 0.4rem",
-                }}
-              >
-                {t("watchVideo")}
-              </h3>
-
-              <p style={{ color: "#5C4033", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
-                {ui.videoComingSoonDesc}
-              </p>
-            </button>
-
-            <button
-              onClick={() => openMode("reading")}
-              className="lesson-card"
-              style={{ background: "#fffaf6", color: "#3e1316" }}
-            >
-              <h3
-                style={{
-                  fontFamily: "'Cinzel', serif",
-                  fontSize: "1.05rem",
-                  margin: "0 0 0.4rem",
-                }}
-              >
-                {t("readSteps")}
-              </h3>
-
-              <p style={{ color: "#5C4033", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
-                {t("readStepsDesc")}
-              </p>
-            </button>
-
             <button
               onClick={() => openMode("visual-manual")}
               className="lesson-card"
@@ -239,6 +196,29 @@ export default function DeviceLessonPage() {
                 }}
               >
                 {t("quickChecklistDesc")}
+              </p>
+            </button>
+
+            <button
+              disabled
+              aria-disabled="true"
+              className="lesson-card locked-card"
+              style={{ background: "#f4eee8", color: "#3e1316" }}
+            >
+              <span className="coming-soon-pill">{ui.comingSoon}</span>
+
+              <h3
+                style={{
+                  fontFamily: "'Cinzel', serif",
+                  fontSize: "1.05rem",
+                  margin: "0 0 0.4rem",
+                }}
+              >
+                {t("watchVideo")}
+              </h3>
+
+              <p style={{ color: "#5C4033", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
+                {ui.videoComingSoonDesc}
               </p>
             </button>
           </div>

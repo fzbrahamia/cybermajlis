@@ -615,16 +615,16 @@ function MobileSection({ isAR }: { isAR: boolean }) {
 
   return (
     <section id="mobile" style={{
-      position: "relative", zIndex: 1, background: C.sand, overflow: "hidden",
-      borderTop: "1px solid rgba(197,165,126,.22)", padding: "clamp(72px,11vh,128px) 4rem",
+      position: "relative", zIndex: 1, background: "linear-gradient(180deg,#3e1316 0%,#2a0c0e 100%)", overflow: "hidden",
+      borderTop: "1px solid rgba(197,165,126,.18)", padding: "clamp(72px,11vh,128px) 4rem",
     }}>
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto", display: "flex", gap: "clamp(40px,6vw,90px)", alignItems: "center", flexWrap: "wrap" }}>
         {/* copy */}
         <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.35 }} style={{ flex: "1 1 380px", maxWidth: 540 }}>
-          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 3, color: C.crimson, marginBottom: 18 }}>
+          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 3, color: C.gold, marginBottom: 18 }}>
             {isAR ? "سايبر مجلس على الجوال" : "CYBERMAJLIS ON MOBILE"}
           </motion.div>
-          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(1.9rem,3.4vw,3rem)", lineHeight: 1.08, color: C.maroon, margin: 0 }}>
+          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(1.9rem,3.4vw,3rem)", lineHeight: 1.08, color: C.goldLight, margin: 0 }}>
             {isAR ? "مجلسك في جيبك." : "Your majlis, in your pocket."}
           </motion.h2>
           <motion.div variants={item} style={{ display: "flex", alignItems: "center", gap: 8, margin: "16px 0 18px" }}>
@@ -633,13 +633,13 @@ function MobileSection({ isAR }: { isAR: boolean }) {
           </motion.div>
           <motion.ul variants={item} style={{ listStyle: "none", padding: 0, margin: "4px 0 28px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 18px" }}>
             {points.map(([Icon, en, ar], i) => (
-              <li key={i} style={{ display: "flex", alignItems: "center", gap: 11, fontFamily: crimson, fontSize: "0.98rem", color: "#5a2428" }}>
+              <li key={i} style={{ display: "flex", alignItems: "center", gap: 11, fontFamily: crimson, fontSize: "0.98rem", color: "rgba(232,212,188,.78)" }}>
                 <span style={{
                   width: 32, height: 32, borderRadius: 9, flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "rgba(99,32,36,.07)", border: "1px solid rgba(99,32,36,.18)",
+                  background: "rgba(197,165,126,.14)", border: "1px solid rgba(197,165,126,.3)",
                 }}>
-                  <Icon size={16} color={C.maroonMid} strokeWidth={1.7} />
+                  <Icon size={16} color={C.gold} strokeWidth={1.7} />
                 </span>
                 {isAR ? ar : en}
               </li>
@@ -649,14 +649,14 @@ function MobileSection({ isAR }: { isAR: boolean }) {
             <StoreBadge kind="apple" isAR={isAR} />
             <StoreBadge kind="play" isAR={isAR} />
           </motion.div>
-          <motion.div variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 13, color: "rgba(99,32,36,.55)", marginTop: 14 }}>
+          <motion.div variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 13, color: "rgba(232,212,188,.5)", marginTop: 14 }}>
             {isAR ? "متوفر قريبًا على App Store و Google Play." : "Coming soon to the App Store and Google Play."}
           </motion.div>
         </motion.div>
 
         {/* phone mockup */}
         <motion.div initial={{ opacity: 0, y: 30, scale: 0.94 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, ease: EASE }} style={{ flex: "0 0 auto", marginInline: "auto", position: "relative" }}>
-          <div aria-hidden style={{ position: "absolute", inset: -40, borderRadius: 40, background: "radial-gradient(circle, rgba(99,32,36,.12), transparent 68%)", filter: "blur(20px)" }} />
+          <div aria-hidden style={{ position: "absolute", inset: -40, borderRadius: 40, background: "radial-gradient(circle, rgba(197,165,126,.16), transparent 68%)", filter: "blur(20px)" }} />
           <div style={{
             position: "relative", width: 248, height: 506, borderRadius: 38, padding: 11,
             background: "linear-gradient(160deg,#3e1316,#1d0708)", border: "1px solid rgba(197,165,126,.3)",
@@ -838,7 +838,7 @@ export default function HomePage() {
         display: "flex", alignItems: "center", justifyContent: "center",
         padding: "calc(76px + 4rem) 4rem 4rem", maxWidth: 1280, margin: "0 auto",
       }}>
-        <div style={{ display: "flex", gap: "clamp(40px,5vw,80px)", alignItems: "center", flexWrap: "wrap", justifyContent: "center" }}>
+        <div style={{ width: "100%", display: "flex", gap: "clamp(40px,5vw,80px)", alignItems: "center", flexWrap: "wrap" }}>
 
           {/* copy */}
           <motion.div variants={container} initial="hidden" animate="show" style={{ flex: "1 1 440px", maxWidth: 580 }}>
@@ -913,7 +913,7 @@ export default function HomePage() {
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.2 }}
-            style={{ flex: "0 0 auto", position: "relative", animation: "cmFloat 6s ease-in-out infinite" }}
+            style={{ flex: "0 0 auto", marginInline: "auto", position: "relative", animation: "cmFloat 6s ease-in-out infinite" }}
           >
             <div aria-hidden style={{ position: "absolute", inset: -30, borderRadius: 30, background: "radial-gradient(circle, rgba(197,165,126,.35), transparent 65%)", filter: "blur(16px)" }} />
             <div onClick={handleVideoClick} style={{
@@ -965,27 +965,27 @@ export default function HomePage() {
       {/* ════════ JOIN NOW ════════ */}
       <section id="join" style={{
         position: "relative", zIndex: 1, overflow: "hidden",
-        background: "linear-gradient(160deg,#3e1316 0%,#2a0c0e 100%)",
-        borderTop: "1px solid rgba(197,165,126,.25)",
+        background: "linear-gradient(180deg,#EDE0CE 0%,#E3DAC9 100%)",
+        borderTop: "1px solid rgba(99,32,36,.18)",
         padding: "clamp(96px,16vh,180px) 4rem", textAlign: "center",
       }}>
-        <div aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(197,165,126,.16), transparent 60%)", filter: "blur(60px)" }} />
+        <div aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(197,165,126,.28), transparent 60%)", filter: "blur(60px)" }} />
         <motion.div
           variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.4 }}
           style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}
         >
-          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, letterSpacing: 4, color: C.gold, fontWeight: 700, marginBottom: 18 }}>
+          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, letterSpacing: 4, color: C.crimson, fontWeight: 700, marginBottom: 18 }}>
             {isAR ? "انضم إلى المجلس" : "JOIN THE MAJLIS"}
           </motion.div>
-          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(2rem,4.5vw,3.4rem)", lineHeight: 1.1, color: C.goldLight, margin: 0 }}>
+          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(2rem,4.5vw,3.4rem)", lineHeight: 1.1, color: C.maroon, margin: 0 }}>
             {isAR ? "قطر تحتاج جيلها القادم من المدافعين." : "Qatar needs its next generation of defenders."}
           </motion.h2>
           <motion.div variants={item} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, margin: "22px auto", maxWidth: 280 }}>
-            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,transparent,${C.gold})` }} />
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,transparent,${C.maroonMid})` }} />
             <div style={{ width: 5, height: 5, background: C.gold, transform: "rotate(45deg)" }} />
-            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,${C.gold},transparent)` }} />
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,${C.maroonMid},transparent)` }} />
           </motion.div>
-          <motion.p variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.2rem", color: "rgba(232,212,188,.78)", lineHeight: 1.6, margin: "0 auto 36px", maxWidth: 560 }}>
+          <motion.p variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.2rem", color: "#5a2428", lineHeight: 1.6, margin: "0 auto 36px", maxWidth: 560 }}>
             {isAR
               ? "ابدأ مجانًا اليوم، وكن جزءًا من المجلس الذي يساعد في حماية قطر."
               : "Start for free today, and become part of the majlis that helps keep Qatar safe."}
@@ -993,7 +993,7 @@ export default function HomePage() {
           <motion.div variants={item} style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <button
               onClick={() => router.push("/auth?signup=true")}
-              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1.6, padding: "16px 38px", borderRadius: 12, border: "none", cursor: "pointer", color: C.maroon, background: "linear-gradient(135deg,#E8D4BC,#c5a57e)", boxShadow: "0 10px 30px rgba(197,165,126,.35)", transition: "all .25s ease", display: "inline-flex", alignItems: "center", gap: 10 }}
+              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1.6, padding: "16px 38px", borderRadius: 12, border: "none", cursor: "pointer", color: C.cream, background: "linear-gradient(135deg,#632024,#8B2635 60%,#a03040)", boxShadow: "0 10px 30px rgba(99,32,36,.32)", transition: "all .25s ease", display: "inline-flex", alignItems: "center", gap: 10 }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = ""; }}
             >
@@ -1002,9 +1002,9 @@ export default function HomePage() {
             </button>
             <button
               onClick={() => router.push("/auth")}
-              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1, padding: "16px 34px", borderRadius: 12, cursor: "pointer", color: C.goldLight, background: "rgba(197,165,126,.08)", border: "1.5px solid rgba(197,165,126,.4)", transition: "all .25s ease" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(197,165,126,.18)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "rgba(197,165,126,.08)"; }}
+              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1, padding: "16px 34px", borderRadius: 12, cursor: "pointer", color: C.maroonMid, background: "rgba(99,32,36,.06)", border: "1.5px solid rgba(99,32,36,.3)", transition: "all .25s ease" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.13)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; }}
             >
               {isAR ? "لديّ حساب" : "I have an account"}
             </button>

@@ -10,7 +10,7 @@ import {
   deleteUser,
 } from "firebase/auth";
 import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Lock, Languages, Trash2 } from "lucide-react";
 import Modal from "@/components/Modal";
 import { useTranslations } from "next-intl";
 
@@ -139,12 +139,12 @@ export default function SettingsPage() {
 
       /* ── Cards, cream gradient like lesson cards ── */
       .s-card {
-        background: linear-gradient(160deg, #f5ede0 0%, #ede0cc 100%);
-        border: 1px solid rgba(99,32,36,0.15);
-        border-radius: 20px;
+        background: linear-gradient(160deg, #f7f0e4 0%, #ece0cc 100%);
+        border: 1px solid rgba(99,32,36,0.14);
+        border-radius: 22px;
         overflow: hidden;
-        margin-bottom: 1.4rem;
-        box-shadow: 0 4px 24px rgba(99,32,36,0.08);
+        margin-bottom: 1.8rem;
+        box-shadow: 0 6px 28px rgba(99,32,36,0.09);
       }
 
       .s-card-stripe {
@@ -153,16 +153,45 @@ export default function SettingsPage() {
       }
 
       .s-card-body {
-        padding: 1.8rem 2rem 2rem;
+        padding: 2rem 2.2rem 2.2rem;
+      }
+
+      /* Card header: icon + readable title */
+      .s-card-head {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        margin-bottom: 1.6rem;
+      }
+
+      .s-card-icon {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--maroon);
+        background: linear-gradient(135deg, rgba(99,32,36,0.10), rgba(197,165,126,0.22));
+        border: 1px solid rgba(99,32,36,0.16);
+      }
+
+      .s-card-icon-light {
+        color: var(--gold-light);
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(227,218,201,0.22);
       }
 
       .s-card-title {
         font-family: 'Cinzel', serif;
-        font-size: 0.7rem;
-        letter-spacing: 0.3em;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: var(--maroon-mid);
-        margin-bottom: 1.4rem;
+        color: var(--maroon-deep);
+        margin-bottom: 0;
+        line-height: 1.2;
       }
 
       /* ── Danger card ── */
@@ -214,18 +243,18 @@ export default function SettingsPage() {
       /* ── Inputs ── */
       .s-input-wrap {
         position: relative;
-        margin-bottom: 0.85rem;
+        margin-bottom: 1rem;
       }
 
       .s-input {
         width: 100%;
-        padding: 0.75rem 2.8rem 0.75rem 1rem;
+        padding: 0.85rem 2.8rem 0.85rem 1.1rem;
         border-radius: 12px;
-        background: rgba(253,248,240,0.9);
+        background: rgba(253,248,240,0.95);
         border: 1px solid rgba(99,32,36,0.2);
         color: var(--maroon-deep);
         font-family: 'Crimson Pro', serif;
-        font-size: 1rem;
+        font-size: 1.05rem;
         outline: none;
         transition: border-color 0.2s;
         box-shadow: inset 0 1px 3px rgba(99,32,36,0.05);
@@ -264,11 +293,11 @@ export default function SettingsPage() {
 
       .pw-check {
         font-family: 'Crimson Pro', serif;
-        font-size: 0.92rem;
+        font-size: 1rem;
         display: flex; align-items: center; gap: 6px;
       }
-      .pw-check.valid { color: #6a8f5a; text-decoration: line-through; opacity: 0.7; }
-      .pw-check.invalid { color: var(--maroon-mid); }
+      .pw-check.valid { color: #4d7a3c; text-decoration: line-through; opacity: 0.75; }
+      .pw-check.invalid { color: #7a4a30; }
 
       /* ── Select ── */
       .s-select {
@@ -425,7 +454,10 @@ export default function SettingsPage() {
         <div className="s-card">
           <div className="s-card-stripe" />
           <div className="s-card-body">
-            <div className="s-card-title">{t("password_title")}</div>
+            <div className="s-card-head">
+              <span className="s-card-icon"><Lock size={20} strokeWidth={1.6} /></span>
+              <div className="s-card-title">{t("password_title")}</div>
+            </div>
 
             <div className="s-input-wrap">
               <input type={showCurrentPassword ? "text" : "password"} placeholder={t("current_password")}
@@ -476,7 +508,10 @@ export default function SettingsPage() {
         <div className="s-card">
           <div className="s-card-stripe" />
           <div className="s-card-body">
-            <div className="s-card-title">{t("language_title")}</div>
+            <div className="s-card-head">
+              <span className="s-card-icon"><Languages size={20} strokeWidth={1.6} /></span>
+              <div className="s-card-title">{t("language_title")}</div>
+            </div>
             <select value={language} onChange={e => setLanguage(e.target.value)} className="s-select">
               <option>English</option>
               <option>عربي</option>
@@ -491,7 +526,10 @@ export default function SettingsPage() {
         <div className="s-card-danger">
           <div className="s-card-danger-stripe" />
           <div className="s-card-danger-body">
-            <div className="s-card-title">{t("danger_title")}</div>
+            <div className="s-card-head">
+              <span className="s-card-icon s-card-icon-light"><Trash2 size={20} strokeWidth={1.6} /></span>
+              <div className="s-card-title">{t("danger_title")}</div>
+            </div>
             <p>{t("danger_description")}</p>
             <div className="s-input-wrap">
               <input type={showDeletePassword ? "text" : "password"} placeholder={t("delete_password_placeholder")}

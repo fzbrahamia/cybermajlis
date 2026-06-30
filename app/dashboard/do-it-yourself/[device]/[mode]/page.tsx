@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import { Monitor, Laptop, Smartphone, TabletSmartphone } from "lucide-react";
 import {
   globalLessonStyles,
   lessons,
@@ -16,6 +17,16 @@ import { auth } from "@/app/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 type Mode = "video" | "reading" | "visual-manual" | "checklist";
+
+/* Icon shown for each device/platform in the selection grid */
+function PlatformIcon({ label, size = 38 }: { label: string; size?: number }) {
+  const key = label.toLowerCase();
+  if (key === "windows") return <Monitor size={size} strokeWidth={1.4} />;
+  if (key === "mac") return <Laptop size={size} strokeWidth={1.4} />;
+  if (key === "iphone") return <Smartphone size={size} strokeWidth={1.4} />;
+  if (key === "android") return <TabletSmartphone size={size} strokeWidth={1.4} />;
+  return <Monitor size={size} strokeWidth={1.4} />;
+}
 
 type ManualStep = {
   title: string;
@@ -91,16 +102,67 @@ export default function LessonModePage() {
         }}
       >
         <style>{globalLessonStyles}</style>
+        <style>{`
+          .device-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.1rem;
+            max-width: 560px;
+            margin: 0 auto;
+          }
+          .device-tile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.85rem;
+            min-height: 168px;
+            padding: 1.6rem 1rem;
+            border-radius: 22px;
+            text-decoration: none;
+            background: linear-gradient(160deg, #fdf8f4 0%, #f4eadf 100%);
+            border: 1px solid rgba(99,32,36,0.16);
+            box-shadow: 0 10px 30px rgba(99,32,36,0.10);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+          }
+          .device-tile:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 48px rgba(99,32,36,0.20);
+            border-color: rgba(197,165,126,0.6);
+          }
+          .device-tile-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            color: #E8D4BC;
+            background: linear-gradient(135deg, #3e1316, #632024);
+            border: 1px solid rgba(197,165,126,0.45);
+            box-shadow: 0 8px 20px rgba(62,19,22,0.22);
+          }
+          .device-tile-label {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: 0.04em;
+            color: #3e1316;
+          }
+          @media (max-width: 560px) {
+            .device-matrix { grid-template-columns: 1fr; max-width: 340px; }
+          }
+        `}</style>
         {stickyHeader}
 
         <div style={{ maxWidth: 1050, margin: "0 auto" }}>
           <h2
             style={{
               fontFamily: "'Cinzel', serif",
-              fontSize: "1.15rem",
+              fontSize: "1.25rem",
               fontWeight: 700,
               color: "#3e1316",
-              marginBottom: "1.2rem",
+              marginBottom: "1.6rem",
               letterSpacing: "0.04em",
               textAlign: "center",
             }}
@@ -108,45 +170,17 @@ export default function LessonModePage() {
             {t("chooseDeviceFirst")}
           </h2>
 
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "0.8rem",
-              justifyContent: "center",
-            }}
-          >
+          <div className="device-matrix">
             {lesson.platformGuides.map((guide) => (
               <Link
                 key={guide.label}
                 href={`/dashboard/do-it-yourself/${deviceId}/${mode}/${guide.label.toLowerCase()}`}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontFamily: "'Cinzel', serif",
-                  fontWeight: 700,
-                  fontSize: "0.9rem",
-                  letterSpacing: "0.05em",
-                  color: "#E8D4BC",
-                  background: "linear-gradient(135deg, #3e1316, #632024)",
-                  border: "1px solid rgba(197,165,126,0.45)",
-                  padding: "0.75rem 1.7rem",
-                  borderRadius: 999,
-                  textDecoration: "none",
-                  boxShadow: "0 4px 14px rgba(62,19,22,0.2)",
-                  transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 8px 22px rgba(62,19,22,0.3)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "";
-                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(62,19,22,0.2)";
-                }}
+                className="device-tile"
               >
-                {guide.label}
+                <span className="device-tile-icon">
+                  <PlatformIcon label={guide.label} />
+                </span>
+                <span className="device-tile-label">{guide.label}</span>
               </Link>
             ))}
           </div>
@@ -331,9 +365,38 @@ const commonSteps = lesson.readingSections.map((section, index) => {
 
   const steps = selectedGuide ? [...platformSteps, ...commonSteps] : commonSteps;
 
+  // Reveal each step as it scrolls into view, to bring the page alive.
+  useEffect(() => {
+    const els = Array.from(
+      document.querySelectorAll<HTMLElement>(".manual-step-block")
+    );
+
+    if (typeof IntersectionObserver === "undefined") {
+      els.forEach((el) => el.classList.add("in-view"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [selectedGuideIndex, steps.length]);
+
   return (
     <section>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+
         .manual-header-card {
           background: #fdf8f4;
           border-radius: 20px;
@@ -351,20 +414,42 @@ const commonSteps = lesson.readingSections.map((section, index) => {
         }
 
         .manual-platform-tab {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
           border: 1px solid rgba(99,32,36,0.18);
           background: #fffaf6;
           color: #3e1316;
           border-radius: 999px;
-          padding: 0.55rem 0.9rem;
+          padding: 0.55rem 1.1rem;
           cursor: pointer;
           font-weight: 700;
+          font-family: 'Cinzel', serif;
+          letter-spacing: 0.02em;
           transition: 0.2s ease;
+        }
+
+        .manual-platform-tab:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 18px rgba(99,32,36,0.14);
         }
 
         .manual-platform-tab.active {
           background: linear-gradient(135deg, #3e1316, #632024);
           color: #E8D4BC;
           border-color: rgba(197,165,126,0.45);
+        }
+
+        .manual-step-block {
+          margin-bottom: 2.4rem;
+          opacity: 0;
+          transform: translateY(34px);
+          transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .manual-step-block.in-view {
+          opacity: 1;
+          transform: translateY(0);
         }
 
         .manual-step {
@@ -374,15 +459,55 @@ const commonSteps = lesson.readingSections.map((section, index) => {
         }
 
         .manual-step-title {
-          margin-bottom: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 1.6rem;
         }
 
-        .manual-step-title h2 {
-          font-family: 'Cinzel', serif;
-          color: #3e1316;
-          margin: 0;
-          font-size: clamp(1.08rem, 2vw, 1.4rem);
-          letter-spacing: 0.02em;
+        .manual-step-number {
+          flex-shrink: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 54px;
+          height: 54px;
+          border-radius: 50%;
+          font-family: 'Fredoka', 'Cinzel', sans-serif;
+          font-weight: 700;
+          font-size: 1.7rem;
+          line-height: 1;
+          color: #E8D4BC;
+          background: linear-gradient(135deg, #3e1316, #632024);
+          border: 2px solid rgba(197,165,126,0.6);
+          box-shadow: 0 12px 28px rgba(62,19,22,0.30);
+          transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.12s;
+        }
+
+        .manual-step-block.in-view .manual-step-number {
+          transform: scale(1) rotate(0deg);
+        }
+
+        .manual-step-block:not(.in-view) .manual-step-number {
+          transform: scale(0.3) rotate(-25deg);
+        }
+
+        .manual-image {
+          transition: transform 0.45s ease;
+        }
+
+        .manual-step-block:hover .manual-image {
+          transform: scale(1.025);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .manual-step-block,
+          .manual-step-number,
+          .manual-image {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+          }
         }
 
         .manual-layout {
@@ -433,15 +558,17 @@ const commonSteps = lesson.readingSections.map((section, index) => {
 
         .manual-text p {
           margin: 0;
-          color: #5C4033;
-          line-height: 1.8;
-          font-size: 1.08rem;
+          color: #4a2418;
+          font-family: 'Fredoka', 'Crimson Pro', sans-serif;
+          font-weight: 600;
+          line-height: 1.65;
+          font-size: 1.18rem;
           max-width: 430px;
         }
 
         .manual-text.short p {
-          font-size: 1.18rem;
-          line-height: 1.9;
+          font-size: 1.32rem;
+          line-height: 1.7;
           max-width: 500px;
         }
 
@@ -449,16 +576,18 @@ const commonSteps = lesson.readingSections.map((section, index) => {
           list-style: none;
           margin: 1rem 0 0;
           padding: 0;
-          color: #5C4033;
-          line-height: 1.9;
+          color: #4a2418;
+          font-family: 'Fredoka', 'Crimson Pro', sans-serif;
+          font-weight: 500;
+          line-height: 1.8;
           max-width: 500px;
         }
 
         .manual-text li {
           position: relative;
-          margin-bottom: 0.45rem;
+          margin-bottom: 0.5rem;
           padding-inline-start: 1.1rem;
-          font-size: 1rem;
+          font-size: 1.08rem;
         }
 
         .manual-text li::before {
@@ -467,28 +596,6 @@ const commonSteps = lesson.readingSections.map((section, index) => {
           inset-inline-start: 0;
           color: #8B2635;
           font-weight: 700;
-        }
-
-        .manual-connector {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 1.2rem 0 2rem;
-          pointer-events: none;
-        }
-
-        .manual-simple-arrow {
-          width: 54px;
-          height: 70px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0.9;
-        }
-
-        .manual-simple-arrow svg {
-          display: block;
-          filter: drop-shadow(0 6px 10px rgba(62,19,22,0.10));
         }
 
         @media (max-width: 980px) {
@@ -589,6 +696,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
                     selectedGuideIndex === index ? "active" : ""
                   }`}
                 >
+                  <PlatformIcon label={guide.label} size={20} />
                   {guide.label}
                 </button>
               ))}
@@ -603,12 +711,13 @@ const commonSteps = lesson.readingSections.map((section, index) => {
           step.body.trim().length <= 120;
 
         return (
-          <div key={`${deviceId}-visual-step-${index}`}>
+          <div
+            key={`${deviceId}-visual-step-${index}`}
+            className="manual-step-block"
+          >
             <section id={`manual-step-${index}`} className="manual-step">
               <div className="manual-step-title">
-                <h2>
-                  {ui.step} {index + 1}:
-                </h2>
+                <span className="manual-step-number">{index + 1}</span>
               </div>
 
               <div
@@ -641,31 +750,6 @@ const commonSteps = lesson.readingSections.map((section, index) => {
                 </div>
               </div>
             </section>
-
-            {index < steps.length - 1 && (
-              <div className="manual-connector" aria-hidden="true">
-                <div className="manual-simple-arrow">
-                  <svg viewBox="0 0 54 70" width="54" height="70">
-                    <path
-                      d="M27 6 V52"
-                      fill="none"
-                      stroke="#8B2635"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M16 42 L27 53 L38 42"
-                      fill="none"
-                      stroke="#8B2635"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <circle cx="27" cy="6" r="3.5" fill="#c5a57e" />
-                  </svg>
-                </div>
-              </div>
-            )}
           </div>
         );
       })}
