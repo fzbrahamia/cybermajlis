@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
-import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import {
   Paperclip, FileText, RefreshCw, Zap, Mail, KeyRound, Map as MapIcon, Lock, Banknote,
@@ -85,6 +84,36 @@ const HAMAD_SCENARIOS: Record<string, { step: number; msg: string; analystId: st
     analystId: "oryx",
     analystReply: "Hamad, tell them we're experiencing a service disruption and estimate 15-20 minutes to full restoration. Don't mention DDoS. We're rerouting traffic now.",
     recovery: "Services back up. Client stayed on the call, 18 minutes was acceptable to them. They didn't lose confidence. Thanks for handling it calmly.",
+  },
+};
+
+// Arabic copy of each victim scenario. Only the localized text fields differ;
+// `step` and `analystId` are shared with HAMAD_SCENARIOS above.
+const HAMAD_SCENARIOS_AR: Record<string, { msg: string; analystReply: string; recovery: string }> = {
+  phishing: {
+    msg: "أظن أنني ارتكبت خطأ 😰 وصلني بريد من 'الدعم التقني' يطلب تأكيد بيانات دخولي. أدخلت بياناتي قبل أن أنتبه أن الأمر يبدو مريباً... ماذا أفعل؟",
+    analystReply: "حمد، ابتعد عن لوحة المفاتيح. غيّر كلمة مرورك الآن فوراً من هاتفك، وليس من الحاسوب. نحن نعزل جهازك عن الشبكة.",
+    recovery: "تم تغيير كلمة المرور والجهاز نظيف. شكراً لسرعة تصرفكم. لن أُدخل بياناتي عبر رابط في بريد مرة أخرى أبداً، تعلّمت الدرس تماماً.",
+  },
+  virus: {
+    msg: "أطلق برنامج الحماية إنذاراً للتو وصار كل شيء بطيئاً جداً. لم أفتح أي شيء غريب... هل أُعيد تشغيله؟",
+    analystReply: "حمد، لا تُعِد التشغيل إطلاقاً. اتركه كما هو تماماً، نحتاج حالة الذاكرة. افصل شبكة الواي فاي يدوياً إن استطعت. فريق التقنية في طريقه إليك الآن.",
+    recovery: "أُعيدت تهيئة الجهاز من نسخة الأمس الاحتياطية. خسرت ربما 15 دقيقة من العمل. استجبتم جميعاً في أقل من 4 دقائق، أداء مبهر حقاً.",
+  },
+  ransomware: {
+    msg: "🚨 ملفاتي. كل ما في مجلد مستنداتي اختفى واستُبدل بملف اسمه README_DECRYPT.txt. هناك عنوان بيتكوين على شاشتي. مشروعي بالكامل مُشفّر.",
+    analystReply: "حمد، لا تدفع إطلاقاً. أطفئ جهازك بالقوة الآن، اضغط زر الطاقة مطوّلاً. لدينا نسخة احتياطية كاملة من الساعة السادسة صباحاً. بياناتك آمنة. لا تلمس شيئاً.",
+    recovery: "استُعيدت نسخة السادسة صباحاً بالكامل. خسرت نحو 3 ساعات من العمل لكن كل شيء قابل للاسترداد. درس قاسٍ عن المرفقات. شكراً لكم جميعاً، كان الأمر مرعباً.",
+  },
+  rootkit: {
+    msg: "هذا غريب، اختفت أيقونة برنامج الحماية من شريط المهام ولا أستطيع إعادة تثبيته. كما تظهر لي نافذة تسجيل دخول غير معتادة لم أرها من قبل.",
+    analystReply: "حمد، هذا rootkit يُخفي نفسه. أوقف كل شيء فوراً. سنحتاج لإعادة تهيئة جهازك، لا تحفظ أو تنسخ أي ملفات، فقد تكون مخترقة.",
+    recovery: "نُشرت نسخة نظام تشغيل جديدة واستُعيدت نسخة القرص الشبكي الاحتياطية. برامج الـ rootkit خبيثة، سعيد جداً أن الفريق التقط بصمتها مبكراً.",
+  },
+  ddos: {
+    msg: "أنا في مكالمة مباشرة مع عميل وكل تطبيقاتنا على الويب معطّلة، لا يستطيعون الوصول إلى أي شيء. الضغط كبير. هل من تقدير لوقت الاستعادة؟ ماذا أقول لهم؟",
+    analystReply: "حمد، أخبرهم أننا نواجه انقطاعاً في الخدمة وأن التقدير من 15 إلى 20 دقيقة للاستعادة الكاملة. لا تذكر هجوم DDoS. نحن نعيد توجيه حركة المرور الآن.",
+    recovery: "عادت الخدمات للعمل. بقي العميل على المكالمة، و18 دقيقة كانت مقبولة لديه. لم يفقد ثقته. شكراً على معالجة الأمر بهدوء.",
   },
 };
 
@@ -256,6 +285,180 @@ const SCRIPT_VARIANTS: Record<string, Array<{ radio: string[]; stepChat: [string
         ["They switched to HTTP flood, 1 million login attempts per minute consuming all resources.", "Deploying Captcha and rate limiting on the auth endpoint. Real users will need to solve a challenge."],
         ["WAF blocking 94% of attack traffic. Legitimate traffic getting through the challenge pages.", "Authentication service recovering. Monitoring closely for attacker adapting their pattern."],
         ["DDoS concluded. Uptime maintained for most users throughout. Excellent coordination today.", "Permanent scrubbing service contract being procured. This cannot be the last time we see this."],
+      ],
+    },
+  ],
+};
+
+// Arabic copy of every attack script, mirroring SCRIPT_VARIANTS one-to-one.
+const SCRIPT_VARIANTS_AR: Record<string, Array<{ radio: string[]; stepChat: [string, string][] }>> = {
+  virus: [
+    {
+      radio: [
+        "تنبيه: اكتُشف فيروس متنكّر كملف فاتورة PDF، تم الإبلاغ عن عدة مستخدمين في بوابة البريد",
+        "تحذير: الحمولة تُنفَّذ من outlook.exe على WKSTN-14، حقن العملية جارٍ",
+        "كشف: تأكّد حقن الذاكرة في عملية نظام، بصمات برنامج الحماية تفشل",
+        "انتشار: الفيروس ينسخ نفسه إلى 6 مجلدات شبكية، نشاط الكتابة يتسارع",
+        "احتواء: طُبّق عزل الشبكة، جارٍ فحص جميع الأجهزة الطرفية بحثاً عن آثار الثبات",
+      ],
+      stepChat: [
+        ["نتتبع البصمة، إنها تصيب عدة مستخدمين من نفس نطاق مُرسِل مزيّف.", "الخطورة عالية. إذا وصل هذا إلى خادم النسخ الاحتياطي فسنخسر 72 ساعة من النسخ."],
+        ["تأكّد التنفيذ على WKSTN-14. نتحقق الآن من مؤشرات الحركة الجانبية.", "نُجري تحليلاً جنائياً للذاكرة، الحمولة تبدو بلا ملفات. لا كتابات على القرص حتى الآن."],
+        ["تأكّد حقن الذاكرة في NTDLL.DLL، لهذا فات برنامج الحماية اكتشافه تماماً.", "ننسّق مع مستخدم WKSTN-14. نعزل الجهاز عن بُعد الآن."],
+        ["تأثّرت 6 أقراص شبكية. نسحب سجلات الكتابة لتتبّع الملفات المُعدّلة بدقة.", "احتُوي التهديد على الجهاز الأساسي. نبدأ دليل المعالجة، الوقت المقدّر 40 دقيقة."],
+        ["استُعيد الوضع الأساسي. صُنّف نوع الفيروس وأُرسل إلى موجز استخبارات التهديدات.", "صيغ تقرير ما بعد الحادث. نوصي بتحديث إلزامي لسياسة تصفية مرفقات الملفات."],
+      ],
+    },
+    {
+      radio: [
+        "مشبوه: تشغيل تلقائي لملف تنفيذي مجهول من وسيط تخزين غير مسجّل على WKSTN-07",
+        "انتشار: الفيروس ينتشر عبر التشغيل التلقائي إلى المجلدات الشبكية، اختُرقت 3 مجلدات",
+        "تملّص: البرمجية الخبيثة تحذف ملفاتها بعد التنفيذ، تأكّد الثبات في الذاكرة فقط",
+        "انتشار: يجري فحص مجلدات المسؤول، محاولة انتشار على مستوى الشبكة جارية",
+        "عزل: عُزل الجزء المتأثر، فحص كامل للبيئة قيد التقدم",
+      ],
+      stepChat: [
+        ["حدث تشغيل تلقائي لـ USB على WKSTN-07. نراجع سجلات الوصول المادي لمعرفة من استخدم الجهاز اليوم.", "التهديد نوع dropper. غالباً تُرك الـ USB في المبنى عمداً، الأمر يتعلق بالأمن المادي."],
+        ["اختُرقت 3 مجلدات. ندفع سياسة تعطيل التشغيل التلقائي إلى جميع الأجهزة الآن عبر GPO.", "تأكّد التنفيذ بلا ملفات، نلتقط نسخة الذاكرة قبل أن يمحو العزل الأدلة."],
+        ["محت البرمجية أثرها. نعمل من آثار الذاكرة وسجلات الشبكة فقط.", "نُبّه الأمن المادي، جهاز الـ USB هذا ليس ضمن سجل أصولنا المسجّلة."],
+        ["حُجب فحص مجلد المسؤول. طُبّقت قيود مؤقتة على حركة SMB عند جدار الحماية المحيطي.", "اكتمل الحجر. لا مؤشرات تسريب، يبدو أنها حمولة تدميرية وليست تجسساً."],
+        ["اكتملت المعالجة. تُضاف ضوابط أجهزة USB إلى دورة مراجعة السياسة الأمنية القادمة.", "وُثّق الحادث. نوصي بتدقيق أمني مادي لجميع منافذ USB غير المؤمّنة في المبنى."],
+      ],
+    },
+  ],
+  phishing: [
+    {
+      radio: [
+        "تحذير: اكتُشفت صفحة سرقة بيانات اعتماد، أُعيد توجيه المستخدمين من بريد ينتحل الموارد البشرية",
+        "تنبيه: أُرسلت بيانات اعتماد مستخدم إلى نطاق خارجي، تأكّد اختراق الحساب",
+        "كشف: صادق المهاجم باستخدام بيانات مسروقة من عنوان IP خارجي في أوروبا الشرقية",
+        "حركة جانبية: الحساب المخترق يصل إلى موارد تتجاوز نطاق المستخدم الطبيعي بكثير",
+        "استعادة: قُفل الحساب، أُنهيت الجلسات، بدأت إعادة تعيين كلمة المرور وتسجيل المصادقة المتعددة",
+      ],
+      stepChat: [
+        ["نطاق التصيّد يحاكي بوابة مواردنا البشرية تماماً، بل ويحمل شهادة SSL صالحة. نحجب النطاق الآن.", "نقر 3 مستخدمين. نتحقق ممّن أدخل بياناته مقابل من فتح الرابط فقط."],
+        ["تأكّدت سرقة مجموعة بيانات واحدة، تسجيل دخول نشط من عنوان IP في أوروبا الشرقية الآن.", "نُنهي جميع الجلسات النشطة للحساب المخترق فوراً عبر كل الخدمات."],
+        ["وصل المهاجم إلى القرص المشترك وسحب 4 ملفات خلال 8 دقائق من تسجيل الدخول.", "الملفات كانت عقود مبيعات. نُبلّغ الفريق القانوني وحسابات العملاء المتأثرين الآن."],
+        ["محاولة تنقّل بالحساب، جرّبوا نفس البيانات على نظام CRM. حُجبت.", "نُشرت قاعدة في بوابة البريد تحجب نطاق المرسل وجميع صيغه المسجّلة."],
+        ["أُمّن الحساب بالكامل، اكتملت إعادة تعيين كلمة المرور، أُدرج رابط التصيّد في القائمة السوداء عالمياً.", "نجدول تدريب توعية لكل الموظفين الذين تلقّوا هذا البريد، نحو 140 شخصاً."],
+      ],
+    },
+    {
+      radio: [
+        "تنبيه: حملة تصيّد واسعة، تلقّى 14 مستخدماً طلبات مزيفة لإعادة تعيين كلمة المرور من قسم التقنية",
+        "تأكيد: اختُرق حسابان، أُدخلت البيانات على بوابة تقنية داخلية مزيّفة",
+        "اختراق: تسجيل دخول خارجي ببيانات مسروقة صالحة، قُبل إشعار المصادقة المتعددة",
+        "تصعيد: الحساب المخترق يصل إلى لوحة الإدارة ويصدّر دليل المستخدمين",
+        "احتواء: قُفلت الحسابات، أُبطلت الرموز، بدأت عملية الإبلاغ عن الاختراق",
+      ],
+      stepChat: [
+        ["14 مستلماً، نقر 2 على الرابط. الصفحة المزيّفة تطابق تصميم بوابتنا التقنية الحقيقية تماماً.", "جمع المهاجم رموز الجلسات أيضاً، إعادة تعيين كلمة المرور وحدها لن تكفي هنا."],
+        ["قُبل إشعار المصادقة المتعددة، وافق عليه أحد الضحايا على هاتفه الساعة الثالثة فجراً بالتوقيت المحلي.", "يُظهر SIEM تسجيل دخول من أمستردام، من الواضح أنه ليس المستخدم الحقيقي. نحجب الجلسة الآن."],
+        ["تم الوصول إلى لوحة الإدارة، يتصفحون قوائم المستخدمين وخاصية التصدير بنشاط.", "نحجب الجلسة بالكامل. نفرض إعادة تسجيل المصادقة المتعددة على جميع الحسابات المتأثرة فوراً."],
+        ["صدّر المهاجم 200 سجل مستخدم قبل أن نحجبه. بدأ تقييم خرق البيانات.", "أُبلغ فريق الامتثال. نتحقق من التزامات الإبلاغ عن الاختراق وفق اللوائح المعمول بها."],
+        ["أُمّنت جميع الحسابات. نُهيّئ تنبيهات SIEM للوصول إلى لوحة الإدارة خارج ساعات العمل مستقبلاً.", "نصيغ رسالة إلى الـ 200 مستخدم الذين صُدّرت سجلاتهم. القسم القانوني يراجع الصياغة."],
+      ],
+    },
+  ],
+  ransomware: [
+    {
+      radio: [
+        "حرج: أداة إسقاط فدية في بوابة البريد، متنكّرة كمرفق إشعار شحن",
+        "تنفيذ: فُكّت حزمة برنامج الفدية في الذاكرة، يجري توليد مفاتيح التشفير",
+        "تحضير: برنامج الفدية يمسح 23 مجلداً شبكياً قبل بدء التشفير الشامل",
+        "تشفير: شُفّر 847 ملفاً في أقل من 3 دقائق، الانتشار مستمر",
+        "استعادة: بدأت استعادة النسخة الاحتياطية، تُعاد بناء البيئة من نسخة نظيفة للساعة السادسة صباحاً",
+      ],
+      stepChat: [
+        ["حُدّدت عائلة برنامج الفدية، نوع معروف يستهدف أنظمة النسخ الاحتياطي أولاً. نعزل الآن.", "الخطورة حرجة. إذا كان خادم النسخ الاحتياطي متاحاً من هذا الجهاز، فقد نخسر كل شيء. نتحقق الآن."],
+        ["وُلّدت مفاتيح التشفير في الذاكرة فقط، دون كتابتها على القرص. فات برنامج الحماية القائم على البصمات اكتشافها تماماً.", "نُشغّل قواعد Yara على نسخة الذاكرة. نحاول استخراج المفتاح قبل بدء التشفير."],
+        ["مسح برنامج الفدية 23 مجلداً. نحجب حركة SMB من الجهاز، ونقطع مسار الانتشار.", "حُجب SMB. شُفّر 847 ملفاً قبل قطع الوصول، كان يمكن أن يكون أسوأ بكثير لولا الاستجابة السريعة."],
+        ["أُسقطت رسالة الفدية في كل مجلد متأثر. لن ندفع، نبدأ إجراء الاستعادة الكامل.", "تحققنا من سلامة النسخة الاحتياطية عند نسخة السادسة صباحاً، جميع البيانات الحرجة قابلة للاسترداد بالكامل."],
+        ["اكتملت الاستعادة. جُدولت مراجعة لاحقة. عُزّزت تصفية البريد لحجب هذا النوع من المرفقات.", "أُبلغ التأمين السيبراني. صُنّف الحادث كمُحتوى، ولم يتأكد تسريب أي بيانات إلى المهاجم."],
+      ],
+    },
+    {
+      radio: [
+        "تنبيه: نجحت هجمة تخمين RDP، حصل مهاجم خارجي على موطئ قدم على المنفذ المكشوف 3389",
+        "تحضير: المهاجم يُنزّل حزمة أدوات الفدية عبر RDP، نقل 47 ميغابايت قيد التقدم",
+        "إعداد: برنامج الفدية يُعطّل نسخ الظل (Volume Shadow Copies) وجميع وكلاء النسخ الاحتياطي",
+        "تنفيذ: تشفير شامل للملفات عبر 6 خوادم في آنٍ واحد، هجوم منسّق",
+        "استجابة: فُعّل موقع التعافي من الكوارث، قطع الاتصالات وبدء الاستعادة الكاملة",
+      ],
+      stepChat: [
+        ["كان RDP على المنفذ 3389 مكشوفاً للإنترنت دون سياسة قفل حسابات. خُمّن في 4 ساعات.", "المهاجم في الداخل. نغلق RDP خارجياً الآن، فات أوان منع الوصول الأولي، نحتوي الانتشار."],
+        ["حُدّد تنزيل الـ 47 ميغابايت كحزمة أدوات فدية إضافة إلى نشر منارة Cobalt Strike.", "نعزل الخادم المخترق عن بقية البيئة عبر تعديلات قوائم التحكم بالوصول للشبكة (ACL)."],
+        ["حُذفت نسخ الظل. قتل نص إعداد الفدية وكيل النسخ الاحتياطي على هذا الخادم.", "تأكّد أن موقع التعافي نظيف. نتحقق من سلامة النسخ الاحتياطية قبل التحوّل عن البيئة الأساسية."],
+        ["تشفير عبر 6 خوادم في آنٍ واحد، من الواضح أنها مجموعة تهديد محترفة ومنظّمة.", "عُزلت جميع الخوادم المتأثرة. موقع التعافي يعمل الآن. لا يُتوقع انقطاع يواجه العملاء."],
+        ["موقع التعافي نشط بالكامل. استُعيدت الخدمات. أُغلق RDP نهائياً، وفُرضت المصادقة المتعددة على كل وصول عن بُعد.", "نتواصل مع استخبارات التهديدات، قد تستهدف هذه المجموعة آخرين في قطاعنا. نشارك مؤشرات الاختراق مع ISAC."],
+      ],
+    },
+  ],
+  rootkit: [
+    {
+      radio: [
+        "شذوذ: اكتُشف خطاف على مستوى النواة، الـ rootkit يحاول إخفاء العمليات عن أدوات الأمن",
+        "ثبات: الـ rootkit يعدّل قطاع الإقلاع، محقّقاً ثباتاً أسفل نظام التشغيل",
+        "تملّص: آليات الدفاع الذاتي للـ rootkit تُنهي عمليات أدوات الأمن بنشاط",
+        "تصعيد: الـ rootkit يمنح صلاحيات SYSTEM لعملية خبيثة كانت منخفضة الصلاحية",
+        "معالجة: عُزل النظام المتأثر، بدأ المسح الآمن وتهيئة نظام تشغيل نظيف",
+      ],
+      stepChat: [
+        ["خطاف نواة على SSDT، هذا الـ rootkit يعترض استدعاءات النظام ليُخفي وجوده عن نظام التشغيل.", "الخطورة عالية. بمجرد وصوله لطبقة النواة، لا تستطيع أدوات الحماية التقليدية رؤيته ببساطة."],
+        ["عُدّل قطاع الإقلاع، سينجو هذا من إعادة التهيئة العادية. نحتاج مسحاً آمناً أولاً.", "نلتقط الذاكرة المتطايرة الآن، تضيع الأدلة نهائياً إذا أعاد أحد تشغيل الجهاز."],
+        ["صمت وكيل EDR لدينا على هذا الجهاز للتو، قتله الـ rootkit لمنع الكشف.", "ننشر قناة إدارة خارج النطاق للعزل دون تنبيه الدفاع الذاتي للـ rootkit."],
+        ["منح الـ rootkit صلاحيات SYSTEM لعملية كانت تعمل سابقاً بصلاحية مستخدم عادي.", "اكتمل العزل عبر قائمة تحكم بالوصول على محوّل الشبكة، الجهاز بلا أي اتصال شبكي الآن."],
+        ["مُسح القرص بالمحو الآمن. نُشر نظام تشغيل نظيف. أُرسل نوع الـ rootkit إلى استخبارات التهديدات.", "نفحص جميع الأجهزة الـ 400 بحثاً عن نفس نمط خطاف النواة، فقد لا يكون هذا حادثاً منعزلاً."],
+      ],
+    },
+    {
+      radio: [
+        "كشف: اكتُشف نشاط مضاد للتحليل الجنائي، الـ rootkit يُخفي الملفات والعمليات عن نظام التشغيل",
+        "تثبيت: بلغ الـ rootkit صلاحية ring-0، يعمل أسفل طبقة رؤية نظام التشغيل",
+        "تملّص دفاعي: استعلامات الأمن تُعيد حالة نظام مزيّفة، الجهاز أعمى فعلياً",
+        "ثبات: نجا الـ rootkit من إعادة التشغيل، تأكّد الخطاف في تسلسل محمّل الإقلاع",
+        "استئصال: بدأ المسح الآمن، أُعيد تحميل البرنامج الثابت، أُعيد بناء البيئة من نسخة موثّقة",
+      ],
+      stepChat: [
+        ["قائمة العمليات من نظام التشغيل لا تُظهر شيئاً مريباً. نسخة الذاكرة من طبقة العتاد تروي قصة مختلفة تماماً.", "هذا الـ rootkit يكذب على نظام التشغيل بشأن ما يعمل فعلاً. متطوّر ومتعمّد."],
+        ["تأكّد ring-0، هذا التهديد يملك سيطرة كاملة على مستوى العتاد للجهاز. الأدوات القياسية عديمة الجدوى.", "منهجية التحليل الجنائي القياسية معطّلة هنا. ننتقل إلى محلّل ذاكرة عتادي لمعرفة الحقيقة."],
+        ["كل استعلام أمني يُعيد نتائج نظيفة مزيّفة. الجهاز أعمى تماماً عن نفسه.", "تأكّد الوصول خارج النطاق عبر iLO. نستطيع رؤية الحقيقة من طبقة إدارة العتاد."],
+        ["تأكّد اختراق محمّل الإقلاع عبر التحقق من بصمة BIOS خارج النطاق مقابل خط أساس معروف السلامة.", "نسحب الجهاز من البيئة بالكامل. لا يمكن الوثوق بأي بيانات من هذا الجهاز."],
+        ["اكتمل المحو الآمن. نظام تشغيل جديد من نسخة مُتحقَّق من بصمتها. أُعيد أيضاً تحميل برنامج ثابت معروف السلامة.", "شُوركت مؤشرات الاختراق مع ISAC القطاع. نوصي بجولة تحقق من سلامة البرنامج الثابت عبر أسطول الخوادم بالكامل."],
+      ],
+    },
+  ],
+  ddos: [
+    {
+      radio: [
+        "حرج: 2.4 مليون طلب في الثانية تضرب بوابة API، هجوم DDoS جارٍ",
+        "تصعيد: الهجوم يتحول إلى بنية DNS، محاولاً جعل نطاقنا غير قابل للتحليل",
+        "تضخيم: تأكّد هجوم انعكاس DNS، محلّلات مفتوحة تُستغل سلاحاً ضدنا",
+        "تخفيف: مركز تنقية حركة المرور نشط، يُصفّي الحركة الخبيثة عن المشروعة",
+        "استعادة: الهجوم يخفّ، استُعيدت الخدمات بالكامل، فُرض تحديد المعدل بشكل دائم",
+      ],
+      stepChat: [
+        ["2.4 مليون طلب/ثانية من 80 دولة، هذه شبكة روبوتات كبيرة، وليست مصدراً واحداً مستهدفاً.", "الخطورة حرجة. كل الخدمات العامة ستتعطل خلال 3 دقائق إن لم نُعِد التوجيه الآن."],
+        ["الهجوم يتحول إلى DNS، يريدون جعل نطاقنا غير قابل للتحليل لأي أحد إطلاقاً.", "ننتقل إلى توجيه DNS من نوع anycast عبر عدة مزوّدين. هذا سيبطئهم بشكل كبير."],
+        ["عامل تضخيم 4000 ضعف، حوّلوا محلّلات DNS المفتوحة الـ 14 لدينا ضدنا.", "نُحدّد المعدل ونُغلق جميع المحلّلات المفتوحة الآن. سيهبط عرض نطاق الهجوم فوراً."],
+        ["مركز التنقية يمتص 80% من حجم الهجوم. الخدمات تعمل بطاقة 60% حالياً.", "أُشرك مزوّد CDN، لديه طاقة امتصاص 10 تيرابت/ثانية. أكثر من كافٍ لهذا الهجوم."],
+        ["انتهى الهجوم بعد 23 دقيقة. تعطّلت 3 خدمات لفترة وجيزة. تحقق التعافي الكامل عبر جميع الأنظمة.", "تعزيز ما بعد الهجوم: أُضيف 12,000 عنوان IP للروبوتات إلى قائمة الحجب المحيطية. أُغلقت المحلّلات المفتوحة نهائياً."],
+      ],
+    },
+    {
+      radio: [
+        "تنبيه: فيضان SYN يستهدف خدمة المصادقة، جدول حالة الاتصال يقترب من التشبّع",
+        "تصعيد: 8 ملايين حزمة في الثانية، مزوّد الخدمة الأعلى يُبلّغ عن 40 غيغابت/ثانية واردة",
+        "الطبقة السابعة: تحوّل الهجوم إلى فيضان HTTP، مليون محاولة دخول في الدقيقة على نقطة المصادقة",
+        "دفاع: نُشرت صفحات تحدٍّ WAF، تنقية الحركة المشروعة عن حركة الهجوم عند الحافة",
+        "استقرار: استُعيدت خدمة المصادقة لكامل طاقتها، إعداد حماية DDoS بشكل دائم",
+      ],
+      stepChat: [
+        ["فيضان SYN يملأ جدول حالة جدار الحماية، الاتصالات المشروعة الجديدة تُرفض.", "خدمة المصادقة هي الهدف المحدد، شخص ما يريد منع كل عمليات الدخول عمداً."],
+        ["8 ملايين حزمة/ثانية. المزوّد الأعلى يرى 40 غيغابت/ثانية. نتصل بهم الآن لطلب توجيه الحركة إلى ثقب أسود.", "نُفعّل SYN cookies على جدار الحماية، يقلّل استنزاف جدول الحالة بشكل كبير."],
+        ["تحوّلوا إلى فيضان HTTP، مليون محاولة دخول في الدقيقة تستهلك كل الموارد.", "ننشر Captcha وتحديد المعدل على نقطة المصادقة. سيحتاج المستخدمون الحقيقيون لحلّ تحدٍّ."],
+        ["WAF يحجب 94% من حركة الهجوم. الحركة المشروعة تمرّ عبر صفحات التحدي.", "خدمة المصادقة تتعافى. نراقب عن كثب تكيّف المهاجم مع نمطه."],
+        ["انتهى هجوم DDoS. حُوفظ على التشغيل لمعظم المستخدمين طوال الوقت. تنسيق ممتاز اليوم.", "يجري التعاقد على خدمة تنقية دائمة. لن تكون هذه آخر مرة نرى فيها هذا."],
       ],
     },
   ],
@@ -671,9 +874,6 @@ export default function ThreatAcademy() {
     ...HAMAD,
     name: isAr ? t('analysts.hamad.name') : HAMAD.name,
   }), [isAr, t]);
-  const [socAttempts, setSocAttempts] = useState(1);
-  const [generatedVariants, setGeneratedVariants] = useState<Record<string, {radio:string[];stepChat:[string,string][];quiz:{q:string;opts:string[];ans:number;why:string};hamadChat?:{msg:string;analystReply:string;recovery:string}}>>({});
-  const [generatingVariant, setGeneratingVariant] = useState(false);
 
   const localizedThreatsMap = useMemo(() => {
     const threats: Record<string, LocalizedThreat> = {};
@@ -750,11 +950,6 @@ export default function ThreatAcademy() {
   const [showDebrief, setShowDebrief] = useState(false);
   const [seenThreats, setSeenThreats] = useState<Set<string>>(new Set());
   const [persistedQuizAnswers, setPersistedQuizAnswers] = useState<Record<string, number | null>>({});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (u) => setIsLoggedIn(!!u));
-    return () => unsub();
-  }, []);
   // For guests: reset attack progress when they leave the SOC
   useEffect(() => {
     return () => {
@@ -827,73 +1022,6 @@ export default function ThreatAcademy() {
   }, []);
 
 
-  // ── SOC adaptive: load attempt count on mount ────────────────────────────────
-  useEffect(() => {
-    const saved = localStorage.getItem("cm-soc-sessions");
-    const count = saved ? (JSON.parse(saved).attempts || 0) : 0;
-    setSocAttempts(count + 1);
-    const cv = JSON.parse(localStorage.getItem("cm-soc-sessions") || "{}");
-    localStorage.setItem("cm-soc-sessions", JSON.stringify({ attempts: (cv.attempts || 0) + 1 }));
-  }, []);
-
-  // Generate Arabic/adaptive variant for a SPECIFIC threat when it actually runs
-  const generateVariantForThreat = async (threatKey: string): Promise<any> => {
-    // Only generate for signed-in users who have completed at least one scenario
-    if (!isAr && (!isLoggedIn || !scenarioDone)) return;
-
-    // 1. Check React state, already generated this session
-    if (generatedVariants[threatKey]) return;
-
-    // 2. Check localStorage, use cached variant from a previous session
-    const cacheKey = "cm-soc-variant-v3-" + threatKey + "-" + locale;
-    const cached = localStorage.getItem(cacheKey);
-    if (cached) {
-      try {
-        let variant = JSON.parse(cached);
-        if (variant.stepChat && isAr) {
-          variant = {
-            ...variant,
-            stepChat: variant.stepChat.map((pair: [string, string]) =>
-              pair.map(line =>
-                line.replace(/^[؀-ۿ؀-ۿ\w'ʿ]+:\s*/u, "").replace(/حامد/g, "حمد").trim()
-              ) as [string, string]
-            ),
-          };
-        }
-        setGeneratedVariants(prev => ({ ...prev, [threatKey]: variant }));
-        return variant;
-      } catch { /* cache corrupt, regenerate */ }
-    }
-
-    // 3. Generate fresh (first time or cache miss)
-    const saved = localStorage.getItem("cm-soc-sessions");
-    const count = saved ? (JSON.parse(saved).attempts || 0) : 0;
-    setGeneratingVariant(true);
-    try {
-      const res = await fetch("/api/soc/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ threat: threatKey, attempts: count + 1, locale }),
-      });
-      const d = await res.json();
-      if (d.success && d.variant) {
-        // Strip any "Name: " prefix the AI may have added to chat lines
-        if (d.variant.stepChat && isAr) {
-          d.variant.stepChat = d.variant.stepChat.map((pair: [string, string]) =>
-            pair.map(line =>
-              line.replace(/^[؀-ۿ؀-ۿ\w'ʿ]+:\s*/u, "").replace(/حامد/g, "حمد").trim()
-            ) as [string, string]
-          );
-        }
-        setGeneratedVariants(prev => ({ ...prev, [threatKey]: d.variant }));
-        localStorage.setItem(cacheKey, JSON.stringify(d.variant));
-        setGeneratingVariant(false);
-        return d.variant;
-      }
-    } catch {}
-    setGeneratingVariant(false);
-  };
-
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [chatMsgs]);
 
   useEffect(() => {
@@ -919,11 +1047,6 @@ export default function ThreatAcademy() {
     const runAttack = async (threatKey: string, lastVariant: Record<string, number>) => {
       const def = THREATS[threatKey];
       const loc = localizedThreatsMap[threatKey];
-      // Generate locale-aware variant for THIS specific threat when it runs
-      // Fire generation immediately, then wait up to 18s for it to complete
-      // so Arabic content is ready before step 1 dialogue appears
-      const genPromise = generateVariantForThreat(threatKey);
-      const freshVariant = await Promise.race([genPromise, new Promise<any>(r => setTimeout(r, 18000))]);
       if (!loc || cancelled) return;
 
       alertIdCounter.current += 1;
@@ -937,18 +1060,10 @@ export default function ThreatAcademy() {
       setTypeStats(prev => ({ ...prev, [def.typeKey]: (prev[def.typeKey] || 0) + 1 }));
       setThreatLevel(prev => Math.min(100, prev + def.sev * 4));
       setTrafficHist(prev => [...prev.slice(1), prev[prev.length - 1] + rand(2, 6)]);
-      // Pick a variant that wasn't used last time for this threat
-      // Use freshVariant (from awaited generation) to avoid stale closure issue
-      const genVariant = freshVariant || generatedVariants[threatKey];
-      const baseVariants = SCRIPT_VARIANTS[threatKey] || [];
-      const variants = genVariant ? [...baseVariants, genVariant] : baseVariants;
+      // Pick a locale-specific attack script, avoiding the one used last time
+      const variants = (isAr ? SCRIPT_VARIANTS_AR[threatKey] : SCRIPT_VARIANTS[threatKey]) || [];
       const lastIdx = lastVariant[threatKey] ?? -1;
-      // Always prefer the generated variant when available
-      const preferGenerated = !!genVariant;
-      const genIdx = variants.length - 1;
-      const available = preferGenerated
-        ? [genIdx]
-        : variants.map((_, i) => i).filter(i => i !== lastIdx);
+      const available = variants.map((_, i) => i).filter(i => i !== lastIdx);
       const variantIdx = available.length > 0 ? pick(available) : rand(0, variants.length - 1);
       lastVariant[threatKey] = variantIdx;
       const variant = variants[variantIdx] || null;
@@ -956,7 +1071,7 @@ export default function ThreatAcademy() {
       setClickedStep(null);
       setReplayStep(null);
       setAttackState({ def, loc, step: -1, done: new Set(), victimAffected: false, variantIdx });
-      typeRadio(`ALERT: ${loc.type}, ${loc.tagline}`);
+      typeRadio(isAr ? `تنبيه: ${loc.type}، ${loc.tagline}` : `ALERT: ${loc.type}, ${loc.tagline}`);
 
       setSeenThreats(prev => new Set([...prev, threatKey]));
 
@@ -992,9 +1107,8 @@ export default function ThreatAcademy() {
         }
 
         // Hamad's distress message fires at his designated step for this threat
-        const genHamad = freshVariant?.hamadChat || generatedVariants[threatKey]?.hamadChat;
         const baseScene = HAMAD_SCENARIOS[threatKey];
-        const hamadScene = genHamad && baseScene ? { ...baseScene, msg: genHamad.msg, analystReply: genHamad.analystReply, recovery: genHamad.recovery } : baseScene;
+        const hamadScene = isAr && baseScene ? { ...baseScene, ...HAMAD_SCENARIOS_AR[threatKey] } : baseScene;
         if (hamadScene && i === hamadScene.step && !cancelled) {
           setTimeout(() => {
             if (cancelled) return;
@@ -1026,14 +1140,13 @@ export default function ThreatAcademy() {
       }
 
       // Hamad recovery message, fires after all steps finish
-      const genHamad = freshVariant?.hamadChat || generatedVariants[threatKey]?.hamadChat;
-        const baseScene = HAMAD_SCENARIOS[threatKey];
-        const hamadScene = genHamad && baseScene ? { ...baseScene, msg: genHamad.msg, analystReply: genHamad.analystReply, recovery: genHamad.recovery } : baseScene;
+      const baseScene = HAMAD_SCENARIOS[threatKey];
+      const hamadScene = isAr && baseScene ? { ...baseScene, ...HAMAD_SCENARIOS_AR[threatKey] } : baseScene;
       if (hamadScene && !cancelled) {
         await sleep(2200);
         setChatMsgs(prev => [...prev, {
           id: Date.now() + Math.random() + 10,
-          from: HAMAD as typeof ANALYSTS_BASE[number],
+          from: HAMAD_LOCALIZED as typeof ANALYSTS_BASE[number],
           textKey: hamadScene.recovery,
           time: getTime(),
         }].slice(-25));
@@ -1042,7 +1155,7 @@ export default function ThreatAcademy() {
       // Mark all steps done, clear victim indicator
       setAttackState(prev => prev ? { ...prev, step: -1, done: new Set([0,1,2,3,4]), victimAffected: false } : null);
       await sleep(1500);
-      typeRadio(`INCIDENT CONTAINED, ${loc.type} resolved. Monitoring for next threat.`);
+      typeRadio(isAr ? `تم احتواء الحادث، عولج ${loc.type}. مراقبة التهديد التالي.` : `INCIDENT CONTAINED, ${loc.type} resolved. Monitoring for next threat.`);
       await sleep(rand(3000, 5000));
     };
 
@@ -1138,7 +1251,6 @@ export default function ThreatAcademy() {
                 {attackState && (
                   <span style={{ fontSize: 9, color: attackState.def.color, fontWeight: 700, letterSpacing: "0.12em", background: `${attackState.def.color}12`, border: `1px solid ${attackState.def.color}30`, padding: "2px 10px", borderRadius: 5 }}>
                     {attackState.loc.icon} {attackState.loc.type.toUpperCase()}
-                    {generatedVariants[attackState.def.typeKey] && <span style={{ marginLeft: 6, color: "#22c55e", fontSize: 8 }}>✦ AI</span>}
                   </span>
                 )}
                 {attackState && attackState.step === -1 && attackState.done.size === 5 && (
