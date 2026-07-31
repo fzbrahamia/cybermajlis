@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 import { ArrowRight } from "lucide-react";
 
@@ -47,6 +47,26 @@ const SPECIAL = [
 export default function Footer() {
   const router = useRouter();
   const isAR   = useLocale() === "ar";
+  // Light theme is scoped to the landing page for now; the rest of the site keeps
+  // the dark maroon footer until we roll the new look out.
+  const pathname = usePathname();
+  const isLanding = pathname === "/" || pathname.startsWith("/dashboard");
+
+  const th = {
+    bg: isLanding ? "rgba(251,248,243,0.82)" : "linear-gradient(180deg,#3e1316 0%,#2a0c0e 100%)",
+    border: isLanding ? "rgba(99,32,36,.12)" : "rgba(197,165,126,.25)",
+    linkIdle: isLanding ? "rgba(74,26,29,.72)" : "rgba(232,212,188,.62)",
+    linkHover: isLanding ? "#8B2635" : "#c5a57e",
+    title: isLanding ? "rgba(139,38,53,.7)" : "rgba(197,165,126,.55)",
+    brandText: isLanding ? "rgba(90,45,40,.78)" : "rgba(232,212,188,.6)",
+    specialIdle: isLanding ? "#8B2635" : "#c5a57e",
+    specialHover: isLanding ? "#5e1a1e" : "#E8D4BC",
+    specialDesc: isLanding ? "rgba(90,45,40,.6)" : "rgba(232,212,188,.42)",
+    bottomText: isLanding ? "rgba(90,45,40,.5)" : "rgba(232,212,188,.35)",
+    bottomBorder: isLanding ? "rgba(99,32,36,.1)" : "rgba(197,165,126,.1)",
+    privacy: isLanding ? "rgba(122,30,34,.8)" : "rgba(197,165,126,.75)",
+    tagline: isLanding ? "rgba(90,45,40,.45)" : "rgba(232,212,188,.28)",
+  };
 
   const go = (l: Link) => {
     if (l.chat) { window.dispatchEvent(new Event("cm:open-chat")); return; }
@@ -55,19 +75,19 @@ export default function Footer() {
 
   const linkStyle: React.CSSProperties = {
     fontFamily: cinzel, fontSize: 11.5, fontWeight: 600, letterSpacing: "0.06em",
-    color: "rgba(232,212,188,.62)", background: "none", border: "none", padding: 0,
+    color: th.linkIdle, background: "none", border: "none", padding: 0,
     cursor: "pointer", textAlign: isAR ? "right" : "left", transition: "color .2s ease",
   };
   const colTitle: React.CSSProperties = {
     fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: "0.18em",
-    color: "rgba(197,165,126,.55)", marginBottom: "1.1rem", textTransform: "uppercase",
+    color: th.title, marginBottom: "1.1rem", textTransform: "uppercase",
   };
 
   return (
     <footer style={{
       padding: "64px 4rem 36px",
-      background: "linear-gradient(180deg,#3e1316 0%,#2a0c0e 100%)",
-      borderTop: "1px solid rgba(197,165,126,.25)",
+      background: th.bg,
+      borderTop: `1px solid ${th.border}`,
       direction: isAR ? "rtl" : "ltr",
     }}>
       <style>{`
@@ -84,8 +104,18 @@ export default function Footer() {
 
         {/* ── Brand ── */}
         <div style={{ maxWidth: 280 }}>
-          <img src={isAR ? "/logoAr.png" : "/logoEn.png"} alt="CyberMajlis" style={{ height: 38, width: "auto", marginBottom: 16 }} />
-          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 14, color: "rgba(232,212,188,.6)", lineHeight: 1.7, margin: "0 0 18px" }}>
+          {isLanding ? (
+            <div style={{ fontFamily: cinzel, fontWeight: 900, fontSize: isAR ? 22 : 26, letterSpacing: 0.5, marginBottom: 16, whiteSpace: "nowrap" }}>
+              {isAR ? (
+                <span style={{ fontFamily: '"Noto Naskh Arabic", "Crimson Pro", serif', color: "#7a1e22" }}>المجلس السيبراني</span>
+              ) : (
+                <><span style={{ color: "#3e1316" }}>Cyber</span><span style={{ color: "#8B2635" }}> Majlis</span></>
+              )}
+            </div>
+          ) : (
+            <img src={isAR ? "/logoAr.png" : "/logoEn.png"} alt="CyberMajlis" style={{ height: 38, width: "auto", marginBottom: 16 }} />
+          )}
+          <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 14, color: th.brandText, lineHeight: 1.7, margin: "0 0 18px" }}>
             {isAR
               ? "أكاديمية قطر للأمن السيبراني بأسلوب اللعب والمحاكاة. تأسست في الدوحة، وبُنيت للمنطقة."
               : "Qatar's gamified cybersecurity academy. Founded in Doha, built for the region."}
@@ -95,8 +125,10 @@ export default function Footer() {
             style={{
               fontFamily: cinzel, fontSize: 11, fontWeight: 700, letterSpacing: 1.2,
               padding: "10px 20px", borderRadius: 9, border: "none", cursor: "pointer",
-              color: "#3e1316", background: "linear-gradient(135deg,#e8d4bc,#c5a57e)",
-              boxShadow: "0 4px 16px rgba(197,165,126,.25)", display: "inline-flex", alignItems: "center", gap: 8,
+              color: isLanding ? "#FBF8F3" : "#3e1316",
+              background: isLanding ? "linear-gradient(135deg,#7a1e22,#8B2635)" : "linear-gradient(135deg,#e8d4bc,#c5a57e)",
+              boxShadow: isLanding ? "0 6px 18px rgba(99,32,36,.22)" : "0 4px 16px rgba(197,165,126,.25)",
+              display: "inline-flex", alignItems: "center", gap: 8,
               transition: "transform .2s ease",
             }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; }}
@@ -117,8 +149,8 @@ export default function Footer() {
                   key={i}
                   onClick={() => go(l)}
                   style={linkStyle}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#c5a57e"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "rgba(232,212,188,.62)"; }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = th.linkHover; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = th.linkIdle; }}
                 >
                   {isAR ? l.ar : l.en}
                 </button>
@@ -134,13 +166,13 @@ export default function Footer() {
             {SPECIAL.map(s => (
               <a key={s.href} href={s.href} style={{ textDecoration: "none" }}>
                 <div
-                  style={{ fontFamily: cinzel, fontSize: 11.5, fontWeight: 700, color: "#c5a57e", letterSpacing: "0.06em", marginBottom: "0.25rem", transition: "color .2s ease" }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#E8D4BC"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#c5a57e"; }}
+                  style={{ fontFamily: cinzel, fontSize: 11.5, fontWeight: 700, color: th.specialIdle, letterSpacing: "0.06em", marginBottom: "0.25rem", transition: "color .2s ease" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = th.specialHover; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = th.specialIdle; }}
                 >
                   {isAR ? s.ar : s.en}
                 </div>
-                <div style={{ fontFamily: crimson, fontSize: 12, color: "rgba(232,212,188,.42)", lineHeight: 1.55 }}>
+                <div style={{ fontFamily: crimson, fontSize: 12, color: th.specialDesc, lineHeight: 1.55 }}>
                   {isAR ? s.desc_ar : s.desc_en}
                 </div>
               </a>
@@ -152,17 +184,17 @@ export default function Footer() {
       {/* ── Bottom bar ── */}
       <div style={{
         maxWidth: 1180, margin: "2.8rem auto 0", paddingTop: "1.5rem",
-        borderTop: "1px solid rgba(197,165,126,.1)",
+        borderTop: `1px solid ${th.bottomBorder}`,
         display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem",
       }}>
-        <span style={{ fontFamily: crimson, fontSize: 12.5, color: "rgba(232,212,188,.35)" }}>
+        <span style={{ fontFamily: crimson, fontSize: 12.5, color: th.bottomText }}>
           {isAR ? "© 2026 المجلس السيبراني، قطر" : "© 2026 CyberMajlis, Qatar"}
         </span>
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
-          <a href="/privacy" style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(197,165,126,.75)", textDecoration: "none" }}>
+          <a href="/privacy" style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: th.privacy, textDecoration: "none" }}>
             {isAR ? "سياسة الخصوصية" : "Privacy Policy"}
           </a>
-          <span style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 12, color: "rgba(232,212,188,.28)" }}>
+          <span style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 12, color: th.tagline }}>
             {isAR ? "تعليم الأمن السيبراني للجميع" : "Cybersecurity education for everyone"}
           </span>
         </div>

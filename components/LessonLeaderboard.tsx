@@ -105,12 +105,13 @@ export default function LessonLeaderboard({ youXP, listLimit = 5 }: { youXP: num
   const pinnedYou = !youShown && youRank >= 0 ? lb[youRank] : null;
 
   const card: React.CSSProperties = {
-    background: "linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%)",
+    background: "rgba(253,248,240,0.55)",
+    border: "1px solid rgba(99,32,36,0.12)",
     borderRadius: 24,
     padding: "1.8rem 1.9rem",
     position: "relative",
     overflow: "hidden",
-    boxShadow: "0 20px 60px rgba(99,32,36,0.3), 0 2px 0 rgba(255,255,255,0.08) inset",
+    boxShadow: "0 14px 40px rgba(99,32,36,0.1)",
     direction: isRtl ? "rtl" : "ltr",
     height: "100%",
   };
@@ -121,25 +122,25 @@ export default function LessonLeaderboard({ youXP, listLimit = 5 }: { youXP: num
       style={{
         display: "flex", alignItems: "center", gap: 12,
         padding: "0.6rem 0.65rem", borderRadius: 12,
-        borderBottom: !last ? "1px solid rgba(197,165,126,0.1)" : "none",
-        background: p.isYou ? "rgba(197,165,126,0.14)" : "transparent",
+        borderBottom: !last ? "1px solid rgba(99,32,36,0.08)" : "none",
+        background: p.isYou ? "rgba(160,125,62,0.14)" : "transparent",
       }}
     >
-      <div style={{ width: 22, textAlign: "center", fontFamily: "monospace", fontSize: "0.8rem", fontWeight: 800, color: p.isYou ? "#E8D4BC" : "rgba(232,212,188,0.4)" }}>
+      <div style={{ width: 22, textAlign: "center", fontFamily: "monospace", fontSize: "0.8rem", fontWeight: 800, color: p.isYou ? "#4a1a1d" : "rgba(106,70,64,0.55)" }}>
         {rank}
       </div>
-      <div style={{ width: 36, height: 36, borderRadius: "50%", overflow: "hidden", flexShrink: 0, border: p.isYou ? "2px solid #c5a57e" : "1px solid rgba(255,255,255,0.12)" }}>
+      <div style={{ width: 36, height: 36, borderRadius: "50%", overflow: "hidden", flexShrink: 0, border: p.isYou ? "2px solid #a07d3e" : "1px solid rgba(99,32,36,0.14)" }}>
         <img src={p.avatar} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.8rem", fontWeight: p.isYou ? 800 : 600, color: "#E8D4BC", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.8rem", fontWeight: p.isYou ? 800 : 600, color: "#4a1a1d", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {p.isYou ? t("rankings.you") : p.name}
         </div>
-        <div style={{ fontSize: "0.66rem", color: "rgba(232,212,188,0.4)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <div style={{ fontSize: "0.66rem", color: "rgba(106,70,64,0.55)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {lbFeats[(rank - 1) % lbFeats.length]}
         </div>
       </div>
-      <div style={{ fontFamily: "monospace", fontSize: "0.82rem", fontWeight: 700, color: "#c5a57e" }}>
+      <div style={{ fontFamily: "monospace", fontSize: "0.82rem", fontWeight: 700, color: "#a07d3e" }}>
         {p.xp.toLocaleString()} XP
       </div>
     </div>
@@ -149,20 +150,20 @@ export default function LessonLeaderboard({ youXP, listLimit = 5 }: { youXP: num
     <div style={card}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "1.4rem" }}>
         <div>
-          <div style={{ fontFamily: "'Cinzel', serif", fontSize: "1.05rem", fontWeight: 700, color: "#E8D4BC", letterSpacing: "0.04em" }}>
+          <div style={{ fontFamily: "'Cinzel', serif", fontSize: "1.05rem", fontWeight: 700, color: "#4a1a1d", letterSpacing: "0.04em" }}>
             {t("rankings.title")}
           </div>
-          <div style={{ fontSize: "0.7rem", color: "rgba(232,212,188,0.45)", fontStyle: "italic", marginTop: 2 }}>
+          <div style={{ fontSize: "0.7rem", color: "rgba(106,70,64,0.65)", fontStyle: "italic", marginTop: 2 }}>
             {isRtl ? "حسب الدروس المكتملة" : "Ranked by lessons completed"}
           </div>
         </div>
-        <span style={{ fontSize: "0.65rem", color: "rgba(232,212,188,0.4)", whiteSpace: "nowrap" }}>
+        <span style={{ fontSize: "0.65rem", color: "rgba(106,70,64,0.55)", whiteSpace: "nowrap" }}>
           {t("rankings.updated")}
         </span>
       </div>
 
       {error || lb.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "1.5rem 0", color: "rgba(232,212,188,0.6)", fontSize: "0.9rem" }}>
+        <div style={{ textAlign: "center", padding: "1.5rem 0", color: "rgba(106,70,64,0.7)", fontSize: "0.9rem" }}>
           {isRtl
             ? "أكمل درسًا لتظهر على لوحة المتصدرين."
             : "Complete a lesson to appear on the leaderboard."}
@@ -181,20 +182,20 @@ export default function LessonLeaderboard({ youXP, listLimit = 5 }: { youXP: num
                     {pi === 1 && <Crown size={20} color="#e8c17a" fill="#e8c17a" style={{ marginBottom: 2 }} />}
                     <div style={{
                       width: sizes[pi], height: sizes[pi], borderRadius: "50%", overflow: "hidden", margin: "0 auto 6px",
-                      border: pi === 1 ? "2px solid #c5a57e" : "1px solid rgba(255,255,255,0.15)",
+                      border: pi === 1 ? "2px solid #a07d3e" : "1px solid rgba(99,32,36,0.15)",
                       boxShadow: pi === 1 ? "0 0 18px rgba(197,165,126,0.4)" : "none",
                     }}>
                       <img src={p.avatar} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     </div>
-                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.72rem", fontWeight: 800, color: "#E8D4BC", maxWidth: 84, margin: "0 auto", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.72rem", fontWeight: 800, color: "#4a1a1d", maxWidth: 84, margin: "0 auto", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                       {p.isYou ? t("rankings.you") : p.name}
                     </div>
-                    <div style={{ fontFamily: "monospace", fontSize: "0.7rem", fontWeight: 700, color: "#c5a57e" }}>
+                    <div style={{ fontFamily: "monospace", fontSize: "0.7rem", fontWeight: 700, color: "#a07d3e" }}>
                       {p.xp.toLocaleString()} XP
                     </div>
                     <div style={{
                       width: 44, height: heights[pi], margin: "8px auto 0", borderRadius: "8px 8px 0 0",
-                      background: pi === 1 ? "linear-gradient(180deg, rgba(197,165,126,0.35), rgba(197,165,126,0.08))" : "rgba(255,255,255,0.05)",
+                      background: pi === 1 ? "linear-gradient(180deg, rgba(197,165,126,0.35), rgba(197,165,126,0.08))" : "rgba(99,32,36,0.05)",
                       border: "1px solid rgba(197,165,126,0.18)", borderBottom: "none",
                       display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: 7,
                     }}>
@@ -211,7 +212,7 @@ export default function LessonLeaderboard({ youXP, listLimit = 5 }: { youXP: num
             {visible.map((p, i) => row(p, listStart + i + 1, i === visible.length - 1 && !pinnedYou))}
             {pinnedYou && (
               <>
-                <div style={{ textAlign: "center", color: "rgba(232,212,188,0.35)", fontSize: "0.9rem", lineHeight: 1, padding: "2px 0" }}>···</div>
+                <div style={{ textAlign: "center", color: "rgba(106,70,64,0.4)", fontSize: "0.9rem", lineHeight: 1, padding: "2px 0" }}>···</div>
                 {row(pinnedYou, youRank + 1, true)}
               </>
             )}

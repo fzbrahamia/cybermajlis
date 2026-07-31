@@ -42,6 +42,24 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const isAuthPage = pathname.startsWith("/auth");
+  // Light theme is scoped to the landing page for now; the rest of the site keeps
+  // the dark maroon navbar until we roll the new look out.
+  // light theme now covers the landing + dashboard as we roll the new look out
+  const isLanding = pathname === "/" || pathname.startsWith("/dashboard");
+
+  const navBg = isLanding
+    ? "rgba(251,248,243,0.82)"
+    : "linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%)";
+  const navBorder = isLanding ? "rgba(99,32,36,.12)" : "rgba(197,165,126,.15)";
+  const navShadow = isLanding ? "0 2px 20px rgba(99,32,36,.07)" : "0 2px 20px rgba(62,19,22,.4)";
+  const linkColor = isLanding ? "rgba(74,26,29,.72)" : "rgba(227,218,201,0.85)";
+  const linkActiveColor = isLanding ? "#8B2635" : "#E8D4BC";
+  const linkActiveBorder = isLanding ? "rgba(139,38,53,.55)" : "rgba(197,165,126,.7)";
+  const pillTrackBg = isLanding ? "rgba(99,32,36,0.05)" : "rgba(255,255,255,0.07)";
+  const pillTrackBorder = isLanding ? "rgba(99,32,36,0.16)" : "rgba(197,165,126,0.18)";
+  const pillActiveText = isLanding ? "#7a1e22" : "#E3DAC9";
+  const pillIdleText = isLanding ? "rgba(74,26,29,0.4)" : "rgba(227,218,201,0.42)";
+  const usernameColor = isLanding ? "#7a1e22" : "#D5B893";
 
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [username, setUsername] = useState<string>("");
@@ -128,7 +146,7 @@ export default function Navbar() {
     fontSize: 11,
     letterSpacing: 2,
     fontWeight: 600,
-    color: "rgba(227,218,201,0.85)",
+    color: linkColor,
     textDecoration: "none",
     cursor: "pointer",
   };
@@ -142,9 +160,11 @@ export default function Navbar() {
     borderRadius: 8,
     border: "none",
     cursor: "pointer",
-    color: "#3e1316",
-    background: "linear-gradient(135deg, #e8d4bc, #c5a57e)",
-    boxShadow: "0 2px 12px rgba(197,165,126,.35)",
+    color: isLanding ? "#FBF8F3" : "#3e1316",
+    background: isLanding
+      ? "linear-gradient(135deg, #7a1e22, #8B2635)"
+      : "linear-gradient(135deg, #e8d4bc, #c5a57e)",
+    boxShadow: isLanding ? "0 4px 16px rgba(99,32,36,.22)" : "0 2px 12px rgba(197,165,126,.35)",
     transition: "all .25s ease",
   };
 
@@ -154,10 +174,10 @@ export default function Navbar() {
         position: "fixed", top: 0, left: 0, right: 0, width: "100%", zIndex: 50,
         display: "flex", alignItems: "center", justifyContent: "space-between",
         padding: "20px 56px",
-        borderBottom: "1px solid rgba(197,165,126,.15)",
-        background: "linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%)",
+        borderBottom: `1px solid ${navBorder}`,
+        background: navBg,
         backdropFilter: "blur(8px)",
-        boxShadow: "0 2px 20px rgba(62,19,22,.4)",
+        boxShadow: navShadow,
       }}>
         {/* Brand */}
         <a
@@ -165,11 +185,21 @@ export default function Navbar() {
           style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
           aria-label="CyberMajlis home"
         >
-          <img
-            src={isArabic ? "/logoAr.png" : "/logoEn.png"}
-            alt="CyberMajlis"
-            style={{ height: 40, width: "auto" }}
-          />
+          {isLanding ? (
+            <span style={{ fontFamily: "'Cinzel', serif", fontWeight: 900, fontSize: isArabic ? 21 : 23, letterSpacing: 0.5, whiteSpace: "nowrap" }}>
+              {isArabic ? (
+                <span style={{ fontFamily: "'Noto Naskh Arabic', 'Crimson Pro', serif", color: "#7a1e22" }}>المجلس السيبراني</span>
+              ) : (
+                <><span style={{ color: "#3e1316" }}>Cyber</span><span style={{ color: "#8B2635" }}> Majlis</span></>
+              )}
+            </span>
+          ) : (
+            <img
+              src={isArabic ? "/logoAr.png" : "/logoEn.png"}
+              alt="CyberMajlis"
+              style={{ height: 40, width: "auto" }}
+            />
+          )}
         </a>
 
         {/* Nav links */}
@@ -183,7 +213,7 @@ export default function Navbar() {
                 style={{
                   ...navLinkStyle,
                   ...(pathname.startsWith(href)
-                    ? { color: "#E8D4BC", borderBottom: "1.5px solid rgba(197,165,126,.7)", paddingBottom: 4 }
+                    ? { color: linkActiveColor, borderBottom: `1.5px solid ${linkActiveBorder}`, paddingBottom: 4 }
                     : {}),
                 }}
               >
@@ -202,11 +232,11 @@ export default function Navbar() {
               position: "relative",
               display: "flex",
               alignItems: "center",
-              background: "rgba(255,255,255,0.07)",
+              background: pillTrackBg,
               borderRadius: 999,
               padding: "3px",
               direction: "ltr",
-              border: "1px solid rgba(197,165,126,0.18)",
+              border: `1px solid ${pillTrackBorder}`,
               gap: 0,
             }}
           >
@@ -221,8 +251,10 @@ export default function Navbar() {
                 left: isArabic ? "calc(50% - 1.5px)" : "3px",
                 width: "calc(50% - 3px)",
                 borderRadius: 999,
-                background: "linear-gradient(135deg, rgba(227,218,201,0.22), rgba(197,165,126,0.18))",
-                border: "1px solid rgba(197,165,126,0.35)",
+                background: isLanding
+                  ? "linear-gradient(135deg, rgba(139,38,53,0.14), rgba(99,32,36,0.10))"
+                  : "linear-gradient(135deg, rgba(227,218,201,0.22), rgba(197,165,126,0.18))",
+                border: `1px solid ${isLanding ? "rgba(139,38,53,0.30)" : "rgba(197,165,126,0.35)"}`,
                 transition: "left 0.25s cubic-bezier(.4,0,.2,1)",
                 pointerEvents: "none",
               }}
@@ -236,7 +268,7 @@ export default function Navbar() {
                 fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em",
                 padding: "5px 14px", borderRadius: 999, border: "none",
                 background: "transparent",
-                color: !isArabic ? "#E3DAC9" : "rgba(227,218,201,0.42)",
+                color: !isArabic ? pillActiveText : pillIdleText,
                 cursor: isArabic ? "pointer" : "default",
                 transition: "color 0.25s ease",
                 whiteSpace: "nowrap",
@@ -253,7 +285,7 @@ export default function Navbar() {
                 fontSize: "0.8rem", fontWeight: 600,
                 padding: "5px 14px", borderRadius: 999, border: "none",
                 background: "transparent",
-                color: isArabic ? "#E3DAC9" : "rgba(227,218,201,0.42)",
+                color: isArabic ? pillActiveText : pillIdleText,
                 cursor: !isArabic ? "pointer" : "default",
                 transition: "color 0.25s ease",
                 whiteSpace: "nowrap",
@@ -316,7 +348,7 @@ export default function Navbar() {
                     </div>
                     <span style={{
                       fontFamily: "'Cinzel', serif", fontSize: "0.78rem",
-                      fontWeight: 600, letterSpacing: "0.04em", color: "#D5B893",
+                      fontWeight: 600, letterSpacing: "0.04em", color: usernameColor,
                     }}>
                       {username}
                     </span>

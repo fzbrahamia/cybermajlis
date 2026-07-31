@@ -19,6 +19,12 @@ const mono    = '"Geist Mono", "JetBrains Mono", Menlo, monospace';
 const C = {
   ink: "#2a0c0e", maroon: "#3e1316", maroonMid: "#632024", crimson: "#8B2635",
   gold: "#c5a57e", goldLight: "#E8D4BC", sand: "#E3DAC9", sandWarm: "#EDE0CE", cream: "#f5ede0",
+  /* light, airy surfaces — the page now lives here; maroon is reserved for small accents.
+     the two tones stay a clear-but-gentle step apart so the alternation reads as ordered. */
+  paper: "#FDFBF6", paperAlt: "#F2EBDC",
+  heading: "#4a1a1d", body: "#6a4640", line: "rgba(99,32,36,.12)",
+  /* cool secondary accent — sage green — small elements only (bullets, secondary buttons, tags) */
+  sage: "#5B7C5C", sageDeep: "#3f5c42", sageSoft: "rgba(91,124,92,.10)",
 };
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -439,19 +445,17 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
   const yRaw = useTransform(scrollYProgress, [0, 1], [70, -70]);
   const y: MotionValue<number> | number = reduce ? 0 : yRaw;
 
-  const dark = index % 2 === 0;
   const Icon = f.Icon;
   const flip = index % 2 === 1;
 
-  const heading = dark ? C.goldLight : C.maroon;
-  const body    = dark ? "rgba(232,212,188,.78)" : "#5a2428";
-  const bg = dark
-    ? "linear-gradient(180deg,#3e1316 0%,#2a0c0e 100%)"
-    : (index === 1 ? C.sand : C.sandWarm);
+  const heading = C.heading;
+  const body    = C.body;
+  // gentle two-tone alternation keeps the page light while giving rhythm.
+  // start on the *alt* tone so the first section contrasts with the hero (both were paper).
+  const bg = index % 2 === 0 ? C.paperAlt : C.paper;
 
-  const btn: React.CSSProperties = dark
-    ? { color: C.maroon, background: "linear-gradient(135deg,#E8D4BC,#c5a57e)", boxShadow: "0 6px 22px rgba(197,165,126,.3)" }
-    : { color: C.cream, background: "linear-gradient(135deg,#632024,#8B2635)", boxShadow: "0 6px 22px rgba(99,32,36,.32)" };
+  // maroon lives in the button (a small, high-impact element) — not the page
+  const btn: React.CSSProperties = { color: C.cream, background: "linear-gradient(135deg,#7a1e22,#8B2635)", boxShadow: "0 8px 22px rgba(99,32,36,.22)" };
 
   return (
     <section
@@ -459,7 +463,7 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
       ref={ref}
       style={{
         position: "relative", zIndex: 1, background: bg,
-        borderTop: dark ? "1px solid rgba(197,165,126,.18)" : "1px solid rgba(197,165,126,.22)",
+        borderTop: `1px solid ${C.line}`,
         padding: "clamp(72px,11vh,128px) 4rem", overflow: "hidden",
       }}
     >
@@ -467,7 +471,7 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
       <div aria-hidden style={{
         position: "absolute", top: "50%", insetInlineEnd: 30, transform: "translateY(-50%)",
         fontFamily: cinzel, fontWeight: 900, fontSize: "26vh", lineHeight: 1,
-        color: dark ? "rgba(197,165,126,.05)" : "rgba(99,32,36,.05)", pointerEvents: "none", userSelect: "none",
+        color: "rgba(99,32,36,.05)", pointerEvents: "none", userSelect: "none",
       }}>
         {String(index + 1).padStart(2, "0")}
       </div>
@@ -485,12 +489,12 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
           <motion.div variants={item} style={{ display: "inline-flex", alignItems: "center", gap: 9, marginBottom: 22 }}>
             <span style={{
               width: 42, height: 42, borderRadius: 11, display: "flex", alignItems: "center", justifyContent: "center",
-              background: dark ? "rgba(197,165,126,.14)" : "rgba(99,32,36,.07)",
-              border: `1px solid ${dark ? "rgba(197,165,126,.3)" : "rgba(99,32,36,.2)"}`,
+              background: "rgba(139,38,53,.08)",
+              border: "1px solid rgba(139,38,53,.22)",
             }}>
-              <Icon size={20} color={dark ? C.gold : C.maroonMid} strokeWidth={1.6} />
+              <Icon size={20} color={C.crimson} strokeWidth={1.6} />
             </span>
-            <span style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 3, color: dark ? C.gold : C.crimson }}>
+            <span style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 3, color: C.crimson }}>
               {isAR ? f.kicker.ar : f.kicker.en}
             </span>
           </motion.div>
@@ -517,7 +521,7 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
             <motion.ul variants={item} style={{ listStyle: "none", padding: 0, margin: "22px 0 30px", display: "flex", flexDirection: "column", gap: 11 }}>
               {(isAR ? f.points.ar : f.points.en).map((p, i) => (
                 <li key={i} style={{ display: "flex", alignItems: "center", gap: 11, fontFamily: crimson, fontSize: "1rem", color: body }}>
-                  <span style={{ width: 6, height: 6, background: C.gold, transform: "rotate(45deg)", flexShrink: 0 }} />
+                  <span style={{ width: 6, height: 6, background: C.sage, transform: "rotate(45deg)", flexShrink: 0 }} />
                   {p}
                 </li>
               ))}
@@ -552,7 +556,7 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
           {/* halo */}
           <div aria-hidden style={{
             position: "absolute", inset: -40, borderRadius: 40,
-            background: `radial-gradient(circle, ${dark ? "rgba(197,165,126,.18)" : "rgba(99,32,36,.1)"}, transparent 68%)`,
+            background: "radial-gradient(circle, rgba(197,165,126,.28), transparent 68%)",
             filter: "blur(20px)", pointerEvents: "none",
           }} />
           <motion.div style={{ y }}>
@@ -615,16 +619,16 @@ function MobileSection({ isAR }: { isAR: boolean }) {
 
   return (
     <section id="mobile" style={{
-      position: "relative", zIndex: 1, background: "linear-gradient(180deg,#3e1316 0%,#2a0c0e 100%)", overflow: "hidden",
-      borderTop: "1px solid rgba(197,165,126,.18)", padding: "clamp(72px,11vh,128px) 4rem",
+      position: "relative", zIndex: 1, background: C.paperAlt, overflow: "hidden",
+      borderTop: `1px solid ${C.line}`, padding: "clamp(72px,11vh,128px) 4rem",
     }}>
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto", display: "flex", gap: "clamp(40px,6vw,90px)", alignItems: "center", flexWrap: "wrap" }}>
         {/* copy */}
         <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.35 }} style={{ flex: "1 1 380px", maxWidth: 540 }}>
-          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 3, color: C.gold, marginBottom: 18 }}>
+          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 3, color: C.crimson, marginBottom: 18 }}>
             {isAR ? "سايبر مجلس على الجوال" : "CYBERMAJLIS ON MOBILE"}
           </motion.div>
-          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(1.9rem,3.4vw,3rem)", lineHeight: 1.08, color: C.goldLight, margin: 0 }}>
+          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(1.9rem,3.4vw,3rem)", lineHeight: 1.08, color: C.heading, margin: 0 }}>
             {isAR ? "مجلسك في جيبك." : "Your majlis, in your pocket."}
           </motion.h2>
           <motion.div variants={item} style={{ display: "flex", alignItems: "center", gap: 8, margin: "16px 0 18px" }}>
@@ -633,13 +637,13 @@ function MobileSection({ isAR }: { isAR: boolean }) {
           </motion.div>
           <motion.ul variants={item} style={{ listStyle: "none", padding: 0, margin: "4px 0 28px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px 18px" }}>
             {points.map(([Icon, en, ar], i) => (
-              <li key={i} style={{ display: "flex", alignItems: "center", gap: 11, fontFamily: crimson, fontSize: "0.98rem", color: "rgba(232,212,188,.78)" }}>
+              <li key={i} style={{ display: "flex", alignItems: "center", gap: 11, fontFamily: crimson, fontSize: "0.98rem", color: C.body }}>
                 <span style={{
                   width: 32, height: 32, borderRadius: 9, flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  background: "rgba(197,165,126,.14)", border: "1px solid rgba(197,165,126,.3)",
+                  background: "rgba(139,38,53,.08)", border: "1px solid rgba(139,38,53,.22)",
                 }}>
-                  <Icon size={16} color={C.gold} strokeWidth={1.7} />
+                  <Icon size={16} color={C.crimson} strokeWidth={1.7} />
                 </span>
                 {isAR ? ar : en}
               </li>
@@ -649,7 +653,7 @@ function MobileSection({ isAR }: { isAR: boolean }) {
             <StoreBadge kind="apple" isAR={isAR} />
             <StoreBadge kind="play" isAR={isAR} />
           </motion.div>
-          <motion.div variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 13, color: "rgba(232,212,188,.5)", marginTop: 14 }}>
+          <motion.div variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 13, color: "rgba(106,70,64,.7)", marginTop: 14 }}>
             {isAR ? "متوفر قريبًا على App Store و Google Play." : "Coming soon to the App Store and Google Play."}
           </motion.div>
         </motion.div>
@@ -801,7 +805,7 @@ export default function HomePage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: C.sand, fontFamily: crimson, color: C.maroon, position: "relative" }}>
+    <div style={{ minHeight: "100vh", background: C.paper, fontFamily: crimson, color: C.heading, position: "relative" }}>
 
       <style>{`
         @keyframes cmBlink     { 0%,100%{opacity:.25} 50%{opacity:1} }
@@ -828,7 +832,7 @@ export default function HomePage() {
 
       {/* ambient background */}
       <div aria-hidden style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }}>
-        <div style={{ position: "absolute", width: 700, height: 700, top: -220, insetInlineStart: -200, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,32,36,.09), transparent 65%)", filter: "blur(40px)", transform: `translateY(${scrollY * 0.06}px)` }} />
+        <div style={{ position: "absolute", width: 700, height: 700, top: -220, insetInlineStart: -200, borderRadius: "50%", background: "radial-gradient(circle, rgba(197,165,126,.16), transparent 65%)", filter: "blur(40px)", transform: `translateY(${scrollY * 0.06}px)` }} />
         <div style={{ position: "absolute", width: 500, height: 500, bottom: -200, insetInlineEnd: -200, borderRadius: "50%", background: "radial-gradient(circle, rgba(197,165,126,.14), transparent 65%)", filter: "blur(40px)", transform: `translateY(${scrollY * -0.04}px)` }} />
       </div>
 
@@ -871,7 +875,7 @@ export default function HomePage() {
             </motion.div>
 
             <motion.p variants={item} style={{
-              fontFamily: crimson, fontSize: "1.25rem", fontStyle: "italic", color: "#5a2428", lineHeight: 1.55, maxWidth: 500,
+              fontFamily: crimson, fontSize: "1.25rem", fontStyle: "italic", color: C.body, lineHeight: 1.55, maxWidth: 500,
             }}>
               {isAR
                 ? "كل ما تحتاجه لتتعلّم الأمن السيبراني وتتدرّب عليه في مكان واحد. مرّر للأسفل لترى ما بالداخل."
@@ -898,11 +902,11 @@ export default function HomePage() {
                 onClick={() => document.getElementById("lessons")?.scrollIntoView({ behavior: "smooth" })}
                 style={{
                   fontFamily: cinzel, fontSize: 13, fontWeight: 700, letterSpacing: 1,
-                  padding: "14px 28px", borderRadius: 11, cursor: "pointer", color: C.maroonMid,
-                  background: "rgba(99,32,36,.06)", border: "1.5px solid rgba(99,32,36,.3)", transition: "all .25s ease",
+                  padding: "14px 28px", borderRadius: 11, cursor: "pointer", color: C.sageDeep,
+                  background: C.sageSoft, border: "1.5px solid rgba(91,124,92,.4)", transition: "all .25s ease",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.13)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(91,124,92,.18)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = C.sageSoft; }}
               >
                 {isAR ? "اكتشف الميزات" : "Explore features"}
               </button>
@@ -965,27 +969,27 @@ export default function HomePage() {
       {/* ════════ JOIN NOW ════════ */}
       <section id="join" style={{
         position: "relative", zIndex: 1, overflow: "hidden",
-        background: "linear-gradient(180deg,#EDE0CE 0%,#E3DAC9 100%)",
-        borderTop: "1px solid rgba(99,32,36,.18)",
+        background: "linear-gradient(160deg,#54222e 0%,#301218 100%)",
+        borderTop: "1px solid rgba(197,165,126,.18)",
         padding: "clamp(96px,16vh,180px) 4rem", textAlign: "center",
       }}>
-        <div aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(197,165,126,.28), transparent 60%)", filter: "blur(60px)" }} />
+        <div aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(170,100,115,.10), transparent 62%)", filter: "blur(60px)" }} />
         <motion.div
           variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.4 }}
           style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}
         >
-          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, letterSpacing: 4, color: C.crimson, fontWeight: 700, marginBottom: 18 }}>
+          <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, letterSpacing: 4, color: C.gold, fontWeight: 700, marginBottom: 18 }}>
             {isAR ? "انضم إلى المجلس" : "JOIN THE MAJLIS"}
           </motion.div>
-          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(2rem,4.5vw,3.4rem)", lineHeight: 1.1, color: C.maroon, margin: 0 }}>
+          <motion.h2 variants={item} style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(2rem,4.5vw,3.4rem)", lineHeight: 1.1, color: C.goldLight, margin: 0 }}>
             {isAR ? "قطر تحتاج جيلها القادم من المدافعين." : "Qatar needs its next generation of defenders."}
           </motion.h2>
           <motion.div variants={item} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, margin: "22px auto", maxWidth: 280 }}>
-            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,transparent,${C.maroonMid})` }} />
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,transparent,${C.gold})` }} />
             <div style={{ width: 5, height: 5, background: C.gold, transform: "rotate(45deg)" }} />
-            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,${C.maroonMid},transparent)` }} />
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg,${C.gold},transparent)` }} />
           </motion.div>
-          <motion.p variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.2rem", color: "#5a2428", lineHeight: 1.6, margin: "0 auto 36px", maxWidth: 560 }}>
+          <motion.p variants={item} style={{ fontFamily: crimson, fontStyle: "italic", fontSize: "1.2rem", color: "rgba(232,212,188,.82)", lineHeight: 1.6, margin: "0 auto 36px", maxWidth: 560 }}>
             {isAR
               ? "ابدأ مجانًا اليوم، وكن جزءًا من المجلس الذي يساعد في حماية قطر."
               : "Start for free today, and become part of the majlis that helps keep Qatar safe."}
@@ -993,7 +997,7 @@ export default function HomePage() {
           <motion.div variants={item} style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
             <button
               onClick={() => router.push("/auth?signup=true")}
-              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1.6, padding: "16px 38px", borderRadius: 12, border: "none", cursor: "pointer", color: C.cream, background: "linear-gradient(135deg,#632024,#8B2635 60%,#a03040)", boxShadow: "0 10px 30px rgba(99,32,36,.32)", transition: "all .25s ease", display: "inline-flex", alignItems: "center", gap: 10 }}
+              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1.6, padding: "16px 38px", borderRadius: 12, border: "none", cursor: "pointer", color: C.maroon, background: "linear-gradient(135deg,#E8D4BC,#c5a57e)", boxShadow: "0 10px 30px rgba(197,165,126,.3)", transition: "all .25s ease", display: "inline-flex", alignItems: "center", gap: 10 }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = ""; }}
             >
@@ -1002,9 +1006,9 @@ export default function HomePage() {
             </button>
             <button
               onClick={() => router.push("/auth")}
-              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1, padding: "16px 34px", borderRadius: 12, cursor: "pointer", color: C.maroonMid, background: "rgba(99,32,36,.06)", border: "1.5px solid rgba(99,32,36,.3)", transition: "all .25s ease" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(99,32,36,.13)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "rgba(99,32,36,.06)"; }}
+              style={{ fontFamily: cinzel, fontSize: 14, fontWeight: 700, letterSpacing: 1, padding: "16px 34px", borderRadius: 12, cursor: "pointer", color: C.goldLight, background: "rgba(255,255,255,.06)", border: "1.5px solid rgba(232,212,188,.3)", transition: "all .25s ease" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,.12)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,.06)"; }}
             >
               {isAR ? "لديّ حساب" : "I have an account"}
             </button>
