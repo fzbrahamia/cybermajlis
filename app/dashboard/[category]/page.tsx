@@ -34,6 +34,7 @@ export default function CategoryPage({
         --maroon: #632024; --maroon-deep: #3e1316;
         --maroon-mid: #8B2635; --gold: #c5a57e;
         --gold-light: #E8D4BC; --cream: #E3DAC9;
+        --heading: #4a1a1d; --body: #6a4640; --sage: #5B7C5C;
       }
       @keyframes orb-drift {
         0% { transform: translate(0, 0) scale(1); }
@@ -57,7 +58,7 @@ export default function CategoryPage({
       }
       .lesson-card {
         position: relative;
-        background: linear-gradient(160deg, #f5ede0 0%, #ede0cc 100%);
+        background: linear-gradient(160deg, #FDFBF6 0%, #F3EBDB 100%);
         border-radius: 20px;
         border: 1px solid rgba(99,32,36,0.15);
         overflow: hidden;
@@ -73,8 +74,8 @@ export default function CategoryPage({
       .lesson-card-stripe { height: 3px; background: linear-gradient(90deg, var(--maroon), var(--gold)); flex-shrink: 0; }
       .lesson-card-body { padding: 1.4rem 1.6rem 1.8rem; display: flex; flex-direction: column; flex: 1; }
       .lesson-card-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 10px; border: 1px solid rgba(99,32,36,0.12); margin-bottom: 1.2rem; }
-      .lesson-card-title { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 700; color: var(--maroon-deep); margin-bottom: 0.6rem; line-height: 1.3; text-align: center; }
-      .lesson-card-desc { font-family: 'Crimson Pro', serif; font-size: 0.95rem; line-height: 1.65; color: #5C4033; font-weight: 300; text-align: center; flex: 1; }
+      .lesson-card-title { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 700; color: var(--heading); margin-bottom: 0.6rem; line-height: 1.3; text-align: center; }
+      .lesson-card-desc { font-family: 'Crimson Pro', serif; font-size: 0.95rem; line-height: 1.65; color: var(--body); font-weight: 300; text-align: center; flex: 1; }
       .lesson-card-arrow { display: flex; align-items: center; justify-content: center; margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid rgba(99,32,36,0.1); font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--maroon-mid); opacity: 0; transition: opacity 0.25s, transform 0.25s; transform: translateY(4px); }
       .lesson-card:hover .lesson-card-arrow { opacity: 1; transform: translateY(0); }
     `;
@@ -86,7 +87,7 @@ export default function CategoryPage({
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#E3DAC9", position: "relative", overflow: "hidden", paddingBottom: "4rem" }}>
+    <div style={{ minHeight: "100vh", background: "#FDFBF6", position: "relative", overflow: "hidden", paddingBottom: "4rem" }}>
       <div style={{ position: "relative", zIndex: 1, maxWidth: 1100, margin: "0 auto", padding: "0 2rem" }}>
 
         {/* Header */}
@@ -103,7 +104,7 @@ export default function CategoryPage({
             {t1("eyebrow", { category: formattedCategory })}
           </div>
 
-          <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 900, color: "#3e1316", marginBottom: "0.8rem", lineHeight: 1.1 }}>
+          <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 900, color: "#4a1a1d", marginBottom: "0.8rem", lineHeight: 1.1 }}>
             {formattedCategory} <span style={{ color: "#8B2635" }}>{t1("title_suffix")}</span>
           </h1>
 
@@ -113,7 +114,7 @@ export default function CategoryPage({
             <div style={{ height: 1.5, width: 48, background: "linear-gradient(90deg, #632024, transparent)", borderRadius: 2 }} />
           </div>
 
-          <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "1.05rem", fontStyle: "italic", color: "#5C4033", fontWeight: 300 }}>
+          <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "1.05rem", fontStyle: "italic", color: "#6a4640", fontWeight: 300 }}>
             {t1("subtitle")}
           </p>
         </div>

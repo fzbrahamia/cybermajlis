@@ -65,18 +65,18 @@ export default function SimulationsPage() {
   // ═══════════════════════════════════════════════════════════
   return (
     <div
-      className="min-h-screen bg-[#5C1E22] font-sans relative overflow-hidden"
+      className="min-h-screen bg-[#FDFBF6] font-sans relative overflow-hidden"
       style={isRtl ? { fontFamily: "var(--font-arabic), serif", direction: "rtl" } : undefined}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-[#5C1E22] to-[#4F1A1B] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#FDFBF6] to-[#F3EBDB] pointer-events-none" />
 
       <div className="relative z-10 max-w-[960px] mx-auto px-5 pt-28 pb-24">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="font-serif text-4xl sm:text-5xl font-medium text-[#f5ede0]">
+          <h1 className="font-serif text-4xl sm:text-5xl font-medium text-[#4a1a1d]">
             {t("simulations.title")}
           </h1>
-          <p className="text-[#f5ede0]/45 text-sm mt-3 max-w-xl mx-auto">
+          <p className="text-[#6a4640]/80 text-sm mt-3 max-w-xl mx-auto">
             {t("simulations.subtitle")}
           </p>
         </div>
@@ -90,47 +90,47 @@ export default function SimulationsPage() {
               <div
                 key={simId}
                 onClick={() => isAvailable && setActiveSimulation(simId)}
-                className={`group bg-white/[.09] border border-white/10 rounded-2xl p-5 transition-all duration-300 ${
+                className={`group bg-[#FBF4E8] border border-[#632024]/12 rounded-2xl p-5 shadow-sm transition-all duration-300 ${
                   isAvailable
-                    ? "cursor-pointer hover:-translate-y-1 hover:border-[#D5B893]/60 hover:shadow-2xl hover:shadow-black/25"
+                    ? "cursor-pointer hover:-translate-y-1 hover:border-[#632024]/35 hover:shadow-2xl hover:shadow-[#632024]/12"
                     : "cursor-not-allowed opacity-50"
                 }`}
               >
                 <div className="flex justify-between items-start mb-3">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-[#D5B893]/12 border border-[#D5B893]/25 group-hover:animate-bounce" style={{ animationDuration: "1.5s" }}>
-                    <SimIcon size={26} color="#D5B893" strokeWidth={1.7} />
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-[#632024]/12 border border-[#632024]/25 group-hover:animate-bounce" style={{ animationDuration: "1.5s" }}>
+                    <SimIcon size={26} color="#632024" strokeWidth={1.7} />
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    <span className="text-[9px] px-2.5 py-1 rounded-lg bg-[#D5B893]/15 border border-[#D5B893]/20 text-[#D5B893] font-bold">
+                    <span className="text-[9px] px-2.5 py-1 rounded-lg bg-[#632024]/15 border border-[#632024]/20 text-[#632024] font-bold">
                       {t("simulations.badge")}
                     </span>
                     {isAvailable ? (
-                      <span className="text-[8px] px-2 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 font-semibold">
+                      <span className="text-[8px] px-2 py-0.5 rounded-md bg-[#632024]/10 border border-[#632024]/22 text-[#8B2635] font-semibold">
                         {t("simulations.launch")}
                       </span>
                     ) : (
-                      <span className="text-[8px] px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-[#f5ede0]/30 font-semibold">
+                      <span className="text-[8px] px-2 py-0.5 rounded-md bg-[#632024]/04 border border-[#632024]/12 text-[#6a4640]/55 font-semibold">
                         {t("simulations.coming_soon")}
                       </span>
                     )}
                   </div>
                 </div>
-                <div className="text-lg font-extrabold text-[#f5ede0] mb-1">
+                <div className="text-lg font-extrabold text-[#4a1a1d] mb-1">
                   {t(`simList.${simId}.name`)}
                 </div>
-                <div className="text-xs text-[#D5B893] font-semibold mb-2">
+                <div className="text-xs text-[#632024] font-semibold mb-2">
                   {t(`simList.${simId}.sub`)}
                 </div>
                 {isAvailable && (
                   <div className="max-h-0 opacity-0 overflow-hidden transition-all duration-400 group-hover:max-h-48 group-hover:opacity-100 group-hover:mt-2.5">
-                    <p className="text-[11px] text-[#f5ede0]/40 leading-relaxed">
+                    <p className="text-[11px] text-[#6a4640]/85 leading-relaxed">
                       {t(`simList.${simId}.desc`)}
                     </p>
                   </div>
                 )}
                 <div className="flex gap-1 flex-wrap mt-2">
                   {SIM_TAGS[simId].map((tag, j) => (
-                    <span key={j} className="text-[9px] px-2 py-1 rounded-md bg-[#D5B893]/10 border border-[#D5B893]/15 text-[#D5B893] font-semibold">
+                    <span key={j} className="text-[9px] px-2 py-1 rounded-md bg-[#632024]/10 border border-[#632024]/15 text-[#632024] font-semibold">
                       {tag}
                     </span>
                   ))}
@@ -140,8 +140,8 @@ export default function SimulationsPage() {
           })}
         </div>
 
-        <div className="mt-5 p-3.5 bg-white/[.04] rounded-xl border border-white/5 text-center">
-          <div className="text-xs text-[#f5ede0]/40 leading-relaxed">
+        <div className="mt-5 p-3.5 bg-[#632024]/03 rounded-xl border border-[#632024]/10 text-center">
+          <div className="text-xs text-[#6a4640]/85 leading-relaxed">
             {t("simulations.disclaimer")}
           </div>
         </div>

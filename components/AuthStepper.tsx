@@ -74,56 +74,56 @@ export default function StepperFlow() {
 
     const style = document.createElement("style");
     style.textContent = `
-      :root { --maroon: #632024; --maroon-deep: #3e1316; --maroon-mid: #8B2635; --gold: #c5a57e; --gold-light: #E8D4BC; --cream: #E3DAC9; }
-      .auth-root { min-height: 100vh; background: var(--cream); display: flex; align-items: center; justify-content: center; padding: 2rem; }
-      .login-card { background: linear-gradient(135deg, var(--maroon-deep) 0%, var(--maroon) 60%, #7a1e22 100%); border-radius: 24px; padding: 3rem 2.5rem; width: 100%; max-width: 440px; position: relative; overflow: hidden; box-shadow: 0 24px 64px rgba(62,19,22,0.35), inset 0 2px 0 rgba(255,255,255,0.07); }
-      .login-card::before { content: ''; position: absolute; top: -70px; right: -70px; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); pointer-events: none; }
-      .login-card::after { content: ''; position: absolute; bottom: -50px; left: -50px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); pointer-events: none; }
+      :root { --maroon: #632024; --maroon-deep: #3e1316; --maroon-mid: #8B2635; --gold: #c5a57e; --gold-light: #E8D4BC; --cream: #E3DAC9; --heading: #4a1a1d; --body: #6a4640; }
+      .auth-root { min-height: 100vh; background: #FDFBF6; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+      .login-card { background: linear-gradient(160deg, #FDFBF6 0%, #F3EBDB 100%); border: 1px solid rgba(99,32,36,0.14); border-radius: 24px; padding: 3rem 2.5rem; width: 100%; max-width: 440px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(99,32,36,0.12); }
+      .login-card::before { content: ''; position: absolute; top: -70px; right: -70px; width: 220px; height: 220px; border-radius: 50%; background: rgba(99,32,36,0.03); border: 1px solid rgba(99,32,36,0.06); pointer-events: none; }
+      .login-card::after { content: ''; position: absolute; bottom: -50px; left: -50px; width: 160px; height: 160px; border-radius: 50%; background: rgba(99,32,36,0.02); border: 1px solid rgba(99,32,36,0.05); pointer-events: none; }
       .login-card-stripe { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), rgba(197,165,126,0.2)); }
-      .auth-eyebrow { display: inline-block; font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(232,212,188,0.6); border: 1px solid rgba(197,165,126,0.2); padding: 0.35rem 1.2rem; border-radius: 999px; margin-bottom: 1rem; display: block; text-align: center; }
-      .auth-title { font-family: 'Cinzel', serif; font-size: 2rem; font-weight: 900; color: var(--gold-light); text-align: center; margin-bottom: 0.6rem; line-height: 1.1; }
+      .auth-eyebrow { display: inline-block; font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: #8B2635; border: 1px solid rgba(139,38,53,0.25); padding: 0.35rem 1.2rem; border-radius: 999px; margin-bottom: 1rem; display: block; text-align: center; }
+      .auth-title { font-family: 'Cinzel', serif; font-size: 2rem; font-weight: 900; color: var(--heading); text-align: center; margin-bottom: 0.6rem; line-height: 1.1; }
       .auth-divider { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 2rem; }
       .auth-input-wrap { position: relative; margin-bottom: 0.85rem; }
-      .auth-input { width: 100%; padding: 0.8rem 2.8rem 0.8rem 1rem; border-radius: 12px; background: rgba(253,248,240,0.1); border: 1px solid rgba(227,218,201,0.35); color: var(--cream); font-family: 'Crimson Pro', serif; font-size: 1rem; outline: none; transition: border-color 0.2s; }
-      .auth-input::placeholder { color: rgba(227,218,201,0.4); }
-      .auth-input:focus { border-color: rgba(197,165,126,0.45); }
-      .auth-eye { position: absolute; inset-y: 0; right: 0.75rem; display: flex; align-items: center; background: none; border: none; color: rgba(197,165,126,0.5); cursor: pointer; transition: color 0.2s; }
-      .auth-eye:hover { color: var(--gold-light); }
-      .auth-error { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: rgba(232,212,188,0.7); margin: -0.4rem 0 0.6rem 0.2rem; }
-      .btn-auth-primary { width: 100%; padding: 0.85rem; font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border: none; border-radius: 12px; cursor: pointer; background: var(--gold); color: var(--maroon-deep); font-weight: 700; transition: opacity 0.2s, transform 0.15s; box-shadow: 0 4px 16px rgba(197,165,126,0.25); margin-top: 0.4rem; }
+      .auth-input { width: 100%; padding: 0.8rem 2.8rem 0.8rem 1rem; border-radius: 12px; background: rgba(99,32,36,0.04); border: 1px solid rgba(99,32,36,0.2); color: var(--heading); font-family: 'Crimson Pro', serif; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+      .auth-input::placeholder { color: rgba(106,70,64,0.5); }
+      .auth-input:focus { border-color: rgba(99,32,36,0.4); }
+      .auth-eye { position: absolute; inset-y: 0; right: 0.75rem; display: flex; align-items: center; background: none; border: none; color: rgba(99,32,36,0.45); cursor: pointer; transition: color 0.2s; }
+      .auth-eye:hover { color: var(--maroon); }
+      .auth-error { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: #b04a4a; margin: -0.4rem 0 0.6rem 0.2rem; }
+      .btn-auth-primary { width: 100%; padding: 0.85rem; font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border: none; border-radius: 12px; cursor: pointer; background: linear-gradient(135deg, #632024, #8B2635); color: #F3EAD7; font-weight: 700; transition: opacity 0.2s, transform 0.15s; box-shadow: 0 6px 18px rgba(99,32,36,0.28); margin-top: 0.4rem; }
       .btn-auth-primary:hover { opacity: 0.88; transform: translateY(-1px); }
       .btn-auth-ghost { background: none; border: none; font-family: 'Crimson Pro', serif; font-size: 0.9rem; cursor: pointer; transition: color 0.2s; padding: 0; }
-      .auth-footer { text-align: center; margin-top: 1.4rem; font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: rgba(227,218,201,0.55); }
-      .signup-card { background: linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%); border-radius: 24px; width: 100%; max-width: 500px; position: relative; overflow: hidden; box-shadow: 0 24px 64px rgba(62,19,22,0.35), inset 0 2px 0 rgba(255,255,255,0.07); }
+      .auth-footer { text-align: center; margin-top: 1.4rem; font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: rgba(106,70,64,0.55); }
+      .signup-card { background: linear-gradient(160deg, #FDFBF6 0%, #F3EBDB 100%); border: 1px solid rgba(99,32,36,0.14); border-radius: 24px; width: 100%; max-width: 500px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(99,32,36,0.12); }
       .signup-card-stripe { height: 3px; background: linear-gradient(90deg, var(--maroon), var(--gold)); }
       .signup-card-body { padding: 2.5rem 2.5rem 2rem; }
       .step-indicators { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 2rem; }
       .step-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 700; transition: all 0.3s; }
       .step-dot.completed { background: linear-gradient(135deg, var(--maroon-deep), var(--maroon)); color: var(--gold-light); box-shadow: 0 4px 12px rgba(99,32,36,0.3); }
       .step-dot.active { background: var(--maroon); color: var(--gold-light); border: 2px solid var(--gold); box-shadow: 0 0 0 3px rgba(197,165,126,0.2); }
-      .step-dot.inactive { background: rgba(255,255,255,0.08); color: rgba(227,218,201,0.4); border: 1px solid rgba(255,255,255,0.12); }
-      .step-line { flex: 1; height: 1.5px; max-width: 40px; background: rgba(255,255,255,0.15); border-radius: 2px; }
-      .signup-title { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; color: var(--gold-light); text-align: center; margin-bottom: 1.8rem; }
+      .step-dot.inactive { background: rgba(99,32,36,0.08); color: rgba(106,70,64,0.4); border: 1px solid rgba(99,32,36,0.12); }
+      .step-line { flex: 1; height: 1.5px; max-width: 40px; background: rgba(99,32,36,0.15); border-radius: 2px; }
+      .signup-title { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; color: var(--heading); text-align: center; margin-bottom: 1.8rem; }
       .signup-input-wrap { position: relative; margin-bottom: 0.85rem; }
-      .signup-input { width: 100%; padding: 0.8rem 2.8rem 0.8rem 1rem; border-radius: 12px; background: rgba(253,248,240,0.1); border: 1px solid rgba(227,218,201,0.35); color: var(--cream); font-family: 'Crimson Pro', serif; font-size: 1rem; outline: none; transition: border-color 0.2s; box-shadow: inset 0 1px 3px rgba(99,32,36,0.05); }
-      .signup-input::placeholder { color: rgba(227,218,201,0.55); }
+      .signup-input { width: 100%; padding: 0.8rem 2.8rem 0.8rem 1rem; border-radius: 12px; background: rgba(99,32,36,0.04); border: 1px solid rgba(99,32,36,0.2); color: var(--heading); font-family: 'Crimson Pro', serif; font-size: 1rem; outline: none; transition: border-color 0.2s; box-shadow: inset 0 1px 3px rgba(99,32,36,0.05); }
+      .signup-input::placeholder { color: rgba(106,70,64,0.5); }
       .signup-input:focus { border-color: rgba(99,32,36,0.4); }
       .signup-input.error { border-color: var(--maroon-mid); }
       .signup-input:disabled { opacity: 0.4; cursor: not-allowed; }
-      .signup-eye { position: absolute; inset-y: 0; right: 0.75rem; display: flex; align-items: center; background: none; border: none; color: rgba(197,165,126,0.5); cursor: pointer; transition: color 0.2s; }
-      .signup-eye:hover { color: var(--gold-light); }
-      .signup-error { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: rgba(232,212,188,0.75); margin: -0.4rem 0 0.6rem 0.2rem; }
+      .signup-eye { position: absolute; inset-y: 0; right: 0.75rem; display: flex; align-items: center; background: none; border: none; color: rgba(99,32,36,0.45); cursor: pointer; transition: color 0.2s; }
+      .signup-eye:hover { color: var(--maroon); }
+      .signup-error { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: #b04a4a; margin: -0.4rem 0 0.6rem 0.2rem; }
       .pw-checks { list-style: none; margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 4px; }
       .pw-check { font-family: 'Crimson Pro', serif; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
-      .pw-check.valid { color: #a9c79a; text-decoration: line-through; opacity: 0.85; }
-      .pw-check.invalid { color: rgba(232,212,188,0.92); }
+      .pw-check.valid { color: rgba(106,70,64,0.6); text-decoration: line-through; opacity: 0.85; }
+      .pw-check.invalid { color: var(--heading); }
       .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.8rem; }
-      .btn-step-back { display: flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.7rem 1.4rem; border-radius: 10px; border: 1px solid rgba(227,218,201,0.25); background: transparent; color: var(--cream); cursor: pointer; transition: background 0.2s; }
-      .btn-step-back:hover { background: linear-gradient(135deg, #3e1316 0%, #632024 60%, #7a1e22 100%); }
+      .btn-step-back { display: flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.7rem 1.4rem; border-radius: 10px; border: 1px solid rgba(99,32,36,0.25); background: transparent; color: var(--heading); cursor: pointer; transition: background 0.2s; }
+      .btn-step-back:hover { background: rgba(99,32,36,0.06); }
       .btn-step-next { display: flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.7rem 1.6rem; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--maroon-deep), var(--maroon)); color: var(--gold-light); cursor: pointer; transition: opacity 0.2s, transform 0.15s; box-shadow: 0 4px 14px rgba(99,32,36,0.25); }
       .btn-step-next:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
       .btn-step-next:disabled { opacity: 0.35; cursor: not-allowed; }
-      .signup-footer { text-align: center; margin-top: 1.2rem; font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: rgba(227,218,201,0.55); }
+      .signup-footer { text-align: center; margin-top: 1.2rem; font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: rgba(106,70,64,0.55); }
     `;
     document.head.appendChild(style);
     return () => { document.head.removeChild(link); document.head.removeChild(style); };
@@ -210,7 +210,7 @@ export default function StepperFlow() {
 
           <div style={{ textAlign: "center", marginTop: "1rem" }}>
             <button type="button" className="btn-auth-ghost"
-              style={{ color: "rgba(197,165,126,0.7)", fontSize: "0.85rem", fontFamily: "'Crimson Pro', serif" }}
+              style={{ color: "rgba(106,70,64,0.75)", fontSize: "0.85rem", fontFamily: "'Crimson Pro', serif" }}
               onClick={async () => {
                 if (!email) { showModal(t("modals.missing_email_title"), t("modals.missing_email_msg")); return; }
                 try {
@@ -226,7 +226,7 @@ export default function StepperFlow() {
 
           <div className="auth-footer">
             {t("login.footer_text")}{" "}
-            <button className="btn-auth-ghost" style={{ color: "rgba(197,165,126,0.85)", textDecoration: "underline" }}
+            <button className="btn-auth-ghost" style={{ color: "#8B2635", textDecoration: "underline" }}
               onClick={() => { setShowSignUp(true); setShowPassword(false); }}>
               {t("login.footer_link")}
             </button>
@@ -234,7 +234,7 @@ export default function StepperFlow() {
 
           <div style={{ textAlign: "center", marginTop: "0.9rem" }}>
             <button type="button" className="btn-auth-ghost"
-              style={{ color: "rgba(197,165,126,0.45)", fontSize: "0.82rem", fontStyle: "italic" }}
+              style={{ color: "rgba(106,70,64,0.6)", fontSize: "0.82rem", fontStyle: "italic" }}
               onClick={() => router.push("/dashboard")}>
               {t("login.guest_link")}
             </button>
@@ -270,7 +270,7 @@ export default function StepperFlow() {
             })}
           </div>
 
-          <h2 className="signup-title" style={{ color: "#E8D4BC" }}>{stepTitles[step - 1]}</h2>
+          <h2 className="signup-title" style={{ color: "#4a1a1d" }}>{stepTitles[step - 1]}</h2>
 
           <AnimatePresence mode="wait">
             <motion.div key={step}
@@ -286,7 +286,7 @@ export default function StepperFlow() {
                       className={`signup-input ${email && !isEmailValid ? "error" : ""}`} />
                   </div>
                   {email && !isEmailValid && (
-                    <p className="signup-error" style={{ color: "rgba(232,212,188,0.75)" }}>
+                    <p className="signup-error" style={{ color: "#b04a4a" }}>
                       {t("signup.errors.invalid_email")}
                     </p>
                   )}
@@ -296,7 +296,7 @@ export default function StepperFlow() {
                       className={`signup-input ${username && !isUsernameValid ? "error" : ""}`} />
                   </div>
                   {username && !isUsernameValid && (
-                    <p className="signup-error" style={{ color: "rgba(232,212,188,0.75)" }}>
+                    <p className="signup-error" style={{ color: "#b04a4a" }}>
                       {t("signup.errors.username_short")}
                     </p>
                   )}
@@ -322,7 +322,7 @@ export default function StepperFlow() {
                     </button>
                   </div>
                   {confirmPassword && !isConfirmMatch && (
-                    <p className="signup-error" style={{ color: "rgba(232,212,188,0.75)" }}>
+                    <p className="signup-error" style={{ color: "#b04a4a" }}>
                       {t("signup.errors.passwords_no_match")}
                     </p>
                   )}
@@ -408,9 +408,9 @@ export default function StepperFlow() {
             )}
           </div>
 
-          <div className="signup-footer" style={{ color: "rgba(227,218,201,0.55)" }}>
+          <div className="signup-footer" style={{ color: "rgba(106,70,64,0.55)" }}>
             {t("signup.footer_text")}{" "}
-            <button className="btn-auth-ghost" style={{ color: "rgba(197,165,126,0.85)", textDecoration: "underline" }}
+            <button className="btn-auth-ghost" style={{ color: "#8B2635", textDecoration: "underline" }}
               onClick={() => { setShowSignUp(false); setShowPassword(false); router.push("/auth"); }}>
               {t("signup.footer_link")}
             </button>
@@ -418,7 +418,7 @@ export default function StepperFlow() {
 
           <div style={{ textAlign: "center", marginTop: "0.9rem" }}>
             <button type="button" className="btn-auth-ghost"
-              style={{ color: "rgba(197,165,126,0.45)", fontSize: "0.82rem", fontStyle: "italic" }}
+              style={{ color: "rgba(106,70,64,0.6)", fontSize: "0.82rem", fontStyle: "italic" }}
               onClick={() => router.push("/dashboard")}>
               {t("signup.guest_link")}
             </button>

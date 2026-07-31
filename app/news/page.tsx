@@ -99,7 +99,7 @@ function NewsCard({ item }: { item: NewsItem }) {
 
         {/* Headline */}
         <h2 style={{ fontFamily:"'Cinzel',serif", fontSize:"clamp(0.78rem,1.8vw,0.9rem)",
-          fontWeight:700, color:"#3e1316", margin:"0 0 8px", lineHeight:1.35,
+          fontWeight:700, color:"#4a1a1d", margin:"0 0 8px", lineHeight:1.35,
           textAlign: dir === "rtl" ? "right" : "left" }}>
           {headline}
         </h2>
@@ -132,7 +132,7 @@ function NewsCard({ item }: { item: NewsItem }) {
                   {i + 1}
                 </span>
                 <span style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.82rem",
-                  color:"#3e1316", lineHeight:1.55 }}>{step}</span>
+                  color:"#4a1a1d", lineHeight:1.55 }}>{step}</span>
               </div>
             ))}
           </div>
@@ -141,7 +141,7 @@ function NewsCard({ item }: { item: NewsItem }) {
         {/* Expanded: what happened */}
         {expanded && (
           <div style={{ marginTop:8, borderTop:"1px solid rgba(99,32,36,0.07)", paddingTop:8 }}>
-            <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.85rem", color:"#5C4033",
+            <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.85rem", color:"#6a4640",
               lineHeight:1.7, margin:"0 0 6px", textAlign: dir === "rtl" ? "right" : "left" }}>
               {body}
             </p>
@@ -252,7 +252,7 @@ export default function NewsPage() {
   );
 
   return (
-    <div style={{ minHeight:"100vh", background:"#f5ede2", fontFamily:"'DM Sans',sans-serif" }}
+    <div style={{ minHeight:"100vh", background:"#FDFBF6", fontFamily:"'DM Sans',sans-serif" }}
       dir={isAr ? "rtl" : "ltr"}>
       <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 
@@ -270,10 +270,10 @@ export default function NewsPage() {
               CyberMajlis
             </div>
             <h1 style={{ fontFamily:"'Cinzel',serif", fontSize:"1.1rem", fontWeight:700,
-              color:"#3e1316", margin:"0 0 8px", borderLeft:"3px solid #632024", paddingLeft:10 }}>
+              color:"#4a1a1d", margin:"0 0 8px", borderLeft:"3px solid #632024", paddingLeft:10 }}>
               {isAr ? "نشرات الأمن" : "Security Briefings"}
             </h1>
-            <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.88rem", color:"#5C4033",
+            <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.88rem", color:"#6a4640",
               lineHeight:1.65, margin:"0 0 12px" }}>
               {isAr
                 ? "أحدث التهديدات بلغة بسيطة، مع خطوات يستطيع الجميع اتباعها."
@@ -312,14 +312,14 @@ export default function NewsPage() {
                 <button key={String(val)} onClick={() => setFilter(val as "all"|Severity)}
                   style={{ width:"100%", display:"flex", alignItems:"center", gap:10,
                     padding:"8px 10px", borderRadius:10, border:"none", cursor:"pointer",
-                    background: active ? "#f5ede2" : "transparent",
+                    background: active ? "#FDFBF6" : "transparent",
                     marginBottom:4, textAlign: isAr ? "right" : "left" }}>
                   {dot
                     ? <span style={{ width:12, height:12, borderRadius:"50%",
                         background:dot, flexShrink:0, display:"inline-block" }}/>
                     : <Shield size={13} color="#632024" />}
                   <span style={{ flex:1, fontFamily:"'Cinzel',serif", fontSize:"0.75rem",
-                    fontWeight: active ? 700 : 400, color: active ? "#3e1316" : "rgba(99,32,36,0.55)" }}>
+                    fontWeight: active ? 700 : 400, color: active ? "#4a1a1d" : "rgba(99,32,36,0.55)" }}>
                     {String(label)}
                   </span>
                   <span style={{ fontSize:11, fontWeight:700, padding:"1px 7px",

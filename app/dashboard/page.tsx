@@ -117,7 +117,7 @@ export default function DashboardPage() {
       .dash-orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(80px); opacity: 0.18; animation: dorb 18s ease-in-out infinite alternate; }
       .dash-orb-1 { width: 420px; height: 420px; background: var(--gold); top: -120px; left: -100px; }
       .dash-orb-2 { width: 280px; height: 280px; background: var(--gold); top: 38%; right: -80px; animation-delay: -6s; }
-      .dash-orb-3 { width: 200px; height: 200px; background: var(--sage); bottom: 8%; left: 28%; animation-delay: -12s; }
+      .dash-orb-3 { width: 200px; height: 200px; background: var(--gold); bottom: 8%; left: 28%; animation-delay: -12s; }
       @keyframes dorb { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(30px,40px) scale(1.08); } }
 
       .dash-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
@@ -174,7 +174,7 @@ export default function DashboardPage() {
       .lc-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem; color: var(--heading); }
       .lc-sub { font-size: 0.8rem; color: var(--body); line-height: 1.4; margin: 2px 0 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
       .lc-track { height: 5px; background: rgba(99,32,36,0.1); border-radius: 999px; overflow: hidden; }
-      .lc-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--sage), #86a874); }
+      .lc-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--maroon-mid), var(--gold)); }
       .lc-meta { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--maroon-mid); flex-shrink: 0; }
       .lc-prog { font-family: monospace; font-size: 0.8rem; font-weight: 700; }
 

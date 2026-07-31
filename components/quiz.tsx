@@ -42,7 +42,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
         border-radius: 12px;
         border: 1.5px solid rgba(99,32,36,0.2);
         background: rgba(253,248,240,0.7);
-        color: #3e1316;
+        color: #4a1a1d;
         font-family: 'Crimson Pro', Georgia, serif;
         font-size: 0.92rem;
         text-align: center;
@@ -151,18 +151,18 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
         <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(99,32,36,0.5)", marginBottom: "1rem" }}>
           {t("knowledge_check")}
         </div>
-        <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: "1.4rem", fontWeight: 700, color: "#3e1316", marginBottom: "0.6rem" }}>
+        <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: "1.4rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.6rem" }}>
           {t("ready_heading")}
         </h2>
         <div style={{ height: 1, width: 40, background: "linear-gradient(90deg, transparent, #c5a57e, transparent)", margin: "0.8rem auto 1.4rem" }} />
-        <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "1rem", color: "#5C4033", fontStyle: "italic", marginBottom: "1.8rem" }}>
+        <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "1rem", color: "#6a4640", fontStyle: "italic", marginBottom: "1.8rem" }}>
           {t("questions_count", { count: questions.length })}
         </p>
         <button onClick={() => setStarted(true)} style={{
           fontFamily: "'Cinzel', serif", fontSize: "0.7rem", letterSpacing: "0.15em",
           textTransform: "uppercase", fontWeight: 700,
           padding: "0.85rem 2.5rem", borderRadius: 12, border: "none",
-          background: "linear-gradient(135deg, #3e1316, #632024)",
+          background: "linear-gradient(135deg, #4a1a1d, #632024)",
           color: "#E8D4BC", cursor: "pointer",
           boxShadow: "0 4px 16px rgba(99,32,36,0.25)",
         }}>
@@ -193,7 +193,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
                 <Star key={s} size={26} style={{ transition: "all 0.3s" }} color={s <= stars ? "#e8b84a" : "#cbb89a"} fill={s <= stars ? "#e8b84a" : "none"} />
               ))}
             </div>
-            <p style={{ fontFamily: "'Crimson Pro', serif", fontStyle: "italic", color: "#5C4033", fontSize: "0.95rem" }}>
+            <p style={{ fontFamily: "'Crimson Pro', serif", fontStyle: "italic", color: "#6a4640", fontSize: "0.95rem" }}>
               {pct >= 80 ? t("excellent") : pct >= 60 ? t("good") : t("keep_practicing")}
             </p>
           </div>
@@ -205,14 +205,14 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
               const isCorrect = userAnswer === q.correctAnswer;
               return (
                 <div key={i} className={isCorrect ? "quiz-result-correct" : "quiz-result-wrong"}>
-                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: "0.75rem", fontWeight: 700, color: "#3e1316", marginBottom: "0.5rem" }}>
+                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: "0.75rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.5rem" }}>
                     {i + 1}. {q.question}
                   </p>
-                  <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "0.9rem", color: "#5C4033" }}>
+                  <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "0.9rem", color: "#6a4640" }}>
                     {t("your_answer")} <span style={{ color: isCorrect ? "#3a5c2e" : "#7a2020", fontWeight: 600 }}>{userAnswer || t("no_answer")}</span>
                   </p>
                   {!isCorrect && (
-                    <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "0.9rem", color: "#5C4033", marginTop: "0.2rem" }}>
+                    <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "0.9rem", color: "#6a4640", marginTop: "0.2rem" }}>
                       {t("correct_answer")} <span style={{ color: "#3a5c2e", fontWeight: 600 }}>{q.correctAnswer}</span>
                     </p>
                   )}
@@ -226,7 +226,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
               fontFamily: "'Cinzel', serif", fontSize: "0.68rem", letterSpacing: "0.15em",
               textTransform: "uppercase", fontWeight: 700,
               padding: "0.8rem 2rem", borderRadius: 12, border: "none",
-              background: "linear-gradient(135deg, #3e1316, #632024)",
+              background: "linear-gradient(135deg, #4a1a1d, #632024)",
               color: "#E8D4BC", cursor: "pointer",
               boxShadow: "0 4px 16px rgba(99,32,36,0.22)",
             }}>
@@ -263,7 +263,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
 
         {/* Question */}
         <div style={{
-          background: "linear-gradient(135deg, #3e1316, #632024)",
+          background: "linear-gradient(135deg, #4a1a1d, #632024)",
           borderRadius: 14, padding: "0.9rem 1.1rem",
           marginBottom: "0.8rem", position: "relative", overflow: "hidden",
           boxShadow: "0 4px 16px rgba(99,32,36,0.2)",
@@ -323,7 +323,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
             fontFamily: "'Cinzel', serif", fontSize: "0.65rem", letterSpacing: "0.1em",
             textTransform: "uppercase", padding: "0.7rem 1.6rem", borderRadius: 10,
             border: "none",
-            background: selected ? "linear-gradient(135deg, #3e1316, #632024)" : "rgba(99,32,36,0.1)",
+            background: selected ? "linear-gradient(135deg, #4a1a1d, #632024)" : "rgba(99,32,36,0.1)",
             color: selected ? "#E8D4BC" : "rgba(99,32,36,0.3)",
             cursor: selected ? "pointer" : "not-allowed",
             boxShadow: selected ? "0 4px 14px rgba(99,32,36,0.22)" : "none",

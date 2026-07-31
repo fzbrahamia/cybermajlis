@@ -45,7 +45,7 @@ export default function Navbar() {
   // Light theme is scoped to the landing page for now; the rest of the site keeps
   // the dark maroon navbar until we roll the new look out.
   // light theme now covers the landing + dashboard as we roll the new look out
-  const isLanding = pathname === "/" || pathname.startsWith("/dashboard");
+  const isLanding = pathname === "/" || pathname.startsWith("/dashboard") || pathname.startsWith("/auth") || pathname.startsWith("/simulations") || pathname.startsWith("/ctf") || pathname.startsWith("/scan") || pathname.startsWith("/news") || pathname.startsWith("/community");
 
   const navBg = isLanding
     ? "rgba(251,248,243,0.82)"

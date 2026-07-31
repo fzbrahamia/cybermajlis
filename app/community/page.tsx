@@ -158,8 +158,8 @@ function ReportCard({r,userId,onUpvote,isAR}:{r:Report;userId:string|null;onUpvo
             {r.createdAt ? timeAgo(r.createdAt.toDate(), isAR) : ""}
           </span>
         </div>
-        <h3 style={{fontFamily:"'Cinzel',serif",fontSize:"0.92rem",fontWeight:700,color:"#3e1316",lineHeight:1.4,margin:"0 0 6px"}}>{r.title}</h3>
-        <p style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"0.93rem",color:"#5C4033",lineHeight:1.65,margin:"0 0 10px"}}>{r.content}</p>
+        <h3 style={{fontFamily:"'Cinzel',serif",fontSize:"0.92rem",fontWeight:700,color:"#4a1a1d",lineHeight:1.4,margin:"0 0 6px"}}>{r.title}</h3>
+        <p style={{fontFamily:"'Crimson Pro',Georgia,serif",fontSize:"0.93rem",color:"#6a4640",lineHeight:1.65,margin:"0 0 10px"}}>{r.content}</p>
         <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
           {r.detail&&(
             <div style={{display:"flex",alignItems:"center",gap:5,background:"rgba(99,32,36,0.04)",borderRadius:7,padding:"5px 10px",border:"1px solid rgba(99,32,36,0.09)",fontFamily:"monospace",fontSize:11,color:cfg.color,flex:1,minWidth:0,overflow:"hidden",whiteSpace:"nowrap"}}>
@@ -204,18 +204,18 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
   return(
     <div style={{position:"fixed",inset:0,zIndex:9998,background:"rgba(0,0,0,0.55)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",padding:"1rem"}}>
       <div style={{background:"#faf6f1",borderRadius:24,width:"100%",maxWidth:500,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 32px 80px rgba(62,19,22,0.35)",border:"1px solid rgba(197,165,126,0.2)",position:"relative"}}>
-        <div style={{background:"linear-gradient(135deg,#3e1316,#632024)",padding:"1.3rem 1.5rem",borderRadius:"24px 24px 0 0",position:"relative",overflow:"hidden"}}>
+        <div style={{background:"linear-gradient(135deg,#FBF4E8,#F1E8D6)",borderBottom:"1px solid rgba(99,32,36,0.1)",padding:"1.3rem 1.5rem",borderRadius:"24px 24px 0 0",position:"relative",overflow:"hidden"}}>
           <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:"linear-gradient(90deg,#c5a57e,rgba(197,165,126,0.2))"}}/>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <div>
-              <div style={{fontSize:9,letterSpacing:"0.3em",color:"rgba(197,165,126,0.6)",textTransform:"uppercase",marginBottom:5}}>
+              <div style={{fontSize:9,letterSpacing:"0.3em",color:"#8B2635",textTransform:"uppercase",marginBottom:5}}>
                 {isAR ? "تقديم بلاغ" : "File a Report"}
               </div>
-              <h2 style={{fontFamily:"'Cinzel',serif",fontSize:"1.1rem",color:"#E8D4BC",fontWeight:700,margin:0}}>
+              <h2 style={{fontFamily:"'Cinzel',serif",fontSize:"1.1rem",color:"#4a1a1d",fontWeight:700,margin:0}}>
                 {isAR ? "بلاغ أمني مجتمعي" : "Community Security Report"}
               </h2>
             </div>
-            <button suppressHydrationWarning onClick={onClose} style={{background:"rgba(255,255,255,0.1)",border:"none",color:"rgba(232,212,188,0.6)",width:30,height:30,borderRadius:"50%",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><X size={16} /></button>
+            <button suppressHydrationWarning onClick={onClose} style={{background:"rgba(99,32,36,0.06)",border:"none",color:"#6a4640",width:30,height:30,borderRadius:"50%",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}><X size={16} /></button>
           </div>
         </div>
 
@@ -223,10 +223,10 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
           {step==="login"&&(
             <div style={{textAlign:"center",padding:"1.5rem 0"}}>
               <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><Lock size={40} color="#632024" /></div>
-              <h3 style={{fontFamily:"'Cinzel',serif",color:"#3e1316",marginBottom:8}}>
+              <h3 style={{fontFamily:"'Cinzel',serif",color:"#4a1a1d",marginBottom:8}}>
                 {isAR ? "يلزم تسجيل الدخول" : "Login Required"}
               </h3>
-              <p style={{fontFamily:"'Crimson Pro',serif",color:"#5C4033",lineHeight:1.7,marginBottom:20}}>
+              <p style={{fontFamily:"'Crimson Pro',serif",color:"#6a4640",lineHeight:1.7,marginBottom:20}}>
                 {isAR ? "يجب تسجيل الدخول لتقديم بلاغ. حسابك يتيح لنا التحقق من المحتوى وتتبع مستواك." : "You need to be logged in to file a report. Your account lets us verify submissions and track your badge tier."}
               </p>
               <button suppressHydrationWarning onClick={onClose} style={{padding:"0.8rem 2rem",borderRadius:10,border:"1px solid rgba(99,32,36,0.2)",background:"transparent",fontFamily:"'Cinzel',serif",fontSize:"0.65rem",letterSpacing:"0.15em",textTransform:"uppercase",color:"#632024",cursor:"pointer"}}>
@@ -238,16 +238,16 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
           {step==="gate"&&(
             <div style={{textAlign:"center",padding:"1rem 0"}}>
               <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><Award size={38} color="#c5a57e" /></div>
-              <h3 style={{fontFamily:"'Cinzel',serif",color:"#3e1316",marginBottom:8}}>
+              <h3 style={{fontFamily:"'Cinzel',serif",color:"#4a1a1d",marginBottom:8}}>
                 {isAR ? "وصلت إلى مستوى الحارس المعتمد" : "You've reached Verified Guardian"}
               </h3>
-              <p style={{fontFamily:"'Crimson Pro',serif",color:"#5C4033",lineHeight:1.7,marginBottom:20}}>
+              <p style={{fontFamily:"'Crimson Pro',serif",color:"#6a4640",lineHeight:1.7,marginBottom:20}}>
                 {isAR ? `لقد قدّمت ${approvedCount} تقريرًا موثّقًا لهذا المجتمع. للاستمرار في تقديم التقارير على هذا المستوى، يلزم اشتراك الحارس.` : `You've contributed ${approvedCount} verified reports to this community. To continue filing reports at this level, a Guardian subscription is required.`}
               </p>
               <div style={{background:"rgba(34,197,94,0.07)",border:"1px solid rgba(34,197,94,0.25)",borderRadius:12,padding:"12px 16px",marginBottom:20,fontSize:13,color:"#22a05a",fontFamily:"'Crimson Pro',serif"}}>
                 {isAR ? "تقاريرك ساعدت في حماية أشخاص حقيقيين في قطر. شكرًا لك." : "Your reports have helped protect real people in Qatar. Thank you."}
               </div>
-              <button suppressHydrationWarning style={{padding:"11px 28px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3e1316,#632024)",color:"#E8D4BC",fontFamily:"'Cinzel',serif",fontSize:"0.7rem",letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",fontWeight:700,marginBottom:8,width:"100%"}}>
+              <button suppressHydrationWarning style={{padding:"11px 28px",borderRadius:10,border:"none",background:"linear-gradient(135deg,#4a1a1d,#632024)",color:"#E8D4BC",fontFamily:"'Cinzel',serif",fontSize:"0.7rem",letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",fontWeight:700,marginBottom:8,width:"100%"}}>
                 {isAR ? "اشترك، مستوى الحارس" : "Subscribe, Guardian Tier"}
               </button>
               <button suppressHydrationWarning onClick={onClose} style={{background:"none",border:"none",color:"rgba(99,32,36,0.4)",fontSize:12,cursor:"pointer"}}>
@@ -258,7 +258,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
 
           {step==="type"&&(
             <div>
-              <p style={{fontFamily:"'Crimson Pro',serif",fontSize:"1rem",color:"#5C4033",fontStyle:"italic",marginBottom:"1rem",lineHeight:1.6}}>
+              <p style={{fontFamily:"'Crimson Pro',serif",fontSize:"1rem",color:"#6a4640",fontStyle:"italic",marginBottom:"1rem",lineHeight:1.6}}>
                 {isAR ? "ما نوع التهديد الذي تبلّغ عنه؟" : "What type of threat are you reporting?"}
               </p>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.6rem"}}>
@@ -291,7 +291,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
                 </label>
                 <input suppressHydrationWarning value={form.title} onChange={e=>setForm(f=>({...f,title:e.target.value}))}
                   placeholder={isAR ? "عنوان واضح وموجز للتهديد" : "A clear, concise title for this threat"}
-                  style={{width:"100%",padding:"0.7rem 0.9rem",borderRadius:9,border:"1.5px solid rgba(99,32,36,0.2)",fontFamily:"'Crimson Pro',serif",fontSize:"0.95rem",color:"#3e1316",background:"white",outline:"none",boxSizing:"border-box"}}
+                  style={{width:"100%",padding:"0.7rem 0.9rem",borderRadius:9,border:"1.5px solid rgba(99,32,36,0.2)",fontFamily:"'Crimson Pro',serif",fontSize:"0.95rem",color:"#4a1a1d",background:"white",outline:"none",boxSizing:"border-box"}}
                   onFocus={e=>(e.target.style.borderColor=cfg.color)} onBlur={e=>(e.target.style.borderColor="rgba(99,32,36,0.2)")}/>
               </div>
 
@@ -313,7 +313,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
                 </label>
                 <textarea suppressHydrationWarning value={form.content} onChange={e=>setForm(f=>({...f,content:e.target.value}))} rows={4}
                   placeholder={isAR ? "صف ما حدث بتفاصيل كافية لمساعدة الآخرين على تمييز هذا التهديد وتجنّبه..." : "Describe what happened in enough detail for others to recognise and avoid this threat..."}
-                  style={{width:"100%",padding:"0.7rem 0.9rem",borderRadius:9,border:"1.5px solid rgba(99,32,36,0.2)",fontFamily:"'Crimson Pro',serif",fontSize:"0.95rem",color:"#3e1316",background:"white",outline:"none",resize:"vertical",lineHeight:1.6,boxSizing:"border-box"}}
+                  style={{width:"100%",padding:"0.7rem 0.9rem",borderRadius:9,border:"1.5px solid rgba(99,32,36,0.2)",fontFamily:"'Crimson Pro',serif",fontSize:"0.95rem",color:"#4a1a1d",background:"white",outline:"none",resize:"vertical",lineHeight:1.6,boxSizing:"border-box"}}
                   onFocus={e=>(e.target.style.borderColor=cfg.color)} onBlur={e=>(e.target.style.borderColor="rgba(99,32,36,0.2)")}/>
               </div>
 
@@ -323,7 +323,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
                   <div style={{position:"absolute",inset:0,borderRadius:10,background:form.anon?"#632024":"rgba(99,32,36,0.15)",transition:"background .2s"}}/>
                   <div style={{position:"absolute",top:2,left:form.anon?"calc(100% - 18px)":2,width:16,height:16,borderRadius:"50%",background:"white",transition:"left .2s",boxShadow:"0 1px 4px rgba(0,0,0,0.2)"}}/>
                 </div>
-                <span style={{fontFamily:"'Crimson Pro',serif",fontSize:"0.9rem",color:"#5C4033"}}>
+                <span style={{fontFamily:"'Crimson Pro',serif",fontSize:"0.9rem",color:"#6a4640"}}>
                   {isAR ? "نشر بشكل مجهول" : "Post anonymously"}
                 </span>
                 {userTier&&<TierBadge tier={userTier} count={approvedCount} isAR={isAR}/>}
@@ -337,7 +337,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
               </div>
 
               <button suppressHydrationWarning onClick={handleSubmit} disabled={!form.title||!form.content||loading}
-                style={{padding:"0.85rem 2rem",borderRadius:11,border:"none",background:(form.title&&form.content)?"linear-gradient(135deg,#3e1316,#632024)":"rgba(99,32,36,0.1)",color:(form.title&&form.content)?"#E8D4BC":"rgba(99,32,36,0.3)",fontFamily:"'Cinzel',serif",fontSize:"0.7rem",letterSpacing:"0.15em",textTransform:"uppercase",fontWeight:700,cursor:(form.title&&form.content)?"pointer":"not-allowed",transition:"all .2s"}}>
+                style={{padding:"0.85rem 2rem",borderRadius:11,border:"none",background:(form.title&&form.content)?"linear-gradient(135deg,#4a1a1d,#632024)":"rgba(99,32,36,0.1)",color:(form.title&&form.content)?"#E8D4BC":"rgba(99,32,36,0.3)",fontFamily:"'Cinzel',serif",fontSize:"0.7rem",letterSpacing:"0.15em",textTransform:"uppercase",fontWeight:700,cursor:(form.title&&form.content)?"pointer":"not-allowed",transition:"all .2s"}}>
                 {loading ? (isAR ? "جارٍ الإرسال..." : "Submitting…") : (isAR ? "إرسال البلاغ ←" : "Submit Report →")}
               </button>
             </div>
@@ -346,10 +346,10 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
           {step==="done"&&(
             <div style={{textAlign:"center",padding:"1.5rem 0"}}>
               <div style={{marginBottom:12,display:"flex",justifyContent:"center"}}><Shield size={44} color="#22c55e" /></div>
-              <h3 style={{fontFamily:"'Cinzel',serif",color:"#3e1316",marginBottom:8}}>
+              <h3 style={{fontFamily:"'Cinzel',serif",color:"#4a1a1d",marginBottom:8}}>
                 {isAR ? "تم تقديم البلاغ" : "Report Filed"}
               </h3>
-              <p style={{fontFamily:"'Crimson Pro',serif",color:"#5C4033",lineHeight:1.7,maxWidth:340,margin:"0 auto 1.2rem"}}>
+              <p style={{fontFamily:"'Crimson Pro',serif",color:"#6a4640",lineHeight:1.7,maxWidth:340,margin:"0 auto 1.2rem"}}>
                 {isAR ? "تقريرك قيد المراجعة. بعد الاعتماد، سيظهر في التغذية ويُحتسب ضمن مستوى شارتك." : "Your report is under review. Once approved, it will appear in the feed and count toward your badge tier."}
               </p>
               <button suppressHydrationWarning onClick={onClose} style={{padding:"0.75rem 2rem",borderRadius:10,border:"1px solid rgba(99,32,36,0.2)",background:"transparent",fontFamily:"'Cinzel',serif",fontSize:"0.65rem",letterSpacing:"0.15em",textTransform:"uppercase",color:"#632024",cursor:"pointer"}}>
@@ -433,7 +433,7 @@ export default function CommunityPage() {
   ];
 
   return(
-    <div suppressHydrationWarning style={{minHeight:"100vh",background:"#f5ede2",fontFamily:"'DM Sans',sans-serif"}}>
+    <div suppressHydrationWarning style={{minHeight:"100vh",background:"#FDFBF6",fontFamily:"'DM Sans',sans-serif"}}>
       <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,600;1,300;1,600&family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 
       <div style={{maxWidth:1200,margin:"0 auto",padding:"5.5rem 1.5rem 3rem",display:"grid",gridTemplateColumns:"280px 1fr",gap:"2rem",alignItems:"start"}}>
@@ -446,16 +446,16 @@ export default function CommunityPage() {
               <div style={{width:3,height:28,background:"linear-gradient(to bottom,#632024,#c5a57e)",borderRadius:2}}/>
               <div>
                 <div style={{fontFamily:"'Cinzel',serif",fontSize:"0.55rem",letterSpacing:"0.25em",color:"rgba(99,32,36,0.45)",textTransform:"uppercase"}}>CyberMajlis</div>
-                <h1 style={{fontFamily:"'Cinzel',serif",fontSize:"1.05rem",fontWeight:700,color:"#3e1316",margin:0,lineHeight:1.2}}>
+                <h1 style={{fontFamily:"'Cinzel',serif",fontSize:"1.05rem",fontWeight:700,color:"#4a1a1d",margin:0,lineHeight:1.2}}>
                   {isAR ? "التقارير الأمنية" : "Security Reports"}
                 </h1>
               </div>
             </div>
-            <p style={{fontFamily:"'Crimson Pro',serif",fontSize:"0.9rem",color:"#5C4033",lineHeight:1.7,margin:"0 0 1.2rem",fontWeight:300}}>
+            <p style={{fontFamily:"'Crimson Pro',serif",fontSize:"0.9rem",color:"#6a4640",lineHeight:1.7,margin:"0 0 1.2rem",fontWeight:300}}>
               {isAR ? "كن جزءًا من توعية مجتمعنا. أبلغ عن أي حوادث واجهتها لمساعدة الآخرين على تجنّبها." : "Be part of our community awareness. Report any incidents that you have faced to help others avoid it."}
             </p>
             <button suppressHydrationWarning onClick={()=>setShowSubmit(true)}
-              style={{width:"100%",padding:"0.8rem",borderRadius:10,border:"none",background:"linear-gradient(135deg,#3e1316,#632024)",color:"#E8D4BC",fontFamily:"'Cinzel',serif",fontSize:"0.65rem",letterSpacing:"0.18em",textTransform:"uppercase",fontWeight:700,cursor:"pointer",boxShadow:"0 4px 16px rgba(62,19,22,0.2)",transition:"all .2s"}}
+              style={{width:"100%",padding:"0.8rem",borderRadius:10,border:"none",background:"linear-gradient(135deg,#4a1a1d,#632024)",color:"#E8D4BC",fontFamily:"'Cinzel',serif",fontSize:"0.65rem",letterSpacing:"0.18em",textTransform:"uppercase",fontWeight:700,cursor:"pointer",boxShadow:"0 4px 16px rgba(62,19,22,0.2)",transition:"all .2s"}}
               onMouseEnter={e=>e.currentTarget.style.opacity="0.9"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}>
               {isAR ? "+ تقديم بلاغ" : "+ File a Report"}
             </button>
@@ -495,7 +495,7 @@ export default function CommunityPage() {
             <span style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",opacity:.4,display:"flex",alignItems:"center",color:"#632024"}}><Search size={14} /></span>
             <input suppressHydrationWarning value={search} onChange={e=>setSearch(e.target.value)}
               placeholder={isAR ? "بحث في التقارير..." : "Search reports…"}
-              style={{width:"100%",padding:"0.65rem 1rem 0.65rem 2.3rem",borderRadius:10,border:"1.5px solid rgba(99,32,36,0.14)",fontFamily:"'Crimson Pro',serif",fontSize:"0.95rem",color:"#3e1316",background:"white",outline:"none",boxSizing:"border-box",boxShadow:"0 2px 10px rgba(99,32,36,0.05)"}}
+              style={{width:"100%",padding:"0.65rem 1rem 0.65rem 2.3rem",borderRadius:10,border:"1.5px solid rgba(99,32,36,0.14)",fontFamily:"'Crimson Pro',serif",fontSize:"0.95rem",color:"#4a1a1d",background:"white",outline:"none",boxSizing:"border-box",boxShadow:"0 2px 10px rgba(99,32,36,0.05)"}}
               onFocus={e=>{e.target.style.borderColor="#632024";e.target.style.boxShadow="0 0 0 3px rgba(99,32,36,0.08)";}}
               onBlur={e=>{e.target.style.borderColor="rgba(99,32,36,0.14)";e.target.style.boxShadow="0 2px 10px rgba(99,32,36,0.05)";}}/>
           </div>

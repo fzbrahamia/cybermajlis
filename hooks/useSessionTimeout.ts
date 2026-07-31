@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 
-const TIMEOUT_MS = 15 * 60 * 1000;        
-const WARNING_MS = 14 * 60 * 1000;       
+const TIMEOUT_MS = 6 * 60 * 60 * 1000;      // 6 hours idle before auto-logout
+const WARNING_MS = TIMEOUT_MS - 60 * 1000;  // warn 1 minute before
 const CHECK_INTERVAL = 30 * 1000;
 
 const ACTIVITY_EVENTS = ["mousemove", "mousedown", "keydown", "scroll", "touchstart"] as const;

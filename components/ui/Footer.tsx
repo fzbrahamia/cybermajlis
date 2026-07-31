@@ -50,7 +50,7 @@ export default function Footer() {
   // Light theme is scoped to the landing page for now; the rest of the site keeps
   // the dark maroon footer until we roll the new look out.
   const pathname = usePathname();
-  const isLanding = pathname === "/" || pathname.startsWith("/dashboard");
+  const isLanding = pathname === "/" || pathname.startsWith("/dashboard") || pathname.startsWith("/auth") || pathname.startsWith("/simulations") || pathname.startsWith("/ctf") || pathname.startsWith("/scan") || pathname.startsWith("/news") || pathname.startsWith("/community");
 
   const th = {
     bg: isLanding ? "rgba(251,248,243,0.82)" : "linear-gradient(180deg,#3e1316 0%,#2a0c0e 100%)",

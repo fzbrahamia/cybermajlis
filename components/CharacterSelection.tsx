@@ -159,7 +159,7 @@ export default function CharacterSelection({ onSelect, value }: { onSelect: (ava
 
                   <h3 style={{
                     fontFamily: "'Cinzel', serif", fontSize: "0.9rem",
-                    fontWeight: 700, color: "#3e1316",
+                    fontWeight: 700, color: "#4a1a1d",
                     textAlign: "center", marginBottom: "0.3rem", lineHeight: 1.2,
                   }}>{char.name}</h3>
 
@@ -178,7 +178,7 @@ export default function CharacterSelection({ onSelect, value }: { onSelect: (ava
 
                   <p style={{
                     fontFamily: "'Crimson Pro', serif", fontSize: "0.82rem",
-                    color: "#5C4033", fontStyle: "italic", fontWeight: 300,
+                    color: "#6a4640", fontStyle: "italic", fontWeight: 300,
                     textAlign: "center", lineHeight: 1.5, padding: "0 0.2rem",
                   }}>{char.backstory}</p>
 
@@ -203,6 +203,7 @@ export default function CharacterSelection({ onSelect, value }: { onSelect: (ava
                     ref={el => { videoRefs.current[index] = el; }}
                     src={char.videoUrl}
                     muted={false}
+                    preload="none"
                     style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 18 }}
                   />
                 </div>

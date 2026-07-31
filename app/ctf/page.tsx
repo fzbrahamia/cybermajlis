@@ -32,7 +32,7 @@ const WINE  = "#632024";
 const RUBY  = "#8B2635";
 const GOLD  = "#c5a57e";
 const GOLD2 = "#E8D4BC";
-const CREAM = "#E3DAC9";
+const CREAM = "#FDFBF6";
 const PAPER = "#f5ede0";
 
 const ICONS: Record<string, React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>> = {
@@ -86,20 +86,20 @@ export default function CtfPage() {
       <div style={{ ...page, display: "flex", alignItems: "center", justifyContent: "center", padding: "calc(76px + 2rem) 1.5rem 3rem" }}>
         <div style={{
           maxWidth: 460, width: "100%", textAlign: "center",
-          background: `linear-gradient(160deg, ${INK}, ${WINE})`,
-          border: `1px solid ${GOLD}33`, borderRadius: 22, padding: "2.6rem 2rem",
-          boxShadow: "0 24px 64px rgba(62,19,22,0.4)",
+          background: `linear-gradient(160deg, #FDFBF6, #F3EBDB)`,
+          border: `1px solid rgba(99,32,36,0.14)`, borderRadius: 22, padding: "2.6rem 2rem",
+          boxShadow: "0 20px 50px rgba(99,32,36,0.12)",
         }}>
           <div style={{ height: 2, width: 80, margin: "0 auto 1.6rem", borderRadius: 2, background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-            <div style={{ width: 70, height: 70, borderRadius: "50%", background: `${GOLD}1f`, border: `1px solid ${GOLD}55`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Lock size={30} color={GOLD2} strokeWidth={1.5} />
+            <div style={{ width: 70, height: 70, borderRadius: "50%", background: `${RUBY}12`, border: `1px solid ${RUBY}30`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Lock size={30} color={RUBY} strokeWidth={1.5} />
             </div>
           </div>
-          <h1 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.5rem", color: GOLD2, margin: "0 0 0.6rem" }}>
+          <h1 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.5rem", color: INK, margin: "0 0 0.6rem" }}>
             {isAR ? "تجارب المجلس" : "The Majlis Trials"}
           </h1>
-          <p style={{ fontFamily: crimson, fontSize: "1.02rem", lineHeight: 1.6, color: "rgba(227,218,201,0.82)", margin: "0 0 1.6rem" }}>
+          <p style={{ fontFamily: crimson, fontSize: "1.02rem", lineHeight: 1.6, color: "#6a4640", margin: "0 0 1.6rem" }}>
             {isAR
               ? "سجّل دخولك لتبدأ التحدّيات. نحفظ الأعلام التي تلتقطها لنتابع المهارات التي تبنيها."
               : "Sign in to begin the challenges. We save the flags you capture so we can track the skills you're building."}
@@ -122,8 +122,8 @@ export default function CtfPage() {
               style={{
                 fontFamily: cinzel, fontWeight: 700, fontSize: 13, letterSpacing: 0.5,
                 padding: "12px 24px", borderRadius: 10, cursor: "pointer",
-                color: GOLD2, background: "rgba(255,255,255,0.06)",
-                border: `1.5px solid ${GOLD}44`,
+                color: WINE, background: "rgba(99,32,36,0.05)",
+                border: `1.5px solid rgba(99,32,36,0.3)`,
               }}
             >
               {isAR ? "إنشاء حساب" : "Create account"}
@@ -223,26 +223,26 @@ function Hub({
 
       {/* Progress bar */}
       <div style={{
-        background: `linear-gradient(160deg, ${INK}, ${WINE})`, borderRadius: 18,
-        border: `1px solid ${GOLD}33`, padding: "1.3rem 1.5rem", marginBottom: "2.2rem",
-        boxShadow: "0 10px 30px rgba(62,19,22,0.18)",
+        background: `linear-gradient(160deg, #FBF4E8, #F1E8D6)`, borderRadius: 18,
+        border: `1px solid rgba(99,32,36,0.14)`, padding: "1.3rem 1.5rem", marginBottom: "2.2rem",
+        boxShadow: "0 10px 30px rgba(99,32,36,0.08)",
       }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12, flexWrap: "wrap", gap: 8 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <Trophy size={20} color={GOLD2} strokeWidth={1.5} />
-            <span style={{ fontFamily: cinzel, fontWeight: 700, fontSize: 14, color: GOLD2, letterSpacing: 0.5 }}>
+            <Trophy size={20} color="#a07d3e" strokeWidth={1.5} />
+            <span style={{ fontFamily: cinzel, fontWeight: 700, fontSize: 14, color: INK, letterSpacing: 0.5 }}>
               {isAR ? `${solvedCount} من ${ALL_CHALLENGES.length} علَم` : `${solvedCount} of ${ALL_CHALLENGES.length} flags`}
             </span>
           </div>
-          <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: GOLD }}>
+          <span style={{ fontFamily: mono, fontSize: 13, fontWeight: 700, color: "#a07d3e" }}>
             {totalPoints} / {TOTAL_POINTS} {isAR ? "نقطة" : "pts"}
           </span>
         </div>
-        <div style={{ height: 10, borderRadius: 99, background: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
-          <div style={{ height: "100%", width: `${pct}%`, borderRadius: 99, background: `linear-gradient(90deg, ${GOLD}, ${GOLD2})`, transition: "width .5s ease" }} />
+        <div style={{ height: 10, borderRadius: 99, background: "rgba(99,32,36,0.1)", overflow: "hidden" }}>
+          <div style={{ height: "100%", width: `${pct}%`, borderRadius: 99, background: `linear-gradient(90deg, ${WINE}, ${GOLD})`, transition: "width .5s ease" }} />
         </div>
         {allDone && (
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, color: GOLD2, fontFamily: cinzel, fontWeight: 700, fontSize: 13 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, color: "#a07d3e", fontFamily: cinzel, fontWeight: 700, fontSize: 13 }}>
             <Sparkles size={16} /> {isAR ? "أتممت كل التجارب، أنت بطل المجلس!" : "All trials complete, you are a Majlis champion!"}
           </div>
         )}
@@ -344,16 +344,16 @@ function SectionView({
               style={{
                 textAlign: isAR ? "right" : "left", cursor: "pointer", width: "100%",
                 display: "flex", alignItems: "center", gap: 14,
-                background: done ? "rgba(74,124,89,0.08)" : PAPER,
-                border: `1.5px solid ${done ? "#4a7c5966" : "rgba(197,165,126,.45)"}`,
+                background: done ? "rgba(160,125,62,0.08)" : PAPER,
+                border: `1.5px solid ${done ? "#a07d3e66" : "rgba(197,165,126,.45)"}`,
                 borderRadius: 14, padding: "1rem 1.2rem",
                 transition: "transform .15s ease, border-color .15s ease",
               }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = isAR ? "translateX(-4px)" : "translateX(4px)"; e.currentTarget.style.borderColor = section.accent + "aa"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.borderColor = done ? "#4a7c5966" : "rgba(197,165,126,.45)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.borderColor = done ? "#a07d3e66" : "rgba(197,165,126,.45)"; }}
             >
-              <div style={{ width: 38, height: 38, borderRadius: 10, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: done ? "#4a7c5920" : `${section.accent}14`, border: `1px solid ${done ? "#4a7c5955" : section.accent + "3a"}` }}>
-                {done ? <CheckCircle2 size={20} color="#4a7c59" /> : <Flag size={18} color={section.accent} />}
+              <div style={{ width: 38, height: 38, borderRadius: 10, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: done ? "#a07d3e20" : `${section.accent}14`, border: `1px solid ${done ? "#a07d3e55" : section.accent + "3a"}` }}>
+                {done ? <CheckCircle2 size={20} color="#a07d3e" /> : <Flag size={18} color={section.accent} />}
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: 15, color: INK }}>
@@ -362,7 +362,7 @@ function SectionView({
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4 }}>
                   <Stars n={c.difficulty} />
                   <span style={{ fontFamily: mono, fontSize: 11, fontWeight: 700, color: WINE }}>{c.points} {isAR ? "نقطة" : "pts"}</span>
-                  {done && <span style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, color: "#4a7c59", letterSpacing: 1 }}>{isAR ? "· مُلتقَط" : "· CAPTURED"}</span>}
+                  {done && <span style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, color: "#a07d3e", letterSpacing: 1 }}>{isAR ? "· مُلتقَط" : "· CAPTURED"}</span>}
                 </div>
               </div>
               <span style={{ color: GOLD, transform: isAR ? "rotate(180deg)" : "none" }}><ArrowRight size={18} /></span>
@@ -424,7 +424,7 @@ function ChallengeView({
           {isAR ? challenge.titleAr : challenge.title}
         </h1>
         {isDone && (
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontFamily: cinzel, fontSize: 11, fontWeight: 700, color: "#4a7c59", background: "#4a7c5915", border: "1px solid #4a7c5944", borderRadius: 8, padding: "4px 10px" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontFamily: cinzel, fontSize: 11, fontWeight: 700, color: "#a07d3e", background: "#a07d3e15", border: "1px solid #a07d3e44", borderRadius: 8, padding: "4px 10px" }}>
             <CheckCircle2 size={13} /> {isAR ? "مُلتقَط" : "CAPTURED"}
           </span>
         )}
@@ -473,11 +473,11 @@ function ChallengeView({
 
       {/* Flag box */}
       {isDone ? (
-        <div style={{ marginTop: 22, background: "rgba(74,124,89,0.08)", border: "1.5px solid #4a7c5966", borderRadius: 16, padding: "1.3rem 1.4rem" }}>
+        <div style={{ marginTop: 22, background: "rgba(160,125,62,0.08)", border: "1.5px solid #a07d3e66", borderRadius: 16, padding: "1.3rem 1.4rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: cinzel, fontWeight: 800, fontSize: "1.05rem", color: "#3f6b4d", marginBottom: 10 }}>
             <CheckCircle2 size={20} /> {isAR ? "علَم مُلتقَط!" : "Flag captured!"}
           </div>
-          <div style={{ fontFamily: mono, fontSize: 15, fontWeight: 700, color: INK, background: "#fff", border: "1px solid #4a7c5944", borderRadius: 8, padding: "8px 12px", marginBottom: 12, direction: "ltr", textAlign: "center", letterSpacing: 0.5 }}>
+          <div style={{ fontFamily: mono, fontSize: 15, fontWeight: 700, color: INK, background: "#fff", border: "1px solid #a07d3e44", borderRadius: 8, padding: "8px 12px", marginBottom: 12, direction: "ltr", textAlign: "center", letterSpacing: 0.5 }}>
             majlis&#123;{challenge.flag}&#125;
           </div>
           <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: 10, letterSpacing: 1.5, color: "#3f6b4d", marginBottom: 6 }}>
