@@ -31,9 +31,9 @@ export default function DoItYourselfPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#E3DAC9",
+        background: "#FDFBF6",
         padding: "80px 2rem 2rem",
-        color: "#3e1316",
+        color: "#4a1a1d",
         fontFamily: "'Crimson Pro', Georgia, serif",
       }}
     >
@@ -106,7 +106,7 @@ export default function DoItYourselfPage() {
             letterSpacing: "0.08em",
             textTransform: "uppercase",
             color: "#E8D4BC",
-            background: "linear-gradient(135deg, #3e1316, #632024)",
+            background: "linear-gradient(135deg, #4a1a1d, #632024)",
             border: "1px solid rgba(197,165,126,0.45)",
             padding: "0.5rem 0.9rem",
             borderRadius: 999,
@@ -118,7 +118,7 @@ export default function DoItYourselfPage() {
         >
           {t("backToDashboard")}
         </Link>
-        <p style={{ margin: 0, fontSize: "0.85rem", color: "#5C4033", lineHeight: 1.5 }}>
+        <p style={{ margin: 0, fontSize: "0.85rem", color: "#6a4640", lineHeight: 1.5 }}>
           {t("roomIntro")}
         </p>
       </div>
@@ -132,7 +132,7 @@ export default function DoItYourselfPage() {
             overflow: "hidden",
             boxShadow: "0 24px 70px rgba(62,19,22,0.35)",
             border: "1px solid rgba(99,32,36,0.2)",
-            background: "#3e1316",
+            background: "#4a1a1d",
           }}
         >
           <img

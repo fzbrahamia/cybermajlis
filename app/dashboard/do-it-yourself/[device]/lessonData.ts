@@ -413,9 +413,9 @@ export const lessons: Record<string, Lesson> = {
 export const pageShellStyle = {
   minHeight: "100vh",
   background:
-    "radial-gradient(circle at top left, rgba(99,32,36,0.12), transparent 35%), #E3DAC9",
+    "radial-gradient(circle at top left, rgba(99,32,36,0.12), transparent 35%), #FDFBF6",
   padding: "2rem",
-  color: "#3e1316",
+  color: "#4a1a1d",
   fontFamily: "'Crimson Pro', Georgia, serif",
 } as const;
 
@@ -446,7 +446,7 @@ export const globalLessonStyles = `
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #E8D4BC;
-    background: linear-gradient(135deg, #3e1316, #632024);
+    background: linear-gradient(135deg, #4a1a1d, #632024);
     border: 1px solid rgba(197,165,126,0.45);
     padding: 0.7rem 1.1rem;
     border-radius: 999px;
@@ -502,18 +502,18 @@ export const globalLessonStyles = `
   .reading-step h3 {
     font-family: 'Cinzel', serif;
     margin: 0 0 0.6rem;
-    color: #3e1316;
+    color: #4a1a1d;
   }
 
   .reading-step p {
-    color: #5C4033;
+    color: #6a4640;
     line-height: 1.7;
     margin: 0;
   }
 
   .reading-step ul {
     margin: 0.7rem 0 0;
-    color: #5C4033;
+    color: #6a4640;
     line-height: 1.8;
   }
 

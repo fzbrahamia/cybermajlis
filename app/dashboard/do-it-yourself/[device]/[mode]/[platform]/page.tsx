@@ -72,7 +72,7 @@ export default function PlatformLessonPage() {
                 fontFamily: "'Cinzel', serif",
                 fontSize: "clamp(1.1rem, 2vw, 1.5rem)",
                 marginTop: 0,
-                color: "#3e1316",
+                color: "#4a1a1d",
               }}
             >
               {guide.title}
@@ -213,7 +213,7 @@ function ReadingJourney({
         </div>
       </div>
 
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1rem, 1.8vw, 1.4rem)", marginTop: 0, marginBottom: "0.6rem", color: "#3e1316", lineHeight: 1.2 }}>
+      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1rem, 1.8vw, 1.4rem)", marginTop: 0, marginBottom: "0.6rem", color: "#4a1a1d", lineHeight: 1.2 }}>
         {current.title}
       </h3>
 
@@ -223,24 +223,24 @@ function ReadingJourney({
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.8rem", marginBottom: "1rem" }}>
         <div style={{ background: "white", border: "1px solid rgba(99,32,36,0.1)", borderRadius: 16, padding: "1.1rem" }}>
-          <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#3e1316", fontSize: "0.85rem" }}>
+          <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
             {t("whatToDo")}
           </h4>
-          <p style={{ color: "#5C4033", fontSize: "0.95rem", lineHeight: 1.7, marginTop: 0, marginBottom: current.bullets.length ? "0.8rem" : 0 }}>
+          <p style={{ color: "#6a4640", fontSize: "0.95rem", lineHeight: 1.7, marginTop: 0, marginBottom: current.bullets.length ? "0.8rem" : 0 }}>
             {current.whatToDo}
           </p>
           {current.bullets.length > 0 && (
-            <ul style={{ color: "#5C4033", fontSize: "0.9rem", lineHeight: 1.8, margin: 0 }}>
+            <ul style={{ color: "#6a4640", fontSize: "0.9rem", lineHeight: 1.8, margin: 0 }}>
               {current.bullets.map((b, i) => <li key={i}>{b}</li>)}
             </ul>
           )}
         </div>
 
         <div style={{ background: "rgba(99,32,36,0.06)", border: "1px solid rgba(99,32,36,0.12)", borderRadius: 16, padding: "1.1rem" }}>
-          <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#3e1316", fontSize: "0.85rem" }}>
+          <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
             {t("whyItMatters")}
           </h4>
-          <p style={{ color: "#5C4033", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>
+          <p style={{ color: "#6a4640", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>
             {current.whyItMatters}
           </p>
         </div>
@@ -258,14 +258,14 @@ function ReadingJourney({
         {!isLast ? (
           <button
             onClick={() => setStepIndex((p) => p + 1)}
-            style={{ border: "none", background: "linear-gradient(135deg, #3e1316, #632024)", color: "#E8D4BC", padding: "0.65rem 1.2rem", borderRadius: 999, cursor: "pointer", fontWeight: 700, fontSize: "0.88rem", boxShadow: "0 6px 18px rgba(62,19,22,0.22)" }}
+            style={{ border: "none", background: "linear-gradient(135deg, #4a1a1d, #632024)", color: "#E8D4BC", padding: "0.65rem 1.2rem", borderRadius: 999, cursor: "pointer", fontWeight: 700, fontSize: "0.88rem", boxShadow: "0 6px 18px rgba(62,19,22,0.22)" }}
           >
             {t("nextMission")}
           </button>
         ) : (
           <button
             onClick={() => router.push(`/dashboard/do-it-yourself/${deviceId}/checklist/${platform}`)}
-            style={{ border: "none", background: "linear-gradient(135deg, #3e1316, #632024)", color: "#E8D4BC", padding: "0.65rem 1.2rem", borderRadius: 999, cursor: "pointer", fontWeight: 700, fontSize: "0.88rem", boxShadow: "0 6px 18px rgba(62,19,22,0.22)" }}
+            style={{ border: "none", background: "linear-gradient(135deg, #4a1a1d, #632024)", color: "#E8D4BC", padding: "0.65rem 1.2rem", borderRadius: 999, cursor: "pointer", fontWeight: 700, fontSize: "0.88rem", boxShadow: "0 6px 18px rgba(62,19,22,0.22)" }}
           >
             {t("goToChecklist")}
           </button>
@@ -323,7 +323,7 @@ function ChecklistPageContent({
 
   return (
     <section style={{ background: "#fdf8f4", borderRadius: 20, padding: "1.2rem", border: "1px solid rgba(99,32,36,0.15)", boxShadow: "0 16px 45px rgba(99,32,36,0.14)" }}>
-      <p style={{ color: "#5C4033", margin: "0 0 0.8rem", fontSize: "0.9rem" }}>{t("completeDeviceThenRouter")}</p>
+      <p style={{ color: "#6a4640", margin: "0 0 0.8rem", fontSize: "0.9rem" }}>{t("completeDeviceThenRouter")}</p>
 
       <div style={{ height: 7, background: "rgba(99,32,36,0.12)", borderRadius: 999, overflow: "hidden", marginBottom: "0.4rem" }}>
         <div style={{ height: "100%", width: `${progress}%`, background: "linear-gradient(90deg, #632024, #c5a57e)", transition: "width 0.25s ease" }} />
@@ -340,7 +340,7 @@ function ChecklistPageContent({
               checked={checked[i] || false}
               onChange={() => setChecked((prev) => { const f = checklistItems.map((_, j) => Boolean(prev[j])); f[i] = !f[i]; return f; })}
             />
-            <span style={{ color: "#3e1316", lineHeight: 1.5, fontSize: "0.9rem", textDecoration: checked[i] ? "line-through" : "none" }}>
+            <span style={{ color: "#4a1a1d", lineHeight: 1.5, fontSize: "0.9rem", textDecoration: checked[i] ? "line-through" : "none" }}>
               {step}
             </span>
           </label>

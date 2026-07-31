@@ -138,7 +138,7 @@ export default function LessonModePage() {
             height: 74px;
             border-radius: 50%;
             color: #E8D4BC;
-            background: linear-gradient(135deg, #3e1316, #632024);
+            background: linear-gradient(135deg, #4a1a1d, #632024);
             border: 1px solid rgba(197,165,126,0.45);
             box-shadow: 0 8px 20px rgba(62,19,22,0.22);
           }
@@ -147,7 +147,7 @@ export default function LessonModePage() {
             font-weight: 700;
             font-size: 1.05rem;
             letter-spacing: 0.04em;
-            color: #3e1316;
+            color: #4a1a1d;
           }
           @media (max-width: 560px) {
             .device-matrix { grid-template-columns: 1fr; max-width: 340px; }
@@ -161,7 +161,7 @@ export default function LessonModePage() {
               fontFamily: "'Cinzel', serif",
               fontSize: "1.25rem",
               fontWeight: 700,
-              color: "#3e1316",
+              color: "#4a1a1d",
               marginBottom: "1.6rem",
               letterSpacing: "0.04em",
               textAlign: "center",
@@ -284,7 +284,7 @@ function VideoComingSoonContent({
           fontSize: "clamp(1.2rem, 2vw, 1.6rem)",
           marginTop: 0,
           marginBottom: "0.5rem",
-          color: "#3e1316",
+          color: "#4a1a1d",
         }}
       >
         {lessonTitle} — {ui.title}
@@ -292,7 +292,7 @@ function VideoComingSoonContent({
 
       <p
         style={{
-          color: "#5C4033",
+          color: "#6a4640",
           lineHeight: 1.7,
           margin: "0 auto",
           maxWidth: 650,
@@ -419,7 +419,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
           gap: 0.5rem;
           border: 1px solid rgba(99,32,36,0.18);
           background: #fffaf6;
-          color: #3e1316;
+          color: #4a1a1d;
           border-radius: 999px;
           padding: 0.55rem 1.1rem;
           cursor: pointer;
@@ -435,7 +435,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
         }
 
         .manual-platform-tab.active {
-          background: linear-gradient(135deg, #3e1316, #632024);
+          background: linear-gradient(135deg, #4a1a1d, #632024);
           color: #E8D4BC;
           border-color: rgba(197,165,126,0.45);
         }
@@ -478,7 +478,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
           font-size: 1.7rem;
           line-height: 1;
           color: #E8D4BC;
-          background: linear-gradient(135deg, #3e1316, #632024);
+          background: linear-gradient(135deg, #4a1a1d, #632024);
           border: 2px solid rgba(197,165,126,0.6);
           box-shadow: 0 12px 28px rgba(62,19,22,0.30);
           transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.12s;
@@ -558,7 +558,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
 
         .manual-text p {
           margin: 0;
-          color: #4a2418;
+          color: #6a4640;
           font-family: 'Fredoka', 'Crimson Pro', sans-serif;
           font-weight: 600;
           line-height: 1.65;
@@ -576,7 +576,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
           list-style: none;
           margin: 1rem 0 0;
           padding: 0;
-          color: #4a2418;
+          color: #6a4640;
           font-family: 'Fredoka', 'Crimson Pro', sans-serif;
           font-weight: 500;
           line-height: 1.8;
@@ -646,7 +646,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
             fontSize: "clamp(1.15rem, 2vw, 1.55rem)",
             marginTop: 0,
             marginBottom: "0.45rem",
-            color: "#3e1316",
+            color: "#4a1a1d",
           }}
         >
           {ui.visualManual}: {lesson.title}
@@ -654,7 +654,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
 
         <p
           style={{
-            color: "#5C4033",
+            color: "#6a4640",
             lineHeight: 1.6,
             margin: 0,
             fontSize: "0.92rem",
@@ -680,7 +680,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
             <p
               style={{
                 margin: "1rem 0 0",
-                color: "#3e1316",
+                color: "#4a1a1d",
                 fontWeight: 700,
               }}
             >
@@ -913,7 +913,7 @@ function ReadingJourney({
             fontSize: "clamp(1.1rem, 2vw, 1.5rem)",
             marginTop: 0,
             marginBottom: "0.4rem",
-            color: "#3e1316",
+            color: "#4a1a1d",
             lineHeight: 1.2,
           }}
         >
@@ -921,7 +921,7 @@ function ReadingJourney({
         </h2>
         <p
           style={{
-            color: "#5C4033",
+            color: "#6a4640",
             lineHeight: 1.6,
             margin: 0,
             fontSize: "0.9rem",
@@ -969,7 +969,7 @@ function ReadingJourney({
           fontSize: "clamp(1rem, 1.8vw, 1.4rem)",
           marginTop: 0,
           marginBottom: "0.6rem",
-          color: "#3e1316",
+          color: "#4a1a1d",
           lineHeight: 1.2,
         }}
       >
@@ -1016,7 +1016,7 @@ function ReadingJourney({
               fontFamily: "'Cinzel', serif",
               marginTop: 0,
               marginBottom: "0.5rem",
-              color: "#3e1316",
+              color: "#4a1a1d",
               fontSize: "0.85rem",
             }}
           >
@@ -1025,7 +1025,7 @@ function ReadingJourney({
 
           <p
             style={{
-              color: "#5C4033",
+              color: "#6a4640",
               fontSize: "0.95rem",
               lineHeight: 1.7,
               marginTop: 0,
@@ -1038,7 +1038,7 @@ function ReadingJourney({
           {current.bullets.length > 0 && (
             <ul
               style={{
-                color: "#5C4033",
+                color: "#6a4640",
                 fontSize: "0.9rem",
                 lineHeight: 1.8,
                 margin: 0,
@@ -1064,7 +1064,7 @@ function ReadingJourney({
               fontFamily: "'Cinzel', serif",
               marginTop: 0,
               marginBottom: "0.5rem",
-              color: "#3e1316",
+              color: "#4a1a1d",
               fontSize: "0.85rem",
             }}
           >
@@ -1073,7 +1073,7 @@ function ReadingJourney({
 
           <p
             style={{
-              color: "#5C4033",
+              color: "#6a4640",
               fontSize: "0.95rem",
               lineHeight: 1.7,
               margin: 0,
@@ -1115,7 +1115,7 @@ function ReadingJourney({
             onClick={() => setMissionIndex((p) => p + 1)}
             style={{
               border: "none",
-              background: "linear-gradient(135deg, #3e1316, #632024)",
+              background: "linear-gradient(135deg, #4a1a1d, #632024)",
               color: "#E8D4BC",
               padding: "0.65rem 1.2rem",
               borderRadius: 999,
@@ -1132,7 +1132,7 @@ function ReadingJourney({
             onClick={() => router.push(`/dashboard/do-it-yourself/${deviceId}/checklist`)}
             style={{
               border: "none",
-              background: "linear-gradient(135deg, #3e1316, #632024)",
+              background: "linear-gradient(135deg, #4a1a1d, #632024)",
               color: "#E8D4BC",
               padding: "0.65rem 1.2rem",
               borderRadius: 999,
@@ -1218,7 +1218,7 @@ function ChecklistPageContent({
         boxShadow: "0 16px 45px rgba(99,32,36,0.14)",
       }}
     >
-      <p style={{ color: "#5C4033", margin: "0 0 0.8rem", fontSize: "0.9rem" }}>
+      <p style={{ color: "#6a4640", margin: "0 0 0.8rem", fontSize: "0.9rem" }}>
         {t("completeTick")}
       </p>
 
@@ -1268,7 +1268,7 @@ function ChecklistPageContent({
             />
             <span
               style={{
-                color: "#3e1316",
+                color: "#4a1a1d",
                 lineHeight: 1.5,
                 fontSize: "0.9rem",
                 textDecoration: checked[i] ? "line-through" : "none",
@@ -1362,7 +1362,7 @@ function ChecklistPageContent({
 //             fontFamily: "'Cinzel', serif",
 //             fontSize: "1.15rem",
 //             fontWeight: 700,
-//             color: "#3e1316",
+//             color: "#4a1a1d",
 //             marginBottom: "1.2rem",
 //             letterSpacing: "0.04em",
 //           }}>
@@ -1391,7 +1391,7 @@ function ChecklistPageContent({
 //                   fontSize: "0.9rem",
 //                   letterSpacing: "0.05em",
 //                   color: "#E8D4BC",
-//                   background: "linear-gradient(135deg, #3e1316, #632024)",
+//                   background: "linear-gradient(135deg, #4a1a1d, #632024)",
 //                   border: "1px solid rgba(197,165,126,0.45)",
 //                   padding: "0.75rem 1.7rem",
 //                   borderRadius: 999,
@@ -1438,7 +1438,7 @@ function ChecklistPageContent({
 //                 fontFamily: "'Cinzel', serif",
 //                 fontSize: "clamp(1.1rem, 2vw, 1.5rem)",
 //                 marginTop: 0,
-//                 color: "#3e1316",
+//                 color: "#4a1a1d",
 //               }}
 //             >
 //               {lesson.title}
@@ -1535,10 +1535,10 @@ function ChecklistPageContent({
 //       }}
 //     >
 //       <div style={{ marginBottom: "1rem", paddingBottom: "0.8rem", borderBottom: "1px solid rgba(99,32,36,0.12)" }}>
-//         <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1.1rem, 2vw, 1.5rem)", marginTop: 0, marginBottom: "0.4rem", color: "#3e1316", lineHeight: 1.2 }}>
+//         <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1.1rem, 2vw, 1.5rem)", marginTop: 0, marginBottom: "0.4rem", color: "#4a1a1d", lineHeight: 1.2 }}>
 //           {readingTitle}
 //         </h2>
-//         <p style={{ color: "#5C4033", lineHeight: 1.6, margin: 0, fontSize: "0.9rem" }}>{readingIntro}</p>
+//         <p style={{ color: "#6a4640", lineHeight: 1.6, margin: 0, fontSize: "0.9rem" }}>{readingIntro}</p>
 //       </div>
 
 //       <div style={{ display: "flex", justifyContent: "space-between", gap: "0.8rem", flexWrap: "wrap", alignItems: "center", marginBottom: "0.8rem" }}>
@@ -1550,7 +1550,7 @@ function ChecklistPageContent({
 //         </div>
 //       </div>
 
-//       <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1rem, 1.8vw, 1.4rem)", marginTop: 0, marginBottom: "0.6rem", color: "#3e1316", lineHeight: 1.2 }}>
+//       <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1rem, 1.8vw, 1.4rem)", marginTop: 0, marginBottom: "0.6rem", color: "#4a1a1d", lineHeight: 1.2 }}>
 //         {current.title}
 //       </h3>
 
@@ -1560,24 +1560,24 @@ function ChecklistPageContent({
 
 //       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.8rem", marginBottom: "1rem" }}>
 //         <div style={{ background: "white", border: "1px solid rgba(99,32,36,0.1)", borderRadius: 16, padding: "1.1rem" }}>
-//           <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#3e1316", fontSize: "0.85rem" }}>
+//           <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
 //             {t("whatToDo")}
 //           </h4>
-//           <p style={{ color: "#5C4033", fontSize: "0.95rem", lineHeight: 1.7, marginTop: 0, marginBottom: current.bullets.length ? "0.8rem" : 0 }}>
+//           <p style={{ color: "#6a4640", fontSize: "0.95rem", lineHeight: 1.7, marginTop: 0, marginBottom: current.bullets.length ? "0.8rem" : 0 }}>
 //             {current.whatToDo}
 //           </p>
 //           {current.bullets.length > 0 && (
-//             <ul style={{ color: "#5C4033", fontSize: "0.9rem", lineHeight: 1.8, margin: 0 }}>
+//             <ul style={{ color: "#6a4640", fontSize: "0.9rem", lineHeight: 1.8, margin: 0 }}>
 //               {current.bullets.map((b, i) => <li key={i}>{b}</li>)}
 //             </ul>
 //           )}
 //         </div>
 
 //         <div style={{ background: "rgba(99,32,36,0.06)", border: "1px solid rgba(99,32,36,0.12)", borderRadius: 16, padding: "1.1rem" }}>
-//           <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#3e1316", fontSize: "0.85rem" }}>
+//           <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
 //             {t("whyItMatters")}
 //           </h4>
-//           <p style={{ color: "#5C4033", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>
+//           <p style={{ color: "#6a4640", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>
 //             {current.whyItMatters}
 //           </p>
 //         </div>
@@ -1595,14 +1595,14 @@ function ChecklistPageContent({
 //         {!isLast ? (
 //           <button
 //             onClick={() => setMissionIndex((p) => p + 1)}
-//             style={{ border: "none", background: "linear-gradient(135deg, #3e1316, #632024)", color: "#E8D4BC", padding: "0.65rem 1.2rem", borderRadius: 999, cursor: "pointer", fontWeight: 700, fontSize: "0.88rem", boxShadow: "0 6px 18px rgba(62,19,22,0.22)" }}
+//             style={{ border: "none", background: "linear-gradient(135deg, #4a1a1d, #632024)", color: "#E8D4BC", padding: "0.65rem 1.2rem", borderRadius: 999, cursor: "pointer", fontWeight: 700, fontSize: "0.88rem", boxShadow: "0 6px 18px rgba(62,19,22,0.22)" }}
 //           >
 //             {t("nextMission")}
 //           </button>
 //         ) : (
 //           <button
 //             onClick={() => router.push(`/dashboard/do-it-yourself/${deviceId}/checklist`)}
-//             style={{ border: "none", background: "linear-gradient(135deg, #3e1316, #632024)", color: "#E8D4BC", padding: "0.65rem 1.2rem", borderRadius: 999, cursor: "pointer", fontWeight: 700, fontSize: "0.88rem", boxShadow: "0 6px 18px rgba(62,19,22,0.22)" }}
+//             style={{ border: "none", background: "linear-gradient(135deg, #4a1a1d, #632024)", color: "#E8D4BC", padding: "0.65rem 1.2rem", borderRadius: 999, cursor: "pointer", fontWeight: 700, fontSize: "0.88rem", boxShadow: "0 6px 18px rgba(62,19,22,0.22)" }}
 //           >
 //             {t("goToChecklist")}
 //           </button>
@@ -1661,7 +1661,7 @@ function ChecklistPageContent({
 
 //   return (
 //     <section style={{ background: "#fdf8f4", borderRadius: 20, padding: "1.2rem", border: "1px solid rgba(99,32,36,0.15)", boxShadow: "0 16px 45px rgba(99,32,36,0.14)" }}>
-//       <p style={{ color: "#5C4033", margin: "0 0 0.8rem", fontSize: "0.9rem" }}>{t("completeTick")}</p>
+//       <p style={{ color: "#6a4640", margin: "0 0 0.8rem", fontSize: "0.9rem" }}>{t("completeTick")}</p>
 
 //       <div style={{ height: 7, background: "rgba(99,32,36,0.12)", borderRadius: 999, overflow: "hidden", marginBottom: "0.4rem" }}>
 //         <div style={{ height: "100%", width: `${progress}%`, background: "linear-gradient(90deg, #632024, #c5a57e)", transition: "width 0.25s ease" }} />
@@ -1678,7 +1678,7 @@ function ChecklistPageContent({
 //               checked={checked[i] || false}
 //               onChange={() => setChecked((prev) => { const f = checklistItems.map((_, j) => Boolean(prev[j])); f[i] = !f[i]; return f; })}
 //             />
-//             <span style={{ color: "#3e1316", lineHeight: 1.5, fontSize: "0.9rem", textDecoration: checked[i] ? "line-through" : "none" }}>
+//             <span style={{ color: "#4a1a1d", lineHeight: 1.5, fontSize: "0.9rem", textDecoration: checked[i] ? "line-through" : "none" }}>
 //               {step}
 //             </span>
 //           </label>

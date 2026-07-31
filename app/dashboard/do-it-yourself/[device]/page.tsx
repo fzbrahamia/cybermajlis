@@ -105,7 +105,7 @@ export default function DeviceLessonPage() {
             fontFamily: "'Cinzel', serif",
             fontSize: "clamp(1.1rem, 2vw, 1.6rem)",
             margin: "0 0 0.3rem",
-            color: "#3e1316",
+            color: "#4a1a1d",
           }}
         >
           {lesson.title}
@@ -114,7 +114,7 @@ export default function DeviceLessonPage() {
         <p
           style={{
             fontSize: "0.88rem",
-            color: "#5C4033",
+            color: "#6a4640",
             margin: "0 0 1.5rem",
             lineHeight: 1.5,
           }}
@@ -128,7 +128,7 @@ export default function DeviceLessonPage() {
               fontFamily: "'Cinzel', serif",
               fontSize: "1.15rem",
               marginBottom: "1.2rem",
-              color: "#3e1316",
+              color: "#4a1a1d",
               textAlign: "center",
               fontWeight: 400,
               letterSpacing: "0.04em",
@@ -150,7 +150,7 @@ export default function DeviceLessonPage() {
               className="lesson-card"
               style={{
                 background: "#fdf8f4",
-                color: "#3e1316",
+                color: "#4a1a1d",
                 border: "1px solid rgba(197,165,126,0.45)",
               }}
             >
@@ -164,7 +164,7 @@ export default function DeviceLessonPage() {
                 {ui.visualManual}
               </h3>
 
-              <p style={{ color: "#5C4033", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
+              <p style={{ color: "#6a4640", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
                 {ui.visualManualDesc}
               </p>
             </button>
@@ -173,7 +173,7 @@ export default function DeviceLessonPage() {
               onClick={() => openMode("checklist")}
               className="lesson-card"
               style={{
-                background: "linear-gradient(135deg, #3e1316, #632024)",
+                background: "linear-gradient(135deg, #4a1a1d, #632024)",
                 color: "#E8D4BC",
               }}
             >
@@ -203,7 +203,7 @@ export default function DeviceLessonPage() {
               disabled
               aria-disabled="true"
               className="lesson-card locked-card"
-              style={{ background: "#f4eee8", color: "#3e1316" }}
+              style={{ background: "#f4eee8", color: "#4a1a1d" }}
             >
               <span className="coming-soon-pill">{ui.comingSoon}</span>
 
@@ -217,7 +217,7 @@ export default function DeviceLessonPage() {
                 {t("watchVideo")}
               </h3>
 
-              <p style={{ color: "#5C4033", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
+              <p style={{ color: "#6a4640", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
                 {ui.videoComingSoonDesc}
               </p>
             </button>
@@ -281,12 +281,12 @@ export default function DeviceLessonPage() {
 //             fontFamily: "'Cinzel', serif",
 //             fontSize: "clamp(1.1rem, 2vw, 1.6rem)",
 //             margin: "0 0 0.3rem",
-//             color: "#3e1316",
+//             color: "#4a1a1d",
 //           }}
 //         >
 //           {lesson.title}
 //         </h1>
-//         <p style={{ fontSize: "0.88rem", color: "#5C4033", margin: "0 0 1.5rem", lineHeight: 1.5 }}>
+//         <p style={{ fontSize: "0.88rem", color: "#6a4640", margin: "0 0 1.5rem", lineHeight: 1.5 }}>
 //           {lesson.description}
 //         </p>
 //         <section>
@@ -295,7 +295,7 @@ export default function DeviceLessonPage() {
 //               fontFamily: "'Cinzel', serif",
 //               fontSize: "1.15rem",
 //               marginBottom: "1.2rem",
-//               color: "#3e1316",
+//               color: "#4a1a1d",
 //               textAlign: "center",
 //               fontWeight: 400,
 //               letterSpacing: "0.04em",
@@ -315,12 +315,12 @@ export default function DeviceLessonPage() {
 //             <button
 //               onClick={() => openMode("video")}
 //               className="lesson-card"
-//               style={{ background: "#fdf8f4", color: "#3e1316" }}
+//               style={{ background: "#fdf8f4", color: "#4a1a1d" }}
 //             >
 //               <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "1.05rem", margin: "0 0 0.4rem" }}>
 //                 {t("watchVideo")}
 //               </h3>
-//               <p style={{ color: "#5C4033", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
+//               <p style={{ color: "#6a4640", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
 //                 {t("watchVideoDesc")}
 //               </p>
 //             </button>
@@ -328,12 +328,12 @@ export default function DeviceLessonPage() {
 //             <button
 //               onClick={() => openMode("reading")}
 //               className="lesson-card"
-//               style={{ background: "#fffaf6", color: "#3e1316" }}
+//               style={{ background: "#fffaf6", color: "#4a1a1d" }}
 //             >
 //               <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "1.05rem", margin: "0 0 0.4rem" }}>
 //                 {t("readSteps")}
 //               </h3>
-//               <p style={{ color: "#5C4033", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
+//               <p style={{ color: "#6a4640", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
 //                 {t("readStepsDesc")}
 //               </p>
 //             </button>
@@ -342,7 +342,7 @@ export default function DeviceLessonPage() {
 //               onClick={() => openMode("checklist")}
 //               className="lesson-card"
 //               style={{
-//                 background: "linear-gradient(135deg, #3e1316, #632024)",
+//                 background: "linear-gradient(135deg, #4a1a1d, #632024)",
 //                 color: "#E8D4BC",
 //               }}
 //             >
