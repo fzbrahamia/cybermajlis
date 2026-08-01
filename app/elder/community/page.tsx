@@ -143,8 +143,8 @@ export default function ElderCommunityPage() {
     fontSize: "1rem",
     padding: "0.65rem 1.6rem",
     border: active ? "2px solid #632024" : "2px solid rgba(99,32,36,0.15)",
-    background: active ? "linear-gradient(135deg, #3e1316, #632024)" : "#fff",
-    color: active ? "#E8D4BC" : "#5C4033",
+    background: active ? "linear-gradient(135deg, #4a1a1d, #632024)" : "#fff",
+    color: active ? "#E8D4BC" : "#6a4640",
     borderRadius: 999,
     cursor: "pointer",
     transition: "all 0.18s ease",
@@ -155,14 +155,14 @@ export default function ElderCommunityPage() {
   const hasMore   = displayed.length < warnings.length;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#3e1316", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
+    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#4a1a1d", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
       <ElderNav lang={lang} onLangChange={setLang} />
       <main style={{ padding: "110px 2rem 4rem", maxWidth: 760, margin: "0 auto" }}>
 
         <h1 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.6rem, 4vw, 2.4rem)", marginBottom: "0.5rem" }}>
           {c.title}
         </h1>
-        <p style={{ fontSize: "1.15rem", color: "#5C4033", marginBottom: "2rem", lineHeight: 1.75 }}>
+        <p style={{ fontSize: "1.15rem", color: "#6a4640", marginBottom: "2rem", lineHeight: 1.75 }}>
           {c.sub}
         </p>
 
@@ -175,7 +175,7 @@ export default function ElderCommunityPage() {
         {/* ── Feed tab ── */}
         {tab === "feed" && (
           <section>
-            <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.2rem", marginBottom: "1.4rem", color: "#3e1316" }}>
+            <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.2rem", marginBottom: "1.4rem", color: "#4a1a1d" }}>
               {c.feedTitle}
             </h2>
 
@@ -196,7 +196,7 @@ export default function ElderCommunityPage() {
                 <p style={{ fontFamily: cinzel, fontSize: "1.1rem", color: "#8B6555" }}>{c.noWarnings}</p>
                 <button
                   onClick={() => setTab("post")}
-                  style={{ marginTop: "1rem", fontFamily: cinzel, fontSize: "0.9rem", background: "linear-gradient(135deg,#3e1316,#632024)", color: "#E8D4BC", border: "none", borderRadius: 999, padding: "0.6rem 1.5rem", cursor: "pointer" }}
+                  style={{ marginTop: "1rem", fontFamily: cinzel, fontSize: "0.9rem", background: "linear-gradient(135deg,#4a1a1d,#632024)", color: "#E8D4BC", border: "none", borderRadius: 999, padding: "0.6rem 1.5rem", cursor: "pointer" }}
                 >
                   {c.tabPost} →
                 </button>
@@ -237,13 +237,13 @@ export default function ElderCommunityPage() {
         {tab === "post" && (
           <section>
             <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.2rem", marginBottom: "0.5rem" }}>{c.shareTitle}</h2>
-            <p style={{ fontSize: "1rem", color: "#5C4033", marginBottom: "1.8rem" }}>{c.shareSub}</p>
+            <p style={{ fontSize: "1rem", color: "#6a4640", marginBottom: "1.8rem" }}>{c.shareSub}</p>
 
             {done ? (
               <div style={{ background: "#f0fdf4", border: "2px solid #16a34a40", borderRadius: 20, padding: "2.5rem 2rem", textAlign: "center" }}>
                 <div style={{ fontSize: "3rem", marginBottom: "0.8rem" }}>🤝</div>
                 <p style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.2rem", color: "#16a34a", margin: "0 0 0.4rem" }}>{c.success}</p>
-                <p style={{ color: "#5C4033", fontSize: "0.95rem", margin: 0 }}>{c.note}</p>
+                <p style={{ color: "#6a4640", fontSize: "0.95rem", margin: 0 }}>{c.note}</p>
                 <button
                   onClick={() => { setDone(false); setTab("feed"); }}
                   style={{ marginTop: "1.2rem", fontFamily: cinzel, fontSize: "0.85rem", background: "none", border: "1px solid rgba(99,32,36,0.3)", borderRadius: 999, padding: "0.45rem 1.2rem", cursor: "pointer", color: "#632024" }}
@@ -257,13 +257,13 @@ export default function ElderCommunityPage() {
                 <textarea
                   value={text} onChange={e => setText(e.target.value)}
                   placeholder={c.whatPlaceholder} rows={5}
-                  style={{ width: "100%", boxSizing: "border-box", fontFamily: body, fontSize: "1.1rem", lineHeight: 1.6, border: "2px solid rgba(99,32,36,0.15)", borderRadius: 12, padding: "1rem", color: "#3e1316", background: "#F7F3EE", outline: "none", resize: "none", direction: isRtl ? "rtl" : "ltr" }}
+                  style={{ width: "100%", boxSizing: "border-box", fontFamily: body, fontSize: "1.1rem", lineHeight: 1.6, border: "2px solid rgba(99,32,36,0.15)", borderRadius: 12, padding: "1rem", color: "#4a1a1d", background: "#F7F3EE", outline: "none", resize: "none", direction: isRtl ? "rtl" : "ltr" }}
                 />
 
                 <label style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1rem", display: "block", marginTop: "1.5rem", marginBottom: "0.6rem" }}>{c.how}</label>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem" }}>
                   {c.options.map(opt => (
-                    <button key={opt} onClick={() => setChannel(opt)} style={{ fontFamily: body, fontSize: "1rem", padding: "0.5rem 1.1rem", borderRadius: 999, background: channel === opt ? "linear-gradient(135deg,#3e1316,#632024)" : "#F7F3EE", color: channel === opt ? "#E8D4BC" : "#3e1316", border: channel === opt ? "1px solid transparent" : "1px solid rgba(99,32,36,0.2)", cursor: "pointer" }}>
+                    <button key={opt} onClick={() => setChannel(opt)} style={{ fontFamily: body, fontSize: "1rem", padding: "0.5rem 1.1rem", borderRadius: 999, background: channel === opt ? "linear-gradient(135deg,#4a1a1d,#632024)" : "#F7F3EE", color: channel === opt ? "#E8D4BC" : "#4a1a1d", border: channel === opt ? "1px solid transparent" : "1px solid rgba(99,32,36,0.2)", cursor: "pointer" }}>
                       {opt}
                     </button>
                   ))}
@@ -274,7 +274,7 @@ export default function ElderCommunityPage() {
                     <p style={{ fontSize: "1rem", color: "#7a5c2e", margin: "0 0 0.9rem", lineHeight: 1.6 }}>{c.loginNeeded}</p>
                     <button
                       onClick={() => router.push("/auth")}
-                      style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1rem", background: "linear-gradient(135deg, #3e1316, #632024)", color: "#E8D4BC", border: "none", borderRadius: 999, padding: "0.7rem 1.8rem", cursor: "pointer" }}
+                      style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1rem", background: "linear-gradient(135deg, #4a1a1d, #632024)", color: "#E8D4BC", border: "none", borderRadius: 999, padding: "0.7rem 1.8rem", cursor: "pointer" }}
                     >
                       {c.loginBtn}
                     </button>
@@ -284,7 +284,7 @@ export default function ElderCommunityPage() {
                 <button
                   onClick={submit}
                   disabled={!text.trim() || submitting}
-                  style={{ marginTop: "1.8rem", width: "100%", fontFamily: cinzel, fontWeight: 700, fontSize: "1.1rem", background: "linear-gradient(135deg, #3e1316, #632024)", color: "#E8D4BC", border: "none", borderRadius: 999, padding: "0.9rem 2rem", cursor: text.trim() && !submitting ? "pointer" : "not-allowed", opacity: text.trim() && !submitting ? 1 : 0.5 }}
+                  style={{ marginTop: "1.8rem", width: "100%", fontFamily: cinzel, fontWeight: 700, fontSize: "1.1rem", background: "linear-gradient(135deg, #4a1a1d, #632024)", color: "#E8D4BC", border: "none", borderRadius: 999, padding: "0.9rem 2rem", cursor: text.trim() && !submitting ? "pointer" : "not-allowed", opacity: text.trim() && !submitting ? 1 : 0.5 }}
                 >
                   {submitting ? "…" : c.send}
                 </button>

@@ -30,11 +30,12 @@ export default function DoItYourselfPage() {
   return (
     <main
       style={{
-        minHeight: "100vh",
-        background: "#FDFBF6",
-        padding: "80px 2rem 2rem",
-        color: "#4a1a1d",
+        position: "fixed",
+        inset: 0,
+        overflow: "hidden",
+        background: "linear-gradient(160deg, #FDFBF6 0%, #F2EBDC 100%)",
         fontFamily: "'Crimson Pro', Georgia, serif",
+        direction: isRtl ? "rtl" : "ltr",
       }}
     >
       <style>{`
@@ -77,91 +78,104 @@ export default function DoItYourselfPage() {
         .diy-tooltip small { display: block; color: #c5a57e; font-size: 0.68rem; margin-top: 0.12rem; }
         .diy-hotspot:hover .diy-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        .diy-sub-header {
-          display: flex;
+        .diy-stage {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          box-sizing: border-box;
+          aspect-ratio: 1672 / 941;
+          width: min(calc(100vw - 48px), calc((100vh - 48px) * 1672 / 941));
+          border: 14px solid #4a1a1d;
+          border-radius: 24px;
+          overflow: hidden;
+          box-shadow: 0 24px 60px rgba(74,26,29,0.28), inset 0 0 0 2px rgba(197,165,126,0.55);
+        }
+        .diy-back {
+          position: fixed;
+          top: 3rem;
+          ${isRtl ? "right" : "left"}: 6rem;
+          z-index: 50;
+          display: inline-flex;
           align-items: center;
-          gap: 1rem;
-          flex-wrap: wrap;
-          padding: 0;
-          margin-top: 2rem;
+          gap: 0.3rem;
+          font-family: 'Cinzel', serif;
+          font-size: 0.7rem;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #E8D4BC;
+          background: linear-gradient(135deg, #4a1a1d, #632024);
+          border: 1px solid rgba(197,165,126,0.45);
+          padding: 0.55rem 1rem;
+          border-radius: 999px;
+          text-decoration: none;
+          font-weight: 700;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+          white-space: nowrap;
+        }
+        .diy-hint {
+          position: fixed;
+          top: 5.7rem;
+          ${isRtl ? "right" : "left"}: 6rem;
+          z-index: 50;
+          max-width: 235px;
+          background: linear-gradient(155deg, rgba(255,253,249,0.98) 0%, rgba(247,238,225,0.95) 100%);
+          color: #6a4640;
+          border: 1px solid rgba(197,165,126,0.5);
+          border-radius: 14px;
+          padding: 0.7rem 0.9rem;
+          font-family: 'Crimson Pro', Georgia, serif;
+          font-size: 0.82rem;
+          line-height: 1.45;
+          backdrop-filter: blur(6px);
+          box-shadow:
+            0 10px 22px rgba(62,19,22,0.30),
+            0 20px 44px rgba(62,19,22,0.16),
+            inset 0 1px 0 rgba(255,255,255,0.75),
+            inset 0 -1px 0 rgba(99,32,36,0.08);
         }
 
         @media (max-width: 700px) {
-          main { padding: 80px 1rem 1rem !important; }
-          .diy-sub-header { padding: 1rem 0 0.6rem; }
-          .diy-tooltip { font-size: 0.72rem; top: 58px; }
+          .diy-tooltip { font-size: 0.72rem; }
+          .diy-hint { max-width: 210px; font-size: 0.75rem; }
         }
       `}</style>
 
-      {/* Sticky sub-header with back button */}
-      <div className="diy-sub-header" style={{ direction: isRtl ? "rtl" : "ltr" }}>
-        <Link
-          href="/dashboard"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.3rem",
-            fontFamily: "'Cinzel', serif",
-            fontSize: "0.7rem",
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            color: "#E8D4BC",
-            background: "linear-gradient(135deg, #4a1a1d, #632024)",
-            border: "1px solid rgba(197,165,126,0.45)",
-            padding: "0.5rem 0.9rem",
-            borderRadius: 999,
-            textDecoration: "none",
-            fontWeight: 700,
-            boxShadow: "0 4px 14px rgba(62,19,22,0.2)",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {t("backToDashboard")}
-        </Link>
-        <p style={{ margin: 0, fontSize: "0.85rem", color: "#6a4640", lineHeight: 1.5 }}>
-          {t("roomIntro")}
-        </p>
+      <Link href="/dashboard" className="diy-back">
+        {t("backToDashboard")}
+      </Link>
+
+      <div className="diy-hint">
+        {t("roomIntro")}
       </div>
 
-      <div style={{ maxWidth: 1500, margin: "0 auto", paddingTop: "0.5rem" }}>
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            borderRadius: 20,
-            overflow: "hidden",
-            boxShadow: "0 24px 70px rgba(62,19,22,0.35)",
-            border: "1px solid rgba(99,32,36,0.2)",
-            background: "#4a1a1d",
-          }}
-        >
-          <img
-            src="/cybermajlis-room.png"
-            alt="Interactive CyberMajlis room"
-            style={{ width: "100%", display: "block" }}
-          />
+      <div className="diy-stage">
+        <img
+          src="/cybermajlis-room.png"
+          alt="Interactive CyberMajlis room"
+          style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
+        />
 
-          {devices.map((device) => (
-            <button
-              key={device.id}
-              onClick={() => router.push(`/dashboard/do-it-yourself/${device.id}`)}
-              aria-label={`Start ${t(`devices.${device.labelKey}`)} lesson`}
-              className="diy-hotspot"
-              style={{
-                top: device.top,
-                left: device.left,
-                width: device.width,
-                height: device.height,
-                borderRadius: device.radius,
-              }}
-            >
-              <span className="diy-tooltip">
-                <span>{t(`devices.${device.labelKey}`)}</span>
-                <small>{t("startLesson")}</small>
-              </span>
-            </button>
-          ))}
-        </div>
+        {devices.map((device) => (
+          <button
+            key={device.id}
+            onClick={() => router.push(`/dashboard/do-it-yourself/${device.id}`)}
+            aria-label={`Start ${t(`devices.${device.labelKey}`)} lesson`}
+            className="diy-hotspot"
+            style={{
+              top: device.top,
+              left: device.left,
+              width: device.width,
+              height: device.height,
+              borderRadius: device.radius,
+            }}
+          >
+            <span className="diy-tooltip">
+              <span>{t(`devices.${device.labelKey}`)}</span>
+              <small>{t("startLesson")}</small>
+            </span>
+          </button>
+        ))}
       </div>
     </main>
   );

@@ -83,13 +83,13 @@ export default function ElderScannerPage() {
     : null;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#3e1316", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
+    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#4a1a1d", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
       <ElderNav lang={lang} onLangChange={setLang} />
       <main style={{ padding: "110px 2rem 4rem", maxWidth: 700, margin: "0 auto" }}>
         <h1 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.6rem, 4vw, 2.4rem)", marginBottom: "0.5rem" }}>
           {c.title}
         </h1>
-        <p style={{ fontSize: "1.15rem", color: "#5C4033", marginBottom: "2.5rem", lineHeight: 1.75 }}>
+        <p style={{ fontSize: "1.15rem", color: "#6a4640", marginBottom: "2.5rem", lineHeight: 1.75 }}>
           {c.sub}
         </p>
 
@@ -105,7 +105,7 @@ export default function ElderScannerPage() {
                 fontFamily: body, fontSize: "1.1rem", lineHeight: 1.6,
                 border: "2px solid rgba(99,32,36,0.15)",
                 borderRadius: 12, padding: "1rem",
-                color: "#3e1316", background: "#F7F3EE",
+                color: "#4a1a1d", background: "#F7F3EE",
                 outline: "none", resize: "none",
                 direction: "ltr",
               }}
@@ -117,7 +117,7 @@ export default function ElderScannerPage() {
                 marginTop: "1.2rem",
                 fontFamily: cinzel, fontWeight: 700, fontSize: "1.1rem",
                 letterSpacing: "0.05em",
-                background: "linear-gradient(135deg, #3e1316, #632024)",
+                background: "linear-gradient(135deg, #4a1a1d, #632024)",
                 color: "#E8D4BC",
                 border: "none", borderRadius: 999,
                 padding: "0.9rem 2.2rem",
@@ -139,12 +139,12 @@ export default function ElderScannerPage() {
                 {verdict.text}
               </p>
               {result.total > 0 && (
-                <p style={{ fontSize: "1rem", color: "#5C4033", margin: 0 }}>
+                <p style={{ fontSize: "1rem", color: "#6a4640", margin: 0 }}>
                   {c.detectedBy} {result.detected} / {result.total} {c.engines}
                 </p>
               )}
             </div>
-            <div style={{ background: "linear-gradient(135deg, #3e1316, #632024)", borderRadius: 14, padding: "1.2rem 1.6rem", display: "flex", gap: "0.8rem", alignItems: "flex-start", marginBottom: "1.5rem" }}>
+            <div style={{ background: "linear-gradient(135deg, #4a1a1d, #632024)", borderRadius: 14, padding: "1.2rem 1.6rem", display: "flex", gap: "0.8rem", alignItems: "flex-start", marginBottom: "1.5rem" }}>
               <span style={{ fontSize: "1.3rem" }}>💡</span>
               <p style={{ color: "#E8D4BC", fontSize: "1rem", margin: 0, lineHeight: 1.7 }}>{c.tip}</p>
             </div>

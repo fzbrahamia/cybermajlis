@@ -41,13 +41,13 @@ export default function ElderNewsPage() {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#3e1316", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
+    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#4a1a1d", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
       <ElderNav lang={lang} onLangChange={setLang} />
       <main style={{ padding: "110px 2rem 4rem", maxWidth: 860, margin: "0 auto" }}>
         <h1 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.6rem, 4vw, 2.4rem)", marginBottom: "0.5rem" }}>
           {isRtl ? "آخر أخبار الأمان" : "Latest Safety News"}
         </h1>
-        <p style={{ fontSize: "1.1rem", color: "#5C4033", marginBottom: "2.5rem" }}>
+        <p style={{ fontSize: "1.1rem", color: "#6a4640", marginBottom: "2.5rem" }}>
           {isRtl ? "تهديدات حقيقية تحدث الآن، ابقَ على اطلاع." : "Real threats happening now, stay informed."}
         </p>
 

@@ -12,6 +12,13 @@ const SECURITY_HEADERS = [
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
   // Force HTTPS for 1 year once visited (preload-ready)
   { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains; preload" },
+  // Isolate our browsing context from cross-origin windows (Spectre mitigation);
+  // "-allow-popups" keeps the Firebase auth popup working.
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
+  // Don't leak DNS lookups by pre-fetching links
+  { key: "X-DNS-Prefetch-Control", value: "off" },
+  // Block legacy Flash/PDF cross-domain policies
+  { key: "X-Permitted-Cross-Domain-Policies", value: "none" },
   // Content Security Policy — tight rules, allow only what we actually use
   {
     key: "Content-Security-Policy",
@@ -27,8 +34,9 @@ const SECURITY_HEADERS = [
       "img-src 'self' data: blob: https://*.googleapis.com https://*.gstatic.com https://firebasestorage.googleapis.com",
       // Media (video/audio): self + Firebase Storage
       "media-src 'self' blob: https://firebasestorage.googleapis.com",
-      // Connections: self + Firebase + Anthropic + VirusTotal + ElevenLabs
-      "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://api.anthropic.com https://www.virustotal.com https://api.elevenlabs.io",
+      // Connections: only self (our own /api routes) + Firebase. The 3rd-party APIs
+      // (Anthropic/VirusTotal/ElevenLabs) are called server-side, so the browser never needs them.
+      "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com",
       // No plugins, no object embeds
       "object-src 'none'",
       // Frames: allow Google (Firebase auth popup), deny everything else

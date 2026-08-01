@@ -101,17 +101,18 @@ export default function CalmPage() {
       {/* ── Hero ── */}
       <section style={{
         paddingTop: 72,
-        background: "#1A3A5C",
+        background: "linear-gradient(160deg, #EFF6FF 0%, #DBEAFE 100%)",
+        borderBottom: "1px solid #BFDBFE",
         padding: "120px 2rem 80px",
         textAlign: "center",
       }}>
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
-          <div style={{ marginBottom: "1rem", display: "flex", justifyContent: "center" }}><Shield size={64} color="#FFFFFF" strokeWidth={1.5} /></div>
+          <div style={{ marginBottom: "1rem", display: "flex", justifyContent: "center" }}><Shield size={64} color="#1A3A5C" strokeWidth={1.5} /></div>
           <h1 style={{
             fontFamily: cinzel,
             fontWeight: 700,
             fontSize: "clamp(2rem, 5vw, 3rem)",
-            color: "#FFFFFF",
+            color: "#1A3A5C",
             lineHeight: 1.3,
             marginBottom: "1rem",
           }}>
@@ -119,7 +120,7 @@ export default function CalmPage() {
           </h1>
           <p style={{
             fontSize: "1.3rem",
-            color: "rgba(255,255,255,0.85)",
+            color: "#475569",
             maxWidth: 560,
             margin: "0 auto",
             lineHeight: 1.8,
@@ -271,19 +272,19 @@ export default function CalmPage() {
       </section>
 
       {/* ── Check a link ── */}
-      <section style={{ background: "#1A3A5C", padding: "56px 2rem" }}>
+      <section style={{ background: "linear-gradient(160deg, #EFF6FF 0%, #DBEAFE 100%)", borderTop: "1px solid #BFDBFE", borderBottom: "1px solid #BFDBFE", padding: "56px 2rem" }}>
         <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
-          <div style={{ marginBottom: "0.8rem", display: "flex", justifyContent: "center" }}><Search size={40} color="#FFFFFF" strokeWidth={1.5} /></div>
+          <div style={{ marginBottom: "0.8rem", display: "flex", justifyContent: "center" }}><Search size={40} color="#1A3A5C" strokeWidth={1.5} /></div>
           <h2 style={{
             fontFamily: cinzel,
             fontWeight: 700,
             fontSize: "1.5rem",
-            color: "#FFFFFF",
+            color: "#1A3A5C",
             marginBottom: "0.6rem",
           }}>
             {c.checkLink}
           </h2>
-          <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.8)", marginBottom: "1.5rem", lineHeight: 1.6 }}>
+          <p style={{ fontSize: "1.1rem", color: "#475569", marginBottom: "1.5rem", lineHeight: 1.6 }}>
             {c.checkDesc}
           </p>
           <button

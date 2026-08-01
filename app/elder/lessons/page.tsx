@@ -35,14 +35,14 @@ export default function ElderLessonsPage() {
   const isRtl = lang === "ar";
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#3e1316", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
+    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#4a1a1d", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
       <ElderNav lang={lang} onLangChange={setLang} />
 
       <main style={{ paddingTop: 110, padding: "110px 2rem 4rem", maxWidth: 860, margin: "0 auto" }}>
-        <h1 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.6rem, 4vw, 2.4rem)", color: "#3e1316", marginBottom: "0.5rem" }}>
+        <h1 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.6rem, 4vw, 2.4rem)", color: "#4a1a1d", marginBottom: "0.5rem" }}>
           {isRtl ? "تعلّم بالسرعة التي تناسبك" : "Learn at Your Pace"}
         </h1>
-        <p style={{ fontSize: "1.15rem", color: "#5C4033", marginBottom: "3rem", lineHeight: 1.75 }}>
+        <p style={{ fontSize: "1.15rem", color: "#6a4640", marginBottom: "3rem", lineHeight: 1.75 }}>
           {isRtl
             ? "اختر أي موضوع يهمك. كل درس قصير وواضح، بفيديو وشرح بسيط."
             : "Pick any topic that interests you. Every lesson is short and clear, with a video and simple explanation."}
@@ -71,8 +71,8 @@ export default function ElderLessonsPage() {
             >
               <span style={{ fontSize: "2.8rem", flexShrink: 0 }}>{topic.icon}</span>
               <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.25rem", color: "#3e1316", marginBottom: "0.3rem" }}>{topic.title}</div>
-                <div style={{ fontSize: "1rem", color: "#5C4033", lineHeight: 1.6 }}>{topic.desc}</div>
+                <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.25rem", color: "#4a1a1d", marginBottom: "0.3rem" }}>{topic.title}</div>
+                <div style={{ fontSize: "1rem", color: "#6a4640", lineHeight: 1.6 }}>{topic.desc}</div>
               </div>
               <div style={{ flexShrink: 0, fontFamily: cinzel, fontSize: "0.8rem", color: "#8B2635", background: "rgba(139,38,53,0.08)", border: "1px solid rgba(139,38,53,0.15)", borderRadius: 999, padding: "0.3rem 0.75rem", whiteSpace: "nowrap" }}>
                 {topic.mins} {isRtl ? "دقائق" : "min"}
@@ -86,7 +86,7 @@ export default function ElderLessonsPage() {
           <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.5rem", marginBottom: "0.4rem" }}>
             {isRtl ? "مكتبة الفيديوهات" : "Video Library"}
           </h2>
-          <p style={{ fontSize: "1rem", color: "#5C4033", marginBottom: "2rem" }}>
+          <p style={{ fontSize: "1rem", color: "#6a4640", marginBottom: "2rem" }}>
             {isRtl ? "فيديوهات توعوية قصيرة حول أنواع البرمجيات الخبيثة الأكثر شيوعاً." : "Short awareness videos about the most common types of malware."}
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.4rem" }}>
@@ -98,7 +98,7 @@ export default function ElderLessonsPage() {
             ].map(v => (
               <div key={v.src} style={{ background: "#fff", borderRadius: 16, overflow: "hidden", boxShadow: "0 2px 16px rgba(62,19,22,0.07)", border: "1px solid rgba(99,32,36,0.08)" }}>
                 <video src={v.src} controls preload="metadata" style={{ width: "100%", display: "block", maxHeight: 200, background: "#000" }} />
-                <div style={{ padding: "0.8rem 1rem", fontFamily: cinzel, fontWeight: 700, fontSize: "0.95rem", color: "#3e1316" }}>{v.title}</div>
+                <div style={{ padding: "0.8rem 1rem", fontFamily: cinzel, fontWeight: 700, fontSize: "0.95rem", color: "#4a1a1d" }}>{v.title}</div>
               </div>
             ))}
           </div>

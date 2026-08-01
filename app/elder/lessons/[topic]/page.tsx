@@ -316,7 +316,7 @@ export default function ElderLessonPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#3e1316", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
+    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#4a1a1d", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
       <ElderNav lang={lang} onLangChange={setLang} />
 
       <main ref={contentRef} style={{ paddingTop: 110, padding: "110px 2rem 5rem", maxWidth: 760, margin: "0 auto" }}>
@@ -333,11 +333,11 @@ export default function ElderLessonPage() {
           {isRtl ? "← العودة" : "← Back to lessons"}
         </button>
 
-        <h1 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.7rem, 4vw, 2.6rem)", color: "#3e1316", marginBottom: "1rem", lineHeight: 1.3 }}>
+        <h1 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "clamp(1.7rem, 4vw, 2.6rem)", color: "#4a1a1d", marginBottom: "1rem", lineHeight: 1.3 }}>
           {lesson.title}
         </h1>
 
-        <p style={{ fontSize: "1.2rem", color: "#5C4033", lineHeight: 1.8, marginBottom: "2rem", borderLeft: isRtl ? "none" : "4px solid #C5A57E", borderRight: isRtl ? "4px solid #C5A57E" : "none", paddingInlineStart: "1.2rem" }}>
+        <p style={{ fontSize: "1.2rem", color: "#6a4640", lineHeight: 1.8, marginBottom: "2rem", borderLeft: isRtl ? "none" : "4px solid #C5A57E", borderRight: isRtl ? "4px solid #C5A57E" : "none", paddingInlineStart: "1.2rem" }}>
           {lesson.intro}
         </p>
 
@@ -368,7 +368,7 @@ export default function ElderLessonPage() {
         {/* Content sections */}
         {lesson.sections.map((sec, i) => (
           <div key={i} style={{ marginBottom: "2.5rem" }}>
-            <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.35rem", color: "#3e1316", marginBottom: "0.8rem" }}>
+            <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.35rem", color: "#4a1a1d", marginBottom: "0.8rem" }}>
               {sec.heading}
             </h2>
             <div style={{ fontSize: "1.1rem", color: "#4A3728", lineHeight: 1.85, whiteSpace: "pre-line" }}>
@@ -377,7 +377,7 @@ export default function ElderLessonPage() {
             {sec.tip && (
               <div style={{
                 marginTop: "1.2rem",
-                background: "linear-gradient(135deg, #3e1316, #632024)",
+                background: "linear-gradient(135deg, #4a1a1d, #632024)",
                 borderRadius: 14, padding: "1.2rem 1.4rem",
                 display: "flex", gap: "0.8rem", alignItems: "flex-start",
               }}>
@@ -400,7 +400,7 @@ export default function ElderLessonPage() {
           <div style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "0.85rem", letterSpacing: "0.1em", color: "#8B2635", marginBottom: "0.7rem" }}>
             {isRtl ? "تذكّر دائماً" : "ALWAYS REMEMBER"}
           </div>
-          <p style={{ fontSize: "1.25rem", color: "#3e1316", margin: 0, lineHeight: 1.7, fontStyle: "italic" }}>
+          <p style={{ fontSize: "1.25rem", color: "#4a1a1d", margin: 0, lineHeight: 1.7, fontStyle: "italic" }}>
             "{lesson.remember}"
           </p>
         </div>

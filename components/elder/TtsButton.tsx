@@ -63,7 +63,7 @@ export default function TtsButton({ getText, lang = "en" }: Props) {
         gap: "0.6rem",
         background: state === "playing"
           ? "linear-gradient(135deg, #632024, #8B2635)"
-          : "linear-gradient(135deg, #3e1316, #632024)",
+          : "linear-gradient(135deg, #4a1a1d, #632024)",
         color: "#E8D4BC",
         border: "1px solid rgba(197,165,126,0.45)",
         borderRadius: 999,

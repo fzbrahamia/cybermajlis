@@ -16,8 +16,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const isMainOrAuthPage = pathname === "/" || pathname.startsWith("/auth");
   const isSocPage = pathname.startsWith("/soc");
   const isCalmPage = pathname.startsWith("/calm");
-  const showFooter = !isMainOrAuthPage && !isSocPage && !isCalmPage;
-  const hideChatbot = isSocPage || isCalmPage;
+  // The DIY "room" page (the interactive majlis picture) runs full-screen like SOC — just the image + a back button.
+  const isDiyRoom = pathname === "/dashboard/do-it-yourself";
+  const showFooter = !isMainOrAuthPage && !isSocPage && !isCalmPage && !isDiyRoom;
+  const hideChatbot = isSocPage || isCalmPage || isDiyRoom;
 
   const isLoggedIn = !isMainOrAuthPage && !hideChatbot;
 
@@ -44,7 +46,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      {!isSocPage && !isCalmPage && <Navbar />}
+      {!isSocPage && !isCalmPage && !isDiyRoom && <Navbar />}
       {!hideChatbot && <Chatbot isLoggedIn={isLoggedIn} />}
       <div>{children}</div>
       {showFooter && <Footer />}

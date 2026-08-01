@@ -120,7 +120,7 @@ export default function ElderPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#3e1316", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
+    <div style={{ minHeight: "100vh", background: "#F7F3EE", color: "#4a1a1d", direction: isRtl ? "rtl" : "ltr", fontFamily: body }}>
       <ElderNav lang={lang} onLangChange={setLang} />
 
       {/* contentRef wraps only page body, nav and footer are excluded from TTS */}
@@ -129,18 +129,19 @@ export default function ElderPage() {
       {/* ── Hero ── */}
       <section style={{
         paddingTop: 120, paddingBottom: 80,
-        background: "linear-gradient(160deg, #3e1316 0%, #632024 60%, #8B2635 100%)",
+        background: "linear-gradient(160deg, #FBF4E8 0%, #F1E8D6 100%)",
+        borderBottom: "1px solid rgba(99,32,36,0.12)",
         textAlign: "center", padding: "120px 2rem 80px",
       }}>
         <div style={{ maxWidth: 760, margin: "0 auto" }}>
           <h1 style={{
             fontFamily: cinzel, fontWeight: 700,
             fontSize: "clamp(2rem, 5vw, 3.2rem)",
-            color: "#E8D4BC", lineHeight: 1.3, marginBottom: "1.2rem",
+            color: "#4a1a1d", lineHeight: 1.3, marginBottom: "1.2rem",
           }}>
             {c.hero}
           </h1>
-          <p style={{ fontSize: "1.3rem", color: "rgba(232,212,188,0.85)", maxWidth: 620, margin: "0 auto 2rem", lineHeight: 1.8 }}>
+          <p style={{ fontSize: "1.3rem", color: "#6a4640", maxWidth: 620, margin: "0 auto 2rem", lineHeight: 1.8 }}>
             {c.heroSub}
           </p>
           <TtsButton getText={getPageText} lang={lang} />
@@ -149,7 +150,7 @@ export default function ElderPage() {
 
       {/* ── Now & Then cards ── */}
       <section style={{ padding: "64px 2rem", maxWidth: 1000, margin: "0 auto" }}>
-        <h2 style={{ fontFamily: cinzel, fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 700, color: "#3e1316", textAlign: "center", marginBottom: "0.6rem" }}>
+        <h2 style={{ fontFamily: cinzel, fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 700, color: "#4a1a1d", textAlign: "center", marginBottom: "0.6rem" }}>
           {c.thenNowTitle}
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))", gap: "1.5rem", marginTop: "2.5rem" }}>
@@ -173,17 +174,17 @@ export default function ElderPage() {
                 <div style={{ fontFamily: cinzel, fontSize: "0.75rem", letterSpacing: "0.1em", color: "#8B2635", fontWeight: 700, marginBottom: "0.5rem" }}>
                   {isRtl ? "قبل" : "THEN"}
                 </div>
-                <p style={{ fontSize: "1.1rem", color: "#5C4033", margin: 0, lineHeight: 1.65 }}>{card.then}</p>
+                <p style={{ fontSize: "1.1rem", color: "#6a4640", margin: 0, lineHeight: 1.65 }}>{card.then}</p>
               </div>
               {/* Now */}
               <div style={{ padding: "1.4rem 1.6rem", borderBottom: "1px solid rgba(99,32,36,0.08)", flex: 1 }}>
                 <div style={{ fontFamily: cinzel, fontSize: "0.75rem", letterSpacing: "0.1em", color: "#632024", fontWeight: 700, marginBottom: "0.5rem" }}>
                   {isRtl ? "الآن" : "NOW"}
                 </div>
-                <p style={{ fontSize: "1.1rem", color: "#3e1316", margin: 0, lineHeight: 1.65 }}>{card.now}</p>
+                <p style={{ fontSize: "1.1rem", color: "#4a1a1d", margin: 0, lineHeight: 1.65 }}>{card.now}</p>
               </div>
               {/* Tip */}
-              <div style={{ background: "linear-gradient(135deg, #3e1316, #632024)", padding: "1.2rem 1.6rem", display: "flex", gap: "0.8rem", alignItems: "flex-start" }}>
+              <div style={{ background: "linear-gradient(135deg, #4a1a1d, #632024)", padding: "1.2rem 1.6rem", display: "flex", gap: "0.8rem", alignItems: "flex-start" }}>
                 <span style={{ fontSize: "1.4rem", flexShrink: 0 }}>💡</span>
                 <p style={{ fontSize: "1rem", color: "#E8D4BC", margin: 0, lineHeight: 1.65 }}>{card.lesson}</p>
               </div>
@@ -193,7 +194,7 @@ export default function ElderPage() {
       </section>
 
       {/* ── Sections ── */}
-      <section style={{ background: "#3e1316", padding: "64px 2rem" }}>
+      <section style={{ background: "#4a1a1d", padding: "64px 2rem" }}>
         <div style={{
           maxWidth: 900, margin: "0 auto",
           display: "grid",
@@ -251,7 +252,7 @@ export default function ElderPage() {
           width: 52, height: 52,
           borderRadius: "50%",
           border: "1px solid rgba(197,165,126,0.55)",
-          background: "linear-gradient(135deg, #3e1316, #7a1e22)",
+          background: "linear-gradient(135deg, #4a1a1d, #7a1e22)",
           color: "#E8D4BC",
           fontSize: 22,
           display: "flex", alignItems: "center", justifyContent: "center",
