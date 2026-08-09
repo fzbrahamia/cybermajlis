@@ -35,11 +35,62 @@ export type Widget =
   | { kind: "realworld"; title_en: string; title_ar: string;
       items: { head_en: string; head_ar: string; body_en: string; body_ar: string }[] };
 
+/**
+ * A lab is its own thing now, not a lesson's child. They live at /quantum/labs
+ * and the list can grow without touching any path. Adding one is a component
+ * plus a row here.
+ */
 export type Lab = {
   id: string;
+  /** Which lesson it belongs beside. Null means it stands on its own. */
+  lesson: string | null;
+  /** false while someone is still building it. */
+  ready: boolean;
   title_en: string; title_ar: string;
   blurb_en: string; blurb_ar: string;
+  /** One line on the card: what you will actually do. */
+  does_en: string; does_ar: string;
+  minutes: number;
 };
+
+export const QUANTUM_LABS: Lab[] = [
+  {
+    id: "drawer-search",
+    lesson: "locked-chest",
+    ready: true,
+    title_en: "The Cabinet of Drawers", title_ar: "خزانة الأدراج",
+    blurb_en: "A static computer on the left, a quantum one on the right, on the same cabinet.",
+    blurb_ar: "حاسوب ثابت على اليسار وحاسوب كمّي على اليمين، على الخزانة نفسها.",
+    does_en: "Open drawers one at a time, or run the rounds and watch the wrong ones fade.",
+    does_ar: "افتح الأدراج واحداً تلو الآخر، أو شغّل الجولات وشاهد الخاطئة تخفت.",
+    minutes: 5,
+  },
+  {
+    id: "scale",
+    lesson: "locked-chest",
+    ready: true,
+    title_en: "How Big Does It Get?", title_ar: "كم يكبر الفارق؟",
+    blurb_en: "The cabinet had sixteen drawers. Real locks have far more.",
+    blurb_ar: "الخزانة كان فيها ستة عشر درجاً. الأقفال الحقيقية أكبر بكثير.",
+    does_en: "Drag the ring up to a quintillion keys and watch the two machines pull apart.",
+    does_ar: "اسحب عدد المفاتيح إلى كوينتليون وشاهد الفارق يتّسع.",
+    minutes: 3,
+  },
+  {
+    id: "coin",
+    lesson: "spinning-coin",
+    ready: false,
+    title_en: "Spin, Measure, Repeat", title_ar: "أدِر، قِس، كرّر",
+    blurb_en: "One flip proves nothing. A hundred flips show everything.",
+    blurb_ar: "رمية واحدة لا تثبت شيئاً. مئة رمية تكشف كل شيء.",
+    does_en: "Spin a coin and measure it, then do it a hundred times and watch the pattern appear.",
+    does_ar: "أدِر عملة وقِسها، ثم كرّر ذلك مئة مرة وشاهد النمط يظهر.",
+    minutes: 5,
+  },
+];
+
+export const labById = (id: string) => QUANTUM_LABS.find(l => l.id === id);
+export const labsForLesson = (slug: string) => QUANTUM_LABS.filter(l => l.lesson === slug);
 
 export type QuantumLesson = {
   slug: string;
@@ -51,7 +102,8 @@ export type QuantumLesson = {
   /** Null until the film is produced; the page shows a placeholder. */
   video: { src: string | null; poster: string | null; minutes: number };
   board: Widget[];
-  labs: Lab[];
+  /** Lab ids that belong beside this lesson. The lesson shows placeholders. */
+  labs: string[];
 };
 
 export const QUANTUM_PATH: QuantumLesson[] = [
@@ -139,20 +191,7 @@ export const QUANTUM_PATH: QuantumLesson[] = [
         ],
       },
     ],
-    labs: [
-      {
-        id: "drawer-search",
-        title_en: "The Cabinet of Drawers", title_ar: "خزانة الأدراج",
-        blurb_en: "A static computer on the left, a quantum one on the right, on the same cabinet. Open drawers one at a time, or run the rounds and watch the wrong ones fade.",
-        blurb_ar: "حاسوب ثابت على اليسار وحاسوب كمّي على اليمين، على الخزانة نفسها. افتح الأدراج واحداً تلو الآخر، أو شغّل الجولات وشاهد الخاطئة تخفت.",
-      },
-      {
-        id: "scale",
-        title_en: "How Big Does It Get?", title_ar: "كم يكبر الفارق؟",
-        blurb_en: "The cabinet had sixteen drawers. Real locks have far more. Drag the ring up to a quintillion keys and watch the two machines pull apart.",
-        blurb_ar: "الخزانة كان فيها ستة عشر درجاً. الأقفال الحقيقية أكبر بكثير. اسحب عدد المفاتيح إلى كوينتليون وشاهد الفارق يتّسع.",
-      },
-    ],
+    labs: ["drawer-search", "scale"],
   },
 
   // ── 2 ─────────────────────────────────────────────────────
@@ -222,14 +261,7 @@ export const QUANTUM_PATH: QuantumLesson[] = [
         ],
       },
     ],
-    labs: [
-      {
-        id: "coin-lab",
-        title_en: "Spin, Measure, Repeat", title_ar: "أدِر، قِس، كرّر",
-        blurb_en: "Spin one coin and measure it. Then do it a hundred times and watch the pattern appear.",
-        blurb_ar: "أدِر عملة واحدة وقِسها. ثم كرّر ذلك مئة مرة وشاهد النمط يظهر.",
-      },
-    ],
+    labs: ["coin"],
   },
 ];
 

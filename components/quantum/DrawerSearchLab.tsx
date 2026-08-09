@@ -21,7 +21,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocale } from "next-intl";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Activity, KeyRound, Power, RotateCcw, Search, Zap } from "lucide-react";
-import { Q, LAB, LAB_GRID, headingFont, bodyFont, mono, display } from "./theme";
+import { Q, LAB, LAB_GRID, bodyFont, mono } from "./theme";
 
 const N = 16;
 const OPTIMAL = Math.floor((Math.PI / 4) * Math.sqrt(N)); // 3 for N = 16

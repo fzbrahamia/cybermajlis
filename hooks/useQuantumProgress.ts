@@ -1,55 +1,80 @@
 "use client";
 
 // ============================================================
-// useQuantumProgress — path progress and gating
+// useQuantumProgress — path progress, gating, and the account behind it
 //
-// Quantum lessons run in order: the next one opens only once the previous is
-// finished. "Finished" means the video was watched, the board was read and at
-// least one lab was completed. Deliberately NOT a quiz score: gating on a score
-// locks out exactly the learner who most needs the next lesson.
+// Progress is per account, mirroring the CTF and lesson hooks:
+//   user/{uid}/quantumProgress/{lessonSlug}  { video, board, lab, updatedAt }
+//   quantumProgress/{uid}_{slug}             flat mirror for reporting
 //
-// Anything already unlocked stays open forever, so nobody is ever stuck with
-// nothing to do.
-//
-// Stored in localStorage, so a child can start without an account. Moving this
-// to Firestore later means swapping read/write here and nothing else.
+// Quantum lessons run in order: the next opens only once the previous is
+// finished. "Finished" means the video was watched, the board was opened and a
+// lab was completed. Deliberately NOT a quiz score, which would lock out the
+// learner who most needs the next lesson. Anything already unlocked stays open.
 // ============================================================
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { auth, db } from "@/app/lib/firebase";
+import { onAuthStateChanged, type User } from "firebase/auth";
+import { collection, doc, getDocs, serverTimestamp, setDoc } from "firebase/firestore";
 import { QUANTUM_PATH, STEP_ORDER, type StepId } from "@/app/lib/quantumData";
 
-const KEY = "qm-progress-v1";
+export type AuthState = "loading" | "signed-out" | "signed-in";
 
 /** slug -> which steps are done */
 export type QuantumProgress = Record<string, Partial<Record<StepId, boolean>>>;
 
-function read(): QuantumProgress {
-  if (typeof window === "undefined") return {};
-  try {
-    return JSON.parse(localStorage.getItem(KEY) || "{}") as QuantumProgress;
-  } catch {
-    return {};
-  }
-}
-
 export function useQuantumProgress() {
+  const [authState, setAuthState] = useState<AuthState>("loading");
+  const [user, setUser] = useState<User | null>(null);
   const [progress, setProgress] = useState<QuantumProgress>({});
-  // Nothing is known until the browser has read storage; rendering locks before
-  // that would flash every lesson as locked on a return visit.
-  const [loaded, setLoaded] = useState(false);
+
+  const progressRef = useRef(progress);
+  useEffect(() => { progressRef.current = progress; }, [progress]);
 
   useEffect(() => {
-    setProgress(read());
-    setLoaded(true);
+    const unsub = onAuthStateChanged(auth, async (u) => {
+      setUser(u);
+      if (!u) {
+        setProgress({});
+        setAuthState("signed-out");
+        return;
+      }
+      try {
+        const snap = await getDocs(collection(db, "user", u.uid, "quantumProgress"));
+        const map: QuantumProgress = {};
+        snap.forEach(d => {
+          const data = d.data();
+          map[d.id] = { video: !!data.video, board: !!data.board, lab: !!data.lab };
+        });
+        setProgress(map);
+      } catch (err) {
+        console.error("Quantum progress load error:", err);
+      } finally {
+        setAuthState("signed-in");
+      }
+    });
+    return () => unsub();
   }, []);
 
-  const markStep = useCallback((slug: string, step: StepId) => {
-    setProgress(prev => {
-      if (prev[slug]?.[step]) return prev;
-      const next = { ...prev, [slug]: { ...prev[slug], [step]: true } };
-      try { localStorage.setItem(KEY, JSON.stringify(next)); } catch { /* private mode */ }
-      return next;
-    });
+  /** Idempotent: a step already recorded never writes again. */
+  const markStep = useCallback(async (slug: string, step: StepId) => {
+    const u = auth.currentUser;
+    if (!u) return;
+    if (progressRef.current[slug]?.[step]) return;
+
+    // Optimistic, so the rail ticks over immediately.
+    setProgress(prev => ({ ...prev, [slug]: { ...prev[slug], [step]: true } }));
+
+    const patch = { [step]: true, lessonSlug: slug, userID: u.uid, updatedAt: serverTimestamp() };
+    try {
+      await Promise.all([
+        setDoc(doc(db, "user", u.uid, "quantumProgress", slug), patch, { merge: true }),
+        setDoc(doc(db, "quantumProgress", `${u.uid}_${slug}`), { ...patch, progressID: `${u.uid}_${slug}` }, { merge: true }),
+      ]);
+    } catch (err) {
+      console.error("Quantum mark-step error:", err);
+    }
   }, []);
 
   const isStepDone = useCallback(
@@ -78,12 +103,16 @@ export function useQuantumProgress() {
     return next ?? QUANTUM_PATH[QUANTUM_PATH.length - 1];
   }, [progress]);
 
-  const reset = useCallback(() => {
-    try { localStorage.removeItem(KEY); } catch { /* private mode */ }
-    setProgress({});
-  }, []);
-
   const doneCount = QUANTUM_PATH.filter(l => STEP_ORDER.every(s => progress[l.slug]?.[s])).length;
+  const stepCount = QUANTUM_PATH.reduce(
+    (n, l) => n + STEP_ORDER.filter(s => progress[l.slug]?.[s]).length, 0,
+  );
 
-  return { progress, loaded, markStep, isStepDone, isLessonDone, isUnlocked, currentLesson, reset, doneCount };
+  return {
+    authState, user, progress,
+    /** True once we know whether anyone is signed in. */
+    loaded: authState !== "loading",
+    markStep, isStepDone, isLessonDone, isUnlocked, currentLesson,
+    doneCount, stepCount,
+  };
 }

@@ -6,8 +6,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
-import { Globe } from "lucide-react";
+import { Globe, FlaskConical, Route } from "lucide-react";
 import { Q, INK, BODY, LINE, PAGE, display, mono, bodyFont } from "./theme";
+import { usePathname } from "next/navigation";
 
 function setLocaleCookie(locale: string) {
   document.cookie = `locale=${locale}; path=/; max-age=31536000`;
@@ -16,6 +17,7 @@ function setLocaleCookie(locale: string) {
 export function QuantumHeader() {
   const isAR = useLocale() === "ar";
   const router = useRouter();
+  const pathname = usePathname();
 
   const switchLocale = () => {
     setLocaleCookie(isAR ? "en" : "ar");
@@ -44,12 +46,38 @@ export function QuantumHeader() {
           </span>
         </Link>
 
+        <nav style={{ marginInlineStart: "auto", display: "flex", alignItems: "center", gap: 6 }}>
+          {([
+            { href: "/quantum/paths", Icon: Route,        en: "Paths", ar: "المسارات" },
+            { href: "/quantum/labs",  Icon: FlaskConical, en: "Labs",  ar: "المختبرات" },
+          ] as const).map(l => {
+            const on = pathname.startsWith(l.href);
+            return (
+              <Link key={l.href} href={l.href} style={{
+                display: "inline-flex", alignItems: "center", gap: 7, textDecoration: "none",
+                padding: "8px 15px", borderRadius: 999,
+                fontFamily: display(isAR), fontSize: isAR ? 15 : 13, fontWeight: 700,
+                color: on ? Q.deep : BODY,
+                background: on ? Q.tint : "transparent",
+                border: `1px solid ${on ? Q.mid + "44" : "transparent"}`,
+                transition: "all .2s ease",
+              }}>
+                <l.Icon size={13} />
+                {isAR ? l.ar : l.en}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <span aria-hidden style={{ width: 1, height: 18, background: LINE }} />
+
         <a
           href="/"
+          title={isAR ? "العودة إلى مجلس" : "Back to Majlis"}
           style={{
-            marginInlineStart: "auto", textDecoration: "none",
-            fontFamily: mono, fontSize: 9.5, letterSpacing: "0.16em", color: BODY,
-            padding: "7px 14px", borderRadius: 99, border: `1px solid ${LINE}`,
+            textDecoration: "none",
+            fontFamily: mono, fontSize: 9, letterSpacing: "0.16em", color: BODY,
+            padding: "7px 13px", borderRadius: 99, border: `1px solid ${LINE}`,
           }}
         >
           {isAR ? "مجلس" : "MAJLIS"}

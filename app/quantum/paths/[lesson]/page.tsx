@@ -27,11 +27,9 @@ import {
   ArrowLeft, ArrowRight, Check, Film, LayoutGrid, FlaskConical,
   Play, Lock, Quote, AlertTriangle, Globe2,
 } from "lucide-react";
-import { lessonBySlug, QUANTUM_PATH, STEP_ORDER, type StepId, type Widget } from "@/app/lib/quantumData";
+import { lessonBySlug, labById, QUANTUM_PATH, STEP_ORDER, type StepId, type Widget } from "@/app/lib/quantumData";
 import { useQuantumProgress } from "@/hooks/useQuantumProgress";
 import { QuantumHeader, QuantumFooter } from "@/components/quantum/QuantumChrome";
-import DrawerSearchLab from "@/components/quantum/DrawerSearchLab";
-import ScaleLab from "@/components/quantum/ScaleLab";
 import QuantumField from "@/components/quantum/QuantumField";
 import {
   Q, INK, BODY, LINE, PAPER, PAGE, GOLD, GOLD_DEEP,
@@ -248,9 +246,6 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
 
   const { loaded, isUnlocked, isStepDone, isLessonDone, markStep } = useQuantumProgress();
   const [step, setStep] = useState<StepId>("video");
-  // Several labs per concept is the point: one try is a demonstration, a few
-  // different shapes of the same idea is a laboratory.
-  const [labIdx, setLabIdx] = useState(0);
 
   useEffect(() => {
     if (!loaded || !lesson) return;
@@ -304,7 +299,7 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
               ? "محطات هذا المسار مترابطة. أنهِ المحطة السابقة أولاً، فهي التي تطرح السؤال الذي تجيب عنه هذه."
               : "The stations on this path are linked. Finish the one before it first, because that is the station that asks the question this one answers."}
           </p>
-          <Link href="/quantum" style={cta}>
+          <Link href="/quantum/paths" style={cta}>
             {isAR ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
             {isAR ? "عد إلى المسار" : "Back to the path"}
           </Link>
@@ -337,7 +332,7 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
 
         {/* ── the rail: identity and the three beats, always in view ── */}
         <aside className="ql-rail">
-          <Link href="/quantum" style={{
+          <Link href="/quantum/paths" style={{
             display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none", marginBottom: 20,
             fontFamily: mono, fontSize: 9, letterSpacing: "0.18em", color: BODY,
           }}>
@@ -417,7 +412,7 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
                 {isAR ? "أنهيت هذا الدرس" : "LESSON FINISHED"}
               </div>
               {nextLesson ? (
-                <Link href={`/quantum/${nextLesson.slug}`} style={{ ...cta, width: "100%", justifyContent: "center", flexDirection: "column", gap: 3, padding: "13px 20px" }}>
+                <Link href={`/quantum/paths/${nextLesson.slug}`} style={{ ...cta, width: "100%", justifyContent: "center", flexDirection: "column", gap: 3, padding: "13px 20px" }}>
                   <span style={{ fontFamily: mono, fontSize: 8.5, letterSpacing: "0.18em", opacity: 0.75 }}>
                     {isAR ? "الدرس التالي" : "NEXT LESSON"}
                   </span>
@@ -527,66 +522,45 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
               )}
 
               {/* ── LAB ── */}
+              {/* Labs live at /quantum/labs now. A lesson only names the ones
+                  that belong beside it, so they can be built independently. */}
               {step === "lab" && (
-                <div>
-                  {lesson.labs.length > 1 && (
-                    <div style={{ display: "flex", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
-                      {lesson.labs.map((lab, i) => {
-                        const on = i === labIdx;
-                        return (
-                          <button
-                            key={lab.id}
-                            onClick={() => setLabIdx(i)}
-                            aria-pressed={on}
-                            style={{
-                              display: "inline-flex", alignItems: "center", gap: 9, cursor: "pointer",
-                              padding: "10px 18px", borderRadius: 999,
-                              fontFamily: display(isAR), fontSize: isAR ? 15 : 13, fontWeight: 700,
-                              color: on ? "#fff" : BODY,
-                              background: on ? Q.deep : PAPER,
-                              border: `1px solid ${on ? Q.deep : LINE}`,
-                              boxShadow: on ? CARD_SHADOW : "none",
-                              transition: "all .2s ease",
-                            }}
-                          >
-                            <span style={{ fontFamily: mono, fontSize: 9, opacity: 0.7 }}>
-                              {String(i + 1).padStart(2, "0")}
-                            </span>
-                            {isAR ? lab.title_ar : lab.title_en}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {(() => {
-                    const lab = lesson.labs[labIdx] ?? lesson.labs[0];
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  {lesson.labs.map(id => {
+                    const lab = labById(id);
+                    if (!lab) return null;
                     return (
-                      <div key={lab.id} style={{ marginBottom: 22 }}>
+                      <div key={id} style={{
+                        padding: "26px 24px", borderRadius: 22,
+                        background: PAPER, border: `1px dashed ${LINE}`,
+                      }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                          <FlaskConical size={15} style={{ color: Q.deep }} />
+                          <span style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.2em", color: Q.deep }}>
+                            {isAR ? "مختبر" : "LAB"}
+                          </span>
+                          <span style={{
+                            marginInlineStart: "auto", fontFamily: mono, fontSize: 8.5,
+                            letterSpacing: "0.16em", color: BODY,
+                            padding: "4px 10px", borderRadius: 999, border: `1px solid ${LINE}`,
+                          }}>
+                            {lab.ready
+                              ? (isAR ? "جاهز" : "READY")
+                              : (isAR ? "قيد البناء" : "BEING BUILT")}
+                          </span>
+                        </div>
                         <h2 style={{
-                          fontFamily: display(isAR), fontSize: isAR ? 24 : 22, fontWeight: 800,
+                          fontFamily: display(isAR), fontSize: isAR ? 22 : 20, fontWeight: 800,
                           letterSpacing: isAR ? 0 : "-0.02em", color: INK, margin: "0 0 6px",
                         }}>
                           {isAR ? lab.title_ar : lab.title_en}
                         </h2>
-                        <p style={{ fontFamily: bodyFont, fontSize: 16.5, lineHeight: 1.6, color: BODY, margin: "0 0 20px" }}>
-                          {isAR ? lab.blurb_ar : lab.blurb_en}
+                        <p style={{ fontFamily: bodyFont, fontSize: 16, lineHeight: 1.6, color: BODY, margin: 0 }}>
+                          {isAR ? lab.does_ar : lab.does_en}
                         </p>
-                        {lab.id === "drawer-search" ? (
-                          <DrawerSearchLab onComplete={() => markStep(lesson.slug, "lab")} />
-                        ) : lab.id === "scale" ? (
-                          <ScaleLab onComplete={() => markStep(lesson.slug, "lab")} />
-                        ) : (
-                          <div style={{ padding: "40px 24px", borderRadius: 22, textAlign: "center", background: PAPER, border: `1px dashed ${LINE}` }}>
-                            <p style={{ fontFamily: bodyFont, fontSize: 16.5, color: BODY, margin: 0, fontStyle: "italic" }}>
-                              {isAR ? "هذا المختبر قيد البناء." : "This lab is being built."}
-                            </p>
-                          </div>
-                        )}
                       </div>
                     );
-                  })()}
-
+                  })}
                 </div>
               )}
             </motion.div>
