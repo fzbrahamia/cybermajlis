@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Crimson_Pro, Noto_Naskh_Arabic } from "next/font/google";
+import { Cinzel, Crimson_Pro, Noto_Naskh_Arabic, Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/NavBar";
 import ClientLayout from "@/components/ClientLayout";
@@ -18,6 +18,14 @@ const crimsonPro = Crimson_Pro({
   subsets: ["latin"],
   weight: ["300", "400", "600"],
   style: ["normal", "italic"],
+});
+
+// Quantum Majlis uses a friendlier, rounder face than the rest of the company:
+// its audience is younger and the material is already intimidating enough.
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "800"],
 });
 
 // AR brand font: Noto Naskh Arabic, classical style, pairs with Cinzel
@@ -45,7 +53,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-      <body className={`${cinzel.variable} ${crimsonPro.variable} ${notoNaskhArabic.variable} antialiased`}
+      <body className={`${cinzel.variable} ${crimsonPro.variable} ${notoNaskhArabic.variable} ${nunito.variable} antialiased`}
         style={{ fontFamily: locale === 'ar' ? "var(--font-arabic), serif" : "var(--font-crimson-pro), Georgia, serif" }}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ClientLayout>{children}</ClientLayout>

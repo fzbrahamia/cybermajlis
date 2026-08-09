@@ -33,7 +33,7 @@ export default function DoItYourselfPage() {
         position: "fixed",
         inset: 0,
         overflow: "hidden",
-        background: "linear-gradient(160deg, #FDFBF6 0%, #F2EBDC 100%)",
+        background: "#FCF6EA",
         fontFamily: "'Crimson Pro', Georgia, serif",
         direction: isRtl ? "rtl" : "ltr",
       }}
@@ -85,8 +85,10 @@ export default function DoItYourselfPage() {
           transform: translate(-50%, -50%);
           box-sizing: border-box;
           aspect-ratio: 1672 / 941;
-          width: min(calc(100vw - 48px), calc((100vh - 48px) * 1672 / 941));
-          border: 14px solid #4a1a1d;
+          /* min() picks whichever limit binds. On most screens that is the height
+             one, so keeping its subtraction small is what actually widens the room. */
+          width: min(calc(100vw - 12px), calc((100vh - 64px) * 1672 / 941));
+          border: 10px solid #4a1a1d;
           border-radius: 24px;
           overflow: hidden;
           box-shadow: 0 24px 60px rgba(74,26,29,0.28), inset 0 0 0 2px rgba(197,165,126,0.55);

@@ -100,17 +100,17 @@ export const BRANCHES: Branch[] = [
     word: ["Majlis", "AI"],
     line_en: "Raise your own machine, one rule at a time.",
     line_ar: "ربِّ آلتك الخاصة، قاعدة تلو الأخرى.",
-    deep: "#356B44", mid: "#4C8C5C", soft: "#6BAA7B", tint: "rgba(76,140,92,.10)",
+    deep: "#2B4E86", mid: "#3D6FB5", soft: "#7099D6", tint: "rgba(61,111,181,.10)",
   },
   {
     id: "quantum",
-    enter: null,
-    live: false,
+    enter: "/quantum",
+    live: true,
     name_en: "QuantumMajlis", name_ar: "مجلس الكم",
     word: ["Quantum", "Majlis"],
     line_en: "The strangest science, told as a story.",
     line_ar: "أغرب العلوم، مرويًّا كقصّة.",
-    deep: "#424A94", mid: "#5D66AD", soft: "#838BC8", tint: "rgba(93,102,173,.10)",
+    deep: "#1B6B4C", mid: "#2E9C6E", soft: "#5FC79C", tint: "rgba(46,156,110,.10)",
   },
 ];
 
