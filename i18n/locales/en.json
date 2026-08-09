@@ -476,6 +476,7 @@
       "errors": {
         "invalid_email": "Invalid email format",
         "username_short": "At least 3 characters required",
+        "username_taken": "That username is already taken",
         "passwords_no_match": "Passwords do not match"
       },
       "pw_checks": {
@@ -1245,7 +1246,7 @@
   },
   "Profile": {
     "eyebrow": "Cyber Majlis · Account",
-    "title": "My Profile",
+    "title": "My",
     "title_highlight": "Profile",
     "subtitle": "Manage your account and track your journey",
     "loading": "Loading...",
@@ -1255,6 +1256,8 @@
     "progress_label": "Lesson Progress",
     "progress_completed": "{done} / {total} completed",
     "username_title": "Username",
+    "username_taken": "That username is already taken. Please choose another.",
+    "username_error": "Couldn't update your username. Please try again.",
     "character_title": "Character",
     "edit": "Edit",
     "change": "Change",

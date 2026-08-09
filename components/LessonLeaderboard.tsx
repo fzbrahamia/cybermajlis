@@ -43,6 +43,9 @@ export default function LessonLeaderboard({ youXP, listLimit = 5 }: { youXP: num
   }, []);
 
   useEffect(() => {
+    // Guests aren't on the board and, under the security rules, can't read
+    // /progress or other users' /user docs — skip the fetch so it never errors.
+    if (!uid) { setEntries([]); setError(false); return; }
     let cancelled = false;
     (async () => {
       try {

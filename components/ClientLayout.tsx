@@ -13,13 +13,18 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const pathname = usePathname();
   const t = useTranslations("SessionTimeout");
 
-  const isMainOrAuthPage = pathname === "/" || pathname.startsWith("/auth");
+  // "/" is Majlis, the parent brand one level above CyberMajlis. It carries its
+  // own header and footer (components/majlis/MajlisChrome.tsx), so suppress ours.
+  const isMajlisRoot = pathname === "/";
+  // The CyberMajlis landing renders its own <Footer /> inline.
+  const isCyberLanding = pathname === "/cybermajlis";
+  const isMainOrAuthPage = isCyberLanding || pathname.startsWith("/auth");
   const isSocPage = pathname.startsWith("/soc");
   const isCalmPage = pathname.startsWith("/calm");
   // The DIY "room" page (the interactive majlis picture) runs full-screen like SOC — just the image + a back button.
   const isDiyRoom = pathname === "/dashboard/do-it-yourself";
-  const showFooter = !isMainOrAuthPage && !isSocPage && !isCalmPage && !isDiyRoom;
-  const hideChatbot = isSocPage || isCalmPage || isDiyRoom;
+  const showFooter = !isMainOrAuthPage && !isSocPage && !isCalmPage && !isDiyRoom && !isMajlisRoot;
+  const hideChatbot = isSocPage || isCalmPage || isDiyRoom || isMajlisRoot;
 
   const isLoggedIn = !isMainOrAuthPage && !hideChatbot;
 
@@ -46,7 +51,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      {!isSocPage && !isCalmPage && !isDiyRoom && <Navbar />}
+      {!isSocPage && !isCalmPage && !isDiyRoom && !isMajlisRoot && <Navbar />}
       {!hideChatbot && <Chatbot isLoggedIn={isLoggedIn} />}
       <div>{children}</div>
       {showFooter && <Footer />}

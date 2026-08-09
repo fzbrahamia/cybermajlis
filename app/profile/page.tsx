@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { auth, db } from "@/app/lib/firebase";
 import { onAuthStateChanged, updateProfile } from "firebase/auth";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { changeUsername } from "@/app/lib/usernames";
 import { lessonsData } from "@/app/lib/lessonsData";
 import CharacterSelection from "@/components/CharacterSelection";
 import { Trophy, UserRound, Sparkles } from "lucide-react";
@@ -17,6 +18,7 @@ export default function ProfilePage() {
   const [uid, setUid] = useState("");
   const [editingUsername, setEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const [editingAvatar, setEditingAvatar] = useState(false);
   const [newAvatar, setNewAvatar] = useState("");
   const [completedLessons, setCompletedLessons] = useState(0);
@@ -67,10 +69,16 @@ export default function ProfilePage() {
   const handleSaveUsername = async () => {
     if (!newUsername || newUsername.length < 3) return;
     setSaving(true);
-    await updateDoc(doc(db, "user", uid), { username: newUsername });
-    setUserData((prev: any) => ({ ...prev, username: newUsername }));
-    setEditingUsername(false);
-    setSaving(false);
+    try {
+      await changeUsername(uid, userData?.username, newUsername);
+      setUserData((prev: any) => ({ ...prev, username: newUsername.trim() }));
+      setEditingUsername(false);
+      setUsernameError("");
+    } catch (e: any) {
+      setUsernameError(e?.message === "username-taken" ? t("username_taken") : t("username_error"));
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSaveAvatar = async () => {
@@ -96,6 +104,9 @@ export default function ProfilePage() {
         --cream: #E3DAC9;
         --cream-dark: #d4c5b0;
         --sand: #FDF8F0;
+        --paper: #FDFBF6;
+        --heading: #4a1a1d;
+        --body: #6a4640;
       }
 
       .profile-root *, .profile-root *::before, .profile-root *::after { 
@@ -104,8 +115,8 @@ export default function ProfilePage() {
 
       body {
         font-family: 'Crimson Pro', Georgia, serif;
-        background-color: var(--cream);
-        color: var(--maroon);
+        background-color: var(--paper);
+        color: var(--body);
         overflow-x: hidden;
       }
 
@@ -123,7 +134,7 @@ export default function ProfilePage() {
         pointer-events: none;
         z-index: 0;
         background:
-          radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,32,36,0.12) 0%, transparent 70%),
+          radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,32,36,0.06) 0%, transparent 70%),
           radial-gradient(ellipse 60% 40% at 100% 80%, rgba(197,165,126,0.15) 0%, transparent 60%);
       }
 
@@ -133,7 +144,7 @@ export default function ProfilePage() {
         pointer-events: none;
         z-index: 0;
         filter: blur(80px);
-        opacity: 0.18;
+        opacity: 0.12;
         animation: orb-drift 18s ease-in-out infinite alternate;
       }
       .orb-1 { width: 420px; height: 420px; background: var(--maroon); top: -120px; left: -100px; animation-delay: 0s; }
@@ -156,7 +167,7 @@ export default function ProfilePage() {
       /* ── Header ── */
       .profile-header {
         text-align: center;
-        padding: 5.5rem 0 2.5rem;
+        padding: calc(80px + 3.5rem) 0 2.5rem;
       }
 
       .header-eyebrow {
@@ -523,7 +534,7 @@ export default function ProfilePage() {
       /* Loading */
       .loading-screen {
         min-height: 100vh;
-        background: var(--cream);
+        background: var(--paper);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -618,10 +629,11 @@ export default function ProfilePage() {
             <div className="section-title">{t("username_title")}</div>
           </div>
           {editingUsername ? (
+            <>
             <div className="edit-row">
               <input
                 value={newUsername}
-                onChange={(e) => setNewUsername(e.target.value)}
+                onChange={(e) => { setNewUsername(e.target.value); setUsernameError(""); }}
                 className="edit-input"
                 minLength={3}
               />
@@ -634,13 +646,15 @@ export default function ProfilePage() {
                   {saving ? t("saving") : t("save")}
                 </button>
                 <button
-                  onClick={() => { setEditingUsername(false); setNewUsername(userData?.username); }}
+                  onClick={() => { setEditingUsername(false); setNewUsername(userData?.username); setUsernameError(""); }}
                   className="btn-secondary"
                 >
                   {t("cancel")}
                 </button>
               </div>
             </div>
+            {usernameError && <p style={{ color: "#b4434e", fontSize: "0.82rem", marginTop: "0.5rem" }}>{usernameError}</p>}
+            </>
           ) : (
             <div className="edit-row">
               <span className="edit-value">{userData?.username}</span>

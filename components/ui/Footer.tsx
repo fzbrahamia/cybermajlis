@@ -50,7 +50,7 @@ export default function Footer() {
   // Light theme is scoped to the landing page for now; the rest of the site keeps
   // the dark maroon footer until we roll the new look out.
   const pathname = usePathname();
-  const isLanding = pathname === "/" || pathname.startsWith("/dashboard") || pathname.startsWith("/auth") || pathname.startsWith("/simulations") || pathname.startsWith("/ctf") || pathname.startsWith("/scan") || pathname.startsWith("/news") || pathname.startsWith("/community");
+  const isLanding = pathname === "/cybermajlis" || pathname.startsWith("/dashboard") || pathname.startsWith("/auth") || pathname.startsWith("/simulations") || pathname.startsWith("/ctf") || pathname.startsWith("/scan") || pathname.startsWith("/news") || pathname.startsWith("/community") || pathname.startsWith("/profile") || pathname.startsWith("/settings") || pathname.startsWith("/privacy");
 
   const th = {
     bg: isLanding ? "rgba(251,248,243,0.82)" : "linear-gradient(180deg,#3e1316 0%,#2a0c0e 100%)",
@@ -120,22 +120,34 @@ export default function Footer() {
               ? "أكاديمية قطر للأمن السيبراني بأسلوب اللعب والمحاكاة. تأسست في الدوحة، وبُنيت للمنطقة."
               : "Qatar's gamified cybersecurity academy. Founded in Doha, built for the region."}
           </p>
+          {/* Up one level, to the Majlis roof. Replaces the old "Join now"
+              CTA, which kept showing to people who were already signed in. */}
           <button
-            onClick={() => router.push("/auth?signup=true")}
+            onClick={() => router.push("/")}
             style={{
               fontFamily: cinzel, fontSize: 11, fontWeight: 700, letterSpacing: 1.2,
-              padding: "10px 20px", borderRadius: 9, border: "none", cursor: "pointer",
-              color: isLanding ? "#FBF8F3" : "#3e1316",
-              background: isLanding ? "linear-gradient(135deg,#7a1e22,#8B2635)" : "linear-gradient(135deg,#e8d4bc,#c5a57e)",
-              boxShadow: isLanding ? "0 6px 18px rgba(99,32,36,.22)" : "0 4px 16px rgba(197,165,126,.25)",
-              display: "inline-flex", alignItems: "center", gap: 8,
-              transition: "transform .2s ease",
+              padding: "10px 18px", borderRadius: 999, cursor: "pointer",
+              color: isLanding ? "#5a3a2a" : "#E8D4BC",
+              background: "transparent",
+              border: `1px solid ${isLanding ? "rgba(99,32,36,.2)" : "rgba(197,165,126,.3)"}`,
+              display: "inline-flex", alignItems: "center", gap: 9,
+              transition: "transform .2s ease, background .2s ease",
             }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = ""; }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.background = isLanding ? "rgba(99,32,36,.05)" : "rgba(255,255,255,.06)";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = "";
+              e.currentTarget.style.background = "transparent";
+            }}
           >
-            {isAR ? "انضم الآن" : "Join now"}
-            <ArrowRight size={14} style={{ transform: isAR ? "scaleX(-1)" : "none" }} />
+            <span aria-hidden style={{ display: "grid", gridTemplateColumns: "repeat(2, 5px)", gap: 2 }}>
+              {["#C5A57E", "#4C8C5C", "#A8323F", "#5D66AD"].map(c => (
+                <span key={c} style={{ width: 5, height: 5, borderRadius: "50%", background: c }} />
+              ))}
+            </span>
+            {isAR ? "مجلس" : "Majlis"}
           </button>
         </div>
 

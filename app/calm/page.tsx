@@ -318,7 +318,7 @@ export default function CalmPage() {
         borderTop: "2px solid #BFDBFE",
       }}>
         {isRtl ? "مجلس الأمن السيبراني، قطر" : "CyberMajlis, Qatar"} ·{" "}
-        <a href="/" style={{ color: "#1D7FCC", textDecoration: "none" }}>
+        <a href="/cybermajlis" style={{ color: "#1D7FCC", textDecoration: "none" }}>
           {c.backToMain}
         </a>
       </footer>

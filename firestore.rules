@@ -1,0 +1,146 @@
+rules_version = '2';
+
+// CyberMajlis Firestore security rules.
+// Deploy:  firebase deploy --only firestore:rules   (or paste into Firebase Console → Firestore → Rules)
+// Governs the web app, the admin console, and the Flutter app — they share one project.
+//
+// Principle: deny by default; every collection below is least-privilege.
+// Server-side writes (news refresh, chat logging) use the Admin SDK, which bypasses these rules.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── helpers ──────────────────────────────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/user/$(request.auth.uid))
+        && get(/databases/$(database)/documents/user/$(request.auth.uid)).data.role == 'admin';
+    }
+    function unchanged(field) {
+      // .get(field, null) is safe when the field is absent (e.g. non-admin docs have
+      // no `role`); a plain data[field] on a missing key errors and denies the write.
+      return request.resource.data.get(field, null) == resource.data.get(field, null);
+    }
+
+    // ── user accounts ────────────────────────────────────────────────────────
+    match /user/{uid} {
+      // ⚠️ PRIVACY: signed-in read is required TODAY only because the mobile
+      // leaderboard lists the `user` collection, and per-user leaderboard lookups
+      // fetch whole `user` docs. Those docs hold email (and a bcrypt password hash),
+      // so this exposes children's emails to any signed-in client.
+      // Once leaderboards read a non-PII source (a public-profiles collection), tighten to:
+      //     allow read: if isOwner(uid) || isAdmin();
+      allow read: if isSignedIn();
+
+      // Create only your own account document.
+      allow create: if isOwner(uid);
+
+      // Update your own doc — but you may NOT change your own `role`
+      // (prevents self-promotion to admin). Admins may change anything.
+      allow update: if (isOwner(uid) && unchanged('role')) || isAdmin();
+
+      // Delete your own account, or admin.
+      allow delete: if isOwner(uid) || isAdmin();
+
+      // Per-user private subcollections (progress, quizAttempts, chatbotInteractions).
+      match /{sub}/{docId} {
+        allow read, write: if isOwner(uid) || isAdmin();
+      }
+    }
+
+    // ── username reservations (the uniqueness lock) ──────────────────────────
+    match /usernames/{name} {
+      allow get: if true;                    // signup availability check (runs before login)
+      allow list: if isAdmin();              // no client enumeration of all names
+      allow create: if isSignedIn()
+                    && request.resource.data.uid == request.auth.uid
+                    && !exists(/databases/$(database)/documents/usernames/$(name));
+      allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow update: if false;                // a reservation is never overwritten
+    }
+
+    // ── community scam reports ───────────────────────────────────────────────
+    match /communityWarnings/{id} {
+      // Public can read APPROVED warnings; authors can see their own; admins see all.
+      // .get(...) avoids erroring on anonymized docs whose userID was removed on deletion.
+      allow read: if resource.data.get('status', '') == 'approved'
+                  || isAdmin()
+                  || (isSignedIn() && resource.data.get('userID', '') == request.auth.uid);
+      // A signed-in child may submit, but only as 'pending' and tagged with their own uid.
+      allow create: if isSignedIn()
+                    && request.resource.data.status == 'pending'
+                    && request.resource.data.userID == request.auth.uid;
+      // Only admins moderate (approve / reject / edit / delete).
+      allow update, delete: if isAdmin();
+    }
+
+    // ── first-party analytics events ─────────────────────────────────────────
+    match /analyticsEvent/{id} {
+      // Fire-and-forget from clients (signed-in or anonymous); must be shaped.
+      allow create: if request.resource.data.keys().hasAll(['event', 'ts'])
+                    && request.resource.data.event is string;
+      allow read: if isAdmin();
+      allow update, delete: if false;        // events are immutable
+    }
+
+    // ── lesson progress / XP (feeds the leaderboards) ────────────────────────
+    match /progress/{id} {
+      allow read: if isSignedIn();           // leaderboard aggregates these (no email here)
+      // Each child writes only their own progress rows.
+      allow create, update: if isSignedIn() && request.resource.data.userID == request.auth.uid;
+      allow delete: if isAdmin();
+    }
+
+    // ── quiz attempts & chatbot interaction logs (top-level mirrors) ─────────
+    match /quizAttempt/{id} {
+      allow create: if isSignedIn();
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+    match /chatbotInteraction/{id} {
+      allow create: if isSignedIn();
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    // ── AI chat logs & config ────────────────────────────────────────────────
+    match /chatLogs/{id} {
+      allow read: if isAdmin();
+      allow write: if false;                 // written server-side via the Admin SDK
+    }
+    match /aiConfig/{id} {
+      allow read, write: if isAdmin();        // admin console only
+    }
+
+    // ── threat news (public content) ─────────────────────────────────────────
+    match /securityNews/{id} {
+      allow read: if true;                    // shown on public news pages
+      allow write: if isAdmin();              // refreshed server-side via the Admin SDK
+    }
+
+    // ── lesson content (shared educational material) ─────────────────────────
+    match /lessonsData/{slug} {
+      allow read: if true;                    // non-sensitive learning content
+      allow create: if isSignedIn();          // the app seeds a lesson doc when it's missing
+      allow update, delete: if isAdmin();     // existing lessons aren't client-editable
+    }
+
+    // ── CTF progress (top-level mirror; feeds CTF standings) ─────────────────
+    match /ctfProgress/{id} {
+      allow read: if isSignedIn();
+      allow create, update: if isSignedIn() && request.resource.data.userID == request.auth.uid;
+      allow delete: if isAdmin();
+    }
+
+    // ── default: deny anything not matched above ─────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -236,7 +236,7 @@ export default function ElderPage() {
       {/* ── Footer ── */}
       <footer style={{ textAlign: "center", padding: "2.5rem", fontSize: "0.95rem", color: "#8B6555", background: "#F7F3EE", borderTop: "1px solid rgba(99,32,36,0.1)" }}>
         {isRtl ? "مجلس الأمن السيبراني، قطر" : "CyberMajlis, Qatar"} ·{" "}
-        <a href="/" style={{ color: "#632024", textDecoration: "none" }}>
+        <a href="/cybermajlis" style={{ color: "#632024", textDecoration: "none" }}>
           {isRtl ? "العودة للموقع الرئيسي" : "Return to main site"}
         </a>
       </footer>

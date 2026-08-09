@@ -50,6 +50,9 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // Pin the file-tracing root to this project so a stray lockfile in a parent
+  // directory isn't inferred as the workspace root (which can corrupt the .next cache).
+  outputFileTracingRoot: __dirname,
   eslint: {
     ignoreDuringBuilds: true,
   },

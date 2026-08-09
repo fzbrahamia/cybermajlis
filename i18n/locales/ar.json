@@ -476,6 +476,7 @@
       "errors": {
         "invalid_email": "صيغة البريد الإلكتروني غير صحيحة",
         "username_short": "يجب أن يتكون من 3 أحرف على الأقل",
+        "username_taken": "اسم المستخدم هذا مستخدم بالفعل",
         "passwords_no_match": "كلمتا المرور غير متطابقتين"
       },
       "pw_checks": {
@@ -1255,6 +1256,8 @@
     "progress_label": "تقدم الدروس",
     "progress_completed": "{done} / {total} مكتمل",
     "username_title": "اسم المستخدم",
+    "username_taken": "اسم المستخدم هذا مستخدم بالفعل. الرجاء اختيار اسم آخر.",
+    "username_error": "تعذّر تحديث اسم المستخدم. حاول مرة أخرى.",
     "character_title": "الشخصية",
     "edit": "تعديل",
     "change": "تغيير",

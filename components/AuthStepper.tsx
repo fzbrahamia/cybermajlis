@@ -8,6 +8,7 @@ import CharacterSelection from "./CharacterSelection";
 import { auth, db } from "../app/lib/firebase";
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { isUsernameAvailable, claimUsernameAndCreateUser } from "../app/lib/usernames";
 import { FirebaseError } from "firebase/app";
 import Modal from "@/components/Modal";
 import { useTranslations, useLocale } from "next-intl";
@@ -366,18 +367,34 @@ export default function StepperFlow() {
               <button className="btn-step-next" disabled={!selectedCharacter}
                 onClick={async () => {
                   try {
+                    // Enforce a unique username before creating the account.
+                    if (!(await isUsernameAvailable(username))) {
+                      showModal(t("modals.error_title"), t("signup.errors.username_taken"));
+                      return;
+                    }
+
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     const user = userCredential.user;
                     const hashedPassword = await bcrypt.hash(password, 10);
 
-                    await setDoc(doc(db, "user", user.uid), {
-                      userID: user.uid,
-                      username,
-                      email,
-                      password : hashedPassword,
-                      avatar: selectedCharacter,
-                      createdAt: serverTimestamp(),
-                    });
+                    try {
+                      await claimUsernameAndCreateUser(user.uid, username, {
+                        userID: user.uid,
+                        username,
+                        email,
+                        password: hashedPassword,
+                        avatar: selectedCharacter,
+                        createdAt: serverTimestamp(),
+                      });
+                    } catch (e: any) {
+                      // Lost the race for this name — roll back the just-created auth user.
+                      if (e?.message === "username-taken") {
+                        await user.delete().catch(() => {});
+                        showModal(t("modals.error_title"), t("signup.errors.username_taken"));
+                        return;
+                      }
+                      throw e;
+                    }
 
                     await sendEmailVerification(user);
                     await signOut(auth);

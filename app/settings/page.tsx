@@ -7,7 +7,7 @@ import {
   updatePassword,
   reauthenticateWithCredential,
   EmailAuthProvider,
-  deleteUser,
+  signOut,
 } from "firebase/auth";
 import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { EyeIcon, EyeOffIcon, Lock, Languages, Trash2 } from "lucide-react";
@@ -75,11 +75,20 @@ export default function SettingsPage() {
         --gold: #c5a57e;
         --gold-light: #E8D4BC;
         --cream: #E3DAC9;
+        --sand: #FDF8F0;
+        --paper: #FDFBF6;
+        --heading: #4a1a1d;
+        --body: #6a4640;
       }
 
       .settings-root {
         min-height: 100vh;
-        background: var(--cream);
+        /* matches the dashboard surface: paper plus a soft ambient wash */
+        background-color: var(--paper);
+        background-image:
+          radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,32,36,0.06) 0%, transparent 70%),
+          radial-gradient(ellipse 60% 40% at 100% 80%, rgba(197,165,126,0.15) 0%, transparent 60%);
+        background-attachment: fixed;
         padding: 0 2rem 6rem;
       }
 
@@ -93,7 +102,7 @@ export default function SettingsPage() {
       /* ── Header ── */
       .settings-header {
         text-align: center;
-        padding: 5.5rem 0 2.5rem;
+        padding: calc(80px + 3.5rem) 0 2.5rem;
       }
 
       .settings-eyebrow {
@@ -415,9 +424,17 @@ export default function SettingsPage() {
         try {
           const user = auth.currentUser!;
           const credential = EmailAuthProvider.credential(user.email!, deletePassword);
+          // Re-authenticate to confirm identity and get a fresh ID token.
           await reauthenticateWithCredential(user, credential);
-          await deleteDoc(doc(db, "user", uid));
-          await deleteUser(user);
+          const token = await user.getIdToken();
+          // The server purges every trace (profile, progress, quizzes, chat logs,
+          // community posts, analytics, username) and deletes the auth account.
+          const res = await fetch("/api/account/delete", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (!res.ok) throw new Error("delete-failed");
+          await signOut(auth).catch(() => {});
           router.push("/");
         } catch (error: any) {
           if (error.code === "auth/wrong-password" || error.code === "auth/invalid-credential") {
@@ -429,7 +446,7 @@ export default function SettingsPage() {
   };
 
   if (loading) return (
-    <div style={{ minHeight: "100vh", background: "#E3DAC9", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Cinzel', serif", color: "#632024", letterSpacing: "0.2em", opacity: 0.6 }}>
+    <div style={{ minHeight: "100vh", background: "#FDFBF6", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Cinzel', serif", color: "#632024", letterSpacing: "0.2em", opacity: 0.6 }}>
       {t("loading")}
     </div>
   );

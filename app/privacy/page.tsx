@@ -17,7 +17,7 @@ const PAPER = "#f5ede0";
 
 interface Section { t: string; tAr: string; body: (string | string[])[]; bodyAr: (string | string[])[]; }
 
-const UPDATED = "17 June 2026";
+const UPDATED = "1 August 2026";
 
 const SECTIONS: Section[] = [
   {
@@ -99,6 +99,34 @@ const SECTIONS: Section[] = [
     tAr: "خياراتك وحقوقك",
     body: ["You stay in control. From Settings you can view and edit your profile, change your password, and permanently delete your account along with the data linked to it. You can also browse most of the site without signing in."],
     bodyAr: ["تبقى أنت المتحكّم. من الإعدادات يمكنك عرض ملفك وتعديله وتغيير كلمة مرورك وحذف حسابك نهائياً مع البيانات المرتبطة به. ويمكنك أيضاً تصفّح معظم الموقع دون تسجيل دخول."],
+  },
+  {
+    t: "Deleting your account",
+    tAr: "حذف حسابك",
+    body: [
+      "When you delete your account, from Settings on the web or in the app, we remove it completely. Deletion is immediate and permanent: there is no hidden “deactivated” state and no recovery period.",
+      "In a single step we erase everything linked to you:",
+      [
+        "your profile and login (email, username, avatar) and your reserved username, so it becomes free for others;",
+        "all learning progress, quiz results, game scores, XP and achievements;",
+        "your messages to the AI assistant, and your usage analytics;",
+        "and finally the sign-in account itself.",
+      ],
+      "Scam warnings you shared in the Community are the one exception: to keep protecting other people, the warning itself stays published — but we remove your account from it, so once you are deleted it can no longer be traced back to you.",
+      "The only other thing that may remain is aggregate safety records that carry no account identifier — just a one-way hashed network value we cannot trace back to you — kept briefly to protect the platform from abuse. Once deletion is complete, nothing that identifies you is left on our systems.",
+    ],
+    bodyAr: [
+      "عند حذف حسابك، من الإعدادات على الويب أو في التطبيق، نزيله بالكامل. الحذف فوري ونهائي: لا توجد حالة “معطّلة” مخفية ولا فترة استرجاع.",
+      "في خطوة واحدة نمحو كل ما يرتبط بك:",
+      [
+        "ملفك الشخصي وتسجيل دخولك (البريد الإلكتروني واسم المستخدم والصورة الرمزية) واسم المستخدم المحجوز، ليصبح متاحاً للآخرين؛",
+        "كل تقدّم التعلّم ونتائج الاختبارات ونقاط الألعاب وXP والإنجازات؛",
+        "رسائلك إلى المساعد الذكي، وتحليلات استخدامك؛",
+        "وأخيراً حساب الدخول نفسه.",
+      ],
+      "التحذيرات من عمليات الاحتيال التي شاركتها في المجتمع هي الاستثناء الوحيد: لحماية الآخرين يبقى التحذير نفسه منشوراً — لكننا نزيل حسابك منه، فبعد حذفك لا يمكن ربطه بك.",
+      "الشيء الآخر الوحيد الذي قد يبقى هو سجلّات أمان مجمّعة لا تحمل أي معرّف للحساب — مجرّد قيمة شبكة مُجزّأة باتجاه واحد لا يمكننا تتبّعها إليك — تُحفظ لفترة قصيرة لحماية المنصّة من إساءة الاستخدام. بمجرد اكتمال الحذف، لا يبقى في أنظمتنا أي شيء يعرّف بهويتك.",
+    ],
   },
   {
     t: "How we keep data safe",
