@@ -240,13 +240,13 @@ export default function CalmCtfPage() {
             </p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
               <button
-                onClick={() => router.push("/auth")}
+                onClick={() => router.push("/auth?next=/calm/ctf&guest=0")}
                 style={{ fontFamily: CINZEL, fontWeight: 700, fontSize: "1.05rem", background: ACCENT, color: "#fff", border: "none", borderRadius: 14, padding: "0.85rem 2rem", cursor: "pointer" }}
               >
                 {ui.signIn}
               </button>
               <button
-                onClick={() => router.push("/auth?signup=true")}
+                onClick={() => router.push("/auth?signup=true&next=/calm/ctf&guest=0")}
                 style={{ fontFamily: CINZEL, fontWeight: 700, fontSize: "1.05rem", background: CARD, color: PRIMARY, border: `2px solid ${BORDER}`, borderRadius: 14, padding: "0.85rem 2rem", cursor: "pointer" }}
               >
                 {ui.create}

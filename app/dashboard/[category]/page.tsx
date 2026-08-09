@@ -1,10 +1,11 @@
 "use client";
 
-import { lessonsData } from "@/app/lib/lessonsData";
+import { lessonsData, categorySims } from "@/app/lib/lessonsData";
 import Image from "next/image";
 import Link from "next/link";
 import { use, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import SimGrid from "@/components/SimGrid";
 
 export default function CategoryPage({
   params,
@@ -13,6 +14,7 @@ export default function CategoryPage({
 }) {
   const { category } = use(params);
   const lessons = (lessonsData as any)[category] || [];
+  const sims = categorySims[category] ?? [];
   // const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1);
 
   const t1 = useTranslations("CategoryPage");
@@ -78,6 +80,7 @@ export default function CategoryPage({
       .lesson-card-desc { font-family: 'Crimson Pro', serif; font-size: 0.95rem; line-height: 1.65; color: var(--body); font-weight: 300; text-align: center; flex: 1; }
       .lesson-card-arrow { display: flex; align-items: center; justify-content: center; margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid rgba(99,32,36,0.1); font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--maroon-mid); opacity: 0; transition: opacity 0.25s, transform 0.25s; transform: translateY(4px); }
       .lesson-card:hover .lesson-card-arrow { opacity: 1; transform: translateY(0); }
+      .soon-panel { text-align: center; max-width: 520px; margin: 0 auto; padding: 3rem 2rem; border-radius: 20px; background: rgba(255,255,255,0.55); border: 1px dashed rgba(99,32,36,0.22); }
     `;
     document.head.appendChild(style);
     return () => {
@@ -143,6 +146,39 @@ export default function CategoryPage({
             </Link>
           ))}
         </div>
+
+        {/* Nothing written yet: say so rather than showing an empty grid. */}
+        {lessons.length === 0 && (
+          <div className="soon-panel">
+            <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: "1.3rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.7rem" }}>
+              {t1("soon_title")}
+            </h2>
+            <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "1rem", lineHeight: 1.65, color: "#6a4640", fontWeight: 300, margin: 0 }}>
+              {t1("soon_body")}
+            </p>
+          </div>
+        )}
+
+        {/* The same subject, hands-on. Lessons above, run them yourself here. */}
+        {sims.length > 0 && (
+          <section style={{ marginTop: "3.5rem" }}>
+            <div style={{ textAlign: "center", marginBottom: "1.8rem" }}>
+              <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1.4rem, 2.4vw, 1.9rem)", fontWeight: 900, color: "#4a1a1d", marginBottom: "0.5rem" }}>
+                {t1("sims_title")}
+              </h2>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: "0.7rem" }}>
+                <div style={{ height: 1.5, width: 36, background: "linear-gradient(90deg, transparent, #632024)", borderRadius: 2 }} />
+                <div style={{ width: 5, height: 5, background: "#c5a57e", transform: "rotate(45deg)" }} />
+                <div style={{ height: 1.5, width: 36, background: "linear-gradient(90deg, #632024, transparent)", borderRadius: 2 }} />
+              </div>
+              <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "1rem", fontStyle: "italic", color: "#6a4640", fontWeight: 300, margin: 0 }}>
+                {t1("sims_body")}
+              </p>
+            </div>
+
+            <SimGrid ids={sims} backLabel={formattedCategory} />
+          </section>
+        )}
       </div>
     </div>
   );

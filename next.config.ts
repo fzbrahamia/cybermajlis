@@ -50,11 +50,28 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig: NextConfig = {
+  // Build output directory. A production build normally overwrites the same
+  // .next that `next dev` is serving from, which leaves an already-open browser
+  // asking for chunk files that no longer exist ("Loading chunk ... failed").
+  // Setting NEXT_DIST_DIR lets a verification build go somewhere else, so it
+  // can run without disturbing a dev server:
+  //   NEXT_DIST_DIR=.next-verify npm run build
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   // Pin the file-tracing root to this project so a stray lockfile in a parent
   // directory isn't inferred as the workspace root (which can corrupt the .next cache).
   outputFileTracingRoot: __dirname,
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  async redirects() {
+    return [
+      // basic/advanced were difficulty tiers of one subject and are now a single
+      // Malware track. Keep old links and bookmarks working.
+      { source: "/dashboard/basic", destination: "/dashboard/malware", permanent: true },
+      { source: "/dashboard/advanced", destination: "/dashboard/malware", permanent: true },
+      { source: "/dashboard/basic/:slug", destination: "/dashboard/malware/:slug", permanent: true },
+      { source: "/dashboard/advanced/:slug", destination: "/dashboard/malware/:slug", permanent: true },
+    ];
   },
   async headers() {
     return [

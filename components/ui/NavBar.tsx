@@ -26,7 +26,7 @@ function setLocaleCookie(locale: string) {
 
 const NAV_LINK_KEYS = [
   { key: "dashboard",   href: "/dashboard"   },
-  { key: "simulations", href: "/simulations" },
+  { key: "diy",         href: "/dashboard/do-it-yourself" },
   { key: "soc",         href: "/soc"         },
   { key: "ctf",         href: "/ctf"         },
   { key: "scanner",     href: "/scan"        },
@@ -42,6 +42,11 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const isAuthPage = pathname.startsWith("/auth");
+  // Longest matching nav href wins, so a nested page highlights its own link.
+  const activeHref = NAV_LINK_KEYS
+    .map(l => l.href)
+    .filter(h => pathname === h || pathname.startsWith(h + "/"))
+    .sort((a, b) => b.length - a.length)[0];
   // Light theme is scoped to the landing page for now; the rest of the site keeps
   // the dark maroon navbar until we roll the new look out.
   // light theme now covers the landing + dashboard as we roll the new look out
@@ -205,13 +210,16 @@ export default function Navbar() {
         <div style={{ display: "flex", gap: 40 }}>
           {NAV_LINK_KEYS.map(({ key, href }) => {
             const resolvedHref = key === "dashboard" && !currentUser ? "/auth" : href;
+            // DIY sits under /dashboard, so a plain startsWith would light up both.
+            // The active link is the deepest one the path actually sits inside.
+            const isActive = href === activeHref;
             return (
               <a
                 key={key}
                 href={resolvedHref}
                 style={{
                   ...navLinkStyle,
-                  ...(pathname.startsWith(href)
+                  ...(isActive
                     ? { color: linkActiveColor, borderBottom: `1.5px solid ${linkActiveBorder}`, paddingBottom: 4 }
                     : {}),
                 }}

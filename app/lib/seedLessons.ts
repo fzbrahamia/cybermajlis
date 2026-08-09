@@ -3,7 +3,7 @@ import { db } from "@/app/lib/firebase";
 import { lessonsData } from "@/app/lib/lessonsData";
 
 export async function seedLessonsData() {
-  const categories = ["basic"] as const;
+  const categories = ["malware"] as const;
   for (const category of categories) {
     for (const lesson of lessonsData[category]) {
       if (!lesson.slug) continue;

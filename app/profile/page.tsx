@@ -27,7 +27,7 @@ export default function ProfilePage() {
   const t = useTranslations("Profile");
   const locale = useLocale();
 
-  const totalLessons = lessonsData.basic.filter(l => l.slug).length;
+  const totalLessons = lessonsData.malware.filter(l => l.slug).length;
 
   useEffect(() => {
     let unsubscribeSnapshot: (() => void) | null = null;
@@ -48,7 +48,7 @@ export default function ProfilePage() {
 
       try {
         let count = 0;
-        for (const lesson of lessonsData.basic.filter(l => l.slug)) {
+        for (const lesson of lessonsData.malware.filter(l => l.slug)) {
           const progressDoc = await getDoc(doc(db, "user", user.uid, "progress", lesson.slug));
           if (progressDoc.exists() && progressDoc.data().quizDone) count++;
         }

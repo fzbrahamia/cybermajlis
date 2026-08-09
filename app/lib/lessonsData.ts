@@ -1,5 +1,7 @@
 export const lessonsData = {
-  basic: [
+  // One subject, not two difficulty tiers. Lessons keep their original
+  // translation keys, so only the grouping changed.
+  malware: [
     {
       slug: "virus",
       title: "Virus",
@@ -39,9 +41,6 @@ export const lessonsData = {
       posterUrl: "/posters/ransomware.svg",
       quizUrl: "",
     },
-  ],
-
-  advanced: [
     {
       slug: "polymorphic-metamorphic",
       title: "Polymorphic & Metamorphic",
@@ -55,64 +54,16 @@ export const lessonsData = {
       posterUrl: "/posters/poly&meta.svg",
       quizUrl: "",
     },
-    {
-      slug: "",
-      title: "",
-      titleKey: "",
-      descKey: "",
-      image: "/coming.jpeg",
-      videoUrl: "",
-      simulationUrl: "",
-      videoCaption: "",
-      demoCaption: "",
-      posterUrl: "",
-      quizUrl: "",
-    },
-    {
-      slug: "",
-      title: "",
-      titleKey: "",
-      descKey: "",
-      image: "/coming.jpeg",
-      videoUrl: "",
-      simulationUrl: "",
-      videoCaption: "",
-      demoCaption: "",
-      posterUrl: "",
-      quizUrl: "",
-    }
   ],
+};
 
-  realtime: [
-    {
-      slug: "",
-      title: "",
-      description: "",
-      image: "/coming.jpeg",
-      videoUrl: "",
-      simulationUrl: "",
-      posterUrl: "",
-      quizUrl: "",
-    },
-    {
-      slug: "",
-      title: "",
-      description: "",
-      image: "/coming.jpeg",
-      videoUrl: "",
-      simulationUrl: "",
-      posterUrl: "",
-      quizUrl: "",
-    },
-    {
-      slug: "",
-      title: "",
-      description: "",
-      image: "/coming.jpeg",
-      videoUrl: "",
-      simulationUrl: "",
-      posterUrl: "",
-      quizUrl: "",
-    },
-  ],
+/**
+ * Simulations that belong under a category's lessons.
+ *
+ * Malware lessons and malware simulations teach the same thing in two ways, so
+ * they live on one page rather than in separate parts of the site. Ids match
+ * SIM_MAP in app/simulations/simMap.ts and the Hub.simList translation keys.
+ */
+export const categorySims: Record<string, string[]> = {
+  malware: ["virus", "worm", "ransomware", "rootkit", "keylogger", "polymorphic", "metamorphic"],
 };

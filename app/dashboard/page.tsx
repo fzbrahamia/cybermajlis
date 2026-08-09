@@ -7,12 +7,9 @@ import { useLessonProgress } from "@/hooks/useLessonProgress";
 import { useTranslations, useLocale } from "next-intl";
 import { seedLessonsData } from "@/app/lib/seedLessons";
 import LessonLeaderboard from "@/components/LessonLeaderboard";
-import {
-  Award, Medal, Brain, BookOpen, Swords, MonitorDot, Wrench, ScanSearch,
-  Globe, Trophy, Target, ShieldCheck, TrendingUp, ArrowRight, type LucideIcon,
-} from "lucide-react";
+import { Award, Medal, Brain, BookOpen, Swords, MonitorDot, Wrench, ScanSearch, Globe, Trophy, Target, ShieldCheck, TrendingUp, ArrowRight, type LucideIcon, Users, Lock } from "lucide-react";
 
-type Track = { nameKey: string; descKey: string; href: string; Icon: LucideIcon; progress: string; fill: number };
+type Track = { nameKey: string; descKey: string; href: string; Icon: LucideIcon; progress: string; fill: number; soon?: boolean };
 
 export default function DashboardPage() {
   useTrackView("dashboard");
@@ -48,13 +45,14 @@ export default function DashboardPage() {
   const totalXP = completedLessons * 100;
   const overallPct = Math.round((completedLessons / totalLessons) * 100);
 
-  const basicCompleted = [virusProgress, wormProgress, ransomwareProgress].filter(isLessonComplete).length;
-  const advancedCompleted = [polyProgress].filter(isLessonComplete).length;
+  // Basic and advanced were difficulty tiers of one subject, so they are now a
+  // single Malware track holding all four lessons plus their simulations.
+  const malwareCompleted = completedLessons;
 
   const tracks: Track[] = [
-    { nameKey: "basic.name",    descKey: "basic.description",    href: "/dashboard/basic",          Icon: ShieldCheck, progress: `${basicCompleted}/3`,    fill: Math.round((basicCompleted / 3) * 100) },
-    { nameKey: "advanced.name", descKey: "advanced.description", href: "/dashboard/advanced",       Icon: TrendingUp,  progress: `${advancedCompleted}/3`, fill: Math.round((advancedCompleted / 3) * 100) },
-    { nameKey: "diy.name",      descKey: "diy.description",      href: "/dashboard/do-it-yourself", Icon: Wrench,      progress: "0/5",                    fill: 0 },
+    { nameKey: "malware.name",            descKey: "malware.description",            href: "/dashboard/malware",            Icon: ShieldCheck, progress: `${malwareCompleted}/${totalLessons}`, fill: Math.round((malwareCompleted / totalLessons) * 100) },
+    { nameKey: "social-engineering.name", descKey: "social-engineering.description", href: "/dashboard/social-engineering", Icon: Users,       progress: t("social-engineering.badge"),        fill: 0, soon: true },
+    { nameKey: "why-you.name",            descKey: "why-you.description",            href: "/dashboard/why-you",            Icon: TrendingUp,  progress: t("why-you.badge"),                   fill: 0, soon: true },
   ];
 
   // ── Badge conditions ──
@@ -73,8 +71,8 @@ export default function DashboardPage() {
   const BADGE_DEFS: { id: string; Icon: LucideIcon; earned: boolean }[] = [
     { id: "first_step", Icon: Award,      earned: completedLessons >= 1 },
     { id: "aware",      Icon: Brain,      earned: completedLessons >= 3 },
-    { id: "basic",      Icon: BookOpen,   earned: basicCompleted >= 3   },
-    { id: "advanced",   Icon: Swords,     earned: advancedCompleted >= 1 },
+    { id: "basic",      Icon: BookOpen,   earned: malwareCompleted >= 3 },
+    { id: "advanced",   Icon: Swords,     earned: malwareCompleted >= 4 },
     { id: "soc",        Icon: MonitorDot, earned: badgeState.socDone   },
     { id: "diy",        Icon: Wrench,     earned: badgeState.diyDone    },
     { id: "scanner",    Icon: ScanSearch, earned: badgeState.scannerUsed },
@@ -169,6 +167,10 @@ export default function DashboardPage() {
       .lc { display: flex; align-items: center; gap: 14px; text-decoration: none; background: rgba(255,255,255,0.6); border: 1px solid rgba(99,32,36,0.1); border-radius: 16px; padding: 1rem 1.1rem; margin-bottom: 0.9rem; transition: transform .25s, box-shadow .25s, border-color .25s; }
       .lc:last-child { margin-bottom: 0; }
       .lc:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(99,32,36,0.14); border-color: rgba(197,165,126,0.6); }
+      /* Tracks being written: visible, so people know what is coming, but inert. */
+      .lc-soon { opacity: 0.58; cursor: default; }
+      .lc-soon:hover { transform: none; box-shadow: none; border-color: rgba(99,32,36,0.1); }
+      .lc-soon .lc-prog { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; }
       .lc-ic { width: 50px; height: 50px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--maroon-mid); background: rgba(99,32,36,0.07); border: 1px solid rgba(99,32,36,0.18); }
       .lc-main { flex: 1; min-width: 0; }
       .lc-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem; color: var(--heading); }
@@ -274,20 +276,30 @@ export default function DashboardPage() {
               <h2>{isRtl ? "دروسك" : "Your Lessons"}</h2>
               <p>{isRtl ? "اختر مسارًا وواصل التعلّم" : "Pick a track and keep learning"}</p>
             </div>
-            {tracks.map((tr) => (
-              <Link key={tr.href} href={tr.href} className="lc">
-                <span className="lc-ic"><tr.Icon size={24} /></span>
-                <div className="lc-main">
-                  <div className="lc-name">{t(tr.nameKey)}</div>
-                  <div className="lc-sub">{t(tr.descKey)}</div>
-                  <div className="lc-track"><div className="lc-fill" style={{ width: `${tr.fill}%` }} /></div>
-                </div>
-                <div className="lc-meta">
-                  <span className="lc-prog">{tr.progress}</span>
-                  <ArrowRight size={16} style={isRtl ? { transform: "scaleX(-1)" } : undefined} />
-                </div>
-              </Link>
-            ))}
+            {tracks.map((tr) => {
+              const body = (
+                <>
+                  <span className="lc-ic"><tr.Icon size={24} /></span>
+                  <div className="lc-main">
+                    <div className="lc-name">{t(tr.nameKey)}</div>
+                    <div className="lc-sub">{t(tr.descKey)}</div>
+                    {!tr.soon && <div className="lc-track"><div className="lc-fill" style={{ width: `${tr.fill}%` }} /></div>}
+                  </div>
+                  <div className="lc-meta">
+                    <span className="lc-prog">{tr.progress}</span>
+                    {tr.soon
+                      ? <Lock size={15} style={{ opacity: 0.55 }} />
+                      : <ArrowRight size={16} style={isRtl ? { transform: "scaleX(-1)" } : undefined} />}
+                  </div>
+                </>
+              );
+              // Tracks still being written are shown but not walkable.
+              return tr.soon ? (
+                <div key={tr.href} className="lc lc-soon" aria-disabled="true">{body}</div>
+              ) : (
+                <Link key={tr.href} href={tr.href} className="lc">{body}</Link>
+              );
+            })}
           </section>
 
           <aside>

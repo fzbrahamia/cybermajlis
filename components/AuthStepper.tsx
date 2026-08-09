@@ -14,6 +14,23 @@ import Modal from "@/components/Modal";
 import { useTranslations, useLocale } from "next-intl";
 import bcrypt from "bcryptjs";
 
+/**
+ * Only ever redirect to a path on this site.
+ *
+ * An attacker who can hand someone a link controls `next`, so anything that
+ * could resolve to another origin has to be rejected: absolute URLs, and
+ * protocol-relative ones like //evil.com, which a browser treats as external.
+ * Backslashes are rejected too because browsers normalise them to slashes,
+ * making /\evil.com another way to leave the site.
+ */
+function safeNext(raw: string | null): string | null {
+  if (!raw) return null;
+  if (!raw.startsWith("/")) return null;
+  if (raw.startsWith("//")) return null;
+  if (raw.includes("\\")) return null;
+  return raw;
+}
+
 export default function StepperFlow() {
   const t = useTranslations("Auth");
   const locale = useLocale();
@@ -66,6 +83,22 @@ export default function StepperFlow() {
       setShowSignUp(true);
     }
   }, [searchParams]);
+
+  // Where to land after a successful sign-in. Callers pass ?next=/ctf so people
+  // return to the page that sent them here instead of always the dashboard.
+  const afterAuth = safeNext(searchParams.get("next")) ?? "/dashboard";
+  // Pages that need a real account (CTF saves your flags) pass ?guest=0 to hide
+  // the "continue as a guest" escape hatch.
+  const allowGuest = searchParams.get("guest") !== "0";
+  // Keep next/guest attached when moving between the login and sign-up views.
+  const authHref = (() => {
+    const q = new URLSearchParams();
+    const n = searchParams.get("next");
+    if (n) q.set("next", n);
+    if (!allowGuest) q.set("guest", "0");
+    const s = q.toString();
+    return s ? `/auth?${s}` : "/auth";
+  })();
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -192,7 +225,7 @@ export default function StepperFlow() {
                   return;
                   }
                 sessionStorage.setItem("loginSuccess", "true");
-                router.push("/dashboard");
+                router.push(afterAuth);
               } catch (error: any) {
                 if (error.code === "auth/user-not-found") {
                   showModal(
@@ -233,13 +266,15 @@ export default function StepperFlow() {
             </button>
           </div>
 
-          <div style={{ textAlign: "center", marginTop: "0.9rem" }}>
-            <button type="button" className="btn-auth-ghost"
-              style={{ color: "rgba(106,70,64,0.6)", fontSize: "0.82rem", fontStyle: "italic" }}
-              onClick={() => router.push("/dashboard")}>
-              {t("login.guest_link")}
-            </button>
-          </div>
+          {allowGuest && (
+            <div style={{ textAlign: "center", marginTop: "0.9rem" }}>
+              <button type="button" className="btn-auth-ghost"
+                style={{ color: "rgba(106,70,64,0.6)", fontSize: "0.82rem", fontStyle: "italic" }}
+                onClick={() => router.push("/dashboard")}>
+                {t("login.guest_link")}
+              </button>
+            </div>
+          )}
         </div>
 
         <Modal isOpen={modal.isOpen} title={modal.title} message={modal.message}
@@ -428,18 +463,20 @@ export default function StepperFlow() {
           <div className="signup-footer" style={{ color: "rgba(106,70,64,0.55)" }}>
             {t("signup.footer_text")}{" "}
             <button className="btn-auth-ghost" style={{ color: "#8B2635", textDecoration: "underline" }}
-              onClick={() => { setShowSignUp(false); setShowPassword(false); router.push("/auth"); }}>
+              onClick={() => { setShowSignUp(false); setShowPassword(false); router.push(authHref); }}>
               {t("signup.footer_link")}
             </button>
           </div>
 
-          <div style={{ textAlign: "center", marginTop: "0.9rem" }}>
-            <button type="button" className="btn-auth-ghost"
-              style={{ color: "rgba(106,70,64,0.6)", fontSize: "0.82rem", fontStyle: "italic" }}
-              onClick={() => router.push("/dashboard")}>
-              {t("signup.guest_link")}
-            </button>
-          </div>
+          {allowGuest && (
+            <div style={{ textAlign: "center", marginTop: "0.9rem" }}>
+              <button type="button" className="btn-auth-ghost"
+                style={{ color: "rgba(106,70,64,0.6)", fontSize: "0.82rem", fontStyle: "italic" }}
+                onClick={() => router.push("/dashboard")}>
+                {t("signup.guest_link")}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

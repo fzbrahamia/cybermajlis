@@ -368,7 +368,8 @@
         "ctf": "CTF",
         "news": "News",
         "scanner": "Scanner",
-        "soc": "SOC"
+        "soc": "SOC",
+        "diy": "DIY"
       },
       "footer_links": {
         "play": "Play",
@@ -395,12 +396,18 @@
     "subtitle": "Choose a lesson to begin your journey",
     "back": "← Back to Dashboard",
     "explore": "EXPLORE LESSON →",
-    "coming_soon": "Coming Soon"
+    "coming_soon": "Coming Soon",
+    "soon_title": "Being built",
+    "soon_body": "This path is not open yet. It is being written now, and it will appear here first.",
+    "sims_title": "Try It Yourself",
+    "sims_body": "Safe, hands-on versions of what you just learned. Nothing here can harm your device."
   },
   "Categories": {
     "basic": "Basic",
     "advanced": "Advanced",
-    "realtime": "Real-Time"
+    "malware": "Malware",
+    "social-engineering": "Social Engineering",
+    "why-you": "Why You"
   },
   "LessonDetail": {
     "loading": "LOADING…",
@@ -630,6 +637,21 @@
         "title": "Cyber Veteran",
         "desc": "Earn 6 or more badges to reach true CyberMajlis status"
       }
+    },
+    "malware": {
+      "name": "Malware",
+      "description": "Meet the software built to attack you, from everyday viruses to the tricky kinds that hide. Watch, then run each one safely yourself.",
+      "badge": "Start Here"
+    },
+    "social-engineering": {
+      "name": "Social Engineering",
+      "description": "The attacks that target the person, not the computer. Phishing, pretexting and the tricks that make people hand over the keys.",
+      "badge": "Coming Soon"
+    },
+    "why-you": {
+      "name": "Why You",
+      "description": "“Who would want my data?” Find out exactly what you hold, and why it is worth more than you think.",
+      "badge": "Coming Soon"
     }
   },
   "SOC": {

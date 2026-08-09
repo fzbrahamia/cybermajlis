@@ -139,7 +139,7 @@ export default function VirusForkBomb() {
           <div style={{ fontSize: 11, color: "#fff", textShadow: "1px 1px 3px rgba(0,0,0,.8)", marginTop: 2 }}>{t("desktop.fileName")}</div>
         </div>
 
-        <div style={{ position: "absolute", top: 90, left: 110, fontSize: 28, pointerEvents: "none", filter: "drop-shadow(1px 1px 4px rgba(0,0,0,.5))" }}>👆</div>
+        <div style={{ position: "absolute", top: 104, left: 104, fontSize: 28, pointerEvents: "none", filter: "drop-shadow(1px 1px 4px rgba(0,0,0,.5))" }}>👈</div>
         <div style={{ position: "absolute", top: 185, left: 20, width: 180, textAlign: "center" }}>
           <div style={{ background: "rgba(0,0,0,.6)", borderRadius: 8, padding: "6px 10px", fontSize: 10, color: "#ff9", border: "1px solid rgba(255,255,0,.3)" }}>
             ⚠ {t("desktop.hint")}

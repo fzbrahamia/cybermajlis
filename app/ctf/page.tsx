@@ -106,7 +106,7 @@ export default function CtfPage() {
           </p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <button
-              onClick={() => router.push("/auth")}
+              onClick={() => router.push("/auth?next=/ctf&guest=0")}
               style={{
                 fontFamily: cinzel, fontWeight: 700, fontSize: 13, letterSpacing: 1,
                 display: "inline-flex", alignItems: "center", gap: 8,
@@ -118,7 +118,7 @@ export default function CtfPage() {
               <LogIn size={16} /> {isAR ? "تسجيل الدخول" : "Sign In"}
             </button>
             <button
-              onClick={() => router.push("/auth?signup=true")}
+              onClick={() => router.push("/auth?signup=true&next=/ctf&guest=0")}
               style={{
                 fontFamily: cinzel, fontWeight: 700, fontSize: 13, letterSpacing: 0.5,
                 padding: "12px 24px", borderRadius: 10, cursor: "pointer",
