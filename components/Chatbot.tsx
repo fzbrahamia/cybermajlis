@@ -220,20 +220,20 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
         @keyframes blink { 0%,100%{opacity:.35} 50%{opacity:1} }
         .hamad-msg { animation: msgIn 0.25s ease both; }
         .hamad-window { animation: hamadSlideUp 0.3s cubic-bezier(0.34,1.56,0.64,1) both; }
-        .hamad-input:focus { outline:none; border-color:#4a2f3a !important; }
-        .hamad-input::placeholder { color:rgba(74,45,54,0.35); }
-        .hamad-send:hover { background:#5e3d49 !important; }
-        .hamad-suggest:hover { background:rgba(74,45,54,0.07) !important; border-color:rgba(74,45,54,0.3) !important; }
+        .hamad-input:focus { outline:none; border-color:#4a1a1d !important; }
+        .hamad-input::placeholder { color:rgba(74,26,29,0.35); }
+        .hamad-send:hover { background:#632024 !important; }
+        .hamad-suggest:hover { background:rgba(74,26,29,0.07) !important; border-color:rgba(74,26,29,0.3) !important; }
         .hamad-voice-btn:hover { transform:scale(1.05); }
       `}</style>
 
       {/* Floating button */}
       <div style={{ position:"fixed", bottom:24, right:24, zIndex:9000 }}>
         <button onClick={() => setOpen(o => !o)}
-          style={{ width:56, height:56, borderRadius:"50%", border:"2.5px solid #4a2f3a", overflow:"hidden", cursor:"pointer", boxShadow:"0 4px 20px rgba(74,45,54,0.35)", transition:"transform .2s, box-shadow .2s", background:"white", padding:0 }}
-          onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform="scale(1.08)";(e.currentTarget as HTMLElement).style.boxShadow="0 8px 28px rgba(74,45,54,0.45)";}}
-          onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform="scale(1)";(e.currentTarget as HTMLElement).style.boxShadow="0 4px 20px rgba(74,45,54,0.35)";}}>
-          <img src="/avatar.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+          style={{ width:56, height:56, borderRadius:"50%", border:"2.5px solid #4a1a1d", overflow:"hidden", cursor:"pointer", boxShadow:"0 4px 20px rgba(74,26,29,0.35)", transition:"transform .2s, box-shadow .2s", background:"white", padding:0 }}
+          onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform="scale(1.08)";(e.currentTarget as HTMLElement).style.boxShadow="0 8px 28px rgba(74,26,29,0.45)";}}
+          onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform="scale(1)";(e.currentTarget as HTMLElement).style.boxShadow="0 4px 20px rgba(74,26,29,0.35)";}}>
+          <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
         </button>
         {/* Unread dot */}
         {!open && (
@@ -243,13 +243,13 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 
       {/* Chat window */}
       {open && (
-        <div className="hamad-window" style={{ position:"fixed", bottom:92, right:24, zIndex:9001, width:360, maxHeight:"72vh", display:"flex", flexDirection:"column", borderRadius:20, overflow:"hidden", boxShadow:"0 20px 60px rgba(52,33,41,0.3), 0 0 0 1px rgba(74,45,54,0.1)", fontFamily:"'DM Sans',sans-serif" }}>
+        <div className="hamad-window" style={{ position:"fixed", bottom:92, right:24, zIndex:9001, width:360, maxHeight:"72vh", display:"flex", flexDirection:"column", borderRadius:20, overflow:"hidden", boxShadow:"0 20px 60px rgba(52,33,41,0.3), 0 0 0 1px rgba(74,26,29,0.1)", fontFamily:"'DM Sans',sans-serif" }}>
 
           {/* Header */}
-          <div style={{ background:"linear-gradient(135deg,#5D3A45,#4a2f3a)", padding:"12px 16px", display:"flex", alignItems:"center", gap:10, flexShrink:0, position:"relative", overflow:"hidden" }}>
+          <div style={{ background:"linear-gradient(135deg,#7a1e22,#4a1a1d)", padding:"12px 16px", display:"flex", alignItems:"center", gap:10, flexShrink:0, position:"relative", overflow:"hidden" }}>
             <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg,#C89A6E,rgba(200,154,110,0.3))" }} />
             <div style={{ width:36, height:36, borderRadius:"50%", border:"2px solid rgba(200,154,110,0.5)", overflow:"hidden", flexShrink:0 }}>
-              <img src="/avatar.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+              <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
             </div>
             <div style={{ flex:1 }}>
               <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, fontWeight:700, color:"#F3EAD7", lineHeight:1.2 }}>Hamad</div>
@@ -272,25 +272,25 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 
           {/* Voice settings */}
           {voiceSettingsOpen && (
-            <div style={{ padding:"10px 12px", background:"#fffaf6", borderBottom:"1px solid rgba(74,45,54,0.08)", display:"flex", gap:8, flexDirection:"column" }}>
+            <div style={{ padding:"10px 12px", background:"#fffaf6", borderBottom:"1px solid rgba(74,26,29,0.08)", display:"flex", gap:8, flexDirection:"column" }}>
               <div style={{ display:"flex", gap:8 }}>
                 <select
                   value={speechLang}
                   onChange={e => setSpeechLang(e.target.value as SpeechLang)}
                   aria-label="Speech language"
-                  style={{ flex:1, padding:"7px 9px", borderRadius:10, border:"1px solid rgba(74,45,54,0.18)", background:"white", color:"#4a2f3a", fontSize:12 }}
+                  style={{ flex:1, padding:"7px 9px", borderRadius:10, border:"1px solid rgba(74,26,29,0.18)", background:"white", color:"#4a1a1d", fontSize:12 }}
                 >
                   <option value="ar-QA">Arabic / عربي</option>
                   <option value="en-US">English</option>
                 </select>
                 <button
                   onClick={stopSpeaking}
-                  style={{ padding:"7px 10px", borderRadius:10, border:"1px solid rgba(74,45,54,0.18)", background:"white", color:"#4a2f3a", fontSize:12, cursor:"pointer" }}
+                  style={{ padding:"7px 10px", borderRadius:10, border:"1px solid rgba(74,26,29,0.18)", background:"white", color:"#4a1a1d", fontSize:12, cursor:"pointer" }}
                 >
                   Stop voice
                 </button>
               </div>
-              <div style={{ padding:"7px 9px", borderRadius:10, background:"rgba(74,45,54,0.06)", color:"#4a2f3a", fontSize:12, lineHeight:1.4 }}>
+              <div style={{ padding:"7px 9px", borderRadius:10, background:"rgba(74,26,29,0.06)", color:"#4a1a1d", fontSize:12, lineHeight:1.4 }}>
                 Hamad voice is powered by ElevenLabs. Use the AR / EN button beside the mic to choose the microphone language.
               </div>
             </div>
@@ -301,17 +301,17 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
             {messages.map((msg, i) => (
               <div key={i} className="hamad-msg" style={{ display:"flex", gap:8, alignItems:"flex-end", flexDirection: msg.role==="user"?"row-reverse":"row" }}>
                 {msg.role === "assistant" && (
-                  <div style={{ width:28, height:28, borderRadius:"50%", border:"1.5px solid rgba(74,45,54,0.2)", overflow:"hidden", flexShrink:0 }}>
-                    <img src="/avatar.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+                  <div style={{ width:28, height:28, borderRadius:"50%", border:"1.5px solid rgba(74,26,29,0.2)", overflow:"hidden", flexShrink:0 }}>
+                    <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
                   </div>
                 )}
                 <div style={{
                   maxWidth:"78%", padding:"9px 13px", borderRadius: msg.role==="user"?"16px 16px 4px 16px":"16px 16px 16px 4px",
-                  background: msg.role==="user" ? "linear-gradient(135deg,#5D3A45,#4a2f3a)" : "white",
-                  color: msg.role==="user" ? "#F3EAD7" : "#5D3A45",
+                  background: msg.role==="user" ? "linear-gradient(135deg,#7a1e22,#4a1a1d)" : "white",
+                  color: msg.role==="user" ? "#F3EAD7" : "#7a1e22",
                   fontSize:13, lineHeight:1.65,
                   boxShadow: msg.role==="user" ? "0 2px 8px rgba(52,33,41,0.2)" : "0 1px 6px rgba(0,0,0,0.07)",
-                  border: msg.role==="assistant" ? "1px solid rgba(74,45,54,0.08)" : "none",
+                  border: msg.role==="assistant" ? "1px solid rgba(74,26,29,0.08)" : "none",
                   whiteSpace:"pre-wrap",
                   fontFamily:"'Crimson Pro',serif", fontWeight:400,
                 }}>
@@ -323,12 +323,12 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
             {/* Typing indicator */}
             {loading && (
               <div className="hamad-msg" style={{ display:"flex", gap:8, alignItems:"flex-end" }}>
-                <div style={{ width:28, height:28, borderRadius:"50%", border:"1.5px solid rgba(74,45,54,0.2)", overflow:"hidden", flexShrink:0 }}>
-                  <img src="/avatar.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+                <div style={{ width:28, height:28, borderRadius:"50%", border:"1.5px solid rgba(74,26,29,0.2)", overflow:"hidden", flexShrink:0 }}>
+                  <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
                 </div>
-                <div style={{ padding:"10px 14px", background:"white", borderRadius:"16px 16px 16px 4px", border:"1px solid rgba(74,45,54,0.08)", boxShadow:"0 1px 6px rgba(0,0,0,0.07)", display:"flex", gap:4, alignItems:"center" }}>
+                <div style={{ padding:"10px 14px", background:"white", borderRadius:"16px 16px 16px 4px", border:"1px solid rgba(74,26,29,0.08)", boxShadow:"0 1px 6px rgba(0,0,0,0.07)", display:"flex", gap:4, alignItems:"center" }}>
                   {[0,1,2].map(i => (
-                    <div key={i} style={{ width:6, height:6, borderRadius:"50%", background:"rgba(74,45,54,0.35)", animation:`blink 1.2s ease-in-out ${i*0.2}s infinite` }} />
+                    <div key={i} style={{ width:6, height:6, borderRadius:"50%", background:"rgba(74,26,29,0.35)", animation:`blink 1.2s ease-in-out ${i*0.2}s infinite` }} />
                   ))}
                 </div>
               </div>
@@ -340,8 +340,8 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
                 {SUGGESTIONS.map((s, i) => (
                   <button key={i} className="hamad-suggest"
                     onClick={() => { setInput(s.text); setTimeout(() => inputRef.current?.focus(), 50); }}
-                    style={{ padding:"8px 12px", borderRadius:10, border:"1px solid rgba(74,45,54,0.15)", background:"white", color:"rgba(74,45,54,0.7)", fontSize:s.ar?14:12, textAlign: s.ar?"right":"left", cursor:"pointer", fontFamily: s.ar?"'Noto Sans Arabic',sans-serif":"'Crimson Pro',serif", direction: s.ar?"rtl":"ltr", transition:"all .15s" }}>
-                    {s.text}<Pencil size={11} style={{ color:"rgba(74,45,54,0.35)", marginInlineStart:4, flexShrink:0 }} />
+                    style={{ padding:"8px 12px", borderRadius:10, border:"1px solid rgba(74,26,29,0.15)", background:"white", color:"rgba(74,26,29,0.7)", fontSize:s.ar?14:12, textAlign: s.ar?"right":"left", cursor:"pointer", fontFamily: s.ar?"'Noto Sans Arabic',sans-serif":"'Crimson Pro',serif", direction: s.ar?"rtl":"ltr", transition:"all .15s" }}>
+                    {s.text}<Pencil size={11} style={{ color:"rgba(74,26,29,0.35)", marginInlineStart:4, flexShrink:0 }} />
                   </button>
                 ))}
               </div>
@@ -351,11 +351,11 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
           </div>
 
           {/* Input */}
-          <div style={{ padding:"10px 12px", background:"white", borderTop:"1px solid rgba(74,45,54,0.08)", display:"flex", gap:8, flexShrink:0 }}>
+          <div style={{ padding:"10px 12px", background:"white", borderTop:"1px solid rgba(74,26,29,0.08)", display:"flex", gap:8, flexShrink:0 }}>
             <input ref={inputRef} className="hamad-input" value={input} onChange={e => setInput(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
               placeholder={listening ? (speechLang === "ar-QA" ? "أستمع الآن..." : "Listening...") : "Ask Hamad anything…"}
-              style={{ flex:1, padding:"9px 14px", borderRadius:22, border:"1.5px solid rgba(74,45,54,0.18)", background:"#fdf8f4", fontSize:13, fontFamily:"'Crimson Pro',serif", color:"#5D3A45" }}
+              style={{ flex:1, padding:"9px 14px", borderRadius:22, border:"1.5px solid rgba(74,26,29,0.18)", background:"#fdf8f4", fontSize:13, fontFamily:"'Crimson Pro',serif", color:"#7a1e22" }}
             />
             <button
               onClick={toggleSpeechLanguage}
@@ -363,7 +363,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
               className="hamad-voice-btn"
               aria-label="Switch speech language"
               title={speechLang === "ar-QA" ? "Arabic microphone is active. Click to switch to English." : "English microphone is active. Click to switch to Arabic."}
-              style={{ width:36, height:36, borderRadius:"50%", border:"none", background: speechLang === "ar-QA" ? "rgba(74,45,54,0.18)" : "#4a2f3a", color: speechLang === "ar-QA" ? "#4a2f3a" : "#F3EAD7", fontSize:11, fontWeight:800, cursor: loading || listening ? "default" : "pointer", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center", letterSpacing:.3 }}>
+              style={{ width:36, height:36, borderRadius:"50%", border:"none", background: speechLang === "ar-QA" ? "rgba(74,26,29,0.18)" : "#4a1a1d", color: speechLang === "ar-QA" ? "#4a1a1d" : "#F3EAD7", fontSize:11, fontWeight:800, cursor: loading || listening ? "default" : "pointer", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center", letterSpacing:.3 }}>
               {speechLang === "ar-QA" ? "AR" : "EN"}
             </button>
             <button
@@ -372,11 +372,11 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
               className="hamad-voice-btn"
               aria-label="Start voice interaction"
               title={speechLang === "ar-QA" ? "تحدث مع حمد بالعربية" : "Talk to Hamad in English"}
-              style={{ width:36, height:36, borderRadius:"50%", border:"none", background: listening ? "#5b8db8" : speaking ? "#C89A6E" : "rgba(74,45,54,0.12)", color:"#4a2f3a", fontSize:15, cursor: loading || listening || speaking ? "default" : "pointer", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center" }}>
+              style={{ width:36, height:36, borderRadius:"50%", border:"none", background: listening ? "#5b8db8" : speaking ? "#C89A6E" : "rgba(74,26,29,0.12)", color:"#4a1a1d", fontSize:15, cursor: loading || listening || speaking ? "default" : "pointer", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center" }}>
               {listening ? <Headphones size={16} /> : speaking ? <Volume2 size={16} /> : <Mic size={16} />}
             </button>
             <button onClick={() => sendMessage()} disabled={!input.trim() || loading} className="hamad-send"
-              style={{ width:36, height:36, borderRadius:"50%", border:"none", background: input.trim() && !loading ? "#4a2f3a" : "rgba(74,45,54,0.12)", color: input.trim() && !loading ? "white" : "rgba(74,45,54,0.3)", fontSize:15, cursor: input.trim() && !loading ? "pointer" : "default", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center" }}>
+              style={{ width:36, height:36, borderRadius:"50%", border:"none", background: input.trim() && !loading ? "#4a1a1d" : "rgba(74,26,29,0.12)", color: input.trim() && !loading ? "white" : "rgba(74,26,29,0.3)", fontSize:15, cursor: input.trim() && !loading ? "pointer" : "default", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center" }}>
               ↑
             </button>
           </div>
@@ -479,19 +479,19 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //         @keyframes msgIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
 //         .hamad-msg { animation: msgIn 0.25s ease both; }
 //         .hamad-window { animation: hamadSlideUp 0.3s cubic-bezier(0.34,1.56,0.64,1) both; }
-//         .hamad-input:focus { outline:none; border-color:#4a2f3a !important; }
-//         .hamad-input::placeholder { color:rgba(74,45,54,0.35); }
-//         .hamad-send:hover { background:#5e3d49 !important; }
-//         .hamad-suggest:hover { background:rgba(74,45,54,0.07) !important; border-color:rgba(74,45,54,0.3) !important; }
+//         .hamad-input:focus { outline:none; border-color:#4a1a1d !important; }
+//         .hamad-input::placeholder { color:rgba(74,26,29,0.35); }
+//         .hamad-send:hover { background:#632024 !important; }
+//         .hamad-suggest:hover { background:rgba(74,26,29,0.07) !important; border-color:rgba(74,26,29,0.3) !important; }
 //       `}</style>
 
 //       {/* Floating button */}
 //       <div style={{ position:"fixed", bottom:24, right:24, zIndex:9000 }}>
 //         <button onClick={() => setOpen(o => !o)}
-//           style={{ width:56, height:56, borderRadius:"50%", border:"2.5px solid #4a2f3a", overflow:"hidden", cursor:"pointer", boxShadow:"0 4px 20px rgba(74,45,54,0.35)", transition:"transform .2s, box-shadow .2s", background:"white", padding:0 }}
-//           onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform="scale(1.08)";(e.currentTarget as HTMLElement).style.boxShadow="0 8px 28px rgba(74,45,54,0.45)";}}
-//           onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform="scale(1)";(e.currentTarget as HTMLElement).style.boxShadow="0 4px 20px rgba(74,45,54,0.35)";}}>
-//           <img src="/avatar.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+//           style={{ width:56, height:56, borderRadius:"50%", border:"2.5px solid #4a1a1d", overflow:"hidden", cursor:"pointer", boxShadow:"0 4px 20px rgba(74,26,29,0.35)", transition:"transform .2s, box-shadow .2s", background:"white", padding:0 }}
+//           onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform="scale(1.08)";(e.currentTarget as HTMLElement).style.boxShadow="0 8px 28px rgba(74,26,29,0.45)";}}
+//           onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform="scale(1)";(e.currentTarget as HTMLElement).style.boxShadow="0 4px 20px rgba(74,26,29,0.35)";}}>
+//           <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
 //         </button>
 //         {/* Unread dot */}
 //         {!open && (
@@ -501,13 +501,13 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 
 //       {/* Chat window */}
 //       {open && (
-//         <div className="hamad-window" style={{ position:"fixed", bottom:92, right:24, zIndex:9001, width:360, maxHeight:"72vh", display:"flex", flexDirection:"column", borderRadius:20, overflow:"hidden", boxShadow:"0 20px 60px rgba(52,33,41,0.3), 0 0 0 1px rgba(74,45,54,0.1)", fontFamily:"'DM Sans',sans-serif" }}>
+//         <div className="hamad-window" style={{ position:"fixed", bottom:92, right:24, zIndex:9001, width:360, maxHeight:"72vh", display:"flex", flexDirection:"column", borderRadius:20, overflow:"hidden", boxShadow:"0 20px 60px rgba(52,33,41,0.3), 0 0 0 1px rgba(74,26,29,0.1)", fontFamily:"'DM Sans',sans-serif" }}>
 
 //           {/* Header */}
-//           <div style={{ background:"linear-gradient(135deg,#5D3A45,#4a2f3a)", padding:"12px 16px", display:"flex", alignItems:"center", gap:10, flexShrink:0, position:"relative", overflow:"hidden" }}>
+//           <div style={{ background:"linear-gradient(135deg,#7a1e22,#4a1a1d)", padding:"12px 16px", display:"flex", alignItems:"center", gap:10, flexShrink:0, position:"relative", overflow:"hidden" }}>
 //             <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg,#C89A6E,rgba(200,154,110,0.3))" }} />
 //             <div style={{ width:36, height:36, borderRadius:"50%", border:"2px solid rgba(200,154,110,0.5)", overflow:"hidden", flexShrink:0 }}>
-//               <img src="/avatar.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+//               <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
 //             </div>
 //             <div style={{ flex:1 }}>
 //               <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, fontWeight:700, color:"#F3EAD7", lineHeight:1.2 }}>Hamad</div>
@@ -527,17 +527,17 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //             {messages.map((msg, i) => (
 //               <div key={i} className="hamad-msg" style={{ display:"flex", gap:8, alignItems:"flex-end", flexDirection: msg.role==="user"?"row-reverse":"row" }}>
 //                 {msg.role === "assistant" && (
-//                   <div style={{ width:28, height:28, borderRadius:"50%", border:"1.5px solid rgba(74,45,54,0.2)", overflow:"hidden", flexShrink:0 }}>
-//                     <img src="/avatar.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+//                   <div style={{ width:28, height:28, borderRadius:"50%", border:"1.5px solid rgba(74,26,29,0.2)", overflow:"hidden", flexShrink:0 }}>
+//                     <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
 //                   </div>
 //                 )}
 //                 <div style={{
 //                   maxWidth:"78%", padding:"9px 13px", borderRadius: msg.role==="user"?"16px 16px 4px 16px":"16px 16px 16px 4px",
-//                   background: msg.role==="user" ? "linear-gradient(135deg,#5D3A45,#4a2f3a)" : "white",
-//                   color: msg.role==="user" ? "#F3EAD7" : "#5D3A45",
+//                   background: msg.role==="user" ? "linear-gradient(135deg,#7a1e22,#4a1a1d)" : "white",
+//                   color: msg.role==="user" ? "#F3EAD7" : "#7a1e22",
 //                   fontSize:13, lineHeight:1.65,
 //                   boxShadow: msg.role==="user" ? "0 2px 8px rgba(52,33,41,0.2)" : "0 1px 6px rgba(0,0,0,0.07)",
-//                   border: msg.role==="assistant" ? "1px solid rgba(74,45,54,0.08)" : "none",
+//                   border: msg.role==="assistant" ? "1px solid rgba(74,26,29,0.08)" : "none",
 //                   whiteSpace:"pre-wrap",
 //                   fontFamily:"'Crimson Pro',serif", fontWeight:400,
 //                 }}>
@@ -549,12 +549,12 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //             {/* Typing indicator */}
 //             {loading && (
 //               <div className="hamad-msg" style={{ display:"flex", gap:8, alignItems:"flex-end" }}>
-//                 <div style={{ width:28, height:28, borderRadius:"50%", border:"1.5px solid rgba(74,45,54,0.2)", overflow:"hidden", flexShrink:0 }}>
-//                   <img src="/avatar.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+//                 <div style={{ width:28, height:28, borderRadius:"50%", border:"1.5px solid rgba(74,26,29,0.2)", overflow:"hidden", flexShrink:0 }}>
+//                   <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
 //                 </div>
-//                 <div style={{ padding:"10px 14px", background:"white", borderRadius:"16px 16px 16px 4px", border:"1px solid rgba(74,45,54,0.08)", boxShadow:"0 1px 6px rgba(0,0,0,0.07)", display:"flex", gap:4, alignItems:"center" }}>
+//                 <div style={{ padding:"10px 14px", background:"white", borderRadius:"16px 16px 16px 4px", border:"1px solid rgba(74,26,29,0.08)", boxShadow:"0 1px 6px rgba(0,0,0,0.07)", display:"flex", gap:4, alignItems:"center" }}>
 //                   {[0,1,2].map(i => (
-//                     <div key={i} style={{ width:6, height:6, borderRadius:"50%", background:"rgba(74,45,54,0.35)", animation:`blink 1.2s ease-in-out ${i*0.2}s infinite` }} />
+//                     <div key={i} style={{ width:6, height:6, borderRadius:"50%", background:"rgba(74,26,29,0.35)", animation:`blink 1.2s ease-in-out ${i*0.2}s infinite` }} />
 //                   ))}
 //                 </div>
 //               </div>
@@ -566,8 +566,8 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //                 {SUGGESTIONS.map((s, i) => (
 //                   <button key={i} className="hamad-suggest"
 //                     onClick={() => { setInput(s.text); setTimeout(() => inputRef.current?.focus(), 50); }}
-//                     style={{ padding:"8px 12px", borderRadius:10, border:"1px solid rgba(74,45,54,0.15)", background:"white", color:"rgba(74,45,54,0.7)", fontSize:s.ar?14:12, textAlign: s.ar?"right":"left", cursor:"pointer", fontFamily: s.ar?"'Noto Sans Arabic',sans-serif":"'Crimson Pro',serif", direction: s.ar?"rtl":"ltr", transition:"all .15s" }}>
-//                     {s.text}<span style={{ color:"rgba(74,45,54,0.35)", fontSize:10 }}>✏️</span>
+//                     style={{ padding:"8px 12px", borderRadius:10, border:"1px solid rgba(74,26,29,0.15)", background:"white", color:"rgba(74,26,29,0.7)", fontSize:s.ar?14:12, textAlign: s.ar?"right":"left", cursor:"pointer", fontFamily: s.ar?"'Noto Sans Arabic',sans-serif":"'Crimson Pro',serif", direction: s.ar?"rtl":"ltr", transition:"all .15s" }}>
+//                     {s.text}<span style={{ color:"rgba(74,26,29,0.35)", fontSize:10 }}>✏️</span>
 //                   </button>
 //                 ))}
 //               </div>
@@ -577,14 +577,14 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //           </div>
 
 //           {/* Input */}
-//           <div style={{ padding:"10px 12px", background:"white", borderTop:"1px solid rgba(74,45,54,0.08)", display:"flex", gap:8, flexShrink:0 }}>
+//           <div style={{ padding:"10px 12px", background:"white", borderTop:"1px solid rgba(74,26,29,0.08)", display:"flex", gap:8, flexShrink:0 }}>
 //             <input ref={inputRef} className="hamad-input" value={input} onChange={e => setInput(e.target.value)}
 //               onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
 //               placeholder="Ask Hamad anything…"
-//               style={{ flex:1, padding:"9px 14px", borderRadius:22, border:"1.5px solid rgba(74,45,54,0.18)", background:"#fdf8f4", fontSize:13, fontFamily:"'Crimson Pro',serif", color:"#5D3A45" }}
+//               style={{ flex:1, padding:"9px 14px", borderRadius:22, border:"1.5px solid rgba(74,26,29,0.18)", background:"#fdf8f4", fontSize:13, fontFamily:"'Crimson Pro',serif", color:"#7a1e22" }}
 //             />
 //             <button onClick={() => sendMessage()} disabled={!input.trim() || loading} className="hamad-send"
-//               style={{ width:36, height:36, borderRadius:"50%", border:"none", background: input.trim() && !loading ? "#4a2f3a" : "rgba(74,45,54,0.12)", color: input.trim() && !loading ? "white" : "rgba(74,45,54,0.3)", fontSize:15, cursor: input.trim() && !loading ? "pointer" : "default", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center" }}>
+//               style={{ width:36, height:36, borderRadius:"50%", border:"none", background: input.trim() && !loading ? "#4a1a1d" : "rgba(74,26,29,0.12)", color: input.trim() && !loading ? "white" : "rgba(74,26,29,0.3)", fontSize:15, cursor: input.trim() && !loading ? "pointer" : "default", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center" }}>
 //               ↑
 //             </button>
 //           </div>

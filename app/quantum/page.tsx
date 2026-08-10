@@ -32,7 +32,7 @@ import {
 export default function QuantumDashboard() {
   const isAR = useLocale() === "ar";
   const reduce = useReducedMotion();
-  const { authState, doneCount, stepCount, currentLesson, isLessonDone } = useQuantumProgress();
+  const { doneCount, stepCount, currentLesson, isLessonDone } = useQuantumProgress();
 
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -45,7 +45,6 @@ export default function QuantumDashboard() {
     return () => unsub();
   }, []);
 
-  const signedIn = authState === "signed-in";
   const written = QUANTUM_PATH.length;
   const total = written + QUANTUM_UPCOMING.length;
   const totalSteps = written * STEP_ORDER.length;
@@ -55,7 +54,7 @@ export default function QuantumDashboard() {
 
   /** Numbered stations. Written ones can be done or current; the rest are dashed. */
   const stations = [
-    ...QUANTUM_PATH.map(l => ({ written: true, done: signedIn && isLessonDone(l.slug), current: signedIn && next?.slug === l.slug })),
+    ...QUANTUM_PATH.map(l => ({ written: true, done: isLessonDone(l.slug), current: next?.slug === l.slug })),
     ...QUANTUM_UPCOMING.map(() => ({ written: false, done: false, current: false })),
   ];
 
@@ -78,12 +77,12 @@ export default function QuantumDashboard() {
             fontSize: "clamp(1.9rem,4.4vw,2.9rem)", lineHeight: 1.1,
             letterSpacing: isAR ? 0 : "-0.03em", margin: "0 0 12px",
           }}>
-            {signedIn && username
+            {username
               ? (isAR ? `أهلاً، ${username}` : `Welcome back, ${username}`)
               : (isAR ? "الشيء يمكن أن يكون شيئين معاً." : "A thing can be two things at once.")}
           </h1>
           <p style={{ fontFamily: bodyFont, fontSize: "clamp(1.05rem,2vw,1.25rem)", lineHeight: 1.55, color: BODY, margin: 0, maxWidth: 460 }}>
-            {signedIn
+            {stepCount > 0
               ? (isAR ? "تابع من حيث توقّفت، أو اجلس على أي منضدة." : "Pick up where you left off, or walk up to any bench.")
               : (isAR ? "تعال وانظر." : "Come and see.")}
           </p>

@@ -2,6 +2,8 @@
 
 import { useMemo, useState, type DragEvent } from "react";
 import styles from "./QuantumCapsuleGame.module.css";
+import { Sparkles, Star } from "lucide-react";
+import { Eye } from "lucide-react";
 
 type Bit = 0 | 1;
 type Stage = "build" | "ready" | "measuring" | "result";
@@ -89,7 +91,7 @@ export default function QuantumCapsuleGame({ onComplete }: { onComplete?: () => 
       <header className={styles.header}>
         <div>
           <span className={styles.badge}>SUPERPOSITION GAME 2</span>
-          <h1>Build a Qubit 🧪</h1>
+          <h1>Build a Qubit</h1>
           <p>Load both possibilities, then measure the quantum capsule.</p>
         </div>
         <button className={styles.reset} onClick={reset}>
@@ -104,9 +106,9 @@ export default function QuantumCapsuleGame({ onComplete }: { onComplete?: () => 
         </div>
 
         <div className={styles.stars} aria-label={`${stars} out of 3 stars`}>
-          <span className={stars >= 1 ? styles.starOn : ""}>★</span>
-          <span className={stars >= 2 ? styles.starOn : ""}>★</span>
-          <span className={stars >= 3 ? styles.starOn : ""}>★</span>
+          <span className={stars >= 1 ? styles.starOn : ""}><Star size={16} aria-hidden /></span>
+          <span className={stars >= 2 ? styles.starOn : ""}><Star size={16} aria-hidden /></span>
+          <span className={stars >= 3 ? styles.starOn : ""}><Star size={16} aria-hidden /></span>
         </div>
 
         <div className={styles.roundPill}>Round {round}</div>
@@ -154,7 +156,7 @@ export default function QuantumCapsuleGame({ onComplete }: { onComplete?: () => 
               onClick={() => addBit(0)}
             >
               <span>0</span>
-              <small>{loadedZero ? "Loaded ✓" : "Tap or drag"}</small>
+              <small>{loadedZero ? "Loaded" : "Tap or drag"}</small>
             </div>
 
             <div
@@ -164,7 +166,7 @@ export default function QuantumCapsuleGame({ onComplete }: { onComplete?: () => 
               onClick={() => addBit(1)}
             >
               <span>1</span>
-              <small>{loadedOne ? "Loaded ✓" : "Tap or drag"}</small>
+              <small>{loadedOne ? "Loaded" : "Tap or drag"}</small>
             </div>
           </div>
 
@@ -218,7 +220,7 @@ export default function QuantumCapsuleGame({ onComplete }: { onComplete?: () => 
             <div className={styles.stateLabel}>
               {!loadedZero && !loadedOne && stage !== "result" && "Empty"}
               {loaded.length === 1 && stage !== "result" && "Only one possibility loaded"}
-              {complete && stage === "ready" && "SUPERPOSITION ✨"}
+              {complete && stage === "ready" && "SUPERPOSITION"}
               {stage === "measuring" && "MEASURING..."}
               {stage === "result" && `RESULT = ${result}`}
             </div>
@@ -236,7 +238,7 @@ export default function QuantumCapsuleGame({ onComplete }: { onComplete?: () => 
             </div>
 
             <div className={`${styles.ruleCard} ${complete && stage !== "result" ? styles.ruleActive : ""}`}>
-              <span className={styles.ruleIcon}>✨</span>
+              <span className={styles.ruleIcon}><Sparkles size={15} aria-hidden /></span>
               <div>
                 <strong>0 + 1 loaded</strong>
                 <p>Both possibilities are part of the qubit state.</p>
@@ -244,7 +246,7 @@ export default function QuantumCapsuleGame({ onComplete }: { onComplete?: () => 
             </div>
 
             <div className={`${styles.ruleCard} ${stage === "result" ? styles.ruleActive : ""}`}>
-              <span className={styles.ruleIcon}>👀</span>
+              <span className={styles.ruleIcon}><Eye size={15} aria-hidden /></span>
               <div>
                 <strong>After measurement</strong>
                 <p>You see one result: 0 or 1.</p>
@@ -263,7 +265,7 @@ export default function QuantumCapsuleGame({ onComplete }: { onComplete?: () => 
 
           {stage === "ready" && (
             <button className={styles.measureButton} onClick={measure}>
-              👀 MEASURE THE CAPSULE
+              MEASURE THE CAPSULE
             </button>
           )}
 
@@ -278,13 +280,21 @@ export default function QuantumCapsuleGame({ onComplete }: { onComplete?: () => 
           {stage === "result" && (
             <>
               <div className={styles.takeaway}>
-                💡 <strong>Superposition is before measurement.</strong> We loaded
+                <strong>Superposition is before measurement.</strong> We loaded
                 both 0 and 1 possibilities. After measuring, the capsule showed one
                 result.
               </div>
 
+              <div className={styles.caveat}>
+                <strong>Where this picture simplifies.</strong> A qubit is not a
+                container you put two values into. Nothing is stored side by side
+                inside it. Before you measure there is no hidden 0 or 1 already
+                waiting to be found, which is the part no everyday object does.
+                The capsule helps you picture it. Real qubits are stranger.
+              </div>
+
               <button className={styles.nextButton} onClick={nextRound}>
-                Play Another Round 🎮
+                Play Another Round
               </button>
             </>
           )}

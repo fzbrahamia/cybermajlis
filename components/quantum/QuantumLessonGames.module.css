@@ -1,26 +1,35 @@
-.wrap{width:100%}
-.topCard{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 20px;margin-bottom:14px;border:1px solid rgba(17,26,21,.10);border-radius:22px;background:#fff;box-shadow:0 6px 16px rgba(17,26,21,.04)}
+.wrap{
+  width:100%;
+  padding:18px;
+  border-radius:22px;
+  background:var(--lab-chassis);
+  background-image:linear-gradient(rgba(95,199,156,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(95,199,156,.045) 1px,transparent 1px);
+  background-size:26px 26px;
+  border:1px solid var(--lab-edge);
+  box-shadow:0 30px 70px rgba(10,19,16,.45);
+}
+.topCard{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 20px;margin-bottom:14px;border:1px solid var(--lab-edge);border-radius:22px;background:var(--lab-panel);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
 .eyebrow{font-size:10px;font-weight:950;letter-spacing:.18em;margin-bottom:5px}
-.topCard h2{margin:0 0 5px;font-size:clamp(1.35rem,2.5vw,1.8rem);font-weight:900;letter-spacing:-.02em}
-.topCard p{margin:0;color:#5B6A62;font-size:15px;line-height:1.5}
-.progressBubble{min-width:82px;height:82px;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(2deg);box-shadow:inset 0 0 0 1px rgba(46,156,110,.14)}
-.progressBubble strong{font-size:25px;line-height:1}
-.progressBubble small{margin-top:5px;font-size:9px;font-weight:950;letter-spacing:.12em}
+.topCard h2{margin:0 0 5px;font-size:clamp(0.97rem,2.5vw,1.3rem);font-weight:900;letter-spacing:-.02em}
+.topCard p{margin:0;color:var(--lab-text-dim);font-size:10px;line-height:1.5}
+.progressBubble{min-width:82px;height:82px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(2deg);box-shadow:inset 0 0 0 1px rgba(46,156,110,.14)}
+.progressBubble strong{font-size:15px;line-height:1}
+.progressBubble small{margin-top:5px;font-size:10px;font-weight:950;letter-spacing:.12em}
 .gamePicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
-.gameChoice{appearance:none;border:1px solid rgba(17,26,21,.10);border-radius:20px;padding:13px 14px;display:flex;align-items:center;gap:11px;text-align:start;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-.gameChoice:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(17,26,21,.07)}
+.gameChoice{appearance:none;border:1px solid var(--lab-edge);border-radius:16px;padding:13px 14px;display:flex;align-items:center;gap:11px;text-align:start;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.gameChoice:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.07)}
 .gameChoiceOn{box-shadow:0 10px 24px rgba(27,107,76,.09)}
-.gameIcon{width:48px;height:48px;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:27px;box-shadow:0 3px 10px rgba(17,26,21,.06);flex-shrink:0}
+.gameIcon{width:40px;height:40px;border-radius:12px;background:var(--lab-tint);color:var(--lab-phosphor);display:grid;place-items:center;font-size:17px;box-shadow:0 3px 10px rgba(0,0,0,.06);flex-shrink:0}
 .gameCopy{display:block;min-width:0;flex:1}
-.gameCopy strong{display:block;font-size:15px;color:#111A15}
-.gameCopy small{display:block;margin-top:3px;color:#5B6A62;font-size:12.5px;line-height:1.35}
-.playTag{border-radius:999px;padding:6px 9px;font-size:8.5px;font-weight:950;letter-spacing:.10em;white-space:nowrap}
-.gameStage{overflow:hidden;border-radius:25px}
-.successStrip{margin-top:14px;border:1px solid;border-radius:20px;padding:13px 15px;display:flex;align-items:center;gap:11px}
-.successStrip>span{font-size:26px}.successStrip div{flex:1}.successStrip strong{display:block;font-size:14px}.successStrip small{display:block;margin-top:2px;font-size:12px;opacity:.75}
-.successStrip button{border:0;color:#fff;border-radius:999px;padding:9px 13px;font:inherit;font-size:11px;font-weight:900;cursor:pointer}
-.allDone{margin-top:16px;border-radius:24px;padding:18px 20px;color:#fff;display:flex;align-items:center;justify-content:center;gap:16px;text-align:center;box-shadow:0 16px 34px rgba(27,107,76,.20)}
-.allDone strong{display:block;font-size:20px}.allDone p{margin:3px 0 0;color:rgba(255,255,255,.78);font-size:13px}.party{font-size:30px;animation:kidBounce .75s ease-in-out infinite alternate}
-.coming{padding:36px;text-align:center;border-radius:22px;border:1px dashed rgba(17,26,21,.12)}.coming span{display:block;font-size:36px;margin-bottom:8px}
+.gameCopy strong{display:block;font-size:10px;color:var(--lab-text)}
+.gameCopy small{display:block;margin-top:3px;color:var(--lab-text-dim);font-size:12px;line-height:1.35}
+.playTag{border-radius:999px;padding:10px 9px;font-size:10px;font-weight:950;letter-spacing:.10em;white-space:nowrap}
+.gameStage{overflow:hidden;border-radius:16px;background:var(--lab-panel);border:1px solid var(--lab-edge);padding:18px}
+.successStrip{margin-top:14px;border:1px solid;border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:11px}
+.successStrip>span{font-size:15px}.successStrip div{flex:1}.successStrip strong{display:block;font-size:10px}.successStrip small{display:block;margin-top:2px;font-size:12px;opacity:.75}
+.successStrip button{border:0;color:var(--lab-text);border-radius:999px;padding:10px 13px;font:inherit;font-size:11px;font-weight:900;cursor:pointer}
+.allDone{margin-top:16px;border-radius:22px;padding:18px 20px;color:var(--lab-text);display:flex;align-items:center;justify-content:center;gap:16px;text-align:center;box-shadow:0 16px 34px rgba(27,107,76,.20)}
+.allDone strong{display:block;font-size:12px}.allDone p{margin:3px 0 0;color:rgba(255,255,255,.78);font-size:13px}.party{font-size:20px;animation:kidBounce .75s ease-in-out infinite alternate}
+.coming{padding:36px;text-align:center;border-radius:22px;border:1px dashed var(--lab-edge)}.coming span{display:block;font-size:20px;margin-bottom:8px}
 @keyframes kidBounce{to{transform:translateY(-5px) rotate(4deg)}}
-@media(max-width:720px){.topCard{align-items:flex-start}.progressBubble{min-width:68px;height:68px;border-radius:21px}.gamePicker{grid-template-columns:1fr}.playTag{display:none}.successStrip{align-items:flex-start;flex-wrap:wrap}.successStrip button{width:100%}}
+@media(max-width:720px){.topCard{align-items:flex-start}.progressBubble{min-width:68px;height:68px;border-radius:18px}.gamePicker{grid-template-columns:1fr}.playTag{display:none}.successStrip{align-items:flex-start;flex-wrap:wrap}.successStrip button{width:100%}}

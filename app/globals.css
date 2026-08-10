@@ -43,6 +43,24 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* ── Quantum lab chassis ────────────────────────────────────
+   Labs are instrumentation, not pages: dark surfaces, phosphor readouts,
+   indicator lamps. Shared here so every lab lands on the same bench. */
+:root {
+  --lab-chassis: #0A1310;
+  --lab-panel: #0F1E18;
+  --lab-panel-hi: #14271F;
+  --lab-edge: rgba(95,199,156,.16);
+  --lab-edge-bright: rgba(95,199,156,.40);
+  --lab-phosphor: #6EE7A8;
+  --lab-phosphor-dim: rgba(110,231,168,.55);
+  --lab-tint: rgba(110,231,168,.10);
+  --lab-text: #B9D8CA;
+  --lab-text-dim: rgba(185,216,202,.55);
+  --lab-amber: #E3B341;
+  --lab-red: #E06C6C;
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

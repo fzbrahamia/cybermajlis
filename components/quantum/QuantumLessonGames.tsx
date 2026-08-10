@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Check, FlaskConical, KeyRound, PartyPopper, Puzzle, Star, type LucideIcon } from "lucide-react";
 import { useLocale } from "next-intl";
 import SuperpositionCoinGame from "./SuperpositionCoinGame";
 import QuantumCapsuleGame from "./QuantumCapsuleGame";
 import HiddenKeySearchGame from "./HiddenKeySearchGame";
 import ActualMazeSearchGame from "./ActualMazeSearchGame";
-import { Q, INK, BODY, PAPER, display, bodyFont } from "./theme";
+import { LAB, display, bodyFont } from "./theme";
 import styles from "./QuantumLessonGames.module.css";
 
 type Props = {
@@ -15,7 +16,9 @@ type Props = {
 };
 
 type GameMeta = {
-  icon: string;
+  /** The coin keeps its emoji: it is the object the lesson is about, not decoration. */
+  emoji?: string;
+  Icon?: LucideIcon;
   en: string;
   ar: string;
   subEn: string;
@@ -23,13 +26,13 @@ type GameMeta = {
 };
 
 const SUPERPOSITION: GameMeta[] = [
-  { icon: "🪙", en: "Quantum Coin", ar: "العملة الكمّية", subEn: "Make it quantum, then measure it.", subAr: "حوّلها إلى حالة كمّية ثم قِسها." },
-  { icon: "🧪", en: "Build a Qubit", ar: "ابنِ كيوبِت", subEn: "Load 0 and 1 into the quantum capsule.", subAr: "ضع ٠ و١ داخل الكبسولة الكمّية." },
+  { emoji: "🪙", en: "Quantum Coin", ar: "العملة الكمّية", subEn: "Make it quantum, then measure it.", subAr: "حوّلها إلى حالة كمّية ثم قِسها." },
+  { Icon: FlaskConical, en: "Build a Qubit", ar: "ابنِ كيوبِت", subEn: "Load 0 and 1 into the quantum capsule.", subAr: "ضع ٠ و١ داخل الكبسولة الكمّية." },
 ];
 
 const SEARCH: GameMeta[] = [
-  { icon: "🗝️", en: "Find the Hidden Key", ar: "اعثر على المفتاح", subEn: "Compare normal and quantum search.", subAr: "قارن البحث العادي بالبحث الكمّي." },
-  { icon: "🧩", en: "Escape the Maze", ar: "اخرج من المتاهة", subEn: "Explore the maze, then try quantum search.", subAr: "استكشف المتاهة ثم جرّب البحث الكمّي." },
+  { Icon: KeyRound, en: "Find the Hidden Key", ar: "اعثر على المفتاح", subEn: "Compare normal and quantum search.", subAr: "قارن البحث العادي بالبحث الكمّي." },
+  { Icon: Puzzle, en: "Escape the Maze", ar: "اخرج من المتاهة", subEn: "Explore the maze, then try quantum search.", subAr: "استكشف المتاهة ثم جرّب البحث الكمّي." },
 ];
 
 export default function QuantumLessonGames({ lessonOrder, onComplete }: Props) {
@@ -58,24 +61,24 @@ export default function QuantumLessonGames({ lessonOrder, onComplete }: Props) {
 
   if (lessonOrder !== 1 && lessonOrder !== 2) {
     return (
-      <div className={styles.coming} style={{ fontFamily: bodyFont, color: BODY, background: PAPER }}>
-        <span>🧪</span>
+      <div className={styles.coming} style={{ fontFamily: bodyFont, color: LAB.textDim, background: LAB.panel }}>
+        <FlaskConical size={18} aria-hidden />
         {isAR ? "ألعاب هذا الدرس قيد التجهيز." : "The games for this lesson are being prepared."}
       </div>
     );
   }
 
   return (
-    <section className={styles.wrap} style={{ fontFamily: bodyFont, color: INK }}>
+    <section className={styles.wrap} style={{ fontFamily: bodyFont, color: LAB.text }}>
       <div className={styles.topCard}>
         <div>
-          <div className={styles.eyebrow} style={{ color: Q.deep }}>
+          <div className={styles.eyebrow} style={{ color: LAB.phosphor }}>
             {isAR ? "وقت اللعب" : "PLAY LAB"}
           </div>
           <h2 style={{ fontFamily: display(isAR) }}>
             {lessonOrder === 1
-              ? (isAR ? "تحديات البحث الكمّي 🔎" : "Quantum search challenges 🔎")
-              : (isAR ? "جرّب السوبر بوزيشن بنفسك ✨" : "Play with superposition ✨")}
+              ? (isAR ? "تحديات البحث الكمّي" : "Quantum search challenges")
+              : (isAR ? "جرّب السوبر بوزيشن بنفسك" : "Play with superposition")}
           </h2>
           <p>
             {isAR
@@ -84,7 +87,7 @@ export default function QuantumLessonGames({ lessonOrder, onComplete }: Props) {
           </p>
         </div>
 
-        <div className={styles.progressBubble} style={{ background: Q.tint, color: Q.deep }}>
+        <div className={styles.progressBubble} style={{ background: "rgba(110,231,168,.10)", color: LAB.phosphor }}>
           <strong>{Number(done[0]) + Number(done[1])}/2</strong>
           <small>{isAR ? "ألعاب" : "GAMES"}</small>
         </div>
@@ -97,15 +100,21 @@ export default function QuantumLessonGames({ lessonOrder, onComplete }: Props) {
             <button
               key={meta.en}
               className={`${styles.gameChoice} ${selected ? styles.gameChoiceOn : ""}`}
-              style={{ borderColor: selected ? Q.mid : undefined, background: selected ? Q.tint : PAPER }}
+              style={{ borderColor: selected ? LAB.phosphor : undefined, background: selected ? "rgba(110,231,168,.10)" : LAB.panelHi }}
               onClick={() => setActive(index)}
             >
-              <span className={styles.gameIcon}>{done[index] ? "✅" : meta.icon}</span>
+              <span className={styles.gameIcon}>
+                {done[index]
+                  ? <Check size={18} aria-hidden />
+                  : meta.emoji
+                    ? meta.emoji
+                    : meta.Icon && <meta.Icon size={18} aria-hidden />}
+              </span>
               <span className={styles.gameCopy}>
                 <strong style={{ fontFamily: display(isAR) }}>{isAR ? meta.ar : meta.en}</strong>
                 <small>{isAR ? meta.subAr : meta.subEn}</small>
               </span>
-              <span className={styles.playTag} style={{ background: selected ? Q.deep : "rgba(17,26,21,.06)", color: selected ? "white" : BODY }}>
+              <span className={styles.playTag} style={{ background: selected ? LAB.phosphor : "rgba(255,255,255,.06)", color: selected ? LAB.chassis : LAB.textDim }}>
                 {done[index] ? (isAR ? "تم" : "DONE") : selected ? (isAR ? "تلعب الآن" : "PLAYING") : (isAR ? "العب" : "PLAY")}
               </span>
             </button>
@@ -121,26 +130,26 @@ export default function QuantumLessonGames({ lessonOrder, onComplete }: Props) {
       </div>
 
       {done[active] && !(done[0] && done[1]) && (
-        <div className={styles.successStrip} style={{ background: Q.tint, borderColor: `${Q.mid}55`, color: Q.deep }}>
-          <span>⭐</span>
+        <div className={styles.successStrip} style={{ background: "rgba(110,231,168,.10)", borderColor: LAB.edgeBright, color: LAB.phosphor }}>
+          <Star size={16} aria-hidden />
           <div>
             <strong>{isAR ? "أحسنت! أنهيت هذه اللعبة." : "Nice! You finished this game."}</strong>
             <small>{isAR ? "بقيت لعبة واحدة لإكمال المختبر." : "One more mini-game to complete the lab."}</small>
           </div>
-          <button onClick={() => setActive(active === 0 ? 1 : 0)} style={{ background: Q.deep }}>
-            {isAR ? "اللعبة التالية →" : "Next game →"}
+          <button onClick={() => setActive(active === 0 ? 1 : 0)} style={{ background: LAB.phosphor, color: LAB.chassis }}>
+            {isAR ? "اللعبة التالية" : "Next game"}
           </button>
         </div>
       )}
 
       {done[0] && done[1] && (
-        <div className={styles.allDone} style={{ background: Q.deep }}>
-          <span className={styles.party}>🎉</span>
+        <div className={styles.allDone} style={{ background: "linear-gradient(150deg,#1B6B4C,#0E2A1E)", border: "1px solid " + LAB.edgeBright }}>
+          <span className={styles.party}><PartyPopper size={20} aria-hidden /></span>
           <div>
             <strong style={{ fontFamily: display(isAR) }}>{isAR ? "اكتمل المختبر!" : "Lab complete!"}</strong>
             <p>{isAR ? "تم حفظ تقدّمك. المحطة التالية أصبحت جاهزة." : "Your progress is saved. The next station is ready."}</p>
           </div>
-          <span className={styles.party}>⭐</span>
+          <span className={styles.party}><Star size={20} aria-hidden /></span>
         </div>
       )}
     </section>

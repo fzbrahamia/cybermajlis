@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./ActualMazeSearchGame.module.css";
+import { Atom, Bot } from "lucide-react";
+import { Eye, Flag, RotateCcw } from "lucide-react";
 
 type Mode = "classical" | "quantum";
 type Stage = "choose" | "play" | "boosting" | "readyToMeasure" | "revealing" | "done";
@@ -10,7 +12,13 @@ type Pos = [number, number];
 const SIZE = 7;
 const START: Pos = [6, 0];
 const EXIT: Pos = [0, 6];
-const BEST_BOOSTS = 2;
+const ROUTE_OPTIONS = 4;   // three dead ends and the exit
+/**
+ * Grover on four options is the textbook special case: a single round lands on
+ * the answer with certainty, sin²(3·arcsin(½)) = 1. So this measurement really
+ * is guaranteed, unlike the sixteen-box search, and the game says why.
+ */
+const BEST_BOOSTS = 1;
 
 // Open cells create a real maze with branches/dead ends.
 const OPEN: Pos[] = [
@@ -87,7 +95,7 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
     const inside = next[0] >= 0 && next[0] < SIZE && next[1] >= 0 && next[1] < SIZE;
 
     if (!inside || !OPEN_SET.has(keyOf(next))) {
-      setMessage("Wall! 🧱 Try a different direction.");
+      setMessage("That is a wall. Try a different direction.");
       return;
     }
 
@@ -101,10 +109,10 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
 
     if (keyOf(next) === keyOf(EXIT)) {
       setStage("done");
-      setMessage("You found the exit! 🏁");
+      setMessage("You found the exit.");
       onComplete?.();
     } else {
-      setMessage("Keep exploring… 🔎");
+      setMessage("Keep exploring.");
     }
   };
 
@@ -120,7 +128,7 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
 
     setStage("boosting");
     setBoostRound(0);
-    setMessage("Quantum route search started ✨");
+    setMessage("Quantum route search started");
 
     for (let round = 1; round <= BEST_BOOSTS; round++) {
       const a = window.setTimeout(() => {
@@ -147,7 +155,7 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
 
     setStage("revealing");
     setRevealIndex(0);
-    setMessage("Measurement selected the safe route. Follow the robot! 🤖");
+    setMessage("Measurement selected the safe route. With four options, one round makes this certain.");
 
     SAFE_PATH.forEach((pos, index) => {
       const id = window.setTimeout(() => {
@@ -161,7 +169,7 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
 
         if (index === SAFE_PATH.length - 1) {
           setStage("done");
-          setMessage("The robot reached the exit! 🏁");
+          setMessage("The explorer reached the exit.");
           onComplete?.();
         }
       }, index * 220);
@@ -175,10 +183,10 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
       <header className={styles.header}>
         <div>
           <span className={styles.badge}>SEARCH GAME 2</span>
-          <h1>Escape the Maze 🧩</h1>
+          <h1>Escape the Maze</h1>
           <p>Explore it yourself, then compare with quantum search.</p>
         </div>
-        <button className={styles.reset} onClick={reset}>↻ Restart Game</button>
+        <button className={styles.reset} onClick={reset}><RotateCcw size={13} aria-hidden /> Restart Game</button>
       </header>
 
       {stage === "choose" ? (
@@ -186,14 +194,14 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
           <h2>How do you want to solve it?</h2>
           <div className={styles.choiceGrid}>
             <button className={styles.choice} onClick={() => choose("classical")}>
-              <span className={styles.icon}>🤖</span>
+              <span className={styles.icon}><Bot size={18} aria-hidden /></span>
               <strong>Classical Search</strong>
               <small>You control the robot and explore</small>
               <b>PLAY</b>
             </button>
 
             <button className={`${styles.choice} ${styles.quantumChoice}`} onClick={() => choose("quantum")}>
-              <span className={styles.icon}>⚛️</span>
+              <span className={styles.icon}><Atom size={18} aria-hidden /></span>
               <strong>Quantum Search</strong>
               <small>Search route possibilities, then measure</small>
               <b>PLAY</b>
@@ -233,9 +241,9 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
                       isExit ? styles.exitCell : "",
                     ].join(" ")}
                   >
-                    {isRobot && <span className={styles.robot}>🤖</span>}
+                    {isRobot && <span className={styles.robot}><Bot size={18} aria-hidden /></span>}
                     {!isRobot && isStart && <span className={styles.marker}>S</span>}
-                    {isExit && <span className={styles.flag}>🏁</span>}
+                    {isExit && <span className={styles.flag}><Flag size={18} aria-hidden /></span>}
                   </div>
                 );
               })}
@@ -262,7 +270,7 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
                   </button>
 
                   <div className={styles.tip}>
-                    💡 Classical search learns by trying routes and discovering dead ends.
+                    Classical search learns by trying routes and discovering dead ends.
                   </div>
                 </>
               )}
@@ -271,19 +279,23 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
                 <>
                   <h3>Quantum route search</h3>
                   <div className={styles.mathHint}>
-                    <span>9 route ideas</span>
+                    <span>{ROUTE_OPTIONS} possible ends</span>
                     <b>→</b>
-                    <strong>about 2 rounds</strong>
+                    <strong>exactly 1 round</strong>
                   </div>
 
                   <button className={styles.whyButton} onClick={() => setShowWhy((v) => !v)}>
-                    {showWhy ? "Hide explanation ↑" : "Why 2? 🤔"}
+                    {showWhy ? "Hide explanation" : "Why only 1 round?"}
                   </button>
 
                   {showWhy && (
                     <div className={styles.whyCard}>
-                      Fewer choices need fewer Grover-style rounds. With about 9 route
-                      possibilities, the best point is around 2 rounds.
+                      This maze has four possible destinations: three dead ends and the
+                      exit. Four is a special number for quantum search. With exactly four
+                      options, a single round lands on the right one every time, with no
+                      luck involved. Search a larger space and certainty disappears: with
+                      sixteen boxes the best you can reach is about 96%. Run two rounds
+                      here instead of one and it would drop to 25%, because you overshoot.
                     </div>
                   )}
 
@@ -295,7 +307,7 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
 
                   {stage === "play" && (
                     <button className={styles.primary} onClick={startQuantum}>
-                      ⚛️ START SEARCH
+                      <Atom size={15} aria-hidden /> START SEARCH
                     </button>
                   )}
 
@@ -305,12 +317,12 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
 
                   {stage === "readyToMeasure" && (
                     <button className={styles.measure} onClick={measure}>
-                      👀 MEASURE ROUTE
+                      <Eye size={14} aria-hidden /> MEASURE ROUTE
                     </button>
                   )}
 
                   <div className={styles.tip}>
-                    💡 This is a simplified search model: the quantum side compares prepared route possibilities. It does not magically understand every maze.
+                    This is a simplified search model: the quantum side compares prepared route possibilities. It does not magically understand every maze.
                   </div>
                 </>
               )}
@@ -319,13 +331,13 @@ export default function ActualMazeSearchGame({ onComplete }: { onComplete?: () =
 
           {stage === "done" && (
             <div className={styles.finish}>
-              <h2>Maze complete! ⭐</h2>
+              <h2>Maze complete</h2>
               {mode === "classical" ? (
                 <p>You explored the maze yourself in <strong>{moves}</strong> moves.</p>
               ) : (
-                <p>The quantum version used <strong>2 boost rounds</strong>, then measured a route.</p>
+                <p>The quantum version used <strong>1 boost round</strong>, then measured a route. With four options that single round is enough to be certain.</p>
               )}
-              <button className={styles.again} onClick={reset}>Choose Another Mode</button>
+              <button className={styles.again} onClick={reset}>Try the other computer</button>
             </div>
           )}
         </>

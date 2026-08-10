@@ -24,6 +24,9 @@ function setLocaleCookie(locale: string) {
   window.location.reload();
 }
 
+/** Anyone signed in without a chosen avatar gets Hamad. */
+const DEFAULT_AVATAR = "/characters/HamadAvatars/hamad-1.png";
+
 const NAV_LINK_KEYS = [
   { key: "dashboard",   href: "/dashboard"   },
   { key: "diy",         href: "/dashboard/do-it-yourself" },
@@ -95,7 +98,7 @@ export default function Navbar() {
         unsubscribeDoc = onSnapshot(userRef, (snap) => {
           if (snap.exists()) {
             setUsername(snap.data().username || "User");
-            setUserAvatar(snap.data().avatar || "");
+            setUserAvatar(snap.data().avatar || DEFAULT_AVATAR);
           }
         });
       } else {

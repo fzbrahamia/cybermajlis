@@ -22,7 +22,7 @@ import { Q, INK, BODY, LINE, PAPER, PAGE, GOLD, GOLD_DEEP, display, bodyFont, mo
 export default function QuantumPathPage() {
   const isAR = useLocale() === "ar";
   const reduce = useReducedMotion();
-  const { authState, loaded, isUnlocked, isLessonDone, isStepDone, doneCount } = useQuantumProgress();
+  const { loaded, isUnlocked, isLessonDone, isStepDone, doneCount } = useQuantumProgress();
 
   const total = QUANTUM_PATH.length + QUANTUM_UPCOMING.length;
 
@@ -57,7 +57,7 @@ export default function QuantumPathPage() {
               : "A thing can be two things at once. Come and see."}
           </p>
 
-          {loaded && authState === "signed-in" && (
+          {loaded && (
             <div style={{ marginTop: 22, fontFamily: mono, fontSize: 10, letterSpacing: "0.16em", color: BODY }}>
               {isAR ? `أنهيت ${doneCount} من ${total} دروس` : `${doneCount} OF ${total} LESSONS DONE`}
             </div>

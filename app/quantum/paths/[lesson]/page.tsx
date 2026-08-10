@@ -248,11 +248,9 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
   const { loaded, isUnlocked, isStepDone, isLessonDone, markStep } = useQuantumProgress();
   const [step, setStep] = useState<StepId>("video");
 
-  useEffect(() => {
-    if (!loaded || !lesson) return;
-    const next = STEP_ORDER.find(s => !isStepDone(lesson.slug, s));
-    if (next) setStep(next);
-  }, [loaded, lesson, isStepDone]);
+  // No auto-advance. Finishing a beat used to jump you to the first one you
+  // had not done, which threw you off the lab before you could read the
+  // result. Moving between beats is a deliberate click now.
 
   // Switching beats scrolls back up. Without this the lab opens with the page
   // still scrolled to wherever the board left it, below the equipment.
@@ -485,22 +483,6 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
                     )}
                   </div>
 
-                  {/* The hook is the last line of the film. Showing it up front
-                      gives away the ending, so it waits until the video is done. */}
-                  {loaded && isStepDone(lesson.slug, "video") && (
-                  <motion.div
-                    initial={reduce ? false : { opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: EASE }}
-                    style={{ marginTop: 20, padding: "22px 24px", borderRadius: 18, background: PAPER, border: `1px solid ${LINE}`, boxShadow: CARD_SHADOW }}>
-                    <div style={{ fontFamily: mono, fontSize: 9, letterSpacing: "0.2em", color: GOLD_DEEP, marginBottom: 10 }}>
-                      {isAR ? "السؤال الذي يتركه" : "THE QUESTION IT LEAVES YOU"}
-                    </div>
-                    <p style={{ fontFamily: bodyFont, fontSize: "clamp(1.1rem,2vw,1.35rem)", fontStyle: "italic", lineHeight: 1.6, color: INK, margin: 0 }}>
-                      “{isAR ? lesson.hook_ar : lesson.hook_en}”
-                    </p>
-                  </motion.div>
-                  )}
 
                 </div>
               )}

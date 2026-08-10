@@ -2,12 +2,27 @@
 
 import { useEffect, useRef, useState } from "react";
 import styles from "./HiddenKeySearchGame.module.css";
+import { Atom } from "lucide-react";
+import { Box, Eye, KeyRound, Laptop, RotateCcw } from "lucide-react";
 
 type Mode = "normal" | "quantum";
 type Stage = "choose" | "play" | "boosting" | "readyToMeasure" | "done";
 
 const TOTAL = 16;
 const BEST_BOOSTS = 3;
+
+/**
+ * Grover success probability after k rounds on N items:
+ *   sin²((2k + 1) · arcsin(1/√N))
+ * For N = 16, k = 3 this is 0.9613. So the search misses about one run in
+ * twenty five, and the child has to run it again. That is the whole point:
+ * the lesson board promises "the most likely key, not a certain one", and a
+ * game that always succeeds teaches the opposite.
+ */
+const successChance = (n: number, k: number) =>
+  Math.sin((2 * k + 1) * Math.asin(1 / Math.sqrt(n))) ** 2;
+
+const P_SUCCESS = successChance(TOTAL, BEST_BOOSTS);
 
 export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () => void }) {
   const [mode, setMode] = useState<Mode | null>(null);
@@ -18,6 +33,8 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
   const [pulse, setPulse] = useState(false);
   const [message, setMessage] = useState("Choose a computer to start!");
   const [showWhy, setShowWhy] = useState(false);
+  const [missed, setMissed] = useState(false);
+  const [runs, setRuns] = useState(1);
   const timers = useRef<number[]>([]);
 
   useEffect(() => {
@@ -39,6 +56,8 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
     setPulse(false);
     setMessage("Choose a computer to start!");
     setShowWhy(false);
+    setMissed(false);
+    setRuns(1);
   };
 
   const choose = (m: Mode) => {
@@ -49,7 +68,7 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
     setBoostRound(0);
     setMessage(
       m === "normal"
-        ? "Open boxes one by one 🔎"
+        ? "Open boxes one by one"
         : "16 hiding places → about 3 quantum boost rounds."
     );
   };
@@ -62,7 +81,7 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
 
     if (i === target) {
       setStage("done");
-      setMessage(`Found it in ${next.length} tries! 🎉`);
+      setMessage(`Found it in ${next.length} tries.`);
       onComplete?.();
     } else {
       setMessage("Not here — try another box!");
@@ -75,7 +94,7 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
     clearTimers();
     setStage("boosting");
     setBoostRound(0);
-    setMessage("Quantum search started ✨");
+    setMessage("Quantum search started");
 
     for (let round = 1; round <= BEST_BOOSTS; round++) {
       const startId = window.setTimeout(() => {
@@ -94,7 +113,7 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
     const doneId = window.setTimeout(() => {
       setPulse(false);
       setStage("readyToMeasure");
-      setMessage("The signal is ready. Now you decide when to reveal it 👀");
+      setMessage("The signal is ready. Now you decide when to reveal it.");
     }, BEST_BOOSTS * 950);
 
     timers.current.push(doneId);
@@ -102,10 +121,39 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
 
   const measure = () => {
     if (mode !== "quantum" || stage !== "readyToMeasure") return;
-    setOpened([target]);
+
+    // Sample honestly. Most of the time the boosted answer wins; sometimes it
+    // does not, and that is the fact we are here to teach.
+    const hit = Math.random() < P_SUCCESS;
+    if (hit) {
+      setOpened([target]);
+      setStage("done");
+      setMissed(false);
+      setMessage("Measurement revealed the key.");
+      onComplete?.();
+      return;
+    }
+
+    const wrong = [...Array(TOTAL).keys()].filter(i => i !== target);
+    const pick = wrong[Math.floor(Math.random() * wrong.length)];
+    setOpened([pick]);
+    setMissed(true);
     setStage("done");
-    setMessage("Measurement revealed the key! 🗝️");
+    setMessage("That box was empty. The boosted answer is the likely one, not a certain one.");
+    // The lab still counts as done: getting a miss and understanding why is
+    // the lesson, not a failure to be punished.
     onComplete?.();
+  };
+
+  /** Run the whole circuit again, the way a real machine would. */
+  const runAgain = () => {
+    clearTimers();
+    setOpened([]);
+    setBoostRound(0);
+    setMissed(false);
+    setRuns(r => r + 1);
+    setStage("play");
+    setMessage("Running the search again.");
   };
 
   return (
@@ -113,10 +161,10 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
       <header className={styles.header}>
         <div>
           <span className={styles.badge}>SEARCH GAME 1</span>
-          <h1>Find the Hidden Key 🗝️</h1>
+          <h1>Find the Hidden Key</h1>
           <p>One of 16 boxes has the key.</p>
         </div>
-        <button className={styles.smallButton} onClick={reset}>↻ Restart</button>
+        <button className={styles.smallButton} onClick={reset}><RotateCcw size={13} aria-hidden /> Restart</button>
       </header>
 
       {stage === "choose" ? (
@@ -124,14 +172,14 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
           <h2>How do you want to search?</h2>
           <div className={styles.choiceGrid}>
             <button className={styles.choice} onClick={() => choose("normal")}>
-              <span className={styles.icon}>💻</span>
+              <span className={styles.icon}><Laptop size={22} aria-hidden /></span>
               <strong>Normal Search</strong>
               <small>Check one box at a time</small>
               <span className={styles.play}>PLAY</span>
             </button>
 
             <button className={`${styles.choice} ${styles.quantum}`} onClick={() => choose("quantum")}>
-              <span className={styles.icon}>⚛️</span>
+              <span className={styles.icon}><Atom size={18} aria-hidden /></span>
               <strong>Quantum Search</strong>
               <small>Boost the answer, then measure</small>
               <span className={styles.play}>PLAY</span>
@@ -155,7 +203,7 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
                   disabled={mode !== "normal" || stage === "done"}
                 >
                   <span className={styles.tileIcon}>
-                    {found ? "🗝️" : openedNow ? "⬜" : "📦"}
+                    {found ? <KeyRound size={20} aria-hidden /> : openedNow ? null : <Box size={20} aria-hidden />}
                   </span>
                   <small>Box {i + 1}</small>
                 </button>
@@ -175,7 +223,7 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
                 className={styles.whyButton}
                 onClick={() => setShowWhy((value) => !value)}
               >
-                {showWhy ? "Hide explanation ↑" : "Why 3? 🤔"}
+                {showWhy ? "Hide explanation" : "Why 3 rounds?"}
               </button>
 
               {showWhy && (
@@ -215,7 +263,7 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
 
               {stage === "play" && (
                 <button className={styles.primary} onClick={startQuantumSearch}>
-                  ⚛️ START 3-ROUND SEARCH
+                  <Atom size={15} aria-hidden /> START 3-ROUND SEARCH
                 </button>
               )}
 
@@ -225,7 +273,7 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
 
               {stage === "readyToMeasure" && (
                 <button className={styles.secondary} onClick={measure}>
-                  👀 MEASURE
+                  <Eye size={14} aria-hidden /> MEASURE
                 </button>
               )}
 
@@ -237,16 +285,26 @@ export default function HiddenKeySearchGame({ onComplete }: { onComplete?: () =>
 
           {stage === "done" && (
             <div className={styles.finish}>
-              <h2>Mission complete! ⭐</h2>
+              <h2>{missed ? "Empty box" : "Mission complete"}</h2>
               <p>
                 {mode === "normal"
                   ? `Normal search checked ${opened.length} box${opened.length === 1 ? "" : "es"}.`
-                  : `Quantum search used ${BEST_BOOSTS} boost rounds, then one measurement.`}
+                  : missed
+                    ? `Run ${runs}: the measurement landed on the wrong box. Run it again.`
+                    : `Quantum search used ${BEST_BOOSTS} boost rounds${runs > 1 ? ` across ${runs} runs` : ""}, then one measurement.`}
               </p>
               <div className={styles.tip}>
-                💡 With 16 possibilities, a Grover-style search reaches its best point after about 3 rounds.
+                After {BEST_BOOSTS} rounds the right box has about a{" "}
+                <strong>{Math.round(P_SUCCESS * 100)}% chance</strong> of being the one you measure.
+                So roughly one run in {Math.round(1 / (1 - P_SUCCESS))} comes up empty, and you simply
+                run it again. That is why a real machine is run more than once and the answer checked.
               </div>
-              <button className={styles.again} onClick={reset}>Play Again 🎮</button>
+              <div className={styles.actions}>
+                {mode === "quantum" && missed && (
+                  <button className={styles.primary} onClick={runAgain}>Run it again</button>
+                )}
+                <button className={styles.again} onClick={reset}>Try the other computer</button>
+              </div>
             </div>
           )}
         </>

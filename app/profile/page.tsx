@@ -41,7 +41,7 @@ export default function ProfilePage() {
           const data = snap.data();
           setUserData(data);
           setNewUsername(prev => prev || data.username || "");
-          setNewAvatar(prev => prev || data.avatar || "");
+          setNewAvatar(prev => prev || data.avatar || "/characters/HamadAvatars/hamad-1.png");
         }
         setLoading(false);
       });

@@ -1,187 +1,146 @@
-.lab{
-  max-width:900px;
-  margin:0 auto;
-  padding:28px 18px 60px;
-  font-family:var(--font-nunito),"Nunito",ui-rounded,system-ui,sans-serif;
-  color:#111A15;
+/* ============================================================
+   QUANTUM COIN
+
+   Same bench rules as the other labs:
+     surfaces   chassis  <  panel (cards)  <  panelHi (things you press)
+     accent     phosphor, always carrying dark text
+     type       10 meta · 12 small · 13 body · 15 titles · 24 heading
+
+   The coin itself is the one thing allowed to be large: it is the object the
+   lesson is about, not decoration.
+   ============================================================ */
+
+.lab {
+  font-family: var(--font-nunito), "Nunito", ui-rounded, system-ui, sans-serif;
+  color: var(--lab-text);
 }
-.header{
-  display:flex;
-  justify-content:space-between;
-  gap:18px;
-  align-items:flex-start;
-  margin-bottom:20px;
+
+/* ── header ─────────────────────────────────────────────── */
+.header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+.header h1 { margin: 8px 0 4px; font-size: 24px; line-height: 1.15; letter-spacing: -0.01em; }
+.header p { margin: 0; font-size: 13px; color: var(--lab-text-dim); }
+
+.badge {
+  display: inline-flex; border-radius: 999px; padding: 5px 10px;
+  background: var(--lab-tint); color: var(--lab-phosphor);
+  font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
 }
-.header h1{
-  margin:7px 0 8px;
-  font-size:clamp(31px,5vw,48px);
-  line-height:1;
+
+.reset {
+  display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
+  border: 1px solid var(--lab-edge); border-radius: 999px;
+  background: transparent; color: var(--lab-text);
+  padding: 8px 14px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+  transition: background .18s ease;
 }
-.header p{margin:0;color:#5B6A62;font-size:17px}
-.badge{
-  display:inline-flex;
-  border-radius:999px;
-  padding:7px 11px;
-  background:#EAF6F0;
-  color:#1B6B4C;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.12em;
+.reset:hover { background: var(--lab-panel-hi); }
+
+/* ── the stage ──────────────────────────────────────────── */
+/* .main is the primary button in this game, not a layout wrapper */
+.main {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 0; border-radius: 999px; padding: 12px 24px;
+  background: var(--lab-phosphor); color: var(--lab-chassis);
+  font: inherit; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; cursor: pointer;
 }
-.reset{
-  border:0;
-  border-radius:14px;
-  background:#eff1f7;
-  color:#30463B;
-  padding:11px 13px;
-  font:inherit;
-  font-weight:800;
-  cursor:pointer;
+
+.card {
+  background: var(--lab-panel); border: 1px solid var(--lab-edge);
+  border-radius: 16px; padding: 20px;
 }
-.card{
-  min-height:570px;
-  border:1px solid #e5e7ef;
-  border-radius:30px;
-  background:white;
-  box-shadow:0 18px 50px rgba(38,42,69,.08);
-  padding:28px;
+.center { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+
+.stepPill {
+  display: inline-flex; border-radius: 999px; padding: 5px 12px;
+  background: var(--lab-panel-hi); color: var(--lab-text-dim);
+  font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
 }
-.center{
-  min-height:510px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
+
+.prompt { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.5; max-width: 460px; }
+
+/* the coin: the one large element on the bench */
+.hero {
+  display: grid; place-items: center;
+  width: 128px; height: 128px; border-radius: 50%;
+  font-size: 56px; line-height: 1;
+  background: var(--lab-panel-hi);
+  box-shadow: inset 0 0 0 1px var(--lab-edge), 0 8px 24px rgba(0, 0, 0, .35);
 }
-.hero{
-  font-size:105px;
-  animation:float 2s ease-in-out infinite;
+/* Same circle and size as .hero, so the coin stays a coin when it goes quantum.
+   Both faces sit on it at once, which is the point of the stage. */
+.quantumCoin {
+  position: relative;
+  display: grid; place-items: center;
+  width: 128px; height: 128px; border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, rgba(110, 231, 168, .28), var(--lab-panel-hi) 68%);
+  box-shadow: inset 0 0 0 1px var(--lab-edge-bright), 0 0 26px rgba(110, 231, 168, .22);
+  animation: coinWobble 1.6s ease-in-out infinite alternate;
 }
-@keyframes float{50%{transform:translateY(-9px)}}
-.center h2{
-  margin:12px 0 8px;
-  font-size:29px;
+.faceTop, .faceBottom {
+  position: absolute; font-size: 36px; font-weight: 800; color: var(--lab-phosphor);
+  animation: faceBlend 1.6s ease-in-out infinite alternate;
 }
-.prompt{
-  color:#5B6A62;
-  max-width:590px;
-  line-height:1.55;
+.faceTop { transform: translateY(-22px); }
+.faceBottom { transform: translateY(22px); animation-delay: .8s; }
+@keyframes coinWobble { to { transform: rotateY(24deg) } }
+@keyframes faceBlend { from { opacity: .35 } to { opacity: 1 } }
+
+.bit {
+  display: grid; place-items: center;
+  width: 96px; height: 96px; border-radius: 50%;
+  font-size: 36px; font-weight: 800;
+  background: var(--lab-tint); color: var(--lab-phosphor);
+  box-shadow: inset 0 0 0 1px var(--lab-edge-bright);
+  animation: pop .42s ease;
 }
-.stepPill{
-  display:inline-flex;
-  border-radius:999px;
-  background:#EAF6F0;
-  color:#1B6B4C;
-  padding:8px 12px;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.08em;
+.pop { animation: pop .42s ease; }
+@keyframes pop { 0% { transform: scale(.86) } 70% { transform: scale(1.08) } 100% { transform: scale(1) } }
+
+/* ── controls ───────────────────────────────────────────── */
+.measure {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 0; border-radius: 999px; padding: 12px 24px;
+  background: var(--lab-phosphor); color: var(--lab-chassis);   /* dark on accent */
+  font: inherit; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; cursor: pointer;
 }
-.bit{
-  width:170px;
-  height:170px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  font-size:72px;
-  font-weight:950;
-  background:radial-gradient(circle at 33% 26%,#fff,#e8e9f2 68%,#ccd0df);
-  border:9px solid #d8dbe8;
-  box-shadow:0 22px 45px rgba(45,53,87,.16);
-  margin:18px 0;
+
+/* ── takeaway and history ───────────────────────────────── */
+.takeaway {
+  padding: 14px 16px; border-radius: 12px; text-align: start;
+  background: var(--lab-panel-hi); border: 1px solid var(--lab-edge);
+  font-size: 13px; line-height: 1.6; color: var(--lab-text-dim);
 }
-.quantumCoin{
-  width:190px;
-  height:190px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:11px;
-  background:radial-gradient(circle at 33% 26%,#fff,#E3F4EB 60%,#BEE5D2);
-  border:9px solid #A9D9C2;
-  box-shadow:0 0 0 13px rgba(46,156,110,.07),0 22px 45px rgba(45,53,87,.15);
-  margin:18px 0;
-  transform-style:preserve-3d;
-  animation:spin 1.45s linear infinite;
+.takeaway strong { color: var(--lab-text); }
+
+.smallLesson { font-size: 12px; line-height: 1.55; color: var(--lab-text-dim); text-align: start; }
+
+.historyArea {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 12px 16px; border-radius: 12px;
+  background: var(--lab-panel); border: 1px solid var(--lab-edge);
+  font-size: 12px; color: var(--lab-text-dim);
 }
-.quantumCoin span{
-  font-size:48px;
-  font-weight:950;
-  color:#1B6B4C;
+.historyArea strong { color: var(--lab-text); font-size: 12px; }
+.history { display: flex; gap: 6px; flex-wrap: wrap; }
+.history span {
+  display: grid; place-items: center; min-width: 24px; height: 24px; padding: 0 6px;
+  border-radius: 7px; background: var(--lab-panel-hi); border: 1px solid var(--lab-edge);
+  font-size: 11px; font-weight: 800; color: var(--lab-text);
 }
-.quantumCoin b{
-  font-size:28px;
-  color:#9a8ee0;
+
+@media (max-width: 700px) {
+  .header { flex-direction: column; }
+  .hero { width: 104px; height: 104px; font-size: 44px; }
+  .bit { width: 80px; height: 80px; font-size: 32px; }
 }
-@keyframes spin{to{transform:rotateY(360deg)}}
-.main,.measure{
-  border:0;
-  border-radius:999px;
-  padding:14px 22px;
-  font:inherit;
-  font-weight:950;
-  cursor:pointer;
+
+/* ── the classical bit can be flipped; the qubit deliberately cannot ── */
+.bitSwitch { display: flex; gap: 8px; }
+.bitOption {
+  border: 1px solid var(--lab-edge); border-radius: 999px;
+  background: var(--lab-panel-hi); color: var(--lab-text);
+  padding: 8px 16px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+  transition: background .16s ease, color .16s ease, border-color .16s ease;
 }
-.main{
-  margin-top:15px;
-  background:linear-gradient(135deg,#2E9C6E,#5FC79C);
-  color:white;
-}
-.measure{
-  margin-top:15px;
-  background:#ffcf55;
-  color:#3d351c;
-  box-shadow:0 14px 28px rgba(212,168,53,.22);
-}
-.smallLesson{
-  max-width:560px;
-  border-radius:16px;
-  background:#f7f8fb;
-  border:1px solid #e6e8ef;
-  padding:12px 15px;
-  color:#626b80;
-}
-.takeaway{
-  max-width:620px;
-  margin:15px auto;
-  border-radius:17px;
-  background:#EAF6F0;
-  color:#554d82;
-  padding:14px 16px;
-  line-height:1.55;
-}
-.pop{animation:pop .42s ease}
-@keyframes pop{
-  0%{transform:scale(.78)}
-  70%{transform:scale(1.12)}
-  100%{transform:scale(1)}
-}
-.historyArea{
-  margin-top:22px;
-  color:#6d7589;
-}
-.history{
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-top:9px;
-}
-.history span{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:#EAF6F0;
-  color:#1B6B4C;
-  font-weight:900;
-}
-@media(max-width:680px){
-  .header{flex-direction:column}
-  .card{padding:19px;min-height:520px}
-  .center{min-height:470px}
-  .hero{font-size:88px}
-}
+.bitOption:hover { border-color: var(--lab-edge-bright); }
+.bitOptionOn { background: var(--lab-phosphor); color: var(--lab-chassis); border-color: var(--lab-phosphor); }

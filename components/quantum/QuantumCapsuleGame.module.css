@@ -1,438 +1,187 @@
-.lab{
-  max-width:none;
-  margin:0 auto;
-  padding:12px 0 60px;
-  font-family:var(--font-nunito),"Nunito",ui-rounded,system-ui,sans-serif;
-  color:#111A15;
-}
-.header{
-  display:flex;
-  justify-content:space-between;
-  gap:18px;
-  align-items:flex-start;
-  margin-bottom:18px;
-}
-.header h1{
-  margin:7px 0 8px;
-  font-size:clamp(31px,5vw,48px);
-  line-height:1;
-}
-.header p{margin:0;color:#5B6A62;font-size:17px}
-.badge{
-  display:inline-flex;
-  border-radius:999px;
-  padding:7px 11px;
-  background:#EAF6F0;
-  color:#1B6B4C;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.12em;
-}
-.reset{
-  border:0;
-  border-radius:14px;
-  background:#eff1f7;
-  color:#30463B;
-  padding:11px 13px;
-  font:inherit;
-  font-weight:800;
-  cursor:pointer;
-}
-.missionBar{
-  display:grid;
-  grid-template-columns:1fr auto auto;
-  gap:16px;
-  align-items:center;
-  margin-bottom:14px;
-  border:1px solid #e3e5ed;
-  background:white;
-  border-radius:20px;
-  padding:13px 16px;
-  box-shadow:0 8px 24px rgba(38,42,69,.05);
-}
-.missionBar strong{
-  display:block;
-  margin-top:2px;
-  font-size:17px;
-}
-.missionLabel{
-  color:#2E9C6E;
-  font-size:10px;
-  font-weight:950;
-  letter-spacing:.13em;
-}
-.stars{
-  display:flex;
-  gap:4px;
-  color:#dfe1e8;
-  font-size:23px;
-}
-.stars .starOn{
-  color:#f2c647;
-  filter:drop-shadow(0 2px 5px rgba(242,198,71,.28));
-}
-.roundPill{
-  border-radius:999px;
-  padding:8px 11px;
-  background:#f1efff;
-  color:#1B6B4C;
-  font-size:12px;
-  font-weight:900;
-}
-.gameCard{
-  border:1px solid #e3e5ed;
-  border-radius:28px;
-  background:white;
-  box-shadow:0 18px 50px rgba(38,42,69,.08);
-  overflow:hidden;
-}
-.instruction{
-  min-height:70px;
-  padding:15px 20px;
-  text-align:center;
-  background:#fff9e6;
-  border-bottom:1px solid #f2e4ae;
-  color:#574f37;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-.instruction strong{
-  font-size:18px;
-}
-.instruction small{
-  margin-top:4px;
-  color:#7a725b;
-}
-.playArea{
-  display:grid;
-  grid-template-columns:150px minmax(320px,1fr) 300px;
-  gap:16px;
-  padding:18px;
-  align-items:stretch;
-}
-.tokenShelf,.lessonPanel{
-  border-radius:22px;
-  background:#f7f8fb;
-  border:1px solid #e4e7ef;
-  padding:16px;
-}
-.tokenShelf p{
-  margin:0 0 12px;
-  color:#747d91;
-  font-size:12px;
-  font-weight:900;
-  text-align:center;
-}
-.bitCard{
-  min-height:120px;
-  border:2px solid #e0e3ec;
-  border-radius:20px;
-  background:white;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:12px;
-  cursor:grab;
-  transition:.18s ease;
-  user-select:none;
-}
-.bitCard:hover{
-  transform:translateY(-3px);
-  border-color:#b7aafb;
-  box-shadow:0 10px 22px rgba(78,63,172,.09);
-}
-.bitCard span{
-  font-size:46px;
-  font-weight:950;
-}
-.bitCard small{
-  margin-top:5px;
-  color:#7c8496;
-  font-weight:800;
-}
-.usedCard{
-  opacity:.45;
-  background:#eceef3;
-  cursor:default;
-  transform:none!important;
-}
-.capsuleZone{
-  min-height:390px;
-  border:3px dashed #d9ddea;
-  border-radius:34px;
-  background:radial-gradient(circle at 50% 45%,#fff,#f7f8fc 70%);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  padding:28px;
-  transition:.25s ease;
-}
-.capsuleTitle{
-  position:absolute;
-  top:18px;
-  font-size:11px;
-  font-weight:950;
-  letter-spacing:.14em;
-  color:#8b92a4;
-}
-.capsuleReady{
-  border-color:#9f8ef3;
-  background:radial-gradient(circle at 50% 45%,#fbf9ff,#EAF6F0 72%);
-  box-shadow:0 0 0 9px rgba(112,88,220,.05),0 18px 44px rgba(64,51,139,.10);
-}
-.capsuleMeasuring{
-  animation:capsuleShake .18s ease-in-out infinite alternate;
-}
-@keyframes capsuleShake{
-  from{transform:translateX(-3px)}
-  to{transform:translateX(3px)}
-}
-.capsuleResult{
-  border-style:solid;
-  border-color:#efcf61;
-  background:radial-gradient(circle at 50% 45%,#fff9dd,#fff1ae 72%);
-}
-.capsuleCore{
-  min-height:190px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
-}
-.emptyCore{
-  width:185px;
-  height:185px;
-  border-radius:50%;
-  border:2px dashed #cfd3df;
-  color:#9aa1b1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-.emptyCore span{
-  font-size:54px;
-  font-weight:300;
-}
-.emptyCore small{
-  margin-top:4px;
-  font-weight:800;
-}
-.loadedOrb,.resultOrb{
-  width:125px;
-  height:125px;
-  border-radius:50%;
-  border:0;
-  display:grid;
-  place-items:center;
-  font-size:52px;
-  font-weight:950;
-}
-.loadedOrb{
-  cursor:pointer;
-  transition:.18s ease;
-}
-.loadedOrb:hover{
-  transform:scale(1.05);
-}
-.zeroOrb{
-  background:#e8e5ff;
-  color:#1B6B4C;
-  box-shadow:0 0 30px rgba(27,107,76,.20);
-}
-.oneOrb{
-  background:#fff0bc;
-  color:#7c5c00;
-  box-shadow:0 0 30px rgba(220,175,45,.20);
-}
-.capsuleReady .loadedOrb{
-  animation:orbFloat .8s ease-in-out infinite alternate;
-}
-.capsuleReady .oneOrb{
-  animation-delay:.18s;
-}
-@keyframes orbFloat{
-  to{transform:translateY(-7px)}
-}
-.plus{
-  font-size:30px;
-  font-weight:950;
-  color:#2E9C6E;
-}
-.stateLabel{
-  min-height:24px;
-  margin-top:8px;
-  border-radius:999px;
-  padding:7px 12px;
-  background:#fff;
-  color:#676f82;
-  font-size:12px;
-  font-weight:950;
-  box-shadow:0 4px 14px rgba(38,42,69,.06);
-}
-.capsuleReady .stateLabel{
-  color:#1B6B4C;
-}
-.resultOrb{
-  width:160px;
-  height:160px;
-  background:#fff;
-  color:#4f4321;
-  border:8px solid #f0cf57;
-  box-shadow:0 16px 38px rgba(224,184,51,.24);
-}
-.pop{animation:pop .48s ease}
-@keyframes pop{
-  0%{transform:scale(.7)}
-  72%{transform:scale(1.13)}
-  100%{transform:scale(1)}
-}
-.lessonPanel h3{
-  margin:0 0 14px;
-  font-size:17px;
-}
-.ruleCard{
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  border-radius:16px;
-  padding:11px;
-  margin-bottom:10px;
-  background:white;
-  border:1px solid #e7e9ef;
-  opacity:.62;
-  transition:.2s ease;
-}
-.ruleCard > div{
-  min-width:0;
-  flex:1;
-}
-.ruleActive{
-  opacity:1;
-  border-color:#bcaefa;
-  background:#f2efff;
-  transform:translateX(-3px);
-}
-.ruleIcon{
-  font-size:22px;
-}
-.ruleCard strong{
-  display:block;
-  font-size:13px;
-}
-.ruleCard p{
-  margin:3px 0 0;
-  color:#767f92;
-  font-size:12px;
-  line-height:1.4;
-  overflow-wrap:anywhere;
-  word-break:normal;
-}
-.lessonPanel{
-  min-width:0;
-}
-.actionArea{
-  min-height:100px;
-  padding:12px 20px 22px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-}
-.helperText{
-  color:#737b8f;
-  font-weight:850;
-}
-.measureButton,.nextButton{
-  border:0;
-  border-radius:999px;
-  padding:14px 22px;
-  font:inherit;
-  font-weight:950;
-  cursor:pointer;
-}
-.measureButton{
-  background:#ffcf55;
-  color:#3d351c;
-  box-shadow:0 14px 28px rgba(212,168,53,.22);
-}
-.nextButton{
-  background:#163B2D;
-  color:white;
-}
-.measureAnimation{
-  display:flex;
-  gap:8px;
-}
-.measureAnimation span{
-  width:14px;
-  height:14px;
-  border-radius:50%;
-  background:#2E9C6E;
-  animation:bounce .55s ease-in-out infinite alternate;
-}
-.measureAnimation span:nth-child(2){animation-delay:.12s}
-.measureAnimation span:nth-child(3){animation-delay:.24s}
-@keyframes bounce{to{transform:translateY(-10px);opacity:.55}}
-.takeaway{
-  max-width:680px;
-  margin:0 auto 13px;
-  border-radius:16px;
-  background:#EAF6F0;
-  color:#554d82;
-  padding:13px 15px;
-  text-align:center;
-  line-height:1.5;
-}
-.historyBar{
-  border-top:1px solid #eceef3;
-  padding:12px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-  flex-wrap:wrap;
-  color:#6f778a;
-  font-size:13px;
-}
-.historyBar span{
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:#EAF6F0;
-  color:#1B6B4C;
-  font-weight:900;
-}
-@media(max-width:980px){
-  .playArea{
-    grid-template-columns:1fr;
-  }
-  .tokenShelf{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-  }
-  .tokenShelf p{
-    grid-column:1/-1;
-  }
-  .bitCard{
-    margin-bottom:0;
-  }
-  .lessonPanel{
-    order:3;
-  }
-}
-@media(max-width:680px){
-  .header{flex-direction:column}
-  .missionBar{grid-template-columns:1fr auto}
-  .stars{grid-row:2;grid-column:1/-1}
-  .playArea{padding:14px}
-  .capsuleZone{min-height:330px;padding:20px}
-  .loadedOrb{width:105px;height:105px;font-size:44px}
+/* ============================================================
+   BUILD A QUBIT
+
+   Same bench rules as the other labs:
+     surfaces   chassis  <  panel (cards)  <  panelHi (things you press)
+     accent     phosphor, always carrying dark text
+     type       10 meta · 12 small · 13 body · 15 titles · 24 heading
+
+   The capsule is the one large element, because it is what you are building.
+   Everything else stays at instrument scale.
+   ============================================================ */
+
+.lab {
+  font-family: var(--font-nunito), "Nunito", ui-rounded, system-ui, sans-serif;
+  color: var(--lab-text);
+}
+
+/* ── header ─────────────────────────────────────────────── */
+.header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+.header h1 { margin: 8px 0 4px; font-size: 24px; line-height: 1.15; letter-spacing: -0.01em; }
+.header p { margin: 0; font-size: 13px; color: var(--lab-text-dim); }
+
+.badge {
+  display: inline-flex; border-radius: 999px; padding: 5px 10px;
+  background: var(--lab-tint); color: var(--lab-phosphor);
+  font-size: 10px; font-weight: 800; letter-spacing: 0.14em;
+}
+
+.reset {
+  display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
+  border: 1px solid var(--lab-edge); border-radius: 999px;
+  background: transparent; color: var(--lab-text);
+  padding: 8px 14px; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.reset:hover { background: var(--lab-panel-hi); }
+
+/* ── mission strip ──────────────────────────────────────── */
+.missionBar {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 12px 16px; margin-bottom: 14px; border-radius: 12px;
+  background: var(--lab-panel); border: 1px solid var(--lab-edge);
+}
+.missionLabel { font-size: 12px; font-weight: 700; color: var(--lab-text); }
+.roundPill {
+  border-radius: 999px; padding: 5px 12px;
+  background: var(--lab-panel-hi); color: var(--lab-text-dim);
+  font-size: 10px; font-weight: 800; letter-spacing: 0.12em;
+}
+.stars { display: flex; gap: 4px; margin-inline-start: auto; color: var(--lab-edge); }
+.starOn { color: var(--lab-amber); }
+
+/* ── the bench ──────────────────────────────────────────── */
+.gameCard { background: var(--lab-panel); border: 1px solid var(--lab-edge); border-radius: 16px; padding: 20px; }
+.instruction { margin: 0 0 14px; font-size: 15px; font-weight: 700; line-height: 1.5; text-align: center; }
+.helperText { margin: 8px 0 0; font-size: 12px; color: var(--lab-text-dim); text-align: center; }
+
+/* Three children live here: the cards, the capsule, and the rules. With only
+   two columns the rules wrapped and the capsule was stranded, centred, in a
+   tall empty row. Cards and capsule share the top row; the rules span beneath. */
+.playArea {
+  display: grid; grid-template-columns: 180px minmax(0, 1fr);
+  gap: 16px; align-items: start;
+}
+
+/* the two possibility cards you drag in */
+.tokenShelf { display: flex; flex-direction: column; gap: 10px; }
+.bitCard {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-radius: 12px; cursor: grab;
+  background: var(--lab-panel-hi); border: 1px solid var(--lab-edge); color: var(--lab-text);
+  font: inherit; font-size: 13px; font-weight: 700;
+  transition: transform .16s ease, border-color .16s ease;
+}
+.bitCard:hover { transform: translateY(-2px); border-color: var(--lab-edge-bright); }
+.usedCard { opacity: .4; cursor: default; }
+.usedCard:hover { transform: none; border-color: var(--lab-edge); }
+.bitCard small { display: block; font-size: 11px; font-weight: 600; color: var(--lab-text-dim); }
+
+.zeroOrb, .oneOrb {
+  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--lab-tint); color: var(--lab-phosphor);
+  font-size: 13px; font-weight: 800; flex-shrink: 0;
+}
+
+/* the capsule itself */
+.capsuleZone { display: flex; flex-direction: column; align-items: center; gap: 10px; align-self: start; }
+.capsuleTitle { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; color: var(--lab-text-dim); }
+.capsuleCore {
+  display: grid; place-items: center; position: relative;
+  width: 148px; height: 148px; border-radius: 50%;
+  background: var(--lab-panel-hi);
+  box-shadow: inset 0 0 0 1px var(--lab-edge);
+  transition: box-shadow .3s ease, background .3s ease;
+}
+.emptyCore { border: 1px dashed var(--lab-edge); background: transparent; }
+.capsuleReady {
+  background: radial-gradient(circle at 34% 30%, rgba(110, 231, 168, .26), var(--lab-panel-hi) 68%);
+  box-shadow: inset 0 0 0 1px var(--lab-edge-bright), 0 0 28px rgba(110, 231, 168, .22);
+}
+.capsuleMeasuring { animation: measurePulse .7s ease infinite alternate; }
+@keyframes measurePulse { to { box-shadow: inset 0 0 0 1px var(--lab-phosphor), 0 0 34px rgba(110, 231, 168, .38) } }
+.capsuleResult { background: var(--lab-tint); box-shadow: inset 0 0 0 1px var(--lab-phosphor); }
+
+.loadedOrb, .resultOrb {
+  display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
+  background: var(--lab-tint); color: var(--lab-phosphor);
+  font-size: 24px; font-weight: 800;
+  animation: pop .42s ease;
+}
+.resultOrb { width: 72px; height: 72px; font-size: 32px; }
+.pop { animation: pop .42s ease; }
+@keyframes pop { 0% { transform: scale(.86) } 70% { transform: scale(1.08) } 100% { transform: scale(1) } }
+.plus { font-size: 17px; font-weight: 800; color: var(--lab-text-dim); }
+.stateLabel { font-size: 12px; font-weight: 700; color: var(--lab-phosphor); }
+.measureAnimation { display: flex; gap: 6px; }
+.measureAnimation span {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--lab-phosphor);
+  animation: blip .9s ease-in-out infinite;
+}
+.measureAnimation span:nth-child(2) { animation-delay: .15s }
+.measureAnimation span:nth-child(3) { animation-delay: .3s }
+@keyframes blip { 0%, 100% { opacity: .25 } 50% { opacity: 1 } }
+
+/* ── controls ───────────────────────────────────────────── */
+.actionArea { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--lab-edge); }
+.measureButton, .nextButton {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 0; border-radius: 999px; padding: 12px 24px;
+  font: inherit; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; cursor: pointer;
+}
+.measureButton { background: var(--lab-phosphor); color: var(--lab-chassis); }   /* dark on accent */
+.nextButton { background: transparent; border: 1px solid var(--lab-edge); color: var(--lab-text); }
+
+/* ── the three rules ────────────────────────────────────── */
+.lessonPanel h3 { grid-column: 1 / -1; margin: 0 0 2px; font-size: 13px; font-weight: 800; color: var(--lab-text); }
+.lessonPanel { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 4px; }
+.ruleCard {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px; border-radius: 12px;
+  background: var(--lab-panel-hi); border: 1px solid var(--lab-edge);
+  opacity: .55; transition: opacity .25s ease, border-color .25s ease;
+}
+.ruleActive { opacity: 1; border-color: var(--lab-edge-bright); }
+.ruleCard strong { display: block; font-size: 13px; color: var(--lab-text); }
+.ruleCard p { margin: 3px 0 0; font-size: 12px; line-height: 1.5; color: var(--lab-text-dim); }
+.ruleIcon {
+  display: grid; place-items: center; width: 28px; height: 28px; border-radius: 9px; flex-shrink: 0;
+  background: var(--lab-tint); color: var(--lab-phosphor); font-size: 13px; font-weight: 800;
+}
+
+/* ── closing ────────────────────────────────────────────── */
+.takeaway {
+  margin-top: 14px; padding: 14px 16px; border-radius: 12px; text-align: start;
+  background: var(--lab-panel-hi); border: 1px solid var(--lab-edge);
+  font-size: 13px; line-height: 1.6; color: var(--lab-text-dim);
+}
+.takeaway strong { color: var(--lab-text); }
+
+/* The honest note. Gold, not green, so it reads as a different voice from the
+   game around it, matching the "where the story was simplifying" board widget. */
+.caveat {
+  margin-top: 12px; padding: 14px 16px; border-radius: 12px; text-align: start;
+  background: rgba(227, 179, 65, .08); border: 1px solid rgba(227, 179, 65, .35);
+  color: var(--lab-text-dim); font-size: 13px; line-height: 1.6;
+}
+.caveat strong { display: block; margin-bottom: 4px; color: var(--lab-amber); font-size: 12px; letter-spacing: .04em; }
+
+.historyBar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 14px; padding: 12px 16px; border-radius: 12px;
+  background: var(--lab-panel); border: 1px solid var(--lab-edge);
+  font-size: 12px; color: var(--lab-text-dim);
+}
+.historyBar strong { color: var(--lab-text); font-size: 12px; }
+.historyBar span {
+  display: grid; place-items: center; min-width: 24px; height: 24px; padding: 0 6px;
+  border-radius: 7px; background: var(--lab-panel-hi); border: 1px solid var(--lab-edge);
+  font-size: 11px; font-weight: 800; color: var(--lab-text);
+}
+
+@media (max-width: 760px) {
+  .header { flex-direction: column; }
+  .playArea { grid-template-columns: minmax(0, 1fr); }
+  .lessonPanel { grid-template-columns: minmax(0, 1fr); }
+  .tokenShelf { flex-direction: row; }
+  .capsuleCore { width: 124px; height: 124px; }
 }
