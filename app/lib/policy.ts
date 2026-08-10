@@ -1,25 +1,17 @@
-"use client";
+// ============================================================
+// PRIVACY POLICY — one text, every majlis
+//
+// There is deliberately only one policy. Three majalis with three policies
+// would drift apart, and a family reading one of them would not know it did
+// not cover the others. This array is the whole text; components/PolicyDialog
+// renders it in the footer of every majlis.
+// ============================================================
 
-// Privacy Policy, bilingual (EN/AR). Discloses what CyberMajlis collects, how
-// it is used, the third-party processors involved, and the rights of learners
-// and their guardians. Plain language, suitable for a children's platform.
-
-import { useLocale } from "next-intl";
-
-const cinzel  = '"Cinzel", "Trajan Pro", Georgia, serif';
-const crimson = '"Crimson Pro", "Crimson Text", Georgia, serif';
-
-const INK = "#3e1316";
-const WINE = "#632024";
-const GOLD = "#c5a57e";
-const CREAM = "#E3DAC9";
-const PAPER = "#f5ede0";
-
-interface Section { t: string; tAr: string; body: (string | string[])[]; bodyAr: (string | string[])[]; }
+export interface PolicySection { t: string; tAr: string; body: (string | string[])[]; bodyAr: (string | string[])[]; }
 
 const UPDATED = "1 August 2026";
 
-const SECTIONS: Section[] = [
+export const POLICY: PolicySection[] = [
   {
     t: "Who we are",
     tAr: "من نحن",
@@ -142,54 +134,4 @@ const SECTIONS: Section[] = [
   },
 ];
 
-export default function PrivacyPage() {
-  const isAR = useLocale() === "ar";
-
-  const renderBlock = (b: string | string[], i: number) =>
-    Array.isArray(b) ? (
-      <ul key={i} style={{ margin: "0 0 1rem", paddingInlineStart: "1.4rem", display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-        {b.map((li, j) => (
-          <li key={j} style={{ fontFamily: crimson, fontSize: "1.05rem", lineHeight: 1.7, color: "#4a2024" }}>{li}</li>
-        ))}
-      </ul>
-    ) : (
-      <p key={i} style={{ fontFamily: crimson, fontSize: "1.08rem", lineHeight: 1.75, color: "#4a2024", margin: "0 0 1rem" }}>{b}</p>
-    );
-
-  return (
-    <div style={{ minHeight: "100vh", background: CREAM, color: INK, direction: isAR ? "rtl" : "ltr", paddingTop: "calc(76px + 2.5rem)" }}>
-      <div style={{ maxWidth: 820, margin: "0 auto", padding: "0 1.5rem 5rem" }}>
-
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-          <div style={{ fontFamily: cinzel, fontSize: 10, letterSpacing: 3, color: GOLD, fontWeight: 700, marginBottom: 10 }}>
-            {isAR ? "مجلس الأمن السيبراني" : "CYBERMAJLIS"}
-          </div>
-          <h1 style={{ fontFamily: cinzel, fontWeight: 900, fontSize: "clamp(2rem, 5vw, 3rem)", color: INK, margin: "0 0 8px" }}>
-            {isAR ? "سياسة الخصوصية" : "Privacy Policy"}
-          </h1>
-          <div style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 14, color: "#7a5c2e" }}>
-            {isAR ? `آخر تحديث: ${UPDATED}` : `Last updated: ${UPDATED}`}
-          </div>
-        </div>
-
-        {/* Sections */}
-        {SECTIONS.map((s, i) => (
-          <section key={i} style={{ background: PAPER, border: `1px solid ${GOLD}55`, borderRadius: 16, padding: "1.6rem 1.8rem", marginBottom: "1.2rem" }}>
-            <h2 style={{ fontFamily: cinzel, fontWeight: 700, fontSize: "1.3rem", color: WINE, margin: "0 0 1rem", display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ width: 6, height: 6, background: GOLD, transform: "rotate(45deg)", flexShrink: 0 }} />
-              {isAR ? s.tAr : s.t}
-            </h2>
-            {(isAR ? s.bodyAr : s.body).map(renderBlock)}
-          </section>
-        ))}
-
-        <p style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 13.5, color: "#7a5c2e", textAlign: "center", marginTop: "2rem", lineHeight: 1.7 }}>
-          {isAR
-            ? "نعتني ببياناتك كما نعلّمك أن تعتني ببياناتك، بحذر واحترام."
-            : "We look after your data the same way we teach you to look after yours, carefully, and with respect."}
-        </p>
-      </div>
-    </div>
-  );
-}
+export const POLICY_UPDATED = "1 August 2026";

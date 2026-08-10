@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { Globe, Menu, X } from "lucide-react";
 import { M, BRANCHES, MODES, display, crimson, mono, RADIUS } from "./theme";
+import PolicyDialog from "@/components/PolicyDialog";
 
 function setLocaleCookie(locale: string) {
   document.cookie = `locale=${locale}; path=/; max-age=31536000`;
@@ -213,12 +214,9 @@ export function MajlisFooter() {
           {isAR ? "آمن بالتصميم · صُنع لقطر" : "SECURE BY DESIGN · BUILT FOR QATAR"}
         </span>
 
-        <a href="/privacy" style={{
-          marginInlineStart: "auto", fontFamily: crimson, fontSize: 15,
-          color: M.body, textDecoration: "none",
-        }}>
-          {isAR ? "الخصوصية" : "Privacy"}
-        </a>
+        <span style={{ marginInlineStart: "auto", fontFamily: crimson, fontSize: 15, color: M.body }}>
+          <PolicyDialog accent={M.action} />
+        </span>
 
         <span style={{ fontFamily: mono, fontSize: 10.5, color: M.body, opacity: 0.6 }}>
           © {new Date().getFullYear()} Majlis

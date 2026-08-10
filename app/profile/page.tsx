@@ -10,6 +10,7 @@ import { lessonsData } from "@/app/lib/lessonsData";
 import CharacterSelection from "@/components/CharacterSelection";
 import { Trophy, UserRound, Sparkles } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
+import { resolveAvatar } from "@/app/lib/avatars";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -41,7 +42,7 @@ export default function ProfilePage() {
           const data = snap.data();
           setUserData(data);
           setNewUsername(prev => prev || data.username || "");
-          setNewAvatar(prev => prev || data.avatar || "/characters/HamadAvatars/hamad-1.png");
+          setNewAvatar(prev => prev || resolveAvatar(data.avatar));
         }
         setLoading(false);
       });

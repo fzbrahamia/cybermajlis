@@ -14,6 +14,7 @@ import { doc, onSnapshot, addDoc, collection, serverTimestamp } from "firebase/f
 import Modal from "@/components/Modal";
 import { useTranslations, useLocale } from "next-intl";
 import { DirectionProvider } from "@radix-ui/react-direction";
+import { resolveAvatar } from "@/app/lib/avatars";
 
 declare global {
   interface Window { chatbase: any; }
@@ -23,9 +24,6 @@ function setLocaleCookie(locale: string) {
   document.cookie = `locale=${locale}; path=/; max-age=31536000`;
   window.location.reload();
 }
-
-/** Anyone signed in without a chosen avatar gets Hamad. */
-const DEFAULT_AVATAR = "/characters/HamadAvatars/hamad-1.png";
 
 const NAV_LINK_KEYS = [
   { key: "dashboard",   href: "/dashboard"   },
@@ -53,7 +51,7 @@ export default function Navbar() {
   // Light theme is scoped to the landing page for now; the rest of the site keeps
   // the dark maroon navbar until we roll the new look out.
   // light theme now covers the landing + dashboard as we roll the new look out
-  const isLanding = pathname === "/cybermajlis" || pathname.startsWith("/dashboard") || pathname.startsWith("/auth") || pathname.startsWith("/simulations") || pathname.startsWith("/ctf") || pathname.startsWith("/scan") || pathname.startsWith("/news") || pathname.startsWith("/community") || pathname.startsWith("/profile") || pathname.startsWith("/settings") || pathname.startsWith("/privacy");
+  const isLanding = pathname === "/cybermajlis" || pathname.startsWith("/dashboard") || pathname.startsWith("/auth") || pathname.startsWith("/simulations") || pathname.startsWith("/ctf") || pathname.startsWith("/scan") || pathname.startsWith("/news") || pathname.startsWith("/community") || pathname.startsWith("/profile") || pathname.startsWith("/settings");
 
   const navBg = isLanding
     ? "rgba(251,248,243,0.82)"
@@ -98,7 +96,7 @@ export default function Navbar() {
         unsubscribeDoc = onSnapshot(userRef, (snap) => {
           if (snap.exists()) {
             setUsername(snap.data().username || "User");
-            setUserAvatar(snap.data().avatar || DEFAULT_AVATAR);
+            setUserAvatar(resolveAvatar(snap.data().avatar));
           }
         });
       } else {

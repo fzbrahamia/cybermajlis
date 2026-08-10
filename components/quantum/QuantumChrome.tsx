@@ -3,12 +3,18 @@
 /* Quantum Majlis chrome. Its own, like the Majlis roof, because this is a
    different majlis and not part of the CyberMajlis site. */
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
-import { Globe, FlaskConical, Route } from "lucide-react";
+import { Globe, FlaskConical, Route, UserRound } from "lucide-react";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore";
+import { auth, db } from "@/app/lib/firebase";
 import { Q, INK, BODY, LINE, PAGE, display, mono, bodyFont } from "./theme";
 import { usePathname } from "next/navigation";
+import { resolveAvatar } from "@/app/lib/avatars";
+import PolicyDialog from "@/components/PolicyDialog";
 
 function setLocaleCookie(locale: string) {
   document.cookie = `locale=${locale}; path=/; max-age=31536000`;
@@ -18,6 +24,18 @@ export function QuantumHeader() {
   const isAR = useLocale() === "ar";
   const router = useRouter();
   const pathname = usePathname();
+
+  // The avatar is shared account data, so the header can show it here too.
+  const [avatar, setAvatar] = useState<string | null>(null);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, u => {
+      if (!u) { setAvatar(null); return; }
+      return onSnapshot(doc(db, "user", u.uid), snap => {
+        if (snap.exists()) setAvatar(resolveAvatar(snap.data().avatar));
+      });
+    });
+    return () => unsub();
+  }, []);
 
   const switchLocale = () => {
     setLocaleCookie(isAR ? "en" : "ar");
@@ -96,6 +114,23 @@ export function QuantumHeader() {
           <Globe size={12} />
           {isAR ? "EN" : "AR"}
         </button>
+
+        <Link
+          href="/quantum/profile"
+          aria-label={isAR ? "ملفك" : "Your profile"}
+          title={isAR ? "ملفك" : "Your profile"}
+          style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: 32, height: 32, borderRadius: "50%", overflow: "hidden", flexShrink: 0,
+            border: `1px solid ${pathname.startsWith("/quantum/profile") ? Q.mid : LINE}`,
+            background: avatar ? "transparent" : Q.tint, color: Q.deep, textDecoration: "none",
+          }}
+        >
+          {avatar
+            // eslint-disable-next-line @next/next/no-img-element
+            ? <img src={avatar} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            : <UserRound size={15} />}
+        </Link>
       </div>
     </header>
   );
@@ -114,8 +149,13 @@ export function QuantumFooter() {
             ? "حيث يخذلك الحدس، يتقدّم المعلّم."
             : "Where intuition fails, a teacher leads."}
         </span>
-        <span style={{ fontFamily: mono, fontSize: 9.5, letterSpacing: "0.16em", color: BODY, opacity: 0.7 }}>
-          {isAR ? "آمن بالتصميم" : "SECURE BY DESIGN"}
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 16 }}>
+          <span style={{ fontFamily: bodyFont, fontSize: 14, color: BODY }}>
+            <PolicyDialog accent={Q.deep} />
+          </span>
+          <span style={{ fontFamily: mono, fontSize: 9.5, letterSpacing: "0.16em", color: BODY, opacity: 0.7 }}>
+            {isAR ? "آمن بالتصميم" : "SECURE BY DESIGN"}
+          </span>
         </span>
       </div>
     </footer>

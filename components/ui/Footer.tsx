@@ -3,6 +3,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 import { ArrowRight } from "lucide-react";
+import PolicyDialog from "@/components/PolicyDialog";
 
 const cinzel  = '"Cinzel", "Trajan Pro", Georgia, serif';
 const crimson = '"Crimson Pro", "Crimson Text", Georgia, serif';
@@ -50,7 +51,7 @@ export default function Footer() {
   // Light theme is scoped to the landing page for now; the rest of the site keeps
   // the dark maroon footer until we roll the new look out.
   const pathname = usePathname();
-  const isLanding = pathname === "/cybermajlis" || pathname.startsWith("/dashboard") || pathname.startsWith("/auth") || pathname.startsWith("/simulations") || pathname.startsWith("/ctf") || pathname.startsWith("/scan") || pathname.startsWith("/news") || pathname.startsWith("/community") || pathname.startsWith("/profile") || pathname.startsWith("/settings") || pathname.startsWith("/privacy");
+  const isLanding = pathname === "/cybermajlis" || pathname.startsWith("/dashboard") || pathname.startsWith("/auth") || pathname.startsWith("/simulations") || pathname.startsWith("/ctf") || pathname.startsWith("/scan") || pathname.startsWith("/news") || pathname.startsWith("/community") || pathname.startsWith("/profile") || pathname.startsWith("/settings");
 
   const th = {
     bg: isLanding ? "rgba(251,248,243,0.82)" : "linear-gradient(180deg,#3e1316 0%,#2a0c0e 100%)",
@@ -203,9 +204,7 @@ export default function Footer() {
           {isAR ? "© 2026 المجلس السيبراني، قطر" : "© 2026 CyberMajlis, Qatar"}
         </span>
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
-          <a href="/privacy" style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: th.privacy, textDecoration: "none" }}>
-            {isAR ? "سياسة الخصوصية" : "Privacy Policy"}
-          </a>
+          <span style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: th.privacy, textDecoration: "none" }}><PolicyDialog accent={isLanding ? "#7a1e22" : "#c5a57e"} /></span>
           <span style={{ fontFamily: crimson, fontStyle: "italic", fontSize: 12, color: th.tagline }}>
             {isAR ? "تعليم الأمن السيبراني للجميع" : "Cybersecurity education for everyone"}
           </span>
