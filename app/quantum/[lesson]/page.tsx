@@ -30,8 +30,11 @@ import {
 import { lessonBySlug, QUANTUM_PATH, STEP_ORDER, type StepId, type Widget } from "@/app/lib/quantumData";
 import { useQuantumProgress } from "@/hooks/useQuantumProgress";
 import { QuantumHeader, QuantumFooter } from "@/components/quantum/QuantumChrome";
-import QuantumField from "@/components/quantum/QuantumField";
+// OLD LABS — kept in the project for reference, but no longer rendered here.
+// import DrawerSearchLab from "@/components/quantum/DrawerSearchLab";
+// import ScaleLab from "@/components/quantum/ScaleLab";
 import QuantumLessonGames from "@/components/quantum/QuantumLessonGames";
+import QuantumField from "@/components/quantum/QuantumField";
 import {
   Q, INK, BODY, LINE, PAPER, PAGE, GOLD, GOLD_DEEP,
   display, bodyFont, mono, EASE, CARD_SHADOW,
@@ -270,6 +273,9 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
 
   const idx = QUANTUM_PATH.findIndex(l => l.slug === lesson.slug);
   const previousDone = idx <= 0 || (loaded && isLessonDone(QUANTUM_PATH[idx - 1].slug));
+  // Fallback to the explicit previous-lesson rule as well as the hook. This
+  // prevents a completed station from staying visually locked if auth/progress
+  // hydration arrives in a slightly different order.
   const locked = loaded && !(isUnlocked(lesson.slug) || previousDone);
   const nextLesson = QUANTUM_PATH[idx + 1];
   const lessonDone = loaded && isLessonDone(lesson.slug);
@@ -301,7 +307,7 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
               ? "محطات هذا المسار مترابطة. أنهِ المحطة السابقة أولاً، فهي التي تطرح السؤال الذي تجيب عنه هذه."
               : "The stations on this path are linked. Finish the one before it first, because that is the station that asks the question this one answers."}
           </p>
-          <Link href="/quantum/paths" style={cta}>
+          <Link href="/quantum" style={cta}>
             {isAR ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
             {isAR ? "عد إلى المسار" : "Back to the path"}
           </Link>
@@ -334,7 +340,7 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
 
         {/* ── the rail: identity and the three beats, always in view ── */}
         <aside className="ql-rail">
-          <Link href="/quantum/paths" style={{
+          <Link href="/quantum" style={{
             display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none", marginBottom: 20,
             fontFamily: mono, fontSize: 9, letterSpacing: "0.18em", color: BODY,
           }}>
@@ -414,7 +420,7 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
                 {isAR ? "أنهيت هذا الدرس" : "LESSON FINISHED"}
               </div>
               {nextLesson ? (
-                <Link href={`/quantum/paths/${nextLesson.slug}`} style={{ ...cta, width: "100%", justifyContent: "center", flexDirection: "column", gap: 3, padding: "13px 20px" }}>
+                <Link href={`/quantum/${nextLesson.slug}`} style={{ ...cta, width: "100%", justifyContent: "center", flexDirection: "column", gap: 3, padding: "13px 20px" }}>
                   <span style={{ fontFamily: mono, fontSize: 8.5, letterSpacing: "0.18em", opacity: 0.75 }}>
                     {isAR ? "الدرس التالي" : "NEXT LESSON"}
                   </span>
@@ -532,14 +538,10 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
                   />
 
                   {/*
-                    OLD LAB CARDS — kept commented out on purpose.
-                    They used lesson.labs + labById() and linked to the old
-                    standalone benches. The old lab files/routes are untouched.
-
-                    lesson.labs.map(id => {
-                      const lab = labById(id);
-                      ... original lab card ...
-                    })
+                    OLD LAB UI — intentionally kept commented out.
+                    The original components still exist in components/quantum:
+                    <DrawerSearchLab onComplete={() => markStep(lesson.slug, "lab")} />
+                    <ScaleLab onComplete={() => markStep(lesson.slug, "lab")} />
                   */}
                 </div>
               )}

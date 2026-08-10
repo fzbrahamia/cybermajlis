@@ -1,0 +1,187 @@
+.lab{
+  max-width:900px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  font-family:var(--font-nunito),"Nunito",ui-rounded,system-ui,sans-serif;
+  color:#111A15;
+}
+.header{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+  margin-bottom:20px;
+}
+.header h1{
+  margin:7px 0 8px;
+  font-size:clamp(31px,5vw,48px);
+  line-height:1;
+}
+.header p{margin:0;color:#5B6A62;font-size:17px}
+.badge{
+  display:inline-flex;
+  border-radius:999px;
+  padding:7px 11px;
+  background:#EAF6F0;
+  color:#1B6B4C;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.reset{
+  border:0;
+  border-radius:14px;
+  background:#eff1f7;
+  color:#30463B;
+  padding:11px 13px;
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+}
+.card{
+  min-height:570px;
+  border:1px solid #e5e7ef;
+  border-radius:30px;
+  background:white;
+  box-shadow:0 18px 50px rgba(38,42,69,.08);
+  padding:28px;
+}
+.center{
+  min-height:510px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.hero{
+  font-size:105px;
+  animation:float 2s ease-in-out infinite;
+}
+@keyframes float{50%{transform:translateY(-9px)}}
+.center h2{
+  margin:12px 0 8px;
+  font-size:29px;
+}
+.prompt{
+  color:#5B6A62;
+  max-width:590px;
+  line-height:1.55;
+}
+.stepPill{
+  display:inline-flex;
+  border-radius:999px;
+  background:#EAF6F0;
+  color:#1B6B4C;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+.bit{
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:72px;
+  font-weight:950;
+  background:radial-gradient(circle at 33% 26%,#fff,#e8e9f2 68%,#ccd0df);
+  border:9px solid #d8dbe8;
+  box-shadow:0 22px 45px rgba(45,53,87,.16);
+  margin:18px 0;
+}
+.quantumCoin{
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:11px;
+  background:radial-gradient(circle at 33% 26%,#fff,#E3F4EB 60%,#BEE5D2);
+  border:9px solid #A9D9C2;
+  box-shadow:0 0 0 13px rgba(46,156,110,.07),0 22px 45px rgba(45,53,87,.15);
+  margin:18px 0;
+  transform-style:preserve-3d;
+  animation:spin 1.45s linear infinite;
+}
+.quantumCoin span{
+  font-size:48px;
+  font-weight:950;
+  color:#1B6B4C;
+}
+.quantumCoin b{
+  font-size:28px;
+  color:#9a8ee0;
+}
+@keyframes spin{to{transform:rotateY(360deg)}}
+.main,.measure{
+  border:0;
+  border-radius:999px;
+  padding:14px 22px;
+  font:inherit;
+  font-weight:950;
+  cursor:pointer;
+}
+.main{
+  margin-top:15px;
+  background:linear-gradient(135deg,#2E9C6E,#5FC79C);
+  color:white;
+}
+.measure{
+  margin-top:15px;
+  background:#ffcf55;
+  color:#3d351c;
+  box-shadow:0 14px 28px rgba(212,168,53,.22);
+}
+.smallLesson{
+  max-width:560px;
+  border-radius:16px;
+  background:#f7f8fb;
+  border:1px solid #e6e8ef;
+  padding:12px 15px;
+  color:#626b80;
+}
+.takeaway{
+  max-width:620px;
+  margin:15px auto;
+  border-radius:17px;
+  background:#EAF6F0;
+  color:#554d82;
+  padding:14px 16px;
+  line-height:1.55;
+}
+.pop{animation:pop .42s ease}
+@keyframes pop{
+  0%{transform:scale(.78)}
+  70%{transform:scale(1.12)}
+  100%{transform:scale(1)}
+}
+.historyArea{
+  margin-top:22px;
+  color:#6d7589;
+}
+.history{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-top:9px;
+}
+.history span{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#EAF6F0;
+  color:#1B6B4C;
+  font-weight:900;
+}
+@media(max-width:680px){
+  .header{flex-direction:column}
+  .card{padding:19px;min-height:520px}
+  .center{min-height:470px}
+  .hero{font-size:88px}
+}

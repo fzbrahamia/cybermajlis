@@ -81,7 +81,8 @@ export default function QuantumPathPage() {
           {QUANTUM_PATH.map((lesson, i) => {
             // Until storage has been read, treat everything as locked except the
             // first, so a return visit never flashes the wrong state.
-            const unlocked = loaded ? isUnlocked(lesson.slug) : i === 0;
+            const previousDone = i === 0 || (loaded && isLessonDone(QUANTUM_PATH[i - 1].slug));
+            const unlocked = loaded ? (isUnlocked(lesson.slug) || previousDone) : i === 0;
             const done = loaded && isLessonDone(lesson.slug);
             const started = loaded && STEP_ORDER.some(s => isStepDone(lesson.slug, s));
 

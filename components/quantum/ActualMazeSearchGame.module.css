@@ -1,0 +1,68 @@
+.lab{
+  max-width:1040px;
+  margin:0 auto;
+  padding:28px 18px 60px;
+  font-family:var(--font-nunito),"Nunito",ui-rounded,system-ui,sans-serif;
+  color:#111A15;
+}
+.header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+.header h1{margin:7px 0 8px;font-size:clamp(30px,5vw,48px);line-height:1}
+.header p{margin:0;color:#5B6A62;font-size:17px}
+.badge{display:inline-flex;border-radius:999px;padding:7px 11px;background:#EAF6F0;color:#1B6B4C;font-size:12px;font-weight:900;letter-spacing:.12em}
+.reset{border:0;border-radius:14px;background:#eff1f7;color:#30463B;padding:11px 13px;font:inherit;font-weight:800;cursor:pointer}
+.choose{margin-top:20px;background:white;border:1px solid #e5e7ef;border-radius:28px;padding:28px;box-shadow:0 18px 50px rgba(38,42,69,.08)}
+.choose h2{text-align:center;margin:0 0 18px}
+.choiceGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.choice{min-height:230px;border:2px solid #e4e7ef;border-radius:24px;background:#F7FAF8;cursor:pointer;padding:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;font:inherit}
+.choice:hover{transform:translateY(-4px);border-color:#A9D9C2}
+.quantumChoice{background:linear-gradient(180deg,#F3FAF6,#EAF6F0);border-color:#CFEBDD}
+.icon{font-size:66px}
+.choice strong{font-size:22px}
+.choice small{color:#727b91}
+.choice b{margin-top:8px;background:#1B6B4C;color:white;border-radius:999px;padding:8px 16px;font-size:12px}
+.status{margin:18px auto;max-width:720px;border-radius:18px;background:#fff8db;border:1px solid #f2df94;padding:14px 18px;text-align:center;font-weight:850}
+.gameLayout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+.mazeBoard{aspect-ratio:1/1;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:5px;background:#d8dce7;border-radius:26px;padding:10px;box-shadow:0 18px 50px rgba(38,42,69,.08)}
+.cell{position:relative;border-radius:8px;display:grid;place-items:center;transition:.2s ease}
+.wallCell{background:#343b53;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+.openCell{background:#fbfcff;box-shadow:inset 0 0 0 1px #e4e7ef}
+.visited{background:#E3F4EB}
+.safeCell{background:#dcf6e4;box-shadow:inset 0 0 0 2px #88c99b}
+.startCell{box-shadow:inset 0 0 0 2px #2E9C6E}
+.exitCell{box-shadow:inset 0 0 0 2px #e7bd39}
+.robot{font-size:clamp(22px,4vw,38px);filter:drop-shadow(0 4px 5px rgba(38,42,69,.18))}
+.marker{font-weight:950;color:#6b5bd1}
+.flag{position:absolute;right:5px;top:4px;font-size:clamp(16px,2.6vw,27px)}
+.quantumPulse .openCell{animation:qPulse .62s ease-in-out}
+@keyframes qPulse{50%{background:#EAF6F0;box-shadow:inset 0 0 0 2px #5FC79C,0 0 18px rgba(46,156,110,.35)}}
+.sidePanel{background:white;border:1px solid #e5e7ef;border-radius:24px;padding:20px;box-shadow:0 18px 50px rgba(38,42,69,.07)}
+.sidePanel h3{margin:0 0 7px;font-size:20px}
+.sidePanel p{color:#6d7589;line-height:1.5}
+.dpad{display:grid;grid-template-columns:repeat(3,58px);gap:8px;justify-content:center;margin:20px 0}
+.dpad button{width:58px;height:58px;border:0;border-radius:16px;background:#163B2D;color:white;font-size:25px;font-weight:900;cursor:pointer}
+.dpad button:hover{transform:translateY(-2px)}
+.moveCount{text-align:center;font-weight:900;color:#1B6B4C;margin-bottom:10px}
+.primary,.measure,.secondary,.again,.whyButton{border:0;border-radius:999px;padding:12px 17px;font:inherit;font-weight:900;cursor:pointer}
+.primary{background:linear-gradient(135deg,#2E9C6E,#5FC79C);color:white;width:100%}
+.measure{background:#ffcf55;color:#3d351c;width:100%}
+.secondary{background:#eef0f6;color:#30463B;width:100%}
+.again{background:#163B2D;color:white}
+.tip{margin-top:15px;border-radius:16px;background:#EAF6F0;color:#554d82;padding:12px 13px;font-size:13px;line-height:1.5}
+.mathHint{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;margin:12px 0}
+.mathHint span{background:#f1f2f7;border-radius:999px;padding:7px 9px;font-weight:800;font-size:13px}
+.mathHint strong{background:#EAF6F0;color:#1B6B4C;border-radius:999px;padding:7px 9px;font-size:13px}
+.whyButton{background:white;color:#1B6B4C;box-shadow:0 5px 16px rgba(63,51,139,.08);width:100%;margin-bottom:10px}
+.whyCard{border-radius:14px;background:#faf9ff;border:1px solid #e1dcff;padding:11px 12px;color:#60687b;font-size:13px;line-height:1.5;margin-bottom:10px}
+.boostRow{display:flex;justify-content:center;gap:8px;margin:14px 0}
+.boostRow span{width:18px;height:18px;border-radius:50%;background:#dedfec}
+.boostRow .on{background:#2E9C6E;box-shadow:0 0 0 5px rgba(46,156,110,.1)}
+.running{text-align:center;color:#1B6B4C;font-weight:850;padding:10px 0}
+.finish{margin-top:18px;text-align:center;background:white;border:1px solid #e5e7ef;border-radius:24px;padding:22px}
+.finish h2{margin:0 0 8px}
+.finish p{color:#677086}
+@media(max-width:820px){
+  .header{flex-direction:column}
+  .choiceGrid{grid-template-columns:1fr}
+  .gameLayout{grid-template-columns:1fr}
+  .sidePanel{order:-1}
+}
