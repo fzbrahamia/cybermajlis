@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Nunito", ui-rounded, system-ui, sans-serif; background: #FCF6EA; }
+    a { color: #8F6A38; text-decoration: none; }
+    a:hover { color: #A8804A; }
+  </style>
+</helmet>
+
+<div style="width: 980px; min-height: 960px; background: #FCF6EA; box-sizing: border-box; padding: 28px 30px 32px; color: #6E6357;">
+
+  <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 18px;">
+    <div>
+      <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #A8804A; margin-bottom: 7px;">What happened, and what it teaches</div>
+      <div style="font-size: 24px; font-weight: 800; color: #2A231C; letter-spacing: -.01em;">Every story here gets taken apart the same way you take a company apart</div>
+    </div>
+    <span style="flex: none; font-family: 'Geist Mono', Menlo, monospace; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; background: #FFFDF8; border: 1px solid rgba(42,35,28,.12); border-radius: 999px; padding: 8px 13px;">Updated 6 hours ago</span>
+  </div>
+
+  <!-- the decomposed story -->
+  <div style="background: #FFFDF8; border: 1px solid rgba(42,35,28,.10); border-radius: 22px; overflow: hidden; margin-bottom: 14px; box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 1px 2px rgba(58,44,28,.04), 0 8px 20px rgba(58,44,28,.05);">
+
+    <div style="height: 3px; background: #A8323F;"></div>
+
+    <div style="padding: 22px 26px 24px;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+        <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .11em; text-transform: uppercase; background: rgba(168,50,63,.10); color: #7A1E22; border-radius: 999px; padding: 4px 9px;">CyberMajlis</span>
+        <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .11em; text-transform: uppercase; background: rgba(42,35,28,.06); color: #6E6357; border-radius: 999px; padding: 4px 9px;">Read in 4 minutes</span>
+      </div>
+
+      <div style="font-size: 21px; font-weight: 800; color: #2A231C; line-height: 1.32; margin-bottom: 10px;">In 2017, hospitals had to turn patients away. Everyone had a firewall.</div>
+      <div style="font-size: 14px; line-height: 1.7; margin-bottom: 20px;">A program called WannaCry locked the files on tens of thousands of computers in a single day, including hospital computers in Britain. Operations were cancelled. Ambulances were sent elsewhere. A repair for the exact hole it used had been released by Microsoft two months earlier, and most of the machines that were hit had never installed it.</div>
+
+      <!-- what was assumed -->
+      <div style="padding: 18px 20px; background: #FCF6EA; border-radius: 16px; margin-bottom: 10px;">
+        <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 10px; letter-spacing: .13em; text-transform: uppercase; color: #A8804A; margin-bottom: 9px;">What everyone was assuming</div>
+        <div style="font-size: 14px; line-height: 1.65; color: #2A231C;">That danger comes from outside, so a strong wall at the edge of the building keeps it out. A firewall is a guard on the door. It checks who comes in.</div>
+      </div>
+
+      <!-- where it broke -->
+      <div style="padding: 18px 20px; background: rgba(197,165,126,.16); border: 1px solid #C5A57E; border-radius: 16px; margin-bottom: 18px;">
+        <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 10px; letter-spacing: .13em; text-transform: uppercase; color: #8F6A38; margin-bottom: 9px;">Where the assumption broke</div>
+        <div style="font-size: 14px; line-height: 1.65; color: #2A231C; margin-bottom: 10px;">The guard on the door does not watch what happens between rooms. Once WannaCry was inside one machine, it spread computer to computer without ever going back out through the door. The wall was never wrong. It was answering a different question from the one that mattered.</div>
+        <div style="font-size: 13px; line-height: 1.6; color: #6E6357;">This is why a whole industry exists to watch what is happening inside, and why the first thing those companies had to learn was what normal looks like.</div>
+      </div>
+
+      <!-- what it connects to -->
+      <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 18px;">
+        <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #6E6357;">Opens</span>
+        <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #2A231C; background: rgba(197,165,126,.20); border-radius: 999px; padding: 6px 12px;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8F6A38" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Malware
+        </span>
+        <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #2A231C; background: #FCF6EA; border: 1px solid rgba(42,35,28,.12); border-radius: 999px; padding: 6px 12px;">What normal traffic looks like</span>
+        <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #2A231C; background: #FCF6EA; border: 1px solid rgba(42,35,28,.12); border-radius: 999px; padding: 6px 12px;">Behavioural detection</span>
+      </div>
+
+      <!-- Rouda does not summarise, she asks -->
+      <div style="display: flex; align-items: flex-start; gap: 13px; padding: 16px 18px; background: rgba(46,156,110,.09); border: 1px solid rgba(46,156,110,.28); border-radius: 16px;">
+        <div style="width: 30px; height: 30px; border-radius: 50%; background: #2E9C6E; display: grid; place-items: center; flex: none; font-size: 13px; font-weight: 800; color: #FFFFFF;">R</div>
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: #1B6B4C; margin-bottom: 6px;">Rouda asks, before you read on</div>
+          <div style="font-size: 14px; line-height: 1.6; color: #2A231C; margin-bottom: 12px;">The repair existed two months before the attack and the hospitals did not install it. Everyone's first answer is that they were careless. Think of one reason a hospital might not be able to update a computer, even knowing the risk.</div>
+          <div style="display: flex; align-items: center; gap: 9px; flex-wrap: wrap;">
+            <span style="min-height: 40px; display: inline-flex; align-items: center; background: #FFFFFF; border: 1px solid rgba(46,156,110,.35); color: #1B6B4C; border-radius: 999px; padding: 0 16px; font-size: 12.5px; font-weight: 700;">Write my answer</span>
+            <span style="font-size: 12px; color: #5B6A62;">Nobody sees this but you</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- a second, lighter item -->
+  <div style="display: flex; gap: 11px;">
+    <div style="flex: 1; padding: 18px 20px; background: #FFFDF8; border: 1px solid rgba(42,35,28,.10); border-radius: 18px;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 9px;">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #2E9C6E; flex: none;"></span>
+        <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .11em; text-transform: uppercase; color: #1B6B4C;">QuantumMajlis</span>
+      </div>
+      <div style="font-size: 15px; font-weight: 800; color: #2A231C; line-height: 1.4; margin-bottom: 7px;">A new machine held its qubits steady for longer than the last one</div>
+      <div style="font-size: 12.5px; line-height: 1.6; margin-bottom: 11px;">Headlines called it a breakthrough. The number that actually moved was small, and we will show you both the number and why the headline is not lying, exactly.</div>
+      <span style="font-size: 12px; font-weight: 700; color: #8F6A38;">Take it apart</span>
+    </div>
+
+    <div style="flex: 1; padding: 18px 20px; background: #FFFDF8; border: 1px solid rgba(42,35,28,.10); border-radius: 18px;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 9px;">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #A8323F; flex: none;"></span>
+        <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .11em; text-transform: uppercase; color: #7A1E22;">CyberMajlis</span>
+      </div>
+      <div style="font-size: 15px; font-weight: 800; color: #2A231C; line-height: 1.4; margin-bottom: 7px;">A school in the Gulf lost a term of coursework to a phishing email</div>
+      <div style="font-size: 12.5px; line-height: 1.6; margin-bottom: 11px;">The email did not look strange. It looked exactly like the one the school sends every Sunday, which is the whole point and the part worth studying.</div>
+      <span style="font-size: 12px; font-weight: 700; color: #8F6A38;">Take it apart</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":980,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

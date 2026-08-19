@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Nunito", ui-rounded, system-ui, sans-serif; background: #FCF6EA; }
+    a { color: #8F6A38; text-decoration: none; }
+    a:hover { color: #A8804A; }
+  </style>
+</helmet>
+
+<div style="width: 1240px; min-height: 880px; background: #FCF6EA; box-sizing: border-box; color: #6E6357;">
+
+  <!-- header -->
+  <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: 26px 32px 20px; border-bottom: 1px solid rgba(42,35,28,.10);">
+    <div>
+      <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #A8804A; margin-bottom: 7px;">What you know &middot; CyberMajlis</div>
+      <div style="font-size: 25px; font-weight: 800; color: #2A231C; letter-spacing: -.01em;">You cannot judge a company's choice until you know why they had to make it.</div>
+    </div>
+    <div style="flex: none; display: flex; gap: 8px;">
+      <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 11px; font-weight: 600; letter-spacing: .09em; background: rgba(197,165,126,.20); color: #8F6A38; border-radius: 999px; padding: 8px 13px;">4 OF 7 KNOWN</span>
+      <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 11px; font-weight: 600; letter-spacing: .09em; background: #FFFDF8; border: 1px solid rgba(42,35,28,.12); color: #6E6357; border-radius: 999px; padding: 8px 13px;">QUANTUM &middot; LOCKED</span>
+    </div>
+  </div>
+
+  <!-- column headers -->
+  <div style="display: grid; grid-template-columns: 450px 394px auto; padding: 18px 32px 0;">
+    <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 10.5px; letter-spacing: .15em; text-transform: uppercase; color: #6E6357;">Concepts</div>
+    <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 10.5px; letter-spacing: .15em; text-transform: uppercase; color: #6E6357;">Real attempts</div>
+    <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 10.5px; letter-spacing: .15em; text-transform: uppercase; color: #6E6357;">Thinking milestones</div>
+  </div>
+
+  <!-- graph -->
+  <div style="position: relative; height: 700px; margin: 6px 32px 0;">
+
+    <svg width="1176" height="700" viewBox="0 0 1176 700" style="position: absolute; inset: 0;">
+      <defs>
+        <marker id="gArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#C5A57E"></path>
+        </marker>
+        <marker id="gArrowDeep" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#8F6A38"></path>
+        </marker>
+      </defs>
+
+      <!-- hard prerequisites, solid -->
+      <path d="M 200 62 C 290 62, 360 98, 454 98" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <path d="M 200 138 C 290 138, 360 110, 454 106" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <path d="M 200 214 C 260 214, 260 290, 200 290" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)" transform="translate(0,0)"></path>
+      <path d="M 200 290 C 300 290, 370 120, 454 114" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <path d="M 200 366 C 300 366, 370 300, 454 292" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <path d="M 200 442 C 300 442, 370 470, 454 470" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <!-- Darktrace gates CrowdStrike: you cannot compare before you decompose one -->
+      <path d="M 560 138 C 560 210, 560 240, 560 268" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <path d="M 560 318 C 560 390, 560 420, 560 446" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <!-- into the milestones -->
+      <path d="M 668 106 C 760 106, 800 92, 848 92" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <path d="M 668 292 C 760 292, 800 212, 848 208" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <path d="M 668 470 C 760 470, 800 330, 848 326" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <path d="M 956 236 C 956 270, 956 290, 956 300" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+      <path d="M 956 354 C 956 388, 956 408, 956 418" fill="none" stroke="#C5A57E" stroke-width="2" marker-end="url(#gArrow)"></path>
+
+      <!-- soft prerequisite, dashed: helps but does not block -->
+      <path d="M 200 366 C 290 366, 370 130, 454 122" fill="none" stroke="#C5A57E" stroke-width="1.5" stroke-dasharray="7 5"></path>
+
+      <!-- enriches, dotted -->
+      <path d="M 200 518 C 300 518, 380 140, 454 130" fill="none" stroke="rgba(42,35,28,.26)" stroke-width="1.5" stroke-dasharray="2 4"></path>
+
+      <!-- the bridge, into another majlis -->
+      <path d="M 200 518 C 300 518, 360 600, 454 610" fill="none" stroke="#8F6A38" stroke-width="2.5" marker-end="url(#gArrowDeep)"></path>
+    </svg>
+
+    <!-- ── concept nodes ────────────────────────────────── -->
+    <div style="position: absolute; left: 4px; top: 36px; width: 196px; box-sizing: border-box; display: flex; align-items: center; gap: 9px; padding: 12px 14px; background: rgba(197,165,126,.18); border: 1px solid #C5A57E; border-radius: 13px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8F6A38" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M20 6 9 17l-5-5"/></svg>
+      <span style="font-size: 13px; font-weight: 700; color: #2A231C;">The internet</span>
+    </div>
+
+    <div style="position: absolute; left: 4px; top: 112px; width: 196px; box-sizing: border-box; display: flex; align-items: center; gap: 9px; padding: 12px 14px; background: rgba(197,165,126,.18); border: 1px solid #C5A57E; border-radius: 13px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8F6A38" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M20 6 9 17l-5-5"/></svg>
+      <span style="font-size: 13px; font-weight: 700; color: #2A231C;">Malware</span>
+    </div>
+
+    <div style="position: absolute; left: 4px; top: 188px; width: 196px; box-sizing: border-box; display: flex; align-items: center; gap: 9px; padding: 12px 14px; background: rgba(197,165,126,.18); border: 1px solid #C5A57E; border-radius: 13px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8F6A38" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M20 6 9 17l-5-5"/></svg>
+      <span style="font-size: 13px; font-weight: 700; color: #2A231C;">What normal traffic looks like</span>
+    </div>
+
+    <!-- attempted: looped back -->
+    <div style="position: absolute; left: 4px; top: 264px; width: 196px; box-sizing: border-box; padding: 11px 14px; background: #FFFDF8; border: 2px dashed #A8804A; border-radius: 13px;">
+      <div style="display: flex; align-items: center; gap: 9px; margin-bottom: 3px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A8804A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M3 2v6h6"/><path d="M21 12A9 9 0 0 0 6 5.3L3 8"/><path d="M21 22v-6h-6"/><path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"/></svg>
+        <span style="font-size: 13px; font-weight: 700; color: #2A231C;">Behavioural detection</span>
+      </div>
+      <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: #A8804A;">Go back &middot; 1 of 3 missed</span>
+    </div>
+
+    <!-- available -->
+    <div style="position: absolute; left: 4px; top: 340px; width: 196px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 9px; padding: 12px 14px; background: #FFFDF8; border: 2px solid #8F6A38; border-radius: 13px; box-shadow: 0 4px 12px rgba(143,106,56,.12);">
+      <span style="font-size: 13px; font-weight: 700; color: #2A231C;">Endpoints</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8F6A38" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </div>
+
+    <!-- locked -->
+    <div style="position: absolute; left: 4px; top: 416px; width: 196px; box-sizing: border-box; display: flex; align-items: center; gap: 9px; padding: 12px 14px; background: #FFFDF8; border: 1px dashed rgba(42,35,28,.18); border-radius: 13px; opacity: .5;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6E6357" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M9 11V7a3 3 0 0 1 6 0v4"/><rect x="5" y="11" width="14" height="9" rx="2"/></svg>
+      <span style="font-size: 13px; font-weight: 700; color: #2A231C;">Zero-day</span>
+    </div>
+
+    <!-- the bridge source -->
+    <div style="position: absolute; left: 4px; top: 492px; width: 196px; box-sizing: border-box; display: flex; align-items: center; gap: 9px; padding: 12px 14px; background: rgba(197,165,126,.18); border: 1px solid #C5A57E; border-radius: 13px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8F6A38" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M20 6 9 17l-5-5"/></svg>
+      <span style="font-size: 13px; font-weight: 700; color: #2A231C;">Encryption</span>
+    </div>
+
+    <!-- ── company nodes ────────────────────────────────── -->
+    <div style="position: absolute; left: 454px; top: 74px; width: 214px; box-sizing: border-box; padding: 13px 15px; background: #FFFDF8; border: 2px solid #8F6A38; border-radius: 14px; box-shadow: 0 5px 16px rgba(143,106,56,.13);">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
+        <span style="font-size: 14px; font-weight: 800; color: #2A231C;">Darktrace</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8F6A38" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+      <span style="font-size: 11.5px; line-height: 1.45; color: #6E6357;">Take one apart. Seven questions.</span>
+    </div>
+
+    <div style="position: absolute; left: 454px; top: 268px; width: 214px; box-sizing: border-box; padding: 13px 15px; background: #FFFDF8; border: 1px dashed rgba(42,35,28,.18); border-radius: 14px; opacity: .5;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6E6357" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M9 11V7a3 3 0 0 1 6 0v4"/><rect x="5" y="11" width="14" height="9" rx="2"/></svg>
+        <span style="font-size: 14px; font-weight: 800; color: #2A231C;">CrowdStrike</span>
+      </div>
+      <span style="font-size: 11.5px; line-height: 1.45; color: #6E6357;">Needs Endpoints, and one company already taken apart.</span>
+    </div>
+
+    <div style="position: absolute; left: 454px; top: 446px; width: 214px; box-sizing: border-box; padding: 13px 15px; background: #FFFDF8; border: 1px dashed rgba(42,35,28,.14); border-radius: 14px; opacity: .28;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6E6357" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M9 11V7a3 3 0 0 1 6 0v4"/><rect x="5" y="11" width="14" height="9" rx="2"/></svg>
+        <span style="font-size: 14px; font-weight: 800; color: #2A231C;">Vectra AI</span>
+      </div>
+    </div>
+
+    <!-- the bridge target, another majlis -->
+    <div style="position: absolute; left: 454px; top: 578px; width: 214px; box-sizing: border-box; padding: 13px 15px; background: rgba(46,156,110,.09); border: 2px solid #2E9C6E; border-radius: 14px;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #2E9C6E; flex: none;"></span>
+        <span style="font-size: 14px; font-weight: 800; color: #1B6B4C;">Quantum Keys</span>
+      </div>
+      <span style="font-size: 11.5px; line-height: 1.45; color: #5B6A62;">Encryption opens a door into QuantumMajlis.</span>
+    </div>
+
+    <!-- ── milestone nodes ──────────────────────────────── -->
+    <div style="position: absolute; left: 848px; top: 66px; width: 216px; box-sizing: border-box; padding: 13px 15px; background: #FFFDF8; border: 1px dashed rgba(42,35,28,.18); border-radius: 14px; opacity: .5;">
+      <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: #A8804A; margin-bottom: 5px;">Milestone</div>
+      <span style="font-size: 13.5px; font-weight: 800; color: #2A231C;">Took one apart</span>
+    </div>
+
+    <div style="position: absolute; left: 848px; top: 182px; width: 216px; box-sizing: border-box; padding: 13px 15px; background: #FFFDF8; border: 1px dashed rgba(42,35,28,.18); border-radius: 14px; opacity: .5;">
+      <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: #A8804A; margin-bottom: 5px;">Milestone</div>
+      <span style="font-size: 13.5px; font-weight: 800; color: #2A231C;">Compared two</span>
+    </div>
+
+    <div style="position: absolute; left: 848px; top: 300px; width: 216px; box-sizing: border-box; padding: 13px 15px; background: #FFFDF8; border: 1px dashed rgba(42,35,28,.14); border-radius: 14px; opacity: .28;">
+      <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: #A8804A; margin-bottom: 5px;">Milestone</div>
+      <span style="font-size: 13.5px; font-weight: 800; color: #2A231C;">Named the gap all three left</span>
+    </div>
+
+    <div style="position: absolute; left: 848px; top: 418px; width: 216px; box-sizing: border-box; padding: 13px 15px; background: #FFFDF8; border: 1px dashed rgba(42,35,28,.10); border-radius: 14px; opacity: .18;">
+      <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: #A8804A; margin-bottom: 5px;">Milestone</div>
+      <span style="font-size: 13.5px; font-weight: 800; color: #2A231C;">What comes next</span>
+    </div>
+
+    <!-- legend -->
+    <div style="position: absolute; left: 848px; top: 520px; width: 216px; box-sizing: border-box; padding: 16px 17px 17px; background: #FFFDF8; border: 1px solid rgba(42,35,28,.10); border-radius: 16px;">
+      <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .13em; text-transform: uppercase; color: #6E6357; margin-bottom: 12px;">How things connect</div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="34" height="8" viewBox="0 0 34 8" style="flex: none;"><path d="M0 4h34" stroke="#C5A57E" stroke-width="2"></path></svg>
+          <span style="font-size: 11.5px; font-weight: 700; color: #2A231C;">You must know this first</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="34" height="8" viewBox="0 0 34 8" style="flex: none;"><path d="M0 4h34" stroke="#C5A57E" stroke-width="1.5" stroke-dasharray="7 5"></path></svg>
+          <span style="font-size: 11.5px; font-weight: 700; color: #2A231C;">Makes it easier</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="34" height="8" viewBox="0 0 34 8" style="flex: none;"><path d="M0 4h34" stroke="rgba(42,35,28,.26)" stroke-width="1.5" stroke-dasharray="2 4"></path></svg>
+          <span style="font-size: 11.5px; font-weight: 700; color: #2A231C;">Adds something extra</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="34" height="8" viewBox="0 0 34 8" style="flex: none;"><path d="M0 4h34" stroke="#8F6A38" stroke-width="2.5"></path></svg>
+          <span style="font-size: 11.5px; font-weight: 700; color: #2A231C;">Crosses into another majlis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1240,"height":880}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

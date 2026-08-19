@@ -15,7 +15,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   // "/" is Majlis, the parent brand one level above CyberMajlis. It carries its
   // own header and footer (components/majlis/MajlisChrome.tsx), so suppress ours.
-  const isMajlisRoot = pathname === "/";
+  //
+  // The innovation track sits at the same level: the five moves are the method,
+  // and the method belongs to the company rather than to any one majlis. Those
+  // routes carry components/innovation/InnovationChrome.tsx instead.
+  const MAJLIS_LEVEL = ["/learn", "/sundus", "/investigate", "/problems", "/passport"];
+  const isMajlisRoot =
+    pathname === "/" ||
+    MAJLIS_LEVEL.some(p => pathname === p || pathname.startsWith(p + "/"));
   // Quantum Majlis is a different majlis, not part of the CyberMajlis site.
   // It carries its own header and footer (components/quantum/QuantumChrome.tsx).
   const isQuantum = pathname.startsWith("/quantum");

@@ -1,0 +1,45 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",      "x": 0,    "y": 0,    "w": 1120, "h": 860, "title": "Investigate (home)" },
+    { "file": "Ontology.dc.html",  "x": 1200, "y": 0,    "w": 1240, "h": 880, "title": "What you know" },
+
+    { "file": "Log.dc.html",       "x": 0,    "y": 980,  "w": 980,  "h": 800, "title": "Friction log" },
+    { "file": "Interview.dc.html", "x": 1060, "y": 980,  "w": 900,  "h": 800, "title": "The one interview" },
+    { "file": "Notes.dc.html",     "x": 2040, "y": 980,  "w": 820,  "h": 800, "title": "Notes pad" },
+
+    { "file": "Passport.dc.html",  "x": 0,    "y": 1880, "w": 1120, "h": 960, "title": "Innovation Passport" },
+    { "file": "Community.dc.html", "x": 1200, "y": 1880, "w": 980,  "h": 960, "title": "Problems" },
+    { "file": "News.dc.html",      "x": 2260, "y": 1880, "w": 980,  "h": 960, "title": "News" }
+  ],
+  "annotations": [
+    {
+      "id": "row-spine",
+      "x": 0,
+      "y": -132,
+      "w": 620,
+      "text": "THE SPINE\nThe child sees five verbs. The nine stages sit behind them.\nGold, because innovation belongs to the company and crosses all three majalis."
+    },
+    {
+      "id": "row-notice",
+      "x": 0,
+      "y": 866,
+      "w": 560,
+      "text": "NOTICE\nThe two exercises the paper pilot rests on. If these do not produce real\nproblems in one class, nothing further matters. Both work with no code."
+    },
+    {
+      "id": "row-record",
+      "x": 0,
+      "y": 1766,
+      "w": 560,
+      "text": "THE RECORD, AND WHERE PROBLEMS COME FROM\nEvery child keeps a passport whether or not they are ever selected.\nProblems arrive from us, from the community, or from the child."
+    },
+    {
+      "id": "note-engine",
+      "x": 2260,
+      "y": 1766,
+      "w": 420,
+      "text": "Note the tag on each problem: BUILD IT or PROPOSE IT.\nThat is the two-engine split made visible, so no child reaches\nthe last gate and finds there was no experiment available."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

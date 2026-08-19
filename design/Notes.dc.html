@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; font-family: "Nunito", ui-rounded, system-ui, sans-serif; background: #FCF6EA; }
+    a { color: #8F6A38; text-decoration: none; }
+    a:hover { color: #A8804A; }
+  </style>
+</helmet>
+
+<div style="position: relative; width: 820px; min-height: 800px; background: #FCF6EA; box-sizing: border-box; overflow: hidden; color: #6E6357;">
+
+  <!-- the page underneath, dimmed, so the pad reads as floating over anything -->
+  <div style="padding: 28px 30px; opacity: .34;">
+    <div style="font-family: 'Geist Mono', Menlo, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #A8804A; margin-bottom: 7px;">QuantumMajlis &middot; lesson two</div>
+    <div style="font-size: 24px; font-weight: 800; color: #2A231C; margin-bottom: 16px;">The Spinning Coin</div>
+    <div style="height: 200px; background: #FFFDF8; border: 1px solid rgba(42,35,28,.10); border-radius: 20px; margin-bottom: 16px;"></div>
+    <div style="display: flex; flex-direction: column; gap: 9px;">
+      <div style="height: 13px; width: 92%; background: rgba(42,35,28,.09); border-radius: 999px;"></div>
+      <div style="height: 13px; width: 86%; background: rgba(42,35,28,.09); border-radius: 999px;"></div>
+      <div style="height: 13px; width: 74%; background: rgba(42,35,28,.09); border-radius: 999px;"></div>
+      <div style="height: 13px; width: 88%; background: rgba(42,35,28,.09); border-radius: 999px;"></div>
+      <div style="height: 13px; width: 61%; background: rgba(42,35,28,.09); border-radius: 999px;"></div>
+    </div>
+  </div>
+
+  <!-- collapsed state, bottom left -->
+  <div style="position: absolute; left: 30px; bottom: 28px; display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 0 17px; background: #FFFDF8; border: 1px solid rgba(42,35,28,.12); border-radius: 999px; box-shadow: 0 2px 6px rgba(58,44,28,.06), 0 12px 28px rgba(58,44,28,.10);">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8F6A38" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9z"/><path d="M15 3v6h6"/></svg>
+    <span style="font-size: 13px; font-weight: 800; color: #2A231C;">Notes</span>
+    <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 10px; font-weight: 600; background: #8F6A38; color: #FFFDF8; border-radius: 999px; padding: 3px 7px;">6</span>
+  </div>
+
+  <!-- the pad itself -->
+  <div style="position: absolute; right: 26px; top: 96px; width: 356px; background: #FFFDF8; border: 1px solid rgba(42,35,28,.12); border-radius: 20px; box-shadow: 0 4px 10px rgba(58,44,28,.07), 0 24px 56px rgba(58,44,28,.16); overflow: hidden;">
+
+    <!-- drag handle -->
+    <div style="display: flex; align-items: center; gap: 10px; padding: 13px 15px; border-bottom: 1px solid rgba(42,35,28,.09); background: rgba(197,165,126,.12); cursor: grab;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A8804A" stroke-width="2" stroke-linecap="round" style="flex: none;"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+      <span style="flex: 1; font-size: 13px; font-weight: 800; color: #2A231C;">Your notes</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6E6357" stroke-width="2" stroke-linecap="round" style="flex: none;"><path d="M5 12h14"/></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6E6357" stroke-width="2" stroke-linecap="round" style="flex: none;"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </div>
+
+    <!-- filter -->
+    <div style="display: flex; gap: 6px; padding: 12px 15px 0;">
+      <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; background: #8F6A38; color: #FFFDF8; border-radius: 999px; padding: 5px 10px;">All</span>
+      <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; background: rgba(42,35,28,.05); color: #6E6357; border-radius: 999px; padding: 5px 10px;">To do</span>
+      <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; background: rgba(42,35,28,.05); color: #6E6357; border-radius: 999px; padding: 5px 10px;">Ideas</span>
+    </div>
+
+    <!-- notes -->
+    <div style="display: flex; flex-direction: column; gap: 8px; padding: 12px 15px 15px;">
+
+      <div style="padding: 12px 14px; background: #FCF6EA; border-radius: 13px;">
+        <div style="font-size: 12.5px; line-height: 1.55; color: #2A231C; margin-bottom: 7px;">Ask grandmother whether she takes them before or after fajr. I assumed after.</div>
+        <div style="display: flex; align-items: center; gap: 7px;">
+          <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9px; letter-spacing: .09em; text-transform: uppercase; color: #8F6A38; background: rgba(197,165,126,.24); border-radius: 999px; padding: 3px 7px;">To do</span>
+          <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9px; color: rgba(42,35,28,.42);">FRI</span>
+        </div>
+      </div>
+
+      <div style="padding: 12px 14px; background: #FCF6EA; border-radius: 13px;">
+        <div style="font-size: 12.5px; line-height: 1.55; color: #2A231C; margin-bottom: 7px;">The spinning coin is not really two answers at once, it is that you cannot ask yet. Say it that way in my video.</div>
+        <div style="display: flex; align-items: center; gap: 7px;">
+          <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9px; letter-spacing: .09em; text-transform: uppercase; color: #1B6B4C; background: rgba(46,156,110,.14); border-radius: 999px; padding: 3px 7px;">Quantum</span>
+          <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9px; color: rgba(42,35,28,.42);">JUST NOW</span>
+        </div>
+      </div>
+
+      <div style="padding: 12px 14px; background: #FCF6EA; border-radius: 13px;">
+        <div style="font-size: 12.5px; line-height: 1.55; color: #2A231C; margin-bottom: 7px;">Idea for the car park men: they said the problem is not the heat, it is that there is no shade to wait in between cars. Different problem!</div>
+        <div style="display: flex; align-items: center; gap: 7px;">
+          <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9px; letter-spacing: .09em; text-transform: uppercase; color: #8F6A38; background: rgba(197,165,126,.24); border-radius: 999px; padding: 3px 7px;">Idea</span>
+          <span style="font-family: 'Geist Mono', Menlo, monospace; font-size: 9px; color: rgba(42,35,28,.42);">TUE</span>
+        </div>
+      </div>
+
+      <div style="padding: 12px 14px; background: #FCF6EA; border-radius: 13px; opacity: .55;">
+        <div style="font-size: 12.5px; line-height: 1.55; color: #2A231C; text-decoration: line-through;">Watch the ransomware lesson before Thursday</div>
+      </div>
+
+      <!-- new note -->
+      <div style="display: flex; align-items: center; gap: 9px; padding: 13px 14px; border: 1px dashed rgba(42,35,28,.20); border-radius: 13px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(42,35,28,.34)" stroke-width="2" stroke-linecap="round" style="flex: none;"><path d="M12 5v14M5 12h14"/></svg>
+        <span style="font-size: 12.5px; color: rgba(42,35,28,.36);">Write anything. It follows you everywhere.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- caption -->
+  <div style="position: absolute; right: 26px; bottom: 28px; width: 356px; box-sizing: border-box; padding: 14px 16px; background: rgba(197,165,126,.16); border: 1px solid #C5A57E; border-radius: 14px;">
+    <div style="font-size: 12.5px; line-height: 1.55; color: #2A231C;">The pad opens on every page in every majlis, keeps its place where you left it, and belongs to nothing. Notes are the child's, never assessed.</div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":820,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

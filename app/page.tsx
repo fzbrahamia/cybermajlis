@@ -424,6 +424,41 @@ export default function MajlisLanding() {
 
         <Divider />
 
+        {/* ══════ THE TRUNK ══════
+            The majalis above are the scope. This is the method that runs
+            through all three, so it sits under them rather than beside them. */}
+        <section style={{ padding: `0 ${gutter}` }}>
+          <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+            <Eyebrow>{isAR ? "ثم ماذا؟" : "AND THEN"}</Eyebrow>
+            <SectionTitle>
+              {isAR ? "لا تحتاج إلى فكرة لتبدأ" : "You do not need an idea to start"}
+            </SectionTitle>
+            <p style={{
+              margin: "18px auto 28px", maxWidth: 560,
+              fontFamily: crimson, fontSize: 17, lineHeight: 1.75, color: M.body,
+            }}>
+              {isAR
+                ? "كل مسابقة تطلب منك فكرة جاهزة لتشارك. نحن نبدأ قبل ذلك بكثير: لاحظ، سمّه، سوّه، جربه، ثم اشرحه."
+                : "Every competition asks you to arrive with an idea. We start long before that: notice, name, make, try, then tell."}
+            </p>
+            <a
+              href="/learn"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 10, minHeight: 48,
+                padding: "0 26px", borderRadius: RADIUS.pill,
+                background: M.action, color: M.cream, textDecoration: "none",
+                fontFamily: display(isAR), fontSize: isAR ? 16 : 13,
+                fontWeight: 700, letterSpacing: isAR ? 0 : "0.08em",
+                boxShadow: SHADOW.button,
+              }}
+            >
+              {isAR ? "ابدأ التعلّم" : "START LEARNING"}
+            </a>
+          </div>
+        </section>
+
+        <Divider />
+
         {/* ══════ WHO IS COMING IN ══════ */}
         <section style={{ padding: `0 ${gutter}` }}>
           <div style={{ maxWidth: 800, margin: "0 auto" }}>
