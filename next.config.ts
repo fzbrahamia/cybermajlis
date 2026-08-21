@@ -67,6 +67,10 @@ const nextConfig: NextConfig = {
     return [
       // basic/advanced were difficulty tiers of one subject and are now a single
       // Malware track. Keep old links and bookmarks working.
+      // the innovation track's rooms were renamed; old links still land
+      { source: "/problems", destination: "/board", permanent: true },
+      { source: "/investigate", destination: "/mine", permanent: true },
+      { source: "/passport", destination: "/mine", permanent: true },
       { source: "/dashboard/basic", destination: "/dashboard/malware", permanent: true },
       { source: "/dashboard/advanced", destination: "/dashboard/malware", permanent: true },
       { source: "/dashboard/basic/:slug", destination: "/dashboard/malware/:slug", permanent: true },

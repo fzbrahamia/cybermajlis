@@ -2,12 +2,23 @@
    Majlis is the company. It has no colour of its own: it wears all three
    of its majalis at once, held together with gold. Light surfaces only. */
 
+/* Cinzel is the wordmark and nothing else.
+
+   It is inscriptional Roman capitals: right for a name carved on a building,
+   wrong for a ten year old reading a sentence. The quantum theme settled this
+   already, and the landing kept using it everywhere. Now the logo keeps its
+   formality and every readable word is Nunito, which is what the rest of the
+   platform uses. */
 export const cinzel  = '"Cinzel", "Trajan Pro", Georgia, serif';
-export const crimson = '"Crimson Pro", "Crimson Text", Georgia, serif';
+export const nunito  = 'var(--font-nunito), "Nunito", ui-rounded, system-ui, sans-serif';
+export const crimson = nunito;
 export const mono    = '"Geist Mono", "JetBrains Mono", Menlo, monospace';
 
-/** Cinzel carries no Arabic glyphs, so Arabic falls back to the brand Naskh. */
-export const display = (isAR: boolean) => (isAR ? "var(--font-arabic), serif" : cinzel);
+/** The wordmark only. Arabic has no Cinzel, so it falls back to the brand Naskh. */
+export const wordmark = (isAR: boolean) => (isAR ? "var(--font-arabic), serif" : cinzel);
+
+/** Everything a person actually reads. */
+export const display = (isAR: boolean) => (isAR ? "var(--font-arabic), sans-serif" : nunito);
 
 export const M = {
   /** One surface for the whole page. Sections are never separated by colour. */

@@ -24,8 +24,6 @@ export type Domain = {
   /** The question the whole domain is arguing about right now. */
   open_en: string; open_ar: string;
   tone: string; tint: string;
-  concepts: number;
-  cases: number;
   /** The majlis that goes properly deep, when one exists. */
   deeper?: { href: string; en: string; ar: string };
 };
@@ -39,7 +37,6 @@ export const DOMAINS: Domain[] = [
     open_en: "How do you catch an attack nobody has ever seen before, without drowning in false alarms?",
     open_ar: "كيف تكتشف هجوماً لم يره أحد من قبل، دون أن تغرق في إنذارات كاذبة؟",
     tone: "#A8323F", tint: "rgba(168,50,63,.09)",
-    concepts: 7, cases: 1,
     deeper: { href: "/cybermajlis", en: "CyberMajlis", ar: "المجلس السيبراني" },
   },
   {
@@ -50,7 +47,6 @@ export const DOMAINS: Domain[] = [
     open_en: "Today's locks assume some arithmetic is slow to undo. What happens when it is not?",
     open_ar: "تفترض أقفال اليوم أن بعض الحساب بطيء في العكس. فماذا يحدث حين لا يعود كذلك؟",
     tone: "#2E9C6E", tint: "rgba(46,156,110,.09)",
-    concepts: 4, cases: 0,
     deeper: { href: "/quantum", en: "QuantumMajlis", ar: "مجلس الكم" },
   },
   {
@@ -61,7 +57,6 @@ export const DOMAINS: Domain[] = [
     open_en: "How do you know why it answered that, and who is responsible when it is wrong?",
     open_ar: "كيف تعرف لماذا أجاب بذلك، ومن المسؤول حين يخطئ؟",
     tone: "#3D6FB5", tint: "rgba(61,111,181,.09)",
-    concepts: 0, cases: 0,
   },
   {
     id: "space", live: false,
@@ -71,7 +66,6 @@ export const DOMAINS: Domain[] = [
     open_en: "How do you run serious computing in orbit, on little power, through radiation?",
     open_ar: "كيف تشغّل حوسبة جادة في المدار، بطاقة قليلة، وسط الإشعاع؟",
     tone: "#5D66AD", tint: "rgba(93,102,173,.09)",
-    concepts: 0, cases: 0,
   },
   {
     id: "biotech", live: false,
@@ -81,7 +75,6 @@ export const DOMAINS: Domain[] = [
     open_en: "Why do decades of research still not reach the people who need it most?",
     open_ar: "لماذا لا تصل عقود من البحث إلى من يحتاجونها أكثر من غيرهم؟",
     tone: "#1B6B4C", tint: "rgba(27,107,76,.09)",
-    concepts: 0, cases: 0,
   },
   {
     id: "energy", live: false,
@@ -91,7 +84,6 @@ export const DOMAINS: Domain[] = [
     open_en: "Can the machines keep growing without the power to run them growing faster?",
     open_ar: "هل يمكن للآلات أن تكبر دون أن تكبر الطاقة اللازمة لها أسرع منها؟",
     tone: "#A8804A", tint: "rgba(168,128,74,.09)",
-    concepts: 0, cases: 0,
   },
 ];
 
@@ -230,25 +222,43 @@ export const CASES: Case[] = [
         breaks_en: "Against an attack that does its damage on one machine and never moves, it has nothing to see.",
         breaks_ar: "أمام هجوم يُحدث ضرره على جهاز واحد ولا يتحرك، لا يجد ما يراه.",
       },
+      {
+        id: "segmentation",
+        name_en: "Segmentation", name_ar: "التقسيم",
+        problem_en: "Why are we trying to see it at all? Stop it moving.",
+        problem_ar: "لماذا نحاول رؤيته أصلاً؟ امنع تحركه.",
+        insight_en: "Detection is a race you can lose. A wall between rooms is not a race.",
+        insight_ar: "الكشف سباق يمكن أن تخسره. أما جدار بين الغرفتين فليس سباقاً.",
+        mechanism_en: "Split one flat network into many small ones, and allow each machine to reach only the handful it genuinely needs. The scanner talks to two servers and nothing else, by rule, always.",
+        mechanism_ar: "قسّم شبكة واحدة مسطحة إلى شبكات صغيرة كثيرة، ودع كل جهاز يصل إلى القلة التي يحتاجها فعلاً. الماسح يتحدث إلى خادمين ولا شيء غيرهما، بقاعدة ثابتة.",
+        assumption_en: "That somebody knows, in advance, which machine legitimately needs to reach which.",
+        assumption_ar: "أن أحداً يعرف، مسبقاً، أي جهاز يحتاج فعلاً إلى الوصول إلى أي جهاز.",
+        sacrifice_en: "Speed for the people doing the work. Every wall is one more thing that can stand between a doctor and a scan.",
+        sacrifice_ar: "سرعة من يؤدون العمل. فكل جدار شيء إضافي قد يقف بين طبيب وصورة أشعة.",
+        works_en: "It would have stopped this. One infected machine infects one room, not fourteen hospitals, and it protects the scanner without touching the scanner.",
+        works_ar: "كان سيوقف هذا. فالجهاز المصاب يصيب غرفة واحدة لا أربعة عشر مستشفى، ويحمي الماسح دون لمسه.",
+        breaks_en: "Against the hospital itself. Clinicians route around anything that slows them down, and a rule that gets in the way of care is switched off within a month.",
+        breaks_ar: "ينكسر أمام المستشفى نفسه. فالأطباء يلتفون حول كل ما يبطئهم، والقاعدة التي تعرقل الرعاية تُطفأ خلال شهر.",
+      },
     ],
     collision_en: [
       { head_en: "Where their insights contradict each other",
         body_en: "Darktrace says the network is the truth and the machine lies. CrowdStrike says the machine is the truth and the network is a guess. Both are right, which tells you the problem has two halves and no one has both." },
       { head_en: "The assumption all three share",
         body_en: "Every one of them assumes somebody is watching the output. Darktrace needs a human to judge an anomaly, CrowdStrike needs someone to install and maintain agents, Vectra needs someone to act while an intrusion is still in progress. None of them survive a hospital with two overworked staff on a Friday night, and that is the actual condition of most of the places that get hit." },
-      { head_en: "The wall all three hit",
-        body_en: "The machine that cannot be changed. The scanner, the old controller, the device the manufacturer will not support. It cannot take an agent, its normal is too strange to model, and it often cannot be taken off the network because the hospital needs it. Three different routes, one identical dead end." },
+      { head_en: "The one that would have worked, and did not happen",
+        body_en: "Segmentation would have stopped this, and it needs no agent on the scanner at all. It is standard practice and it is written into guidance. It mostly does not get done, because every wall is one more thing between a doctor and a scan, and a rule that slows down care gets switched off within a month. The wall the first three hit is technical. The wall this one hits is a hospital." },
     ],
     collision_ar: [
       { head_ar: "أين تتناقض رؤاهم",
         body_ar: "تقول دارك تريس إن الشبكة هي الحقيقة وإن الجهاز يكذب. وتقول كراود سترايك إن الجهاز هو الحقيقة وإن الشبكة تخمين. وكلاهما محق، وهذا يخبرك أن للمشكلة نصفين ولا أحد يملك النصفين معاً." },
       { head_ar: "الافتراض الذي يشتركون فيه جميعاً",
         body_ar: "كل واحد منهم يفترض أن هناك من يراقب المخرجات. فدارك تريس تحتاج إنساناً يحكم على الشذوذ، وكراود سترايك تحتاج من يثبت الوكلاء ويصونها، وفيكترا تحتاج من يتصرف والاختراق جار. ولا ينجو أي منها في مستشفى فيه موظفان منهكان ليلة جمعة، وهذا هو الحال الفعلي لمعظم الأماكن التي تُصاب." },
-      { head_ar: "الجدار الذي اصطدمت به ثلاثتها",
-        body_ar: "الجهاز الذي لا يمكن تغييره. الماسح، ووحدة التحكم القديمة، والجهاز الذي لن تدعمه الشركة المصنعة. لا يقبل وكيلاً، وطبيعيه أغرب من أن يُنمذج، وغالباً لا يمكن فصله عن الشبكة لأن المستشفى يحتاجه. ثلاثة طرق مختلفة، ونهاية مسدودة واحدة." },
+      { head_ar: "الحل الذي كان سينجح، ولم يحدث",
+        body_ar: "التقسيم كان سيوقف هذا، ولا يحتاج وكيلاً على الماسح إطلاقاً. وهو ممارسة معيارية ومكتوب في الإرشادات. لكنه لا يُنفَّذ غالباً، لأن كل جدار شيء إضافي بين طبيب وصورة أشعة، والقاعدة التي تبطئ الرعاية تُطفأ خلال شهر. الجدار الذي اصطدمت به الثلاثة الأولى تقني. أما جدار هذا فهو المستشفى نفسه." },
     ],
-    gap_en: "What is needed is a way to protect a machine that cannot be modified, cannot be updated, and cannot be taken off the network, without requiring a person to be watching at the moment it matters.",
-    gap_ar: "المطلوب طريقة لحماية جهاز لا يمكن تعديله، ولا تحديثه، ولا فصله عن الشبكة، دون أن تتطلب وجود شخص يراقب في اللحظة الحاسمة.",
+    gap_en: "What is needed is a way to protect a machine that cannot be modified, without a person watching at the moment it matters, and without ever standing between a clinician and the patient in front of them.",
+    gap_ar: "المطلوب طريقة لحماية جهاز لا يمكن تعديله، دون أن يراقب شخص في اللحظة الحاسمة، ودون أن تقف يوماً بين طبيب والمريض الذي أمامه.",
     needs: ["malware", "normal-traffic", "behavioural-detection", "endpoints", "zero-day"],
   },
 ];

@@ -28,12 +28,55 @@ export type EdgeType =
 
 export type Edge = { from: string; to: string; type: EdgeType };
 
+export type Category = {
+  id: string;
+  domain: string;
+  name_en: string; name_ar: string;
+  line_en: string; line_ar: string;
+  /** Its own hue inside the domain, so a map reads at a glance. */
+  tone: string;
+};
+
+export const CATEGORIES: Category[] = [
+  {
+    id: "networks", domain: "cybersecurity",
+    name_en: "Networks and the internet", name_ar: "الشبكات والإنترنت",
+    line_en: "How anything gets from one machine to another.",
+    line_ar: "كيف ينتقل أي شيء من جهاز إلى آخر.",
+    tone: "#3D6FB5",
+  },
+  {
+    id: "malware", domain: "cybersecurity",
+    name_en: "Malware", name_ar: "البرمجيات الخبيثة",
+    line_en: "Software written to work against you, and how it travels.",
+    line_ar: "برمجيات كُتبت ضدك، وكيف تنتقل.",
+    tone: "#A8323F",
+  },
+  {
+    id: "encryption", domain: "cybersecurity",
+    name_en: "Encryption", name_ar: "التشفير",
+    line_en: "Locking something so only one person can open it.",
+    line_ar: "قفل شيء بحيث لا يفتحه إلا شخص واحد.",
+    tone: "#2E9C6E",
+  },
+  {
+    id: "detection", domain: "cybersecurity",
+    name_en: "Detection", name_ar: "الكشف",
+    line_en: "Noticing something is wrong, and the price of noticing too much.",
+    line_ar: "ملاحظة أن شيئاً ما خطأ، وثمن الإفراط في الملاحظة.",
+    tone: "#8F6A38",
+  },
+];
+
+export const categoryById = (id: string) => CATEGORIES.find(c => c.id === id);
+export const categoriesForDomain = (d: string) => CATEGORIES.filter(c => c.domain === d);
+
 export type ConceptState = "known" | "open" | "loop" | "locked";
 
 export type Check = {
   q_en: string; q_ar: string;
-  /** "explain" cannot be marked by a machine alone; "recall" can. Both are kept
-      because a multiple choice question cannot test whether someone understood. */
+  /** "explain" cannot be marked by a machine alone; "recall" can. The learner
+      is never told this; it is a fact about the data, not a line of copy. */
   kind: "recall" | "explain";
 };
 
@@ -42,6 +85,8 @@ export type Concept = {
   /** Which domain's map this sits on. Concepts can be shared later; the bridge
       edge already records where one reaches into another majlis. */
   domain: string;
+  /** Which category inside that domain. */
+  category: string;
   state: ConceptState;
   name_en: string; name_ar: string;
   /** One line, on the card. */
@@ -63,6 +108,7 @@ export const CONCEPTS: Concept[] = [
   {
     id: "internet",
     domain: "cybersecurity",
+    category: "networks",
     state: "known",
     name_en: "How a message crosses the world", name_ar: "كيف تعبر الرسالة العالم",
     line_en: "Nothing travels. It is copied, over and over.",
@@ -90,6 +136,7 @@ export const CONCEPTS: Concept[] = [
   {
     id: "malware",
     domain: "cybersecurity",
+    category: "malware",
     state: "known",
     name_en: "Software written to work against you", name_ar: "برمجيات كُتبت ضدك",
     line_en: "It is not magic and it is not alive. Somebody wrote it.",
@@ -118,6 +165,7 @@ export const CONCEPTS: Concept[] = [
   {
     id: "normal-traffic",
     domain: "cybersecurity",
+    category: "networks",
     state: "known",
     name_en: "What normal looks like", name_ar: "كيف يبدو الوضع الطبيعي",
     line_en: "You cannot notice something strange until you know what ordinary is.",
@@ -145,6 +193,7 @@ export const CONCEPTS: Concept[] = [
   {
     id: "behavioural-detection",
     domain: "cybersecurity",
+    category: "detection",
     state: "loop",
     name_en: "Catching what you have never seen", name_ar: "اصطياد ما لم تره قط",
     line_en: "Watch behaviour instead of matching a list.",
@@ -173,6 +222,7 @@ export const CONCEPTS: Concept[] = [
   {
     id: "endpoints",
     domain: "cybersecurity",
+    category: "detection",
     state: "open",
     name_en: "The machine on the desk", name_ar: "الجهاز على الطاولة",
     line_en: "The last place a defence can stand, and the place people actually sit.",
@@ -201,6 +251,7 @@ export const CONCEPTS: Concept[] = [
   {
     id: "encryption",
     domain: "cybersecurity",
+    category: "encryption",
     state: "known",
     name_en: "Locking a message", name_ar: "قفل الرسالة",
     line_en: "Scrambling something so only one person can unscramble it.",
@@ -229,6 +280,7 @@ export const CONCEPTS: Concept[] = [
   {
     id: "zero-day",
     domain: "cybersecurity",
+    category: "malware",
     state: "locked",
     name_en: "A hole nobody has patched", name_ar: "ثغرة لم يرقّعها أحد",
     line_en: "The mistake that is already in the software you trust.",
@@ -253,10 +305,72 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Give one reason a hospital might not install a repair it knows about.", q_ar: "أعط سبباً واحداً قد يمنع مستشفى من تثبيت إصلاح يعلم به.", kind: "explain" },
     ],
   },
+  {
+    id: "malware-spread",
+    domain: "cybersecurity",
+    category: "malware",
+    state: "open",
+    name_en: "How malware crosses the world", name_ar: "كيف تعبر البرمجية الخبيثة العالم",
+    line_en: "It does not need carrying. It rides on things you already trust.",
+    line_ar: "لا تحتاج من يحملها. بل تركب ما تثق به أصلاً.",
+    minutes: 4,
+    picture_en: "One infected attachment turning into a hundred infected machines, without anyone deciding to spread it.",
+    picture_ar: "مرفق واحد مصاب يتحول إلى مئة جهاز مصاب، دون أن يقرر أحد نشره.",
+    body_en: [
+      "Malware travels the same roads as any ordinary file: an email attachment, a shared drive, a USB stick, a link in a chat.",
+      "The machine that opens it does the copying. Malware does not move itself; something running on the machine moves it.",
+      "So one click on one machine can become an infection on twenty. Every machine that runs it becomes a new starting point, and the network's normal paths for sharing become its paths for spreading.",
+    ],
+    body_ar: [
+      "تسافر البرمجية الخبيثة في الطرق نفسها التي يسلكها أي ملف عادي: مرفق بريد، أو قرص مشترك، أو ذاكرة محمولة، أو رابط في محادثة.",
+      "والجهاز الذي يفتحها هو من ينسخها. فهي لا تتحرك بنفسها؛ بل يحركها شيء يعمل على الجهاز.",
+      "فنقرة واحدة على جهاز واحد قد تصير إصابة في عشرين. وكل جهاز يشغّلها يصير نقطة انطلاق جديدة، وتصير طرق الشبكة المعتادة للمشاركة طرقها للانتشار.",
+    ],
+    caveat_en: "Not all malware spreads on its own. Some sits on the machine that first got it and waits to be told what to do. Spreading is a choice the author made, not a guaranteed feature.",
+    caveat_ar: "ليست كل البرمجيات الخبيثة تنتشر وحدها. بعضها يجلس على أول جهاز أصابه وينتظر أن يُؤمر. فالانتشار خيار اختاره كاتبها، لا خاصية مضمونة.",
+    checks: [
+      { q_en: "Name one ordinary path malware can travel along.", q_ar: "اذكر طريقاً عادياً واحداً قد تسلكه البرمجية الخبيثة.", kind: "recall" },
+      { q_en: "Why can a piece of malware not move itself from machine to machine?", q_ar: "لماذا لا تستطيع البرمجية الخبيثة نقل نفسها من جهاز إلى جهاز؟", kind: "explain" },
+    ],
+    deeper: { href: "/dashboard/malware", en: "Four malware lessons in CyberMajlis", ar: "أربعة دروس عن البرمجيات الخبيثة في المجلس السيبراني", tone: "#A8323F" },
+  },
+  {
+    id: "ransomware",
+    domain: "cybersecurity",
+    category: "encryption",
+    state: "locked",
+    name_en: "Locking your files without your key", name_ar: "قفل ملفاتك بلا مفتاحك",
+    line_en: "The same trick that protects your messages can be turned against you.",
+    line_ar: "الحيلة نفسها التي تحمي رسائلك يمكن أن تُوجَّه ضدك.",
+    minutes: 5,
+    picture_en: "Every file on a machine scrambled in minutes, with the only key held by a stranger.",
+    picture_ar: "كل ملف على الجهاز مخلوط خلال دقائق، والمفتاح الوحيد بيد غريب.",
+    body_en: [
+      "Encryption scrambles something so only the holder of a key can unscramble it. That is what keeps your messages private.",
+      "Ransomware is the same tool pointed at you instead of for you. It runs on your machine, scrambles your own files with a key it makes, and sends that key to whoever wrote it. Not to you.",
+      "What made encryption safe to hand out to the whole world is exactly what makes this hard to undo: easy forwards, enormously slow backwards without the key.",
+    ],
+    body_ar: [
+      "التشفير يخلط شيئاً بحيث لا يفكه إلا من يملك المفتاح. وهذا ما يبقي رسائلك خاصة.",
+      "وبرمجية الفدية هي الأداة نفسها موجَّهة إليك لا من أجلك. تعمل على جهازك، وتخلط ملفاتك بمفتاح تصنعه، وترسل ذلك المفتاح إلى من كتبها. لا إليك.",
+      "وما جعل التشفير آمناً لتوزيعه على العالم هو نفسه ما يجعل هذا صعب الفك: سهل في اتجاه، وبطيء جداً في عكسه بلا المفتاح.",
+    ],
+    caveat_en: "Paying does not guarantee you get the key back. You are trusting the people who just locked your files to keep a deal nobody can enforce.",
+    caveat_ar: "الدفع لا يضمن استعادة المفتاح. فأنت تأتمن من قفل ملفاتك للتو على صفقة لا يستطيع أحد إنفاذها.",
+    checks: [
+      { q_en: "What does ransomware do to a machine's files?", q_ar: "ماذا تفعل برمجية الفدية بملفات الجهاز؟", kind: "recall" },
+      { q_en: "Why is the same maths that keeps your messages private also what makes this so hard to undo?", q_ar: "لماذا تكون الرياضيات نفسها التي تحمي رسائلك هي ما يجعل فك هذا صعباً جداً؟", kind: "explain" },
+    ],
+    deeper: { href: "/quantum", en: "Quantum Keys, in QuantumMajlis", ar: "المفاتيح الكمّية، في مجلس الكم", tone: "#2E9C6E" },
+  },
 ];
 
 export const EDGES: Edge[] = [
   { from: "internet", to: "malware", type: "hard" },
+  { from: "malware", to: "malware-spread", type: "hard" },
+  { from: "internet", to: "malware-spread", type: "soft" },
+  { from: "encryption", to: "ransomware", type: "hard" },
+  { from: "malware", to: "ransomware", type: "hard" },
   { from: "internet", to: "normal-traffic", type: "hard" },
   { from: "internet", to: "endpoints", type: "hard" },
   { from: "internet", to: "encryption", type: "hard" },
@@ -293,3 +407,4 @@ export const NEEDED_FOR: Record<string, string[]> = {
 };
 
 export const conceptsForDomain = (d: string) => CONCEPTS.filter(c => c.domain === d);
+export const conceptsForCategory = (cat: string) => CONCEPTS.filter(c => c.category === cat);

@@ -19,7 +19,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   // The innovation track sits at the same level: the five moves are the method,
   // and the method belongs to the company rather than to any one majlis. Those
   // routes carry components/innovation/InnovationChrome.tsx instead.
-  const MAJLIS_LEVEL = ["/learn", "/sundus", "/investigate", "/problems", "/passport"];
+  // The account is shared across all three majalis, so the door and the
+  // account pages belong to Majlis too. They were rendering the CyberMajlis
+  // navbar and footer, which made signing in look like entering CyberMajlis.
+  // Majlis has its own door at /enter and its own account at /account.
+  // /auth, /profile and /settings belong to CyberMajlis, chrome and all.
+  const MAJLIS_LEVEL = [
+    "/learn", "/board", "/latest", "/mine", "/account", "/enter",
+  ];
   const isMajlisRoot =
     pathname === "/" ||
     MAJLIS_LEVEL.some(p => pathname === p || pathname.startsWith(p + "/"));

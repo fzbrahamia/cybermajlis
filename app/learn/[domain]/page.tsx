@@ -12,7 +12,7 @@ import { useLocale } from "next-intl";
 import { ArrowLeft, ArrowRight, Check, Clock, Lock, RotateCcw, ExternalLink } from "lucide-react";
 import { InnovationPage } from "@/components/innovation/InnovationChrome";
 import { domainById, casesForDomain } from "@/app/lib/domainData";
-import { conceptsForDomain, conceptById } from "@/app/lib/conceptData";
+import { conceptsForDomain, conceptById, categoriesForDomain, conceptsForCategory } from "@/app/lib/conceptData";
 import { M, mono, label, card, flat, button, quietPill } from "@/components/innovation/theme";
 
 const STATE_ICON = { known: Check, open: ArrowRight, loop: RotateCcw, locked: Lock };
@@ -88,47 +88,65 @@ export default function DomainPage() {
         </span>
       </div>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr))",
-        gap: 11, marginBottom: 30,
-      }}>
-        {concepts.map(c => {
-          const Icon = STATE_ICON[c.state];
-          const locked = c.state === "locked";
-          const inner = (
-            <div style={{
-              ...card, height: "100%", padding: "17px 19px 18px",
-              display: "flex", flexDirection: "column", gap: 8,
-              background: c.state === "known" ? M.goldSoft : M.card,
-              border: c.state === "known" ? `1px solid ${M.gold}`
-                : c.state === "open" ? `2px solid ${M.action}`
-                : c.state === "loop" ? `2px dashed ${M.goldDeep}`
-                : `1px dashed rgba(42,35,28,.18)`,
-              opacity: locked ? 0.55 : 1,
-            }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-                <span style={{ ...quietPill, color: locked ? M.body : M.action }}>
-                  {isAR ? STATE_TEXT[c.state].ar : STATE_TEXT[c.state].en}
+      {/* grouped by category, which is the level a case pulls from */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 26, marginBottom: 34 }}>
+        {categoriesForDomain(d.id).map(cat => {
+          const list = conceptsForCategory(cat.id);
+          if (list.length === 0) return null;
+          return (
+            <div key={cat.id}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 11, flexWrap: "wrap", marginBottom: 4 }}>
+                <span aria-hidden style={{ width: 20, height: 4, borderRadius: 2, background: cat.tone }} />
+                <span style={{ fontSize: 17, fontWeight: 900, color: cat.tone, letterSpacing: "-0.01em" }}>
+                  {isAR ? cat.name_ar : cat.name_en}
                 </span>
-                <Icon size={15} strokeWidth={2.2} color={locked ? M.body : M.action} />
               </div>
-              <div style={{ fontSize: 15.5, fontWeight: 800, color: M.heading, lineHeight: 1.35 }}>
-                {isAR ? c.name_ar : c.name_en}
-              </div>
-              <div style={{ fontSize: 12.5, lineHeight: 1.5 }}>{isAR ? c.line_ar : c.line_en}</div>
+              <p style={{ margin: "0 0 12px 31px", fontSize: 13.5, lineHeight: 1.55, color: M.body, maxWidth: "42ch" }}>
+                {isAR ? cat.line_ar : cat.line_en}
+              </p>
               <div style={{
-                marginTop: "auto", paddingTop: 9, display: "inline-flex", alignItems: "center", gap: 5,
-                fontFamily: mono, fontSize: 9.5, letterSpacing: "0.09em",
-                textTransform: "uppercase", color: M.goldDeep,
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr))",
+                gap: 11,
               }}>
-                <Clock size={10} /> {c.minutes} {isAR ? "دقائق" : "min film"}
+                {list.map(c => {
+                  const Icon = STATE_ICON[c.state];
+                  const locked = c.state === "locked";
+                  const inner = (
+                    <div style={{
+                      ...card, height: "100%", padding: "17px 19px 18px",
+                      display: "flex", flexDirection: "column", gap: 8,
+                      background: c.state === "known" ? M.goldSoft : M.card,
+                      borderTop: `3px solid ${cat.tone}`,
+                      border: c.state === "open" ? `2px solid ${cat.tone}` : undefined,
+                      opacity: locked ? 0.55 : 1,
+                    }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                        <span style={{ ...quietPill, color: locked ? M.body : cat.tone }}>
+                          {isAR ? STATE_TEXT[c.state].ar : STATE_TEXT[c.state].en}
+                        </span>
+                        <Icon size={15} strokeWidth={2.2} color={locked ? M.body : cat.tone} />
+                      </div>
+                      <div style={{ fontSize: 15.5, fontWeight: 800, color: M.heading, lineHeight: 1.35 }}>
+                        {isAR ? c.name_ar : c.name_en}
+                      </div>
+                      <div style={{ fontSize: 12.5, lineHeight: 1.5 }}>{isAR ? c.line_ar : c.line_en}</div>
+                      <div style={{
+                        marginTop: "auto", paddingTop: 9, display: "inline-flex", alignItems: "center", gap: 5,
+                        fontFamily: mono, fontSize: 9.5, letterSpacing: "0.09em",
+                        textTransform: "uppercase", color: M.goldDeep,
+                      }}>
+                        <Clock size={10} /> {c.minutes} {isAR ? "دقائق" : "min film"}
+                      </div>
+                    </div>
+                  );
+                  return locked
+                    ? <div key={c.id}>{inner}</div>
+                    : <Link key={c.id} href={`/learn/${d.id}/concept/${c.id}`} style={{ textDecoration: "none", display: "block" }}>{inner}</Link>;
+                })}
               </div>
             </div>
           );
-          return locked
-            ? <div key={c.id}>{inner}</div>
-            : <Link key={c.id} href={`/learn/${d.id}/concept/${c.id}`} style={{ textDecoration: "none", display: "block" }}>{inner}</Link>;
         })}
       </div>
 
@@ -139,11 +157,6 @@ export default function DomainPage() {
           {isAR ? "حالات حقيقية" : "Real cases"}
         </span>
       </div>
-      <p style={{ margin: "0 0 14px", maxWidth: "44rem", fontSize: 13.5, lineHeight: 1.65 }}>
-        {isAR
-          ? "مشكلة حقيقية حدثت، وكل من حاول حلها جدياً، وأين توقف كل واحد منهم. تخرج منها بفجوة محددة، لا برأي."
-          : "A real problem that happened, everyone who seriously tried, and where each of them stopped. You leave with a stated gap, not an opinion."}
-      </p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         {cases.map(cs => (
@@ -152,7 +165,7 @@ export default function DomainPage() {
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
                 <span style={{ ...quietPill }}>{cs.year}</span>
                 <span style={{ ...quietPill }}>
-                  {cs.approaches.length} {isAR ? "محاولات حقيقية" : "real attempts"}
+                  {cs.approaches.length} {isAR ? "محاولات" : "attempts"}
                 </span>
               </div>
               <div style={{ fontSize: 18.5, fontWeight: 800, color: M.heading, lineHeight: 1.35, marginBottom: 8 }}>

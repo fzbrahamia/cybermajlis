@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { Globe, Menu, X } from "lucide-react";
-import { M, BRANCHES, MODES, display, crimson, mono, RADIUS } from "./theme";
+import { M, BRANCHES, MODES, display, wordmark, crimson, mono, RADIUS } from "./theme";
 import PolicyDialog from "@/components/PolicyDialog";
 
 function setLocaleCookie(locale: string) {

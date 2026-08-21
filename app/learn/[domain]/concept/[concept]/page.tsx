@@ -14,7 +14,10 @@ import { Play, ArrowLeft, ArrowRight, Clock, ExternalLink } from "lucide-react";
 import { InnovationPage } from "@/components/innovation/InnovationChrome";
 import { conceptById, prereqsOf, unlockedBy, EDGE_LABEL } from "@/app/lib/conceptData";
 import { domainById } from "@/app/lib/domainData";
-import { M, mono, label, card, flat, button, quietPill, ROUDA } from "@/components/innovation/theme";
+import { M, sans, mono, label, card, flat, button, quietPill, ROUDA } from "@/components/innovation/theme";
+import { Face } from "@/components/innovation/Alive";
+import VideoSlot from "@/components/innovation/VideoSlot";
+import AskHamad from "@/components/innovation/AskHamad";
 
 export default function ConceptPage() {
   const isAR = useLocale() === "ar";
@@ -91,26 +94,21 @@ export default function ConceptPage() {
 
       {/* the film */}
       <div style={{ ...card, padding: "22px 24px", marginBottom: 16 }}>
-        <div style={{
-          display: "flex", alignItems: "center", gap: 16, padding: "18px 20px",
-          background: M.goldSoft, borderRadius: 16, marginBottom: 18,
-        }}>
-          <span style={{
-            width: 48, height: 48, borderRadius: "50%", background: M.action,
-            display: "grid", placeItems: "center", flex: "none",
-          }}>
-            <Play size={19} fill={M.cream} color={M.cream} />
-          </span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 15, fontWeight: 800, color: M.heading, marginBottom: 3 }}>
-              {isAR ? c.name_ar : c.name_en}
-            </div>
-            <div style={{ fontSize: 12.5, lineHeight: 1.5 }}>
-              {isAR
-                ? "فيلم قائم بذاته. لا يتبع شيئاً ولا يمهد لشيء."
-                : "A self-contained film. It follows nothing and sets up nothing."}
-            </div>
-          </div>
+        <div style={{ marginBottom: 18 }}>
+          <VideoSlot minutes={c.minutes} brief_en={c.picture_en} brief_ar={c.picture_ar} />
+        </div>
+
+        {/* he sits under the film, inside the lesson, not off in a corner */}
+        <div style={{ marginBottom: 22 }}>
+          <AskHamad
+            about={[
+              `Concept: ${c.name_en}`,
+              `In one line: ${c.line_en}`,
+              `They should be able to picture: ${c.picture_en}`,
+              ...c.body_en,
+              `Where the simple version stops being true: ${c.caveat_en}`,
+            ].join("\n")}
+          />
         </div>
 
         <div style={{ ...label, fontSize: 10, marginBottom: 8 }}>
@@ -146,10 +144,7 @@ export default function ConceptPage() {
         background: ROUDA.tint, border: `1px solid ${ROUDA.line}`, borderRadius: 18,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14, flexWrap: "wrap" }}>
-          <span style={{
-            width: 30, height: 30, borderRadius: "50%", background: ROUDA.mid,
-            display: "grid", placeItems: "center", fontSize: 13, fontWeight: 800, color: "#fff",
-          }}>R</span>
+          <Face who="rouda" size={36} />
           <span style={{ fontSize: 15, fontWeight: 800, color: ROUDA.deep }}>
             {isAR ? "قبل أن تمضي" : "Before you move on"}
           </span>
@@ -173,15 +168,6 @@ export default function ConceptPage() {
           </div>
         ))}
 
-        <p style={{
-          margin: "12px 0 0", paddingTop: 12,
-          borderTop: `1px solid rgba(27,107,76,.14)`,
-          fontSize: 12.5, lineHeight: 1.6, color: M.body,
-        }}>
-          {isAR
-            ? "أسئلة التذكّر يمكن تصحيحها آلياً. أما أسئلة الشرح فلا، وهذا مقصود: الاختيار من متعدد يثبت أنك قرأت، لا أنك فهمت."
-            : "Recall questions can be marked by a machine. Explain questions cannot, and that is deliberate: a multiple choice question proves you read it, not that you understood it."}
-        </p>
       </div>
 
       <div style={{

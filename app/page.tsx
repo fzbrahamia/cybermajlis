@@ -11,7 +11,7 @@ import {
   Backpack, Users, GraduationCap, Lock, Check,
 } from "lucide-react";
 import {
-  M, BRANCHES, MODES, container, item, display, crimson, mono,
+  M, BRANCHES, MODES, container, item, display, wordmark, crimson, mono,
   EASE, EASE_SLOW, SPRING, SHADOW, RADIUS, GRAIN,
 } from "@/components/majlis/theme";
 import { MajlisHeader, MajlisFooter, MajlisMark } from "@/components/majlis/MajlisChrome";
@@ -115,7 +115,7 @@ function Wordmark({ isAR }: { isAR: boolean }) {
         animate={{ opacity: 1, scale: 1 }}
         transition={SPRING}
         style={{
-          fontFamily: display(true), fontWeight: 900, fontSize: size,
+          fontFamily: wordmark(true), fontWeight: 900, fontSize: size,
           color: M.heading, margin: "20px 0 0", lineHeight: 1.1,
         }}
       >
@@ -129,7 +129,7 @@ function Wordmark({ isAR }: { isAR: boolean }) {
 
   return (
     <h1 style={{
-      fontFamily: display(false), fontWeight: 900, fontSize: size,
+      fontFamily: wordmark(false), fontWeight: 900, fontSize: size,
       lineHeight: 1, margin: "20px 0 0", display: "flex", justifyContent: "center",
       letterSpacing: "-0.03em",
     }}>
@@ -171,8 +171,8 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <h2 style={{
       fontFamily: display(isAR), fontWeight: 900, textAlign: "center",
-      fontSize: "clamp(1.9rem,3.8vw,2.9rem)", lineHeight: 1.12,
-      letterSpacing: isAR ? 0 : "-0.02em", margin: 0, color: M.heading,
+      fontSize: "clamp(1.9rem,3.8vw,2.9rem)", lineHeight: 1.15,
+      letterSpacing: isAR ? 0 : "-0.025em", margin: 0, color: M.heading,
     }}>
       {children}
     </h2>
@@ -321,15 +321,37 @@ export default function MajlisLanding() {
             </motion.p>
 
             <motion.div variants={item} style={{
-              display: "inline-flex", alignItems: "center", gap: 9, marginTop: 26,
-              padding: "9px 20px", borderRadius: RADIUS.pill,
-              background: M.goldSoft, border: `1px solid ${M.gold}55`,
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)",
-              fontFamily: mono, fontSize: 10, fontWeight: 500,
-              letterSpacing: isAR ? 0 : "0.2em", color: M.goldDeep,
+              display: "flex", flexDirection: "column", alignItems: "center", gap: 14, marginTop: 34,
             }}>
-              <Lock size={11} />
-              {isAR ? "آمن بالتصميم" : "SECURE BY DESIGN"}
+              <a href="/learn" style={{
+                display: "inline-flex", alignItems: "center", gap: 11, minHeight: 56,
+                padding: "0 38px", borderRadius: RADIUS.pill,
+                background: M.action, color: M.cream, textDecoration: "none",
+                fontFamily: display(isAR), fontSize: isAR ? 18 : 14,
+                fontWeight: 700, letterSpacing: isAR ? 0 : "0.09em",
+                boxShadow: SHADOW.button,
+              }}>
+                {isAR ? "ابدأ التعلّم" : "START LEARNING"}
+                <ArrowRight size={16} />
+              </a>
+
+              <div style={{
+                display: "flex", alignItems: "center", gap: 26, flexWrap: "wrap",
+                justifyContent: "center", fontFamily: crimson, fontSize: 15, color: M.body,
+              }}>
+                <a href="/enter?signup=true&next=/learn" style={{
+                  color: M.action, textDecoration: "none",
+                  borderBottom: `1px solid ${M.gold}`, paddingBottom: 2,
+                }}>
+                  {isAR ? "أنشئ حساباً" : "Make an account"}
+                </a>
+                <a href="/enter?next=/learn" style={{
+                  color: M.body, textDecoration: "none",
+                  borderBottom: `1px solid ${M.gold}`, paddingBottom: 2,
+                }}>
+                  {isAR ? "تسجيل الدخول" : "Sign in"}
+                </a>
+              </div>
             </motion.div>
 
             <motion.div variants={item}>
@@ -339,12 +361,11 @@ export default function MajlisLanding() {
                 whileTap={reduce ? undefined : { scale: 0.98 }}
                 transition={SPRING}
                 style={{
-                  marginTop: 34, cursor: "pointer", border: "none",
-                  display: "inline-flex", alignItems: "center", gap: 11,
-                  padding: "17px 36px", borderRadius: RADIUS.pill, color: M.cream,
-                  fontFamily: display(isAR), fontSize: 13, fontWeight: 700,
-                  letterSpacing: isAR ? 0 : "0.12em",
-                  background: M.action, boxShadow: SHADOW.button,
+                  marginTop: 56, cursor: "pointer", border: "none",
+                  display: "inline-flex", alignItems: "center", gap: 9,
+                  padding: "10px 4px", background: "transparent", color: M.goldDeep,
+                  fontFamily: mono, fontSize: 10.5, fontWeight: 500,
+                  letterSpacing: isAR ? 0 : "0.2em",
                 }}
               >
                 {isAR ? "اختر مجلسك" : "FIND YOUR MAJLIS"}
@@ -441,19 +462,34 @@ export default function MajlisLanding() {
                 ? "كل مسابقة تطلب منك فكرة جاهزة لتشارك. نحن نبدأ قبل ذلك بكثير: لاحظ، سمّه، سوّه، جربه، ثم اشرحه."
                 : "Every competition asks you to arrive with an idea. We start long before that: notice, name, make, try, then tell."}
             </p>
-            <a
-              href="/learn"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 10, minHeight: 48,
-                padding: "0 26px", borderRadius: RADIUS.pill,
-                background: M.action, color: M.cream, textDecoration: "none",
-                fontFamily: display(isAR), fontSize: isAR ? 16 : 13,
-                fontWeight: 700, letterSpacing: isAR ? 0 : "0.08em",
-                boxShadow: SHADOW.button,
-              }}
-            >
-              {isAR ? "ابدأ التعلّم" : "START LEARNING"}
-            </a>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+              <a
+                href="/learn"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 10, minHeight: 48,
+                  padding: "0 26px", borderRadius: RADIUS.pill,
+                  background: M.action, color: M.cream, textDecoration: "none",
+                  fontFamily: display(isAR), fontSize: isAR ? 16 : 13,
+                  fontWeight: 700, letterSpacing: isAR ? 0 : "0.08em",
+                  boxShadow: SHADOW.button,
+                }}
+              >
+                {isAR ? "ابدأ التعلّم" : "START LEARNING"}
+              </a>
+              <a
+                href="/auth"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 10, minHeight: 48,
+                  padding: "0 26px", borderRadius: RADIUS.pill,
+                  background: "transparent", color: M.action, textDecoration: "none",
+                  border: `1px solid ${M.gold}`,
+                  fontFamily: display(isAR), fontSize: isAR ? 16 : 13,
+                  fontWeight: 700, letterSpacing: isAR ? 0 : "0.08em",
+                }}
+              >
+                {isAR ? "تسجيل الدخول" : "SIGN IN"}
+              </a>
+            </div>
           </div>
         </section>
 

@@ -139,3 +139,15 @@
   }
 }
 
+
+
+/* Settings > Movement. One class on the document, so a learner who finds
+   animation distracting turns it off once and every page obeys. */
+html.mj-still *,
+html.mj-still *::before,
+html.mj-still *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
