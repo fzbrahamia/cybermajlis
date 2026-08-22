@@ -3,7 +3,7 @@
 import { Star } from "lucide-react";
 
 const SANS   = "system-ui, -apple-system, 'Segoe UI', sans-serif";
-const CINZEL = "'Cinzel', Georgia, serif";
+const CINZEL = "var(--ui)";
 const BG     = "#F0F9FF";
 const PRIMARY = "#1A3A5C";
 const ACCENT  = "#3B82F6";

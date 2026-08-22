@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import ElderNav from "@/components/elder/ElderNav";
 import { useElderLang } from "@/hooks/useElderLang";
 
-const cinzel = "'Cinzel', Georgia, serif";
-const body   = "'Crimson Pro', Georgia, serif";
+const cinzel = "var(--ui)";
+const body   = "var(--ui)";
 
 // `description` is the elder-form field; `content`/`title` come from main-site
 // posts written to the same collection, accept either so nothing renders blank.

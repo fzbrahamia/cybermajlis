@@ -21,7 +21,7 @@ import { useTrackView } from "@/hooks/useTrackView";
 import { trackSkillAttempt, trackSkillSolve } from "@/app/lib/analytics";
 
 const SANS    = "system-ui, -apple-system, 'Segoe UI', sans-serif";
-const CINZEL  = "'Cinzel', Georgia, serif";
+const CINZEL  = "var(--ui)";
 const MONO    = "'Geist Mono', 'JetBrains Mono', Menlo, monospace";
 const BG      = "#F0F9FF";
 const PRIMARY = "#1A3A5C";

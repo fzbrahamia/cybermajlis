@@ -106,7 +106,7 @@ export default function DashboardPage() {
         --heading: #4a1a1d; --body: #6a4640; --sage: #5B7C5C; --paper: #FDFBF6;
       }
       .dash-root *, .dash-root *::before, .dash-root *::after { box-sizing: border-box; }
-      body { font-family: 'Crimson Pro', Georgia, serif; background-color: var(--paper); color: var(--body); overflow-x: hidden; }
+      body { font-family: var(--ui); background-color: var(--paper); color: var(--body); overflow-x: hidden; }
       .dash-root { min-height: 100vh; position: relative; padding: 0 2rem 6rem; overflow: hidden; }
       .dash-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0;
         background:
@@ -122,8 +122,8 @@ export default function DashboardPage() {
 
       /* Centered header */
       .dash-header { text-align: center; padding: 6.5rem 0 2.4rem; }
-      .dash-eyebrow { display: inline-block; font-family: 'Cinzel', serif; font-size: 0.66rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--maroon-mid); background: linear-gradient(135deg, rgba(99,32,36,0.08), rgba(197,165,126,0.18)); border: 1px solid rgba(99,32,36,0.2); padding: 0.4rem 1.3rem; border-radius: 999px; margin-bottom: 0.9rem; }
-      .dash-header h1 { font-family: 'Cinzel', serif; font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 900; line-height: 1.08; color: var(--heading); margin: 0 0 0.7rem; }
+      .dash-eyebrow { display: inline-block; font-family: var(--ui); font-size: 0.66rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--maroon-mid); background: linear-gradient(135deg, rgba(99,32,36,0.08), rgba(197,165,126,0.18)); border: 1px solid rgba(99,32,36,0.2); padding: 0.4rem 1.3rem; border-radius: 999px; margin-bottom: 0.9rem; }
+      .dash-header h1 { font-family: var(--ui); font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 900; line-height: 1.08; color: var(--heading); margin: 0 0 0.7rem; }
       .dash-header h1 span { color: var(--maroon-mid); }
       .dash-header p { font-size: 1.08rem; color: var(--body); font-style: italic; font-weight: 300; margin: 0; }
 
@@ -139,9 +139,9 @@ export default function DashboardPage() {
       @media (max-width: 820px){ .hero-ring-wrap { border: none; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(99,32,36,0.14); } }
       .hero-ring { width: 168px; height: 168px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
       .hero-ring-inner { width: 132px; height: 132px; border-radius: 50%; background: linear-gradient(160deg, #4a181b, #2c1011); display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(197,165,126,0.2); }
-      .hero-xp { font-family: 'Cinzel', serif; font-size: 2.3rem; font-weight: 900; color: var(--gold-light); line-height: 1; }
-      .hero-xp-label { font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.3em; color: var(--gold); margin-top: 4px; }
-      .hero-level-name { font-family: 'Cinzel', serif; font-size: 1.25rem; font-weight: 700; color: var(--heading); }
+      .hero-xp { font-family: var(--ui); font-size: 2.3rem; font-weight: 900; color: var(--gold-light); line-height: 1; }
+      .hero-xp-label { font-family: var(--ui); font-size: 0.62rem; letter-spacing: 0.3em; color: var(--gold); margin-top: 4px; }
+      .hero-level-name { font-family: var(--ui); font-size: 1.25rem; font-weight: 700; color: var(--heading); }
       .hero-level-label { font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(106,70,64,0.7); margin-top: 2px; }
       .hero-stats { display: flex; flex-direction: column; justify-content: center; gap: 1rem; }
       .hero-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
@@ -150,7 +150,7 @@ export default function DashboardPage() {
       .hero-stat::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),transparent); opacity:.55; }
       .hero-stat:hover { background: rgba(255,255,255,0.85); transform: translateY(-2px); }
       .hero-stat-ic { color: var(--maroon-mid); margin-bottom: 0.5rem; }
-      .hero-stat-value { font-family: 'Cinzel', serif; font-size: 1.7rem; font-weight: 700; color: var(--heading); line-height: 1; }
+      .hero-stat-value { font-family: var(--ui); font-size: 1.7rem; font-weight: 700; color: var(--heading); line-height: 1; }
       .hero-stat-label { font-size: 0.72rem; color: var(--body); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 0.3rem; }
       .hero-progress-meta { display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--body); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem; }
       .hero-progress-track { width: 100%; height: 7px; background: rgba(99,32,36,0.1); border-radius: 999px; overflow: hidden; }
@@ -161,7 +161,7 @@ export default function DashboardPage() {
       @media (max-width: 980px){ .dash-mid { grid-template-columns: 1fr; } }
       .panel { background: rgba(236,224,202,0.8); border: 1px solid rgba(99,32,36,0.12); border-radius: 24px; padding: 1.7rem; backdrop-filter: blur(4px); }
       .panel.panel-light { background: rgba(253,248,240,0.55); }
-      .panel-head h2 { font-family: 'Cinzel', serif; font-size: 1.15rem; font-weight: 700; color: var(--heading); margin: 0; }
+      .panel-head h2 { font-family: var(--ui); font-size: 1.15rem; font-weight: 700; color: var(--heading); margin: 0; }
       .panel-head p { font-size: 0.84rem; color: var(--body); font-style: italic; margin: 0.25rem 0 1.3rem; }
 
       .lc { display: flex; align-items: center; gap: 14px; text-decoration: none; background: rgba(255,255,255,0.6); border: 1px solid rgba(99,32,36,0.1); border-radius: 16px; padding: 1rem 1.1rem; margin-bottom: 0.9rem; transition: transform .25s, box-shadow .25s, border-color .25s; }
@@ -173,7 +173,7 @@ export default function DashboardPage() {
       .lc-soon .lc-prog { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; }
       .lc-ic { width: 50px; height: 50px; border-radius: 13px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--maroon-mid); background: rgba(99,32,36,0.07); border: 1px solid rgba(99,32,36,0.18); }
       .lc-main { flex: 1; min-width: 0; }
-      .lc-name { font-family: 'Cinzel', serif; font-weight: 700; font-size: 1rem; color: var(--heading); }
+      .lc-name { font-family: var(--ui); font-weight: 700; font-size: 1rem; color: var(--heading); }
       .lc-sub { font-size: 0.8rem; color: var(--body); line-height: 1.4; margin: 2px 0 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
       .lc-track { height: 5px; background: rgba(99,32,36,0.1); border-radius: 999px; overflow: hidden; }
       .lc-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--maroon-mid), var(--gold)); }
@@ -199,7 +199,7 @@ export default function DashboardPage() {
             border: "1px solid rgba(197,165,126,0.45)", borderRadius: 14,
             padding: "0.75rem 1.5rem", display: "flex", alignItems: "center", gap: 10,
             boxShadow: "0 8px 32px rgba(62,19,22,0.45)",
-            fontFamily: "'Crimson Pro', serif", fontSize: "1rem", color: "#E3DAC9",
+            fontFamily: "var(--ui)", fontSize: "1rem", color: "#E3DAC9",
             whiteSpace: "nowrap", animation: "fadeSlideDown 0.35s ease",
           }}
         >
@@ -335,7 +335,7 @@ export default function DashboardPage() {
                   }}>
                     <Icon size={22} color={badge.earned ? "#E8D4BC" : "#9a7a68"} />
                   </div>
-                  <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", color: badge.earned ? "#E8D4BC" : "#6a4640" }}>
+                  <div style={{ fontFamily: "var(--ui)", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.05em", color: badge.earned ? "#E8D4BC" : "#6a4640" }}>
                     {badgeT.title}
                   </div>
                   <div style={{ fontSize: "0.72rem", color: badge.earned ? "rgba(232,212,188,0.7)" : "#6a4640", lineHeight: 1.4 }}>

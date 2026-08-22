@@ -416,7 +416,7 @@ export const pageShellStyle = {
     "radial-gradient(circle at top left, rgba(99,32,36,0.12), transparent 35%), #FDFBF6",
   padding: "2rem",
   color: "#4a1a1d",
-  fontFamily: "'Crimson Pro', Georgia, serif",
+  fontFamily: "var(--ui)",
 } as const;
 
 export const globalLessonStyles = `
@@ -441,7 +441,7 @@ export const globalLessonStyles = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Cinzel', serif;
+    font-family: var(--ui);
     font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -500,7 +500,7 @@ export const globalLessonStyles = `
   }
 
   .reading-step h3 {
-    font-family: 'Cinzel', serif;
+    font-family: var(--ui);
     margin: 0 0 0.6rem;
     color: #4a1a1d;
   }

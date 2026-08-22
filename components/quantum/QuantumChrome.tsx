@@ -4,6 +4,7 @@
    different majlis and not part of the CyberMajlis site. */
 
 import { useEffect, useState } from "react";
+import { MajlisMark } from "@/components/majlis/MajlisChrome";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
@@ -50,16 +51,12 @@ export function QuantumHeader() {
     }}>
       <div style={{
         maxWidth: 1100, margin: "0 auto", padding: "0 clamp(18px,4vw,36px)",
-        height: 62, display: "flex", alignItems: "center", gap: 14,
+        height: 68, display: "flex", alignItems: "center", gap: 14,
       }}>
         <Link href="/quantum" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-          <span aria-hidden style={{
-            width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
-            background: `radial-gradient(circle at 34% 30%, ${Q.soft}, ${Q.mid} 60%, ${Q.deep})`,
-            boxShadow: `0 0 0 3px ${Q.tint}`,
-          }} />
-          <span style={{ fontFamily: display(isAR), fontWeight: 900, fontSize: isAR ? 19 : 18, color: INK }}>
-            {isAR ? "مجلس الكم" : "Quantum"}
+          <MajlisMark size={20} here="quantum" />
+          <span style={{ fontFamily: display(isAR), fontWeight: 900, fontSize: isAR ? 21 : 20, color: INK }}>
+            {isAR ? "مجلس الكوانتم" : "Quantum"}
             {!isAR && <span style={{ color: Q.mid }}>Majlis</span>}
           </span>
         </Link>
@@ -91,14 +88,14 @@ export function QuantumHeader() {
 
         <a
           href="/"
-          title={isAR ? "العودة إلى مجلس" : "Back to Majlis"}
+          title={isAR ? "العودة إلى المجلس" : "Back to Majlis"}
           style={{
             textDecoration: "none",
-            fontFamily: mono, fontSize: 9, letterSpacing: "0.16em", color: BODY,
+            fontFamily: mono, fontSize: 10.5, letterSpacing: "0.14em", color: BODY,
             padding: "7px 13px", borderRadius: 99, border: `1px solid ${LINE}`,
           }}
         >
-          {isAR ? "مجلس" : "MAJLIS"}
+          {isAR ? "المجلس" : "MAJLIS"}
         </a>
 
         <button

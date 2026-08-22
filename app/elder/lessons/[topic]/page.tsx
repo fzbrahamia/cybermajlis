@@ -6,8 +6,8 @@ import ElderNav from "@/components/elder/ElderNav";
 import TtsButton from "@/components/elder/TtsButton";
 import { useElderLang } from "@/hooks/useElderLang";
 
-const cinzel = "'Cinzel', Georgia, serif";
-const body   = "'Crimson Pro', Georgia, serif";
+const cinzel = "var(--ui)";
+const body   = "var(--ui)";
 
 type Lesson = {
   title: string;

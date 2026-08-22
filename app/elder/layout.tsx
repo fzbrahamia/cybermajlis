@@ -11,7 +11,7 @@ export default function ElderLayout({ children }: { children: React.ReactNode })
       // Larger base text throughout
       fontSize: "18px",
       lineHeight: 1.75,
-      fontFamily: "'Crimson Pro', Georgia, 'Times New Roman', serif",
+      fontFamily: "var(--ui)",
     }}>
       {children}
     </div>

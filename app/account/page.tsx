@@ -24,8 +24,8 @@ import { M, sans, HUES, R, card, flat, btn, ghost, quiet, label } from "@/compon
 const H = HUES.blue;
 const BRANCH = [
   { en: "CyberMajlis", ar: "المجلس السيبراني", tone: "#A8323F" },
-  { en: "QuantumMajlis", ar: "مجلس الكم", tone: "#2E9C6E" },
-  { en: "MajlisAI", ar: "مجلس الذكاء", tone: "#3D6FB5" },
+  { en: "QuantumMajlis", ar: "مجلس الكوانتم", tone: "#2E9C6E" },
+  { en: "MajlisAI", ar: "مجلس الذكاء الاصطناعي", tone: "#3D6FB5" },
 ];
 
 export default function AccountPage() {

@@ -6,7 +6,7 @@ import CalmNav from "@/components/calm/CalmNav";
 import { useCalmLang } from "@/hooks/useCalmLang";
 
 const sans   = "system-ui, -apple-system, 'Segoe UI', sans-serif";
-const cinzel = "'Cinzel', Georgia, serif";
+const cinzel = "var(--ui)";
 
 type Result = { severity: string; detected: number; total: number; url?: string };
 

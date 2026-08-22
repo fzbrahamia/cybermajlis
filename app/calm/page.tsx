@@ -26,7 +26,7 @@ const gameIcons: Record<string, React.ReactNode> = {
 };
 
 const sans   = "system-ui, -apple-system, 'Segoe UI', sans-serif";
-const cinzel = "'Cinzel', Georgia, serif";
+const cinzel = "var(--ui)";
 
 const content = {
   en: {

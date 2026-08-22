@@ -14,16 +14,37 @@ function setLocaleCookie(locale: string) {
   document.cookie = `locale=${locale}; path=/; max-age=31536000`;
 }
 
-/** Four dots: the company, plus one per majlis. */
-export function MajlisMark({ size = 26 }: { size?: number }) {
+/** Four dots: the company, plus one per majlis.
+
+    The lit dot says where you are. Gold at Majlis level, maroon in
+    CyberMajlis, green in QuantumMajlis, blue in MajlisAI. The mark means one
+    thing everywhere, and it always answers the same question. */
+export type Here = "majlis" | "cyber" | "ai" | "quantum";
+
+const DOTS: { key: Here; tone: string }[] = [
+  { key: "majlis",  tone: M.gold },
+  { key: "ai",      tone: BRANCHES[1].mid },
+  { key: "cyber",   tone: BRANCHES[0].mid },
+  { key: "quantum", tone: BRANCHES[2].mid },
+];
+
+export function MajlisMark({ size = 26, here }: { size?: number; here?: Here }) {
   const d = size * 0.34;
   const g = size * 0.13;
-  const dots = [M.gold, BRANCHES[1].mid, BRANCHES[0].mid, BRANCHES[2].mid];
   return (
     <span aria-hidden style={{ display: "grid", gridTemplateColumns: `repeat(2, ${d}px)`, gap: g }}>
-      {dots.map((c, i) => (
-        <span key={i} style={{ width: d, height: d, borderRadius: "50%", background: c }} />
-      ))}
+      {DOTS.map(dot => {
+        const on = here === dot.key;
+        return (
+          <span key={dot.key} style={{
+            width: d, height: d, borderRadius: "50%", background: dot.tone,
+            transform: on ? "scale(1.32)" : "none",
+            opacity: here && !on ? 0.45 : 1,
+            transition: "transform .34s cubic-bezier(.16,1,.3,1), opacity .34s ease",
+            display: "block",
+          }} />
+        );
+      })}
     </span>
   );
 }
@@ -48,7 +69,7 @@ export function MajlisHeader() {
 
   const base: React.CSSProperties = {
     fontFamily: display(isAR),
-    fontSize: isAR ? 15 : 12.5,
+    fontSize: isAR ? 16.5 : 14,
     fontWeight: 700,
     letterSpacing: isAR ? 0 : "0.06em",
     textDecoration: "none",
@@ -67,7 +88,7 @@ export function MajlisHeader() {
     }}>
       <div style={{
         maxWidth: 1240, margin: "0 auto", padding: "0 clamp(18px,4vw,40px)",
-        height: 66, display: "flex", alignItems: "center", gap: 16,
+        height: 72, display: "flex", alignItems: "center", gap: 16,
       }}>
         <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
           <MajlisMark />
@@ -75,7 +96,13 @@ export function MajlisHeader() {
             fontFamily: display(isAR), fontWeight: 900,
             fontSize: isAR ? 21 : 20, color: M.heading,
           }}>
-            {isAR ? "مجلس" : "Majlis"}
+            {isAR ? (
+              <span style={{
+                backgroundImage: `linear-gradient(100deg, ${BRANCHES[0].mid}, ${M.goldDeep} 34%, ${BRANCHES[1].mid} 62%, ${BRANCHES[2].mid})`,
+                WebkitBackgroundClip: "text", backgroundClip: "text",
+                color: "transparent", WebkitTextFillColor: "transparent",
+              }}>المجلس</span>
+            ) : "Majlis"}
           </span>
         </a>
 
@@ -203,7 +230,13 @@ export function MajlisFooter() {
         <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}>
           <MajlisMark size={20} />
           <span style={{ fontFamily: display(isAR), fontWeight: 900, fontSize: 17, color: M.heading }}>
-            {isAR ? "مجلس" : "Majlis"}
+            {isAR ? (
+              <span style={{
+                backgroundImage: `linear-gradient(100deg, ${BRANCHES[0].mid}, ${M.goldDeep} 34%, ${BRANCHES[1].mid} 62%, ${BRANCHES[2].mid})`,
+                WebkitBackgroundClip: "text", backgroundClip: "text",
+                color: "transparent", WebkitTextFillColor: "transparent",
+              }}>المجلس</span>
+            ) : "Majlis"}
           </span>
         </span>
 

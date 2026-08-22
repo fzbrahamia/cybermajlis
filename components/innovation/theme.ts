@@ -17,12 +17,24 @@ import { M, RADIUS, SHADOW } from "@/components/majlis/theme";
 
 export { M, SHADOW };
 
-export const sans = 'var(--font-nunito), "Nunito", ui-rounded, system-ui, sans-serif';
+export const sans = 'var(--ui)';
 export const mono = '"Geist Mono", "JetBrains Mono", Menlo, monospace';
-export const display = (isAR: boolean) => (isAR ? "var(--font-arabic), sans-serif" : sans);
+export const display = (_isAR?: boolean) => "var(--ui)";
 
-/** Rounder than the company pages. Children read shapes before words. */
-export const R = { card: 24, panel: 20, chip: 16, pill: 999 };
+/** Rounder and larger than the company pages. Children read shapes before
+    words, and the whole track was set a size too small next to CyberMajlis. */
+export const R = { card: 28, panel: 22, chip: 18, pill: 999 };
+
+/** One scale, used everywhere, so nothing is sized by eye. */
+export const T = {
+  micro: 11.5,
+  small: 14,
+  body: 16.5,
+  lead: 18.5,
+  h3: 20,
+  h2: "clamp(22px, 3.2vw, 28px)",
+  h1: "clamp(28px, 4.4vw, 42px)",
+};
 export { RADIUS };
 
 export type Hue = { deep: string; mid: string; soft: string; tint: string; wash: string };
@@ -63,21 +75,27 @@ export const ROUDA = { mid: HUES.green.mid, deep: HUES.green.deep, tint: HUES.gr
 
 export const card: React.CSSProperties = {
   background: M.card,
-  border: "1px solid rgba(42,35,28,.07)",
+  border: "1px solid rgba(42,35,28,.05)",
   borderRadius: R.card,
-  boxShadow: "0 1px 2px rgba(58,44,28,.03), 0 10px 26px rgba(58,44,28,.05)",
+  boxShadow: [
+    "inset 0 1px 0 rgba(255,255,255,.7)",
+    "0 1px 1px rgba(58,44,28,.03)",
+    "0 8px 18px rgba(58,44,28,.035)",
+    "0 24px 48px rgba(58,44,28,.045)",
+  ].join(", "),
 };
 
 export const flat: React.CSSProperties = {
-  background: M.card,
-  border: "1px solid rgba(42,35,28,.07)",
+  background: "rgba(255,253,248,.72)",
+  backdropFilter: "blur(10px)",
+  border: "1px solid rgba(42,35,28,.05)",
   borderRadius: R.panel,
 };
 
 export const label: React.CSSProperties = {
   fontFamily: mono,
-  fontSize: 10.5,
-  letterSpacing: "0.15em",
+  fontSize: 11,
+  letterSpacing: "0.14em",
   textTransform: "uppercase",
   color: M.goldDeep,
 };
@@ -85,7 +103,7 @@ export const label: React.CSSProperties = {
 /* ── controls ─────────────────────────────────────────── */
 
 export const btn = (h: Hue = HUES.gold): React.CSSProperties => ({
-  minHeight: 48,
+  minHeight: 50,
   display: "inline-flex",
   alignItems: "center",
   gap: 9,
@@ -95,7 +113,7 @@ export const btn = (h: Hue = HUES.gold): React.CSSProperties => ({
   borderRadius: R.pill,
   padding: "0 24px",
   fontFamily: sans,
-  fontSize: 14.5,
+  fontSize: 15.5,
   fontWeight: 800,
   cursor: "pointer",
   textDecoration: "none",
@@ -115,10 +133,10 @@ export const chip = (h: Hue = HUES.gold, on = false): React.CSSProperties => ({
   alignItems: "center",
   gap: 6,
   fontFamily: sans,
-  fontSize: 12.5,
+  fontSize: 13.5,
   fontWeight: 700,
   borderRadius: R.pill,
-  padding: "7px 14px",
+  padding: "8px 15px",
   background: on ? h.deep : h.tint,
   color: on ? "#FFFDF8" : h.deep,
 });
@@ -128,10 +146,10 @@ export const quiet: React.CSSProperties = {
   alignItems: "center",
   gap: 6,
   fontFamily: sans,
-  fontSize: 12.5,
+  fontSize: 13.5,
   fontWeight: 700,
   borderRadius: R.pill,
-  padding: "7px 14px",
+  padding: "8px 15px",
   background: "rgba(42,35,28,.05)",
   color: M.body,
 };

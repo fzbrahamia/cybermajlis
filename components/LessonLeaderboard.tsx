@@ -136,7 +136,7 @@ export default function LessonLeaderboard({ youXP, listLimit = 5 }: { youXP: num
         <img src={p.avatar} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.8rem", fontWeight: p.isYou ? 800 : 600, color: "#4a1a1d", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+        <div style={{ fontFamily: "var(--ui)", fontSize: "0.8rem", fontWeight: p.isYou ? 800 : 600, color: "#4a1a1d", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           {p.isYou ? t("rankings.you") : p.name}
         </div>
         <div style={{ fontSize: "0.66rem", color: "rgba(106,70,64,0.55)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -153,7 +153,7 @@ export default function LessonLeaderboard({ youXP, listLimit = 5 }: { youXP: num
     <div style={card}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "1.4rem" }}>
         <div>
-          <div style={{ fontFamily: "'Cinzel', serif", fontSize: "1.05rem", fontWeight: 700, color: "#4a1a1d", letterSpacing: "0.04em" }}>
+          <div style={{ fontFamily: "var(--ui)", fontSize: "1.05rem", fontWeight: 700, color: "#4a1a1d", letterSpacing: "0.04em" }}>
             {t("rankings.title")}
           </div>
           <div style={{ fontSize: "0.7rem", color: "rgba(106,70,64,0.65)", fontStyle: "italic", marginTop: 2 }}>
@@ -190,7 +190,7 @@ export default function LessonLeaderboard({ youXP, listLimit = 5 }: { youXP: num
                     }}>
                       <img src={p.avatar} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                     </div>
-                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.72rem", fontWeight: 800, color: "#4a1a1d", maxWidth: 84, margin: "0 auto", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    <div style={{ fontFamily: "var(--ui)", fontSize: "0.72rem", fontWeight: 800, color: "#4a1a1d", maxWidth: 84, margin: "0 auto", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                       {p.isYou ? t("rankings.you") : p.name}
                     </div>
                     <div style={{ fontFamily: "monospace", fontSize: "0.7rem", fontWeight: 700, color: "#a07d3e" }}>

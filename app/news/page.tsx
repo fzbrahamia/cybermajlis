@@ -80,7 +80,7 @@ function NewsCard({ item }: { item: NewsItem }) {
         <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:6, flexWrap:"wrap",
           justifyContent: dir === "rtl" ? "flex-end" : "flex-start" }}>
           <span style={{ fontSize:9, fontWeight:700, padding:"2px 7px", borderRadius:9,
-            background:s.bg, color:s.color, fontFamily:"'Cinzel',serif", letterSpacing:"0.08em",
+            background:s.bg, color:s.color, fontFamily:"var(--ui)", letterSpacing:"0.08em",
             textTransform:"uppercase" }}>
             {isAr ? s.label_ar : s.label}
           </span>
@@ -92,13 +92,13 @@ function NewsCard({ item }: { item: NewsItem }) {
             <span style={{ fontSize:9, color:"#632024", fontWeight:700 }}>🇶🇦</span>
           )}
           <span style={{ marginLeft:"auto", fontSize:9, color:"rgba(99,32,36,0.3)",
-            fontFamily:"'Cinzel',serif" }}>
+            fontFamily:"var(--ui)" }}>
             {item.createdAt ? timeAgo(item.createdAt.toDate()) : ""}
           </span>
         </div>
 
         {/* Headline */}
-        <h2 style={{ fontFamily:"'Cinzel',serif", fontSize:"clamp(0.78rem,1.8vw,0.9rem)",
+        <h2 style={{ fontFamily:"var(--ui)", fontSize:"clamp(0.78rem,1.8vw,0.9rem)",
           fontWeight:700, color:"#4a1a1d", margin:"0 0 8px", lineHeight:1.35,
           textAlign: dir === "rtl" ? "right" : "left" }}>
           {headline}
@@ -107,7 +107,7 @@ function NewsCard({ item }: { item: NewsItem }) {
         {/* Qatar note, always show when relevant */}
         {qnote && (
           <div style={{ fontStyle:"italic", color:"rgba(99,32,36,0.65)", marginBottom:8,
-            fontSize:"0.8rem", fontFamily:"'Crimson Pro',serif", lineHeight:1.5,
+            fontSize:"0.8rem", fontFamily:"var(--ui)", lineHeight:1.5,
             textAlign: dir === "rtl" ? "right" : "left" }}>
             🇶🇦 {qnote}
           </div>
@@ -118,7 +118,7 @@ function NewsCard({ item }: { item: NewsItem }) {
           <div style={{ background:s.bg, borderRadius:8, padding:"8px 10px",
             border:"1px solid " + s.color + "25", marginBottom: expanded ? 8 : 0 }}>
             <div style={{ fontSize:8, letterSpacing:"0.2em", color:s.color, fontWeight:700,
-              fontFamily:"'Cinzel',serif", marginBottom:5, textTransform:"uppercase",
+              fontFamily:"var(--ui)", marginBottom:5, textTransform:"uppercase",
               textAlign: dir === "rtl" ? "right" : "left" }}>
               {isAr ? "ماذا تفعل" : "What to do"}
             </div>
@@ -131,7 +131,7 @@ function NewsCard({ item }: { item: NewsItem }) {
                   alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:1 }}>
                   {i + 1}
                 </span>
-                <span style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.82rem",
+                <span style={{ fontFamily:"var(--ui)", fontSize:"0.82rem",
                   color:"#4a1a1d", lineHeight:1.55 }}>{step}</span>
               </div>
             ))}
@@ -141,14 +141,14 @@ function NewsCard({ item }: { item: NewsItem }) {
         {/* Expanded: what happened */}
         {expanded && (
           <div style={{ marginTop:8, borderTop:"1px solid rgba(99,32,36,0.07)", paddingTop:8 }}>
-            <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.85rem", color:"#6a4640",
+            <p style={{ fontFamily:"var(--ui)", fontSize:"0.85rem", color:"#6a4640",
               lineHeight:1.7, margin:"0 0 6px", textAlign: dir === "rtl" ? "right" : "left" }}>
               {body}
             </p>
             {item.source_url && (
               <a href={item.source_url} target="_blank" rel="noreferrer"
                 onClick={e => e.stopPropagation()}
-                style={{ fontSize:9, color:"rgba(99,32,36,0.35)", fontFamily:"'Cinzel',serif",
+                style={{ fontSize:9, color:"rgba(99,32,36,0.35)", fontFamily:"var(--ui)",
                   letterSpacing:"0.08em", textDecoration:"none" }}>
                 {isAr ? "المصدر" : "Source"} ↗
               </a>
@@ -158,7 +158,7 @@ function NewsCard({ item }: { item: NewsItem }) {
 
         {/* Expand hint */}
         <div style={{ textAlign: dir === "rtl" ? "left" : "right", marginTop:4 }}>
-          <span style={{ fontSize:8, color:"rgba(99,32,36,0.3)", fontFamily:"'Cinzel',serif",
+          <span style={{ fontSize:8, color:"rgba(99,32,36,0.3)", fontFamily:"var(--ui)",
             letterSpacing:"0.1em" }}>
             {expanded ? (isAr ? "▲ أقل" : "▲ less") : (isAr ? "▼ التفاصيل" : "▼ details")}
           </span>
@@ -265,15 +265,15 @@ export default function NewsPage() {
           {/* Header card */}
           <div style={{ background:"white", borderRadius:16, padding:"1.3rem",
             boxShadow:"0 2px 16px rgba(99,32,36,0.07)", border:"1px solid rgba(99,32,36,0.08)" }}>
-            <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.55rem", letterSpacing:"0.25em",
+            <div style={{ fontFamily:"var(--ui)", fontSize:"0.55rem", letterSpacing:"0.25em",
               color:"rgba(99,32,36,0.4)", textTransform:"uppercase", marginBottom:6 }}>
               CyberMajlis
             </div>
-            <h1 style={{ fontFamily:"'Cinzel',serif", fontSize:"1.1rem", fontWeight:700,
+            <h1 style={{ fontFamily:"var(--ui)", fontSize:"1.1rem", fontWeight:700,
               color:"#4a1a1d", margin:"0 0 8px", borderLeft:"3px solid #632024", paddingLeft:10 }}>
               {isAr ? "نشرات الأمن" : "Security Briefings"}
             </h1>
-            <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.88rem", color:"#6a4640",
+            <p style={{ fontFamily:"var(--ui)", fontSize:"0.88rem", color:"#6a4640",
               lineHeight:1.65, margin:"0 0 12px" }}>
               {isAr
                 ? "أحدث التهديدات بلغة بسيطة، مع خطوات يستطيع الجميع اتباعها."
@@ -285,7 +285,7 @@ export default function NewsPage() {
               <div style={{ width:7, height:7, borderRadius:"50%",
                 background: fetching ? "#ca8a04" : "#16a34a" }}/>
               <span style={{ fontSize:10, color:"rgba(99,32,36,0.45)",
-                fontFamily:"'Cinzel',serif", letterSpacing:"0.1em" }}>
+                fontFamily:"var(--ui)", letterSpacing:"0.1em" }}>
                 {fetching
                   ? (isAr ? "جارٍ التحديث…" : "Updating…")
                   : (isAr ? "مباشر · " : "Live feed · ") + timeAgo(lastUpdated)}
@@ -296,7 +296,7 @@ export default function NewsPage() {
           {/* Severity filter */}
           <div style={{ background:"white", borderRadius:16, padding:"1.3rem",
             boxShadow:"0 2px 16px rgba(99,32,36,0.07)", border:"1px solid rgba(99,32,36,0.08)" }}>
-            <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.55rem", letterSpacing:"0.2em",
+            <div style={{ fontFamily:"var(--ui)", fontSize:"0.55rem", letterSpacing:"0.2em",
               color:"rgba(99,32,36,0.4)", textTransform:"uppercase", marginBottom:12 }}>
               {isAr ? "فرز حسب الخطورة" : "Filter by Severity"}
             </div>
@@ -318,7 +318,7 @@ export default function NewsPage() {
                     ? <span style={{ width:12, height:12, borderRadius:"50%",
                         background:dot, flexShrink:0, display:"inline-block" }}/>
                     : <Shield size={13} color="#632024" />}
-                  <span style={{ flex:1, fontFamily:"'Cinzel',serif", fontSize:"0.75rem",
+                  <span style={{ flex:1, fontFamily:"var(--ui)", fontSize:"0.75rem",
                     fontWeight: active ? 700 : 400, color: active ? "#4a1a1d" : "rgba(99,32,36,0.55)" }}>
                     {String(label)}
                   </span>
@@ -331,7 +331,7 @@ export default function NewsPage() {
               );
             })}
             <div style={{ marginTop:8, fontSize:10, color:"rgba(99,32,36,0.3)",
-              fontFamily:"'Cinzel',serif", letterSpacing:"0.1em", textAlign:"center" }}>
+              fontFamily:"var(--ui)", letterSpacing:"0.1em", textAlign:"center" }}>
               {sorted.length} {isAr ? "نشرة في قاعدة البيانات" : "Briefings in database"}
             </div>
           </div>
@@ -341,13 +341,13 @@ export default function NewsPage() {
         <main>
           {loading && (
             <div style={{ textAlign:"center", padding:"3rem", color:"rgba(99,32,36,0.4)",
-              fontFamily:"'Cinzel',serif", fontSize:"0.7rem", letterSpacing:"0.15em" }}>
+              fontFamily:"var(--ui)", fontSize:"0.7rem", letterSpacing:"0.15em" }}>
               {isAr ? "جارٍ التحميل…" : "Loading briefings…"}
             </div>
           )}
           {!loading && filtered.length === 0 && (
             <div style={{ textAlign:"center", padding:"3rem", color:"rgba(99,32,36,0.4)",
-              fontFamily:"'Cinzel',serif", fontSize:"0.7rem" }}>
+              fontFamily:"var(--ui)", fontSize:"0.7rem" }}>
               {isAr ? "لا توجد نشرات حتى الآن" : "No briefings yet, refresh to fetch latest news."}
             </div>
           )}

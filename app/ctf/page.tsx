@@ -23,8 +23,8 @@ import { useTrackView } from "@/hooks/useTrackView";
 import { trackSkillAttempt, trackSkillSolve } from "@/app/lib/analytics";
 
 /* ── Fonts & palette (matches the main site) ── */
-const cinzel  = '"Cinzel", "Trajan Pro", Georgia, serif';
-const crimson = '"Crimson Pro", "Crimson Text", Georgia, serif';
+const cinzel  = 'var(--ui)';
+const crimson = 'var(--ui)';
 const mono    = '"Geist Mono", "JetBrains Mono", Menlo, monospace';
 
 const INK   = "#3e1316";

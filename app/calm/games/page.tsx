@@ -12,7 +12,7 @@ import CalmInboxCheck from "./CalmInboxCheck";
 import CalmDMCheck    from "./CalmDMCheck";
 
 const sans   = "system-ui, -apple-system, 'Segoe UI', sans-serif";
-const cinzel = "'Cinzel', Georgia, serif";
+const cinzel = "var(--ui)";
 
 const gameIcons: Record<string, React.ReactNode> = {
   souq:  <ShoppingCart  size={48} color="#1A3A5C" strokeWidth={1.5} />,

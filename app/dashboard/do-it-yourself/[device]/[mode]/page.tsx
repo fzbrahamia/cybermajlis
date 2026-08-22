@@ -143,7 +143,7 @@ export default function LessonModePage() {
             box-shadow: 0 8px 20px rgba(62,19,22,0.22);
           }
           .device-tile-label {
-            font-family: 'Cinzel', serif;
+            font-family: var(--ui);
             font-weight: 700;
             font-size: 1.05rem;
             letter-spacing: 0.04em;
@@ -158,7 +158,7 @@ export default function LessonModePage() {
         <div style={{ maxWidth: 1050, margin: "0 auto" }}>
           <h2
             style={{
-              fontFamily: "'Cinzel', serif",
+              fontFamily: "var(--ui)",
               fontSize: "1.25rem",
               fontWeight: 700,
               color: "#4a1a1d",
@@ -280,7 +280,7 @@ function VideoComingSoonContent({
 
       <h2
         style={{
-          fontFamily: "'Cinzel', serif",
+          fontFamily: "var(--ui)",
           fontSize: "clamp(1.2rem, 2vw, 1.6rem)",
           marginTop: 0,
           marginBottom: "0.5rem",
@@ -424,7 +424,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
           padding: 0.55rem 1.1rem;
           cursor: pointer;
           font-weight: 700;
-          font-family: 'Cinzel', serif;
+          font-family: var(--ui);
           letter-spacing: 0.02em;
           transition: 0.2s ease;
         }
@@ -473,7 +473,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
           width: 54px;
           height: 54px;
           border-radius: 50%;
-          font-family: 'Fredoka', 'Cinzel', sans-serif;
+          font-family: var(--ui);
           font-weight: 700;
           font-size: 1.7rem;
           line-height: 1;
@@ -559,7 +559,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
         .manual-text p {
           margin: 0;
           color: #6a4640;
-          font-family: 'Fredoka', 'Crimson Pro', sans-serif;
+          font-family: var(--ui);
           font-weight: 600;
           line-height: 1.65;
           font-size: 1.18rem;
@@ -577,7 +577,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
           margin: 1rem 0 0;
           padding: 0;
           color: #6a4640;
-          font-family: 'Fredoka', 'Crimson Pro', sans-serif;
+          font-family: var(--ui);
           font-weight: 500;
           line-height: 1.8;
           max-width: 500px;
@@ -642,7 +642,7 @@ const commonSteps = lesson.readingSections.map((section, index) => {
       <div className="manual-header-card">
         <h2
           style={{
-            fontFamily: "'Cinzel', serif",
+            fontFamily: "var(--ui)",
             fontSize: "clamp(1.15rem, 2vw, 1.55rem)",
             marginTop: 0,
             marginBottom: "0.45rem",
@@ -909,7 +909,7 @@ function ReadingJourney({
       >
         <h2
           style={{
-            fontFamily: "'Cinzel', serif",
+            fontFamily: "var(--ui)",
             fontSize: "clamp(1.1rem, 2vw, 1.5rem)",
             marginTop: 0,
             marginBottom: "0.4rem",
@@ -944,7 +944,7 @@ function ReadingJourney({
         <div
           style={{
             display: "inline-block",
-            fontFamily: "'Cinzel', serif",
+            fontFamily: "var(--ui)",
             fontSize: "0.65rem",
             letterSpacing: "0.2em",
             textTransform: "uppercase",
@@ -965,7 +965,7 @@ function ReadingJourney({
 
       <h3
         style={{
-          fontFamily: "'Cinzel', serif",
+          fontFamily: "var(--ui)",
           fontSize: "clamp(1rem, 1.8vw, 1.4rem)",
           marginTop: 0,
           marginBottom: "0.6rem",
@@ -1013,7 +1013,7 @@ function ReadingJourney({
         >
           <h4
             style={{
-              fontFamily: "'Cinzel', serif",
+              fontFamily: "var(--ui)",
               marginTop: 0,
               marginBottom: "0.5rem",
               color: "#4a1a1d",
@@ -1061,7 +1061,7 @@ function ReadingJourney({
         >
           <h4
             style={{
-              fontFamily: "'Cinzel', serif",
+              fontFamily: "var(--ui)",
               marginTop: 0,
               marginBottom: "0.5rem",
               color: "#4a1a1d",
@@ -1359,7 +1359,7 @@ function ChecklistPageContent({
 
 //         <div style={{ maxWidth: 1050, margin: "0 auto" }}>
 //           <h2 style={{
-//             fontFamily: "'Cinzel', serif",
+//             fontFamily: "var(--ui)",
 //             fontSize: "1.15rem",
 //             fontWeight: 700,
 //             color: "#4a1a1d",
@@ -1386,7 +1386,7 @@ function ChecklistPageContent({
 //                   display: "inline-flex",
 //                   alignItems: "center",
 //                   justifyContent: "center",
-//                   fontFamily: "'Cinzel', serif",
+//                   fontFamily: "var(--ui)",
 //                   fontWeight: 700,
 //                   fontSize: "0.9rem",
 //                   letterSpacing: "0.05em",
@@ -1435,7 +1435,7 @@ function ChecklistPageContent({
 //           >
 //             <h2
 //               style={{
-//                 fontFamily: "'Cinzel', serif",
+//                 fontFamily: "var(--ui)",
 //                 fontSize: "clamp(1.1rem, 2vw, 1.5rem)",
 //                 marginTop: 0,
 //                 color: "#4a1a1d",
@@ -1535,14 +1535,14 @@ function ChecklistPageContent({
 //       }}
 //     >
 //       <div style={{ marginBottom: "1rem", paddingBottom: "0.8rem", borderBottom: "1px solid rgba(99,32,36,0.12)" }}>
-//         <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1.1rem, 2vw, 1.5rem)", marginTop: 0, marginBottom: "0.4rem", color: "#4a1a1d", lineHeight: 1.2 }}>
+//         <h2 style={{ fontFamily: "var(--ui)", fontSize: "clamp(1.1rem, 2vw, 1.5rem)", marginTop: 0, marginBottom: "0.4rem", color: "#4a1a1d", lineHeight: 1.2 }}>
 //           {readingTitle}
 //         </h2>
 //         <p style={{ color: "#6a4640", lineHeight: 1.6, margin: 0, fontSize: "0.9rem" }}>{readingIntro}</p>
 //       </div>
 
 //       <div style={{ display: "flex", justifyContent: "space-between", gap: "0.8rem", flexWrap: "wrap", alignItems: "center", marginBottom: "0.8rem" }}>
-//         <div style={{ display: "inline-block", fontFamily: "'Cinzel', serif", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8B2635", background: "rgba(99,32,36,0.08)", border: "1px solid rgba(99,32,36,0.16)", padding: "0.35rem 0.85rem", borderRadius: 999 }}>
+//         <div style={{ display: "inline-block", fontFamily: "var(--ui)", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8B2635", background: "rgba(99,32,36,0.08)", border: "1px solid rgba(99,32,36,0.16)", padding: "0.35rem 0.85rem", borderRadius: 999 }}>
 //           {t("learningJourney")}
 //         </div>
 //         <div style={{ color: "#8B2635", fontWeight: 700, fontSize: "0.88rem" }}>
@@ -1550,7 +1550,7 @@ function ChecklistPageContent({
 //         </div>
 //       </div>
 
-//       <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1rem, 1.8vw, 1.4rem)", marginTop: 0, marginBottom: "0.6rem", color: "#4a1a1d", lineHeight: 1.2 }}>
+//       <h3 style={{ fontFamily: "var(--ui)", fontSize: "clamp(1rem, 1.8vw, 1.4rem)", marginTop: 0, marginBottom: "0.6rem", color: "#4a1a1d", lineHeight: 1.2 }}>
 //         {current.title}
 //       </h3>
 
@@ -1560,7 +1560,7 @@ function ChecklistPageContent({
 
 //       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.8rem", marginBottom: "1rem" }}>
 //         <div style={{ background: "white", border: "1px solid rgba(99,32,36,0.1)", borderRadius: 16, padding: "1.1rem" }}>
-//           <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
+//           <h4 style={{ fontFamily: "var(--ui)", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
 //             {t("whatToDo")}
 //           </h4>
 //           <p style={{ color: "#6a4640", fontSize: "0.95rem", lineHeight: 1.7, marginTop: 0, marginBottom: current.bullets.length ? "0.8rem" : 0 }}>
@@ -1574,7 +1574,7 @@ function ChecklistPageContent({
 //         </div>
 
 //         <div style={{ background: "rgba(99,32,36,0.06)", border: "1px solid rgba(99,32,36,0.12)", borderRadius: 16, padding: "1.1rem" }}>
-//           <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
+//           <h4 style={{ fontFamily: "var(--ui)", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
 //             {t("whyItMatters")}
 //           </h4>
 //           <p style={{ color: "#6a4640", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>

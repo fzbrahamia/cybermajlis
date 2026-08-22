@@ -6,8 +6,8 @@ import { db } from "@/app/lib/firebase";
 import ElderNav from "@/components/elder/ElderNav";
 import { useElderLang } from "@/hooks/useElderLang";
 
-const cinzel = "'Cinzel', Georgia, serif";
-const body   = "'Crimson Pro', Georgia, serif";
+const cinzel = "var(--ui)";
+const body   = "var(--ui)";
 
 type Severity = "critical" | "high" | "medium" | "low";
 interface NewsItem {

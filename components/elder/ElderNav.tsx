@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
-const cinzel = "'Cinzel', Georgia, serif";
+const cinzel = "var(--ui)";
 
 const links = {
   en: [

@@ -107,7 +107,7 @@ export default function SettingsPage() {
 
       .settings-eyebrow {
         display: inline-block;
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.65rem;
         letter-spacing: 0.35em;
         text-transform: uppercase;
@@ -120,7 +120,7 @@ export default function SettingsPage() {
       }
 
       .settings-header h1 {
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: clamp(2rem, 4vw, 3rem);
         font-weight: 900;
         color: var(--maroon-deep);
@@ -139,7 +139,7 @@ export default function SettingsPage() {
       }
 
       .settings-header p {
-        font-family: 'Crimson Pro', serif;
+        font-family: var(--ui);
         font-size: 1.05rem;
         font-style: italic;
         color: #5C4033;
@@ -193,7 +193,7 @@ export default function SettingsPage() {
       }
 
       .s-card-title {
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.95rem;
         font-weight: 700;
         letter-spacing: 0.14em;
@@ -241,7 +241,7 @@ export default function SettingsPage() {
       }
 
       .s-card-danger p {
-        font-family: 'Crimson Pro', serif;
+        font-family: var(--ui);
         font-size: 0.95rem;
         color: rgba(227,218,201,0.65);
         font-weight: 300;
@@ -262,7 +262,7 @@ export default function SettingsPage() {
         background: rgba(253,248,240,0.95);
         border: 1px solid rgba(99,32,36,0.2);
         color: var(--maroon-deep);
-        font-family: 'Crimson Pro', serif;
+        font-family: var(--ui);
         font-size: 1.05rem;
         outline: none;
         transition: border-color 0.2s;
@@ -301,7 +301,7 @@ export default function SettingsPage() {
       }
 
       .pw-check {
-        font-family: 'Crimson Pro', serif;
+        font-family: var(--ui);
         font-size: 1rem;
         display: flex; align-items: center; gap: 6px;
       }
@@ -316,7 +316,7 @@ export default function SettingsPage() {
         background: rgba(253,248,240,0.9);
         border: 1px solid rgba(99,32,36,0.2);
         color: var(--maroon-deep);
-        font-family: 'Crimson Pro', serif;
+        font-family: var(--ui);
         font-size: 1rem;
         outline: none;
         cursor: pointer;
@@ -328,7 +328,7 @@ export default function SettingsPage() {
       .btn-primary {
         width: 100%;
         padding: 0.85rem;
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.68rem;
         letter-spacing: 0.15em;
         text-transform: uppercase;
@@ -346,7 +346,7 @@ export default function SettingsPage() {
       .btn-danger {
         width: 100%;
         padding: 0.85rem;
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.68rem;
         letter-spacing: 0.15em;
         text-transform: uppercase;
@@ -364,7 +364,7 @@ export default function SettingsPage() {
       .btn-back {
         width: 100%;
         padding: 0.85rem;
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.68rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
@@ -378,7 +378,7 @@ export default function SettingsPage() {
       .btn-back:hover { opacity: 0.88; transform: translateY(-2px); }
 
       .pw-mismatch {
-        font-family: 'Crimson Pro', serif;
+        font-family: var(--ui);
         font-size: 0.88rem;
         color: var(--maroon-mid);
         margin: -0.4rem 0 0.6rem;
@@ -446,7 +446,7 @@ export default function SettingsPage() {
   };
 
   if (loading) return (
-    <div style={{ minHeight: "100vh", background: "#FDFBF6", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Cinzel', serif", color: "#632024", letterSpacing: "0.2em", opacity: 0.6 }}>
+    <div style={{ minHeight: "100vh", background: "#FDFBF6", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--ui)", color: "#632024", letterSpacing: "0.2em", opacity: 0.6 }}>
       {t("loading")}
     </div>
   );

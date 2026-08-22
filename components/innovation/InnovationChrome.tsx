@@ -16,6 +16,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 import { Globe, User } from "lucide-react";
+import { MajlisMark } from "@/components/majlis/MajlisChrome";
 import { M, sans, mono, display, R, roomFor, ROOM, HUES, type Hue } from "./theme";
 import { Blobs } from "./Alive";
 import Notepad from "./Notepad";
@@ -29,27 +30,6 @@ const TABS = [
   { href: "/latest", en: "News",      ar: "الأخبار" },
   { href: "/mine",   en: "Mine",      ar: "أشيائي" },
 ];
-
-/** Four dots, one per room, and the room you are in grows. */
-function Mark({ active }: { active: string }) {
-  const reduce = useReducedMotion();
-  const dots = TABS.map(t => ROOM[t.href] ?? HUES.gold);
-  return (
-    <span aria-hidden style={{ display: "grid", gridTemplateColumns: "repeat(2, 9px)", gap: 3 }}>
-      {dots.map((h, i) => {
-        const on = TABS[i].href === active;
-        return (
-          <motion.span
-            key={i}
-            animate={reduce ? undefined : { scale: on ? 1.35 : 1, opacity: on ? 1 : 0.55 }}
-            transition={{ type: "spring", stiffness: 380, damping: 18 }}
-            style={{ width: 9, height: 9, borderRadius: "50%", background: h.mid, display: "block" }}
-          />
-        );
-      })}
-    </span>
-  );
-}
 
 export function InnovationHeader({ hue }: { hue: Hue }) {
   const isAR = useLocale() === "ar";
@@ -84,17 +64,17 @@ export function InnovationHeader({ hue }: { hue: Hue }) {
     }}>
       <div style={{
         maxWidth: 1180, margin: "0 auto",
-        padding: "0 clamp(16px,4vw,34px)", height: 68,
+        padding: "0 clamp(16px,4vw,34px)", height: 72,
         display: "flex", alignItems: "center", gap: 18,
       }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
-          <Mark active={active} />
+          <MajlisMark size={22} here="majlis" />
           <span style={{
             fontFamily: display(isAR), fontSize: isAR ? 18 : 16, fontWeight: 900,
             letterSpacing: isAR ? 0 : "0.08em",
             textTransform: isAR ? "none" : "uppercase", color: M.heading,
           }}>
-            {isAR ? "مجلس" : "Majlis"}
+            {isAR ? "المجلس" : "Majlis"}
           </span>
         </Link>
 
@@ -170,12 +150,12 @@ export function InnovationPage({ children }: { children: React.ReactNode }) {
       position: "relative", minHeight: "100vh", background: M.page,
       fontFamily: display(isAR), color: M.body,
       direction: isAR ? "rtl" : "ltr",
-      fontSize: 16,
+      fontSize: 17,
     }}>
       <Blobs hue={hue} />
       <div style={{ position: "relative", zIndex: 1 }}>
         <InnovationHeader hue={hue} />
-        <main style={{ maxWidth: 1180, margin: "0 auto", padding: "clamp(26px,4vw,44px) clamp(16px,4vw,34px) 110px" }}>
+        <main style={{ maxWidth: 1180, margin: "0 auto", padding: "clamp(34px,5vw,60px) clamp(18px,5vw,40px) 130px" }}>
           {children}
         </main>
       </div>

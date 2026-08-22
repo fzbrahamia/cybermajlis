@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Crimson_Pro, Noto_Naskh_Arabic, Nunito } from "next/font/google";
+import { Cinzel, Crimson_Pro, Tajawal, Nunito } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/NavBar";
 import ClientLayout from "@/components/ClientLayout";
@@ -28,11 +28,12 @@ const nunito = Nunito({
   weight: ["400", "600", "700", "800"],
 });
 
-// AR brand font: Noto Naskh Arabic, classical style, pairs with Cinzel
-const notoNaskhArabic = Noto_Naskh_Arabic({
+// AR brand font: Tajawal. Rounded and modern, so Arabic and English read as
+// one voice instead of a serif sitting next to a rounded sans.
+const tajawal = Tajawal({
   variable: "--font-arabic",
   subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -53,8 +54,8 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-      <body className={`${cinzel.variable} ${crimsonPro.variable} ${notoNaskhArabic.variable} ${nunito.variable} antialiased`}
-        style={{ fontFamily: locale === 'ar' ? "var(--font-arabic), serif" : "var(--font-crimson-pro), Georgia, serif" }}>
+      <body className={`${cinzel.variable} ${crimsonPro.variable} ${tajawal.variable} ${nunito.variable} antialiased`}
+        style={{ fontFamily: "var(--ui)" }}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ClientLayout>{children}</ClientLayout>
         </NextIntlClientProvider>

@@ -1,3 +1,13 @@
+:root {
+  /* One stack for the whole site.
+
+     Font fallback in CSS is per glyph, not per element: Latin letters find
+     Nunito, Arabic letters skip past it (Nunito has no Arabic glyphs) and land
+     on Tajawal. Naming only Nunito is why Arabic kept rendering in whatever
+     traditional face the operating system happened to supply. */
+  --ui: var(--font-nunito), "Nunito", var(--font-arabic), "Tajawal", ui-rounded, system-ui, sans-serif;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -150,4 +160,21 @@ html.mj-still *::after {
   animation-iteration-count: 1 !important;
   transition-duration: 0.001ms !important;
   scroll-behavior: auto !important;
+}
+
+
+/* Arabic is a connected script.
+
+   Letter-spacing pulls the joins apart and the word stops being a word: this
+   is why المجلس was rendering as separated letters even after the font was
+   right. There are 354 letter-spacing declarations across this site, written
+   for Latin small-caps labels; rather than guard each one, Arabic simply never
+   takes any of them. Uppercase is meaningless in Arabic too. */
+html[lang="ar"] *,
+html[lang="ar"] *::before,
+html[lang="ar"] *::after {
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  text-transform: none !important;
+  font-variant-caps: normal !important;
 }

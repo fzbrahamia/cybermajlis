@@ -102,7 +102,7 @@ export default function DeviceLessonPage() {
 
         <h1
           style={{
-            fontFamily: "'Cinzel', serif",
+            fontFamily: "var(--ui)",
             fontSize: "clamp(1.1rem, 2vw, 1.6rem)",
             margin: "0 0 0.3rem",
             color: "#4a1a1d",
@@ -125,7 +125,7 @@ export default function DeviceLessonPage() {
         <section>
           <h2
             style={{
-              fontFamily: "'Cinzel', serif",
+              fontFamily: "var(--ui)",
               fontSize: "1.15rem",
               marginBottom: "1.2rem",
               color: "#4a1a1d",
@@ -156,7 +156,7 @@ export default function DeviceLessonPage() {
             >
               <h3
                 style={{
-                  fontFamily: "'Cinzel', serif",
+                  fontFamily: "var(--ui)",
                   fontSize: "1.05rem",
                   margin: "0 0 0.4rem",
                 }}
@@ -179,7 +179,7 @@ export default function DeviceLessonPage() {
             >
               <h3
                 style={{
-                  fontFamily: "'Cinzel', serif",
+                  fontFamily: "var(--ui)",
                   fontSize: "1.05rem",
                   margin: "0 0 0.4rem",
                 }}
@@ -209,7 +209,7 @@ export default function DeviceLessonPage() {
 
               <h3
                 style={{
-                  fontFamily: "'Cinzel', serif",
+                  fontFamily: "var(--ui)",
                   fontSize: "1.05rem",
                   margin: "0 0 0.4rem",
                 }}
@@ -278,7 +278,7 @@ export default function DeviceLessonPage() {
 //         </Link>
 //         <h1
 //           style={{
-//             fontFamily: "'Cinzel', serif",
+//             fontFamily: "var(--ui)",
 //             fontSize: "clamp(1.1rem, 2vw, 1.6rem)",
 //             margin: "0 0 0.3rem",
 //             color: "#4a1a1d",
@@ -292,7 +292,7 @@ export default function DeviceLessonPage() {
 //         <section>
 //           <h2
 //             style={{
-//               fontFamily: "'Cinzel', serif",
+//               fontFamily: "var(--ui)",
 //               fontSize: "1.15rem",
 //               marginBottom: "1.2rem",
 //               color: "#4a1a1d",
@@ -317,7 +317,7 @@ export default function DeviceLessonPage() {
 //               className="lesson-card"
 //               style={{ background: "#fdf8f4", color: "#4a1a1d" }}
 //             >
-//               <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "1.05rem", margin: "0 0 0.4rem" }}>
+//               <h3 style={{ fontFamily: "var(--ui)", fontSize: "1.05rem", margin: "0 0 0.4rem" }}>
 //                 {t("watchVideo")}
 //               </h3>
 //               <p style={{ color: "#6a4640", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
@@ -330,7 +330,7 @@ export default function DeviceLessonPage() {
 //               className="lesson-card"
 //               style={{ background: "#fffaf6", color: "#4a1a1d" }}
 //             >
-//               <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "1.05rem", margin: "0 0 0.4rem" }}>
+//               <h3 style={{ fontFamily: "var(--ui)", fontSize: "1.05rem", margin: "0 0 0.4rem" }}>
 //                 {t("readSteps")}
 //               </h3>
 //               <p style={{ color: "#6a4640", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>
@@ -346,7 +346,7 @@ export default function DeviceLessonPage() {
 //                 color: "#E8D4BC",
 //               }}
 //             >
-//               <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "1.05rem", margin: "0 0 0.4rem" }}>
+//               <h3 style={{ fontFamily: "var(--ui)", fontSize: "1.05rem", margin: "0 0 0.4rem" }}>
 //                 {t("quickChecklist")}
 //               </h3>
 //               <p style={{ color: "rgba(232,212,188,0.78)", lineHeight: 1.5, fontSize: "0.85rem", margin: 0 }}>

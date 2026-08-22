@@ -107,8 +107,12 @@ function Wordmark({ isAR }: { isAR: boolean }) {
   const reduce = useReducedMotion();
   const size = "clamp(3.8rem,12vw,8.5rem)";
 
-  // Arabic script is connected, so it can never be split into letters.
+  // Arabic script is connected, so it can never be split into coloured letters
+  // the way Majlis is in English. A gradient clipped to the text carries the
+  // same four colours across the whole word instead, and it drifts slowly so
+  // the Arabic mark is as alive as the English one rather than a flat block.
   if (isAR) {
+    const ink = `linear-gradient(100deg, ${BRANCHES[0].mid} 0%, ${M.goldDeep} 26%, ${BRANCHES[1].mid} 52%, ${BRANCHES[2].mid} 74%, ${BRANCHES[0].mid} 100%)`;
     return (
       <motion.h1
         initial={reduce ? false : { opacity: 0, scale: 0.88 }}
@@ -116,10 +120,24 @@ function Wordmark({ isAR }: { isAR: boolean }) {
         transition={SPRING}
         style={{
           fontFamily: wordmark(true), fontWeight: 900, fontSize: size,
-          color: M.heading, margin: "20px 0 0", lineHeight: 1.1,
+          margin: "20px 0 0", lineHeight: 1.25, paddingBottom: "0.12em",
         }}
       >
-        مجلس
+        <motion.span
+          animate={reduce ? undefined : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            display: "inline-block",
+            backgroundImage: ink,
+            backgroundSize: "220% 100%",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          المجلس
+        </motion.span>
       </motion.h1>
     );
   }
@@ -171,7 +189,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <h2 style={{
       fontFamily: display(isAR), fontWeight: 900, textAlign: "center",
-      fontSize: "clamp(1.9rem,3.8vw,2.9rem)", lineHeight: 1.15,
+      fontSize: "clamp(2.1rem,4.2vw,3.2rem)", lineHeight: 1.13,
       letterSpacing: isAR ? 0 : "-0.025em", margin: 0, color: M.heading,
     }}>
       {children}
@@ -337,7 +355,7 @@ export default function MajlisLanding() {
 
               <div style={{
                 display: "flex", alignItems: "center", gap: 26, flexWrap: "wrap",
-                justifyContent: "center", fontFamily: crimson, fontSize: 15, color: M.body,
+                justifyContent: "center", fontFamily: crimson, fontSize: 16.5, color: M.body,
               }}>
                 <a href="/enter?signup=true&next=/learn" style={{
                   color: M.action, textDecoration: "none",
@@ -456,7 +474,7 @@ export default function MajlisLanding() {
             </SectionTitle>
             <p style={{
               margin: "18px auto 28px", maxWidth: 560,
-              fontFamily: crimson, fontSize: 17, lineHeight: 1.75, color: M.body,
+              fontFamily: crimson, fontSize: 18.5, lineHeight: 1.7, color: M.body,
             }}>
               {isAR
                 ? "كل مسابقة تطلب منك فكرة جاهزة لتشارك. نحن نبدأ قبل ذلك بكثير: لاحظ، سمّه، سوّه، جربه، ثم اشرحه."

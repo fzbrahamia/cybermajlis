@@ -133,7 +133,7 @@ export default function QuantumProfilePage() {
           fontFamily: mono, fontSize: 9, letterSpacing: "0.18em", color: BODY,
         }}>
           {isAR ? <ArrowRight size={11} /> : <ArrowLeft size={11} />}
-          {isAR ? "مجلس الكم" : "QUANTUM MAJLIS"}
+          {isAR ? "مجلس الكوانتم" : "QUANTUM MAJLIS"}
         </Link>
 
         {/* ── who you are ── */}
@@ -250,7 +250,7 @@ export default function QuantumProfilePage() {
           transition={{ duration: 0.5, delay: 0.06, ease: EASE }}
           style={{ ...card, marginBottom: 16 }}
         >
-          <div style={label}>{isAR ? "رحلتك في مجلس الكم" : "YOUR JOURNEY IN QUANTUM MAJLIS"}</div>
+          <div style={label}>{isAR ? "رحلتك في مجلس الكوانتم" : "YOUR JOURNEY IN QUANTUM MAJLIS"}</div>
 
           <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", marginBottom: 20 }}>
             {([

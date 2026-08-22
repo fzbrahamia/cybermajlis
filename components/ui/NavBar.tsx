@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { MajlisMark } from "@/components/majlis/MajlisChrome";
 import { usePathname, useRouter } from "next/navigation";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
@@ -147,7 +148,7 @@ export default function Navbar() {
   ];
 
   const navLinkStyle: React.CSSProperties = {
-    fontFamily: "'Cinzel', serif",
+    fontFamily: "var(--ui)",
     fontSize: 11,
     letterSpacing: 2,
     fontWeight: 600,
@@ -157,7 +158,7 @@ export default function Navbar() {
   };
 
   const btnSmStyle: React.CSSProperties = {
-    fontFamily: "'Cinzel', serif",
+    fontFamily: "var(--ui)",
     fontSize: 11,
     fontWeight: 700,
     letterSpacing: 1.2,
@@ -187,13 +188,15 @@ export default function Navbar() {
         {/* Brand */}
         <a
           href={currentUser ? "/dashboard" : "/cybermajlis"}
-          style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
+          style={{ display: "flex", alignItems: "center", gap: 11, textDecoration: "none" }}
           aria-label="CyberMajlis home"
         >
+          <MajlisMark size={20} here="cyber" />
+
           {isLanding ? (
-            <span style={{ fontFamily: "'Cinzel', serif", fontWeight: 900, fontSize: isArabic ? 21 : 23, letterSpacing: 0.5, whiteSpace: "nowrap" }}>
+            <span style={{ fontFamily: "var(--ui)", fontWeight: 900, fontSize: isArabic ? 21 : 23, letterSpacing: 0.5, whiteSpace: "nowrap" }}>
               {isArabic ? (
-                <span style={{ fontFamily: "'Noto Naskh Arabic', 'Crimson Pro', serif", color: "#7a1e22" }}>المجلس السيبراني</span>
+                <span style={{ fontFamily: "var(--font-arabic), var(--ui)", color: "#7a1e22" }}>المجلس السيبراني</span>
               ) : (
                 <><span style={{ color: "#3e1316" }}>Cyber</span><span style={{ color: "#8B2635" }}> Majlis</span></>
               )}
@@ -233,6 +236,24 @@ export default function Navbar() {
 
         {/* Auth + locale */}
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          {/* Up to Majlis. Quantum keeps it here too, beside language. */}
+          <a
+            href="/"
+            title={isArabic ? "العودة إلى المجلس" : "Back to Majlis"}
+            style={{
+              textDecoration: "none",
+              fontFamily: "var(--ui)",
+              fontSize: 11, fontWeight: 800, letterSpacing: "0.12em",
+              color: isLanding ? "rgba(90,45,40,.7)" : "rgba(232,212,188,.7)",
+              padding: "7px 14px", borderRadius: 99,
+              border: `1px solid ${isLanding ? "rgba(99,32,36,.18)" : "rgba(197,165,126,.28)"}`,
+              display: "inline-flex", alignItems: "center", gap: 8,
+            }}
+          >
+            <MajlisMark size={14} />
+            {isArabic ? "المجلس" : "MAJLIS"}
+          </a>
+
           {/* EN / AR pill toggle */}
           <div
             suppressHydrationWarning
@@ -272,7 +293,7 @@ export default function Navbar() {
               suppressHydrationWarning
               style={{
                 position: "relative", zIndex: 1,
-                fontFamily: "'Cinzel', serif",
+                fontFamily: "var(--ui)",
                 fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.1em",
                 padding: "5px 14px", borderRadius: 999, border: "none",
                 background: "transparent",
@@ -289,7 +310,7 @@ export default function Navbar() {
               suppressHydrationWarning
               style={{
                 position: "relative", zIndex: 1,
-                fontFamily: "'Noto Naskh Arabic', serif",
+                fontFamily: "var(--ui)",
                 fontSize: "0.8rem", fontWeight: 600,
                 padding: "5px 14px", borderRadius: 999, border: "none",
                 background: "transparent",
@@ -339,7 +360,7 @@ export default function Navbar() {
                         width: 36, height: 42, borderRadius: "50%",
                         background: "linear-gradient(135deg, #D5B893, #c5a57e)",
                         border: "2px solid rgba(197,165,126,0.4)",
-                        color: "#632024", fontFamily: "'Cinzel', serif",
+                        color: "#632024", fontFamily: "var(--ui)",
                         fontWeight: 700, fontSize: "0.9rem", flexShrink: 0,
                       }}
                     >
@@ -355,7 +376,7 @@ export default function Navbar() {
                       )}
                     </div>
                     <span style={{
-                      fontFamily: "'Cinzel', serif", fontSize: "0.78rem",
+                      fontFamily: "var(--ui)", fontSize: "0.78rem",
                       fontWeight: 600, letterSpacing: "0.04em", color: usernameColor,
                     }}>
                       {username}
@@ -378,10 +399,10 @@ export default function Navbar() {
 
                   <DropdownMenuLabel className="font-normal" style={{ padding: "12px 18px" }}>
                     <div className="flex flex-col gap-0.5">
-                      <p style={{ fontFamily: "'Cinzel', serif", fontSize: "0.8rem", fontWeight: 700, color: "#4a1a1d", letterSpacing: "0.04em" }}>
+                      <p style={{ fontFamily: "var(--ui)", fontSize: "0.8rem", fontWeight: 700, color: "#4a1a1d", letterSpacing: "0.04em" }}>
                         {username}
                       </p>
-                      <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "0.82rem", color: "rgba(106,70,64,0.75)", fontStyle: "italic" }}>
+                      <p style={{ fontFamily: "var(--ui)", fontSize: "0.82rem", color: "rgba(106,70,64,0.75)", fontStyle: "italic" }}>
                         {userEmail}
                       </p>
                     </div>
@@ -396,7 +417,7 @@ export default function Navbar() {
                         onClick={action}
                         className="cursor-pointer focus:bg-transparent"
                         style={{
-                          fontFamily: "'Cinzel', serif", fontSize: "0.75rem",
+                          fontFamily: "var(--ui)", fontSize: "0.75rem",
                           fontWeight: 600, letterSpacing: "0.05em",
                           color: "#5a2d28",
                           padding: "10px 18px", gap: 12,
@@ -419,7 +440,7 @@ export default function Navbar() {
                       onClick={() => setOpenDialog(true)}
                       className="cursor-pointer focus:bg-transparent"
                       style={{
-                        fontFamily: "'Cinzel', serif", fontSize: "0.75rem",
+                        fontFamily: "var(--ui)", fontSize: "0.75rem",
                         fontWeight: 600, letterSpacing: "0.05em",
                         color: "rgba(90,45,40,0.62)",
                         padding: "10px 18px", gap: 12,

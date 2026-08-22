@@ -42,7 +42,7 @@ export default function CharacterSelection({
   return (
     <div>
       <p style={{
-        fontFamily: "'Crimson Pro', Georgia, serif",
+        fontFamily: "var(--ui)",
         fontSize: '0.95rem', color: 'rgba(106,70,64,0.85)',
         textAlign: 'center', margin: '0 0 1rem',
       }}>
@@ -90,7 +90,7 @@ export default function CharacterSelection({
                 }}
               />
               <span style={{
-                fontFamily: "'Cinzel', serif", fontSize: 10, fontWeight: 700,
+                fontFamily: "var(--ui)", fontSize: 10, fontWeight: 700,
                 letterSpacing: '0.06em',
                 color: on ? '#7a1e22' : 'rgba(106,70,64,0.7)',
               }}>

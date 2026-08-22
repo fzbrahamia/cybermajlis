@@ -125,50 +125,50 @@ export default function StepperFlow({ brand = "cyber" }: { brand?: "cyber" | "ma
       .login-card::before { content: ''; position: absolute; top: -70px; right: -70px; width: 220px; height: 220px; border-radius: 50%; background: rgba(var(--tint),0.03); border: 1px solid rgba(var(--tint),0.06); pointer-events: none; }
       .login-card::after { content: ''; position: absolute; bottom: -50px; left: -50px; width: 160px; height: 160px; border-radius: 50%; background: rgba(var(--tint),0.02); border: 1px solid rgba(var(--tint),0.05); pointer-events: none; }
       .login-card-stripe { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--stripe); opacity: 0.9; --unused: linear-gradient(90deg, var(--gold), rgba(197,165,126,0.2)); }
-      .auth-eyebrow { display: inline-block; font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--maroon-mid); border: 1px solid rgba(var(--tint2),0.25); padding: 0.35rem 1.2rem; border-radius: 999px; margin-bottom: 1rem; display: block; text-align: center; }
-      .auth-title { font-family: 'Cinzel', serif; font-size: 2rem; font-weight: 900; color: var(--heading); text-align: center; margin-bottom: 0.6rem; line-height: 1.1; }
+      .auth-eyebrow { display: inline-block; font-family: var(--ui); font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--maroon-mid); border: 1px solid rgba(var(--tint2),0.25); padding: 0.35rem 1.2rem; border-radius: 999px; margin-bottom: 1rem; display: block; text-align: center; }
+      .auth-title { font-family: var(--ui); font-size: 2rem; font-weight: 900; color: var(--heading); text-align: center; margin-bottom: 0.6rem; line-height: 1.1; }
       .auth-divider { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 2rem; }
       .auth-input-wrap { position: relative; margin-bottom: 0.85rem; }
-      .auth-input { width: 100%; padding: 0.8rem 2.8rem 0.8rem 1rem; border-radius: 12px; background: rgba(var(--tint),0.04); border: 1px solid rgba(var(--tint),0.2); color: var(--heading); font-family: 'Crimson Pro', serif; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+      .auth-input { width: 100%; padding: 0.8rem 2.8rem 0.8rem 1rem; border-radius: 12px; background: rgba(var(--tint),0.04); border: 1px solid rgba(var(--tint),0.2); color: var(--heading); font-family: var(--ui); font-size: 1rem; outline: none; transition: border-color 0.2s; }
       .auth-input::placeholder { color: rgba(106,70,64,0.5); }
       .auth-input:focus { border-color: rgba(var(--tint),0.4); }
       .auth-eye { position: absolute; inset-y: 0; right: 0.75rem; display: flex; align-items: center; background: none; border: none; color: rgba(var(--tint),0.45); cursor: pointer; transition: color 0.2s; }
       .auth-eye:hover { color: var(--maroon); }
-      .auth-error { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: #b04a4a; margin: -0.4rem 0 0.6rem 0.2rem; }
-      .btn-auth-primary { width: 100%; padding: 0.85rem; font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border: none; border-radius: 12px; cursor: pointer; background: linear-gradient(135deg, var(--maroon), var(--maroon-mid)); color: var(--btn-ink); font-weight: 700; transition: opacity 0.2s, transform 0.15s; box-shadow: 0 6px 18px rgba(var(--tint),0.28); margin-top: 0.4rem; }
+      .auth-error { font-family: var(--ui); font-size: 0.85rem; color: #b04a4a; margin: -0.4rem 0 0.6rem 0.2rem; }
+      .btn-auth-primary { width: 100%; padding: 0.85rem; font-family: var(--ui); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border: none; border-radius: 12px; cursor: pointer; background: linear-gradient(135deg, var(--maroon), var(--maroon-mid)); color: var(--btn-ink); font-weight: 700; transition: opacity 0.2s, transform 0.15s; box-shadow: 0 6px 18px rgba(var(--tint),0.28); margin-top: 0.4rem; }
       .btn-auth-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-      .btn-auth-ghost { background: none; border: none; font-family: 'Crimson Pro', serif; font-size: 0.9rem; cursor: pointer; transition: color 0.2s; padding: 0; }
-      .auth-footer { text-align: center; margin-top: 1.4rem; font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: rgba(106,70,64,0.55); }
+      .btn-auth-ghost { background: none; border: none; font-family: var(--ui); font-size: 0.9rem; cursor: pointer; transition: color 0.2s; padding: 0; }
+      .auth-footer { text-align: center; margin-top: 1.4rem; font-family: var(--ui); font-size: 0.9rem; color: rgba(106,70,64,0.55); }
       .signup-card { background: linear-gradient(160deg, var(--paper1) 0%, var(--paper2) 100%); border: 1px solid rgba(var(--tint),0.14); border-radius: 24px; width: 100%; max-width: 500px; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(var(--tint),0.12); }
       .signup-card-stripe { height: 3px; background: var(--stripe); }
       .signup-card-body { padding: 2.5rem 2.5rem 2rem; }
       .step-indicators { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 2rem; }
-      .step-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 700; transition: all 0.3s; }
+      .step-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--ui); font-size: 0.75rem; font-weight: 700; transition: all 0.3s; }
       .step-dot.completed { background: linear-gradient(135deg, var(--maroon-deep), var(--maroon)); color: var(--gold-light); box-shadow: 0 4px 12px rgba(var(--tint),0.3); }
       .step-dot.active { background: var(--maroon); color: var(--gold-light); border: 2px solid var(--gold); box-shadow: 0 0 0 3px rgba(197,165,126,0.2); }
       .step-dot.inactive { background: rgba(var(--tint),0.08); color: rgba(106,70,64,0.4); border: 1px solid rgba(var(--tint),0.12); }
       .step-line { flex: 1; height: 1.5px; max-width: 40px; background: rgba(var(--tint),0.15); border-radius: 2px; }
-      .signup-title { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; color: var(--heading); text-align: center; margin-bottom: 1.8rem; }
+      .signup-title { font-family: var(--ui); font-size: 1.5rem; font-weight: 700; color: var(--heading); text-align: center; margin-bottom: 1.8rem; }
       .signup-input-wrap { position: relative; margin-bottom: 0.85rem; }
-      .signup-input { width: 100%; padding: 0.8rem 2.8rem 0.8rem 1rem; border-radius: 12px; background: rgba(var(--tint),0.04); border: 1px solid rgba(var(--tint),0.2); color: var(--heading); font-family: 'Crimson Pro', serif; font-size: 1rem; outline: none; transition: border-color 0.2s; box-shadow: inset 0 1px 3px rgba(var(--tint),0.05); }
+      .signup-input { width: 100%; padding: 0.8rem 2.8rem 0.8rem 1rem; border-radius: 12px; background: rgba(var(--tint),0.04); border: 1px solid rgba(var(--tint),0.2); color: var(--heading); font-family: var(--ui); font-size: 1rem; outline: none; transition: border-color 0.2s; box-shadow: inset 0 1px 3px rgba(var(--tint),0.05); }
       .signup-input::placeholder { color: rgba(106,70,64,0.5); }
       .signup-input:focus { border-color: rgba(var(--tint),0.4); }
       .signup-input.error { border-color: var(--maroon-mid); }
       .signup-input:disabled { opacity: 0.4; cursor: not-allowed; }
       .signup-eye { position: absolute; inset-y: 0; right: 0.75rem; display: flex; align-items: center; background: none; border: none; color: rgba(var(--tint),0.45); cursor: pointer; transition: color 0.2s; }
       .signup-eye:hover { color: var(--maroon); }
-      .signup-error { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: #b04a4a; margin: -0.4rem 0 0.6rem 0.2rem; }
+      .signup-error { font-family: var(--ui); font-size: 0.85rem; color: #b04a4a; margin: -0.4rem 0 0.6rem 0.2rem; }
       .pw-checks { list-style: none; margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 4px; }
-      .pw-check { font-family: 'Crimson Pro', serif; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
+      .pw-check { font-family: var(--ui); font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
       .pw-check.valid { color: rgba(106,70,64,0.6); text-decoration: line-through; opacity: 0.85; }
       .pw-check.invalid { color: var(--heading); }
       .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.8rem; }
-      .btn-step-back { display: flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.7rem 1.4rem; border-radius: 10px; border: 1px solid rgba(var(--tint),0.25); background: transparent; color: var(--heading); cursor: pointer; transition: background 0.2s; }
+      .btn-step-back { display: flex; align-items: center; gap: 6px; font-family: var(--ui); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.7rem 1.4rem; border-radius: 10px; border: 1px solid rgba(var(--tint),0.25); background: transparent; color: var(--heading); cursor: pointer; transition: background 0.2s; }
       .btn-step-back:hover { background: rgba(var(--tint),0.06); }
-      .btn-step-next { display: flex; align-items: center; gap: 6px; font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.7rem 1.6rem; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--maroon-deep), var(--maroon)); color: var(--gold-light); cursor: pointer; transition: opacity 0.2s, transform 0.15s; box-shadow: 0 4px 14px rgba(var(--tint),0.25); }
+      .btn-step-next { display: flex; align-items: center; gap: 6px; font-family: var(--ui); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.7rem 1.6rem; border-radius: 10px; border: none; background: linear-gradient(135deg, var(--maroon-deep), var(--maroon)); color: var(--gold-light); cursor: pointer; transition: opacity 0.2s, transform 0.15s; box-shadow: 0 4px 14px rgba(var(--tint),0.25); }
       .btn-step-next:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
       .btn-step-next:disabled { opacity: 0.35; cursor: not-allowed; }
-      .signup-footer { text-align: center; margin-top: 1.2rem; font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: rgba(106,70,64,0.55); }
+      .signup-footer { text-align: center; margin-top: 1.2rem; font-family: var(--ui); font-size: 0.9rem; color: rgba(106,70,64,0.55); }
     `;
     document.head.appendChild(style);
     return () => { document.head.removeChild(link); document.head.removeChild(style); };
@@ -255,7 +255,7 @@ export default function StepperFlow({ brand = "cyber" }: { brand?: "cyber" | "ma
 
           <div style={{ textAlign: "center", marginTop: "1rem" }}>
             <button type="button" className="btn-auth-ghost"
-              style={{ color: "rgba(106,70,64,0.75)", fontSize: "0.85rem", fontFamily: "'Crimson Pro', serif" }}
+              style={{ color: "rgba(106,70,64,0.75)", fontSize: "0.85rem", fontFamily: "var(--ui)" }}
               onClick={async () => {
                 if (!email) { showModal(t("modals.missing_email_title"), t("modals.missing_email_msg")); return; }
                 try {

@@ -23,7 +23,7 @@ export default function SimulationsPage() {
   return (
     <div
       className="min-h-screen bg-[#FDFBF6] font-sans relative overflow-hidden"
-      style={isRtl ? { fontFamily: "var(--font-arabic), serif", direction: "rtl" } : undefined}
+      style={isRtl ? { fontFamily: "var(--ui)", direction: "rtl" } : undefined}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-[#FDFBF6] to-[#F3EBDB] pointer-events-none" />
 

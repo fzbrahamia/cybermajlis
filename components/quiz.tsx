@@ -43,7 +43,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
         border: 1.5px solid rgba(99,32,36,0.2);
         background: rgba(253,248,240,0.7);
         color: #4a1a1d;
-        font-family: 'Crimson Pro', Georgia, serif;
+        font-family: var(--ui);
         font-size: 0.92rem;
         text-align: center;
         display: flex;
@@ -148,18 +148,18 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
     <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "transparent" }}>
       <div style={{ height: 3, background: "linear-gradient(90deg, #632024, #c5a57e)" }} />
       <div style={{ padding: "2.5rem 2rem", textAlign: "center" }}>
-        <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(99,32,36,0.5)", marginBottom: "1rem" }}>
+        <div style={{ fontFamily: "var(--ui)", fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(99,32,36,0.5)", marginBottom: "1rem" }}>
           {t("knowledge_check")}
         </div>
-        <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: "1.4rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.6rem" }}>
+        <h2 style={{ fontFamily: "var(--ui)", fontSize: "1.4rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.6rem" }}>
           {t("ready_heading")}
         </h2>
         <div style={{ height: 1, width: 40, background: "linear-gradient(90deg, transparent, #c5a57e, transparent)", margin: "0.8rem auto 1.4rem" }} />
-        <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "1rem", color: "#6a4640", fontStyle: "italic", marginBottom: "1.8rem" }}>
+        <p style={{ fontFamily: "var(--ui)", fontSize: "1rem", color: "#6a4640", fontStyle: "italic", marginBottom: "1.8rem" }}>
           {t("questions_count", { count: questions.length })}
         </p>
         <button onClick={() => setStarted(true)} style={{
-          fontFamily: "'Cinzel', serif", fontSize: "0.7rem", letterSpacing: "0.15em",
+          fontFamily: "var(--ui)", fontSize: "0.7rem", letterSpacing: "0.15em",
           textTransform: "uppercase", fontWeight: 700,
           padding: "0.85rem 2.5rem", borderRadius: 12, border: "none",
           background: "linear-gradient(135deg, #4a1a1d, #632024)",
@@ -182,10 +182,10 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
         <div style={{ padding: "1.2rem 1.4rem", overflowY: "auto", height: "100%", boxSizing: "border-box" }}>
           {/* Score header */}
           <div style={{ textAlign: "center", marginBottom: "1.8rem" }}>
-            <div style={{ fontFamily: "'Cinzel', serif", fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(99,32,36,0.5)", marginBottom: "0.8rem" }}>
+            <div style={{ fontFamily: "var(--ui)", fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(99,32,36,0.5)", marginBottom: "0.8rem" }}>
               {t("completed")}
             </div>
-            <div style={{ fontFamily: "'Cinzel', serif", fontSize: "2.5rem", fontWeight: 900, color: "#632024", lineHeight: 1 }}>
+            <div style={{ fontFamily: "var(--ui)", fontSize: "2.5rem", fontWeight: 900, color: "#632024", lineHeight: 1 }}>
               {score}<span style={{ fontSize: "1rem", opacity: 0.5 }}>/{questions.length}</span>
             </div>
             <div style={{ display: "flex", justifyContent: "center", gap: 4, margin: "0.8rem 0" }}>
@@ -193,7 +193,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
                 <Star key={s} size={26} style={{ transition: "all 0.3s" }} color={s <= stars ? "#e8b84a" : "#cbb89a"} fill={s <= stars ? "#e8b84a" : "none"} />
               ))}
             </div>
-            <p style={{ fontFamily: "'Crimson Pro', serif", fontStyle: "italic", color: "#6a4640", fontSize: "0.95rem" }}>
+            <p style={{ fontFamily: "var(--ui)", fontStyle: "italic", color: "#6a4640", fontSize: "0.95rem" }}>
               {pct >= 80 ? t("excellent") : pct >= 60 ? t("good") : t("keep_practicing")}
             </p>
           </div>
@@ -205,14 +205,14 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
               const isCorrect = userAnswer === q.correctAnswer;
               return (
                 <div key={i} className={isCorrect ? "quiz-result-correct" : "quiz-result-wrong"}>
-                  <p style={{ fontFamily: "'Cinzel', serif", fontSize: "0.75rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.5rem" }}>
+                  <p style={{ fontFamily: "var(--ui)", fontSize: "0.75rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.5rem" }}>
                     {i + 1}. {q.question}
                   </p>
-                  <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "0.9rem", color: "#6a4640" }}>
+                  <p style={{ fontFamily: "var(--ui)", fontSize: "0.9rem", color: "#6a4640" }}>
                     {t("your_answer")} <span style={{ color: isCorrect ? "#3a5c2e" : "#7a2020", fontWeight: 600 }}>{userAnswer || t("no_answer")}</span>
                   </p>
                   {!isCorrect && (
-                    <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "0.9rem", color: "#6a4640", marginTop: "0.2rem" }}>
+                    <p style={{ fontFamily: "var(--ui)", fontSize: "0.9rem", color: "#6a4640", marginTop: "0.2rem" }}>
                       {t("correct_answer")} <span style={{ color: "#3a5c2e", fontWeight: 600 }}>{q.correctAnswer}</span>
                     </p>
                   )}
@@ -223,7 +223,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
 
           <div style={{ textAlign: "center" }}>
             <button onClick={restart} style={{
-              fontFamily: "'Cinzel', serif", fontSize: "0.68rem", letterSpacing: "0.15em",
+              fontFamily: "var(--ui)", fontSize: "0.68rem", letterSpacing: "0.15em",
               textTransform: "uppercase", fontWeight: 700,
               padding: "0.8rem 2rem", borderRadius: 12, border: "none",
               background: "linear-gradient(135deg, #4a1a1d, #632024)",
@@ -249,10 +249,10 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
         {/* Progress bar */}
         <div style={{ marginBottom: "1.4rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-            <span style={{ fontFamily: "'Cinzel', serif", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(99,32,36,0.5)" }}>
+            <span style={{ fontFamily: "var(--ui)", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(99,32,36,0.5)" }}>
               {t("question_of", { current: current + 1, total: questions.length })}
             </span>
-            <span style={{ fontFamily: "'Cinzel', serif", fontSize: "0.65rem", color: "rgba(99,32,36,0.45)", letterSpacing: "0.1em" }}>
+            <span style={{ fontFamily: "var(--ui)", fontSize: "0.65rem", color: "rgba(99,32,36,0.45)", letterSpacing: "0.1em" }}>
               {t("attempts", { used: attempts[current] })}
             </span>
           </div>
@@ -269,7 +269,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
           boxShadow: "0 4px 16px rgba(99,32,36,0.2)",
         }}>
           <div style={{ position: "absolute", top: -30, right: -30, width: 80, height: 80, borderRadius: "50%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", pointerEvents: "none" }} />
-          <p style={{ fontFamily: "'Crimson Pro', serif", fontSize: "0.95rem", fontWeight: 600, color: "#E8D4BC", lineHeight: 1.6, position: "relative", zIndex: 1 }}>
+          <p style={{ fontFamily: "var(--ui)", fontSize: "0.95rem", fontWeight: 600, color: "#E8D4BC", lineHeight: 1.6, position: "relative", zIndex: 1 }}>
             {currentQuestion.question}
           </p>
         </div>
@@ -293,7 +293,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
                 onClick={() => !isLocked && handleAnswer(opt)}
                 disabled={isLocked || (attemptsUsed >= 2 && selected === opt)}>
                 <span style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4, width: "100%", height: "100%" }}>
-                  <span style={{ opacity: 0.5, fontFamily: "'Cinzel', serif", fontSize: "0.65rem" }}>{String.fromCharCode(65 + i)}.</span>
+                  <span style={{ opacity: 0.5, fontFamily: "var(--ui)", fontSize: "0.65rem" }}>{String.fromCharCode(65 + i)}.</span>
                   <span>{opt}</span>
                 </span>
                 {selected && isCorrect && (isSelected || attemptsUsed >= 2) && (
@@ -310,7 +310,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
         {/* Navigation */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <button onClick={prevQuestion} disabled={current === 0} style={{
-            fontFamily: "'Cinzel', serif", fontSize: "0.65rem", letterSpacing: "0.1em",
+            fontFamily: "var(--ui)", fontSize: "0.65rem", letterSpacing: "0.1em",
             textTransform: "uppercase", padding: "0.7rem 1.3rem", borderRadius: 10,
             border: "1px solid rgba(99,32,36,0.2)", background: "transparent",
             color: current === 0 ? "rgba(99,32,36,0.25)" : "#632024",
@@ -320,7 +320,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
             {t("prev")}
           </button>
           <button onClick={nextQuestion} disabled={!selected} style={{
-            fontFamily: "'Cinzel', serif", fontSize: "0.65rem", letterSpacing: "0.1em",
+            fontFamily: "var(--ui)", fontSize: "0.65rem", letterSpacing: "0.1em",
             textTransform: "uppercase", padding: "0.7rem 1.6rem", borderRadius: 10,
             border: "none",
             background: selected ? "linear-gradient(135deg, #4a1a1d, #632024)" : "rgba(99,32,36,0.1)",

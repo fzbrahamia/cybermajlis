@@ -5,8 +5,8 @@ import { useLocale } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import PolicyDialog from "@/components/PolicyDialog";
 
-const cinzel  = '"Cinzel", "Trajan Pro", Georgia, serif';
-const crimson = '"Crimson Pro", "Crimson Text", Georgia, serif';
+const cinzel  = 'var(--ui)';
+const crimson = 'var(--ui)';
 
 type Link = { href?: string; chat?: boolean; en: string; ar: string };
 
@@ -108,7 +108,7 @@ export default function Footer() {
           {isLanding ? (
             <div style={{ fontFamily: cinzel, fontWeight: 900, fontSize: isAR ? 22 : 26, letterSpacing: 0.5, marginBottom: 16, whiteSpace: "nowrap" }}>
               {isAR ? (
-                <span style={{ fontFamily: '"Noto Naskh Arabic", "Crimson Pro", serif', color: "#7a1e22" }}>المجلس السيبراني</span>
+                <span style={{ fontFamily: 'var(--font-arabic), var(--ui)', color: "#7a1e22" }}>المجلس السيبراني</span>
               ) : (
                 <><span style={{ color: "#3e1316" }}>Cyber</span><span style={{ color: "#8B2635" }}> Majlis</span></>
               )}
@@ -148,7 +148,7 @@ export default function Footer() {
                 <span key={c} style={{ width: 5, height: 5, borderRadius: "50%", background: c }} />
               ))}
             </span>
-            {isAR ? "مجلس" : "Majlis"}
+            {isAR ? "المجلس" : "Majlis"}
           </button>
         </div>
 

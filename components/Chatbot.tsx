@@ -252,7 +252,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
               <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
             </div>
             <div style={{ flex:1 }}>
-              <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, fontWeight:700, color:"#F3EAD7", lineHeight:1.2 }}>Hamad</div>
+              <div style={{ fontFamily:"var(--ui)", fontSize:13, fontWeight:700, color:"#F3EAD7", lineHeight:1.2 }}>Hamad</div>
               <div style={{ fontSize:10, color:"rgba(200,154,110,0.6)", display:"flex", alignItems:"center", gap:4 }}>
                 <span style={{ width:6, height:6, borderRadius:"50%", background:"#5b8db8", display:"inline-block" }} />
                 CyberMajlis Guide
@@ -313,7 +313,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
                   boxShadow: msg.role==="user" ? "0 2px 8px rgba(52,33,41,0.2)" : "0 1px 6px rgba(0,0,0,0.07)",
                   border: msg.role==="assistant" ? "1px solid rgba(74,26,29,0.08)" : "none",
                   whiteSpace:"pre-wrap",
-                  fontFamily:"'Crimson Pro',serif", fontWeight:400,
+                  fontFamily:"var(--ui)", fontWeight:400,
                 }}>
                   {msg.content}
                 </div>
@@ -340,7 +340,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
                 {SUGGESTIONS.map((s, i) => (
                   <button key={i} className="hamad-suggest"
                     onClick={() => { setInput(s.text); setTimeout(() => inputRef.current?.focus(), 50); }}
-                    style={{ padding:"8px 12px", borderRadius:10, border:"1px solid rgba(74,26,29,0.15)", background:"white", color:"rgba(74,26,29,0.7)", fontSize:s.ar?14:12, textAlign: s.ar?"right":"left", cursor:"pointer", fontFamily: s.ar?"'Noto Sans Arabic',sans-serif":"'Crimson Pro',serif", direction: s.ar?"rtl":"ltr", transition:"all .15s" }}>
+                    style={{ padding:"8px 12px", borderRadius:10, border:"1px solid rgba(74,26,29,0.15)", background:"white", color:"rgba(74,26,29,0.7)", fontSize:s.ar?14:12, textAlign: s.ar?"right":"left", cursor:"pointer", fontFamily: s.ar?"'Noto Sans Arabic',sans-serif":"var(--ui)", direction: s.ar?"rtl":"ltr", transition:"all .15s" }}>
                     {s.text}<Pencil size={11} style={{ color:"rgba(74,26,29,0.35)", marginInlineStart:4, flexShrink:0 }} />
                   </button>
                 ))}
@@ -355,7 +355,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
             <input ref={inputRef} className="hamad-input" value={input} onChange={e => setInput(e.target.value)}
               onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
               placeholder={listening ? (speechLang === "ar-QA" ? "أستمع الآن..." : "Listening...") : "Ask Hamad anything…"}
-              style={{ flex:1, padding:"9px 14px", borderRadius:22, border:"1.5px solid rgba(74,26,29,0.18)", background:"#fdf8f4", fontSize:13, fontFamily:"'Crimson Pro',serif", color:"#7a1e22" }}
+              style={{ flex:1, padding:"9px 14px", borderRadius:22, border:"1.5px solid rgba(74,26,29,0.18)", background:"#fdf8f4", fontSize:13, fontFamily:"var(--ui)", color:"#7a1e22" }}
             />
             <button
               onClick={toggleSpeechLanguage}
@@ -510,7 +510,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //               <img src="/characters/HamadChat.png" alt="Hamad" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
 //             </div>
 //             <div style={{ flex:1 }}>
-//               <div style={{ fontFamily:"'Cinzel',serif", fontSize:13, fontWeight:700, color:"#F3EAD7", lineHeight:1.2 }}>Hamad</div>
+//               <div style={{ fontFamily:"var(--ui)", fontSize:13, fontWeight:700, color:"#F3EAD7", lineHeight:1.2 }}>Hamad</div>
 //               <div style={{ fontSize:10, color:"rgba(200,154,110,0.6)", display:"flex", alignItems:"center", gap:4 }}>
 //                 <span style={{ width:6, height:6, borderRadius:"50%", background:"#5b8db8", display:"inline-block" }} />
 //                 CyberMajlis Guide
@@ -539,7 +539,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //                   boxShadow: msg.role==="user" ? "0 2px 8px rgba(52,33,41,0.2)" : "0 1px 6px rgba(0,0,0,0.07)",
 //                   border: msg.role==="assistant" ? "1px solid rgba(74,26,29,0.08)" : "none",
 //                   whiteSpace:"pre-wrap",
-//                   fontFamily:"'Crimson Pro',serif", fontWeight:400,
+//                   fontFamily:"var(--ui)", fontWeight:400,
 //                 }}>
 //                   {msg.content}
 //                 </div>
@@ -566,7 +566,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //                 {SUGGESTIONS.map((s, i) => (
 //                   <button key={i} className="hamad-suggest"
 //                     onClick={() => { setInput(s.text); setTimeout(() => inputRef.current?.focus(), 50); }}
-//                     style={{ padding:"8px 12px", borderRadius:10, border:"1px solid rgba(74,26,29,0.15)", background:"white", color:"rgba(74,26,29,0.7)", fontSize:s.ar?14:12, textAlign: s.ar?"right":"left", cursor:"pointer", fontFamily: s.ar?"'Noto Sans Arabic',sans-serif":"'Crimson Pro',serif", direction: s.ar?"rtl":"ltr", transition:"all .15s" }}>
+//                     style={{ padding:"8px 12px", borderRadius:10, border:"1px solid rgba(74,26,29,0.15)", background:"white", color:"rgba(74,26,29,0.7)", fontSize:s.ar?14:12, textAlign: s.ar?"right":"left", cursor:"pointer", fontFamily: s.ar?"'Noto Sans Arabic',sans-serif":"var(--ui)", direction: s.ar?"rtl":"ltr", transition:"all .15s" }}>
 //                     {s.text}<span style={{ color:"rgba(74,26,29,0.35)", fontSize:10 }}>✏️</span>
 //                   </button>
 //                 ))}
@@ -581,7 +581,7 @@ export default function Chatbot({ isLoggedIn }: { isLoggedIn: boolean }) {
 //             <input ref={inputRef} className="hamad-input" value={input} onChange={e => setInput(e.target.value)}
 //               onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
 //               placeholder="Ask Hamad anything…"
-//               style={{ flex:1, padding:"9px 14px", borderRadius:22, border:"1.5px solid rgba(74,26,29,0.18)", background:"#fdf8f4", fontSize:13, fontFamily:"'Crimson Pro',serif", color:"#7a1e22" }}
+//               style={{ flex:1, padding:"9px 14px", borderRadius:22, border:"1.5px solid rgba(74,26,29,0.18)", background:"#fdf8f4", fontSize:13, fontFamily:"var(--ui)", color:"#7a1e22" }}
 //             />
 //             <button onClick={() => sendMessage()} disabled={!input.trim() || loading} className="hamad-send"
 //               style={{ width:36, height:36, borderRadius:"50%", border:"none", background: input.trim() && !loading ? "#4a1a1d" : "rgba(74,26,29,0.12)", color: input.trim() && !loading ? "white" : "rgba(74,26,29,0.3)", fontSize:15, cursor: input.trim() && !loading ? "pointer" : "default", flexShrink:0, transition:"all .2s", display:"flex", alignItems:"center", justifyContent:"center" }}>

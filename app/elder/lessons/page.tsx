@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import ElderNav from "@/components/elder/ElderNav";
 import { useElderLang } from "@/hooks/useElderLang";
 
-const cinzel = "'Cinzel', Georgia, serif";
-const body   = "'Crimson Pro', Georgia, serif";
+const cinzel = "var(--ui)";
+const body   = "var(--ui)";
 
 const topics = {
   en: [

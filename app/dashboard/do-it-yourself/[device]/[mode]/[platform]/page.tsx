@@ -69,7 +69,7 @@ export default function PlatformLessonPage() {
           >
             <h2
               style={{
-                fontFamily: "'Cinzel', serif",
+                fontFamily: "var(--ui)",
                 fontSize: "clamp(1.1rem, 2vw, 1.5rem)",
                 marginTop: 0,
                 color: "#4a1a1d",
@@ -205,7 +205,7 @@ function ReadingJourney({
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", gap: "0.8rem", flexWrap: "wrap", alignItems: "center", marginBottom: "0.8rem" }}>
-        <div style={{ display: "inline-block", fontFamily: "'Cinzel', serif", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8B2635", background: "rgba(99,32,36,0.08)", border: "1px solid rgba(99,32,36,0.16)", padding: "0.35rem 0.85rem", borderRadius: 999 }}>
+        <div style={{ display: "inline-block", fontFamily: "var(--ui)", fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#8B2635", background: "rgba(99,32,36,0.08)", border: "1px solid rgba(99,32,36,0.16)", padding: "0.35rem 0.85rem", borderRadius: 999 }}>
           {current.group}
         </div>
         <div style={{ color: "#8B2635", fontWeight: 700, fontSize: "0.88rem" }}>
@@ -213,7 +213,7 @@ function ReadingJourney({
         </div>
       </div>
 
-      <h3 style={{ fontFamily: "'Cinzel', serif", fontSize: "clamp(1rem, 1.8vw, 1.4rem)", marginTop: 0, marginBottom: "0.6rem", color: "#4a1a1d", lineHeight: 1.2 }}>
+      <h3 style={{ fontFamily: "var(--ui)", fontSize: "clamp(1rem, 1.8vw, 1.4rem)", marginTop: 0, marginBottom: "0.6rem", color: "#4a1a1d", lineHeight: 1.2 }}>
         {current.title}
       </h3>
 
@@ -223,7 +223,7 @@ function ReadingJourney({
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.8rem", marginBottom: "1rem" }}>
         <div style={{ background: "white", border: "1px solid rgba(99,32,36,0.1)", borderRadius: 16, padding: "1.1rem" }}>
-          <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
+          <h4 style={{ fontFamily: "var(--ui)", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
             {t("whatToDo")}
           </h4>
           <p style={{ color: "#6a4640", fontSize: "0.95rem", lineHeight: 1.7, marginTop: 0, marginBottom: current.bullets.length ? "0.8rem" : 0 }}>
@@ -237,7 +237,7 @@ function ReadingJourney({
         </div>
 
         <div style={{ background: "rgba(99,32,36,0.06)", border: "1px solid rgba(99,32,36,0.12)", borderRadius: 16, padding: "1.1rem" }}>
-          <h4 style={{ fontFamily: "'Cinzel', serif", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
+          <h4 style={{ fontFamily: "var(--ui)", marginTop: 0, marginBottom: "0.5rem", color: "#4a1a1d", fontSize: "0.85rem" }}>
             {t("whyItMatters")}
           </h4>
           <p style={{ color: "#6a4640", fontSize: "0.95rem", lineHeight: 1.7, margin: 0 }}>

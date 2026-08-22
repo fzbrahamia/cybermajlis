@@ -44,7 +44,7 @@ const ANALYSTS_BASE = [
 const HAMAD = {
   id: "hamad", emoji: "🧑‍💻",
   img: "/characters/hamad.GIF",
-  profile: "/avatar.png",
+  profile: "/characters/HamadChat.png",
   name: "Hamad", full: "Employee", roleKey: "hamad", color: "#60a5fa",
 };
 

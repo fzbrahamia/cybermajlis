@@ -62,7 +62,7 @@ export default function HamadCommentary({ simId, trigger, accentColor = "#632024
       </div>
       {/* Avatar */}
       <div style={{ width: 36, height: 36, borderRadius: "50%", border: `2px solid ${accentColor}60`, overflow: "hidden", flexShrink: 0 }}>
-        <img src="/avatar.png" alt="Hamad" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <img src="/characters/HamadChat.png" alt="Hamad" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </div>
     </div>
   );

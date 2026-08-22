@@ -132,7 +132,7 @@ export default function CalmSouqSafe({ lang, onBack }: Props) {
               style={{ background: "#FFFFFF", border: `2px solid ${BORDER}`, borderRadius: 20, padding: "2rem 2.4rem", textAlign: "center", cursor: "grab", userSelect: "none", width: "100%", boxShadow: "0 2px 12px rgba(59,130,246,0.08)" }}
             >
               <div style={{ fontSize: "1.5rem", color: "#94A3B8", marginBottom: "0.5rem", fontWeight: 500 }}>{isRtl ? "ما هذا؟" : "What about this?"}</div>
-              <div style={{ fontFamily: "'Cinzel', Georgia, serif", fontWeight: 700, fontSize: "1.4rem", color: PRIMARY }}>{lang === "ar" ? item.ar : item.en}</div>
+              <div style={{ fontFamily: "var(--ui)", fontWeight: 700, fontSize: "1.4rem", color: PRIMARY }}>{lang === "ar" ? item.ar : item.en}</div>
               <div style={{ fontSize: "0.85rem", color: "#94A3B8", marginTop: "0.8rem" }}>{ui.clickHint}</div>
             </div>
           ) : (
@@ -146,7 +146,7 @@ export default function CalmSouqSafe({ lang, onBack }: Props) {
               </div>
               <button
                 onClick={next}
-                style={{ fontFamily: "'Cinzel', Georgia, serif", fontWeight: 700, background: ACCENT, color: "#FFFFFF", border: "none", borderRadius: 12, padding: "0.8rem 2rem", cursor: "pointer", fontSize: "1rem" }}
+                style={{ fontFamily: "var(--ui)", fontWeight: 700, background: ACCENT, color: "#FFFFFF", border: "none", borderRadius: 12, padding: "0.8rem 2rem", cursor: "pointer", fontSize: "1rem" }}
               >
                 {idx + 1 >= items.length ? ui.finish : ui.next}
               </button>
@@ -176,7 +176,7 @@ export default function CalmSouqSafe({ lang, onBack }: Props) {
                   ? <Lock size={28} color={PRIMARY} strokeWidth={1.5} />
                   : <MessageCircle size={28} color={PRIMARY} strokeWidth={1.5} />}
               </div>
-              <div style={{ fontFamily: "'Cinzel', Georgia, serif", fontWeight: 700, fontSize: "0.95rem", color: PRIMARY }}>
+              <div style={{ fontFamily: "var(--ui)", fontWeight: 700, fontSize: "0.95rem", color: PRIMARY }}>
                 {zone === "protect" ? ui.protect : ui.share}
               </div>
               <div style={{ fontSize: "0.8rem", color: "#64748B", marginTop: "0.3rem" }}>

@@ -275,7 +275,7 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Why can you safely give the lock to everyone?", q_ar: "لماذا يمكنك أن تعطي القفل للجميع بأمان؟", kind: "recall" },
       { q_en: "The arithmetic is easy forwards and slow backwards. What would break if a machine arrived that made it fast backwards?", q_ar: "العملية الحسابية سهلة في اتجاه وبطيئة في عكسه. ماذا سينكسر لو ظهر جهاز يجعلها سريعة في العكس؟", kind: "explain" },
     ],
-    deeper: { href: "/quantum", en: "Quantum Keys, in QuantumMajlis", ar: "المفاتيح الكمّية، في مجلس الكم", tone: "#2E9C6E" },
+    deeper: { href: "/quantum", en: "Quantum Keys, in QuantumMajlis", ar: "المفاتيح الكمّية، في مجلس الكوانتم", tone: "#2E9C6E" },
   },
   {
     id: "zero-day",
@@ -361,7 +361,7 @@ export const CONCEPTS: Concept[] = [
       { q_en: "What does ransomware do to a machine's files?", q_ar: "ماذا تفعل برمجية الفدية بملفات الجهاز؟", kind: "recall" },
       { q_en: "Why is the same maths that keeps your messages private also what makes this so hard to undo?", q_ar: "لماذا تكون الرياضيات نفسها التي تحمي رسائلك هي ما يجعل فك هذا صعباً جداً؟", kind: "explain" },
     ],
-    deeper: { href: "/quantum", en: "Quantum Keys, in QuantumMajlis", ar: "المفاتيح الكمّية، في مجلس الكم", tone: "#2E9C6E" },
+    deeper: { href: "/quantum", en: "Quantum Keys, in QuantumMajlis", ar: "المفاتيح الكمّية، في مجلس الكوانتم", tone: "#2E9C6E" },
   },
 ];
 

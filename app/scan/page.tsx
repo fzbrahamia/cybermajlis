@@ -147,14 +147,14 @@ export default function ScanPage() {
 
         {/* Header */}
         <div style={{ marginBottom:"2rem" }}>
-          <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.58rem", letterSpacing:"0.35em", color:"rgba(99,32,36,0.5)", textTransform:"uppercase", marginBottom:8 }}>
+          <div style={{ fontFamily:"var(--ui)", fontSize:"0.58rem", letterSpacing:"0.35em", color:"rgba(99,32,36,0.5)", textTransform:"uppercase", marginBottom:8 }}>
             {isAR ? "المجلس السيبراني · ماسح التهديدات" : "CyberMajlis · Threat Scanner"}
           </div>
-          <h1 style={{ fontFamily:"'Cinzel',serif", fontSize:"clamp(1.6rem,4vw,2.1rem)", color:"#4a1a1d", fontWeight:700, margin:"0 0 10px" }}>
+          <h1 style={{ fontFamily:"var(--ui)", fontSize:"clamp(1.6rem,4vw,2.1rem)", color:"#4a1a1d", fontWeight:700, margin:"0 0 10px" }}>
             {isAR ? "ماسح الملفات والروابط" : "File & Link Scanner"}
           </h1>
           <div style={{ width:44, height:2, background:"linear-gradient(90deg,#632024,transparent)", marginBottom:12 }}/>
-          <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"1rem", color:"#6a4640", lineHeight:1.75, maxWidth:540 }}>
+          <p style={{ fontFamily:"var(--ui)", fontSize:"1rem", color:"#6a4640", lineHeight:1.75, maxWidth:540 }}>
             {isAR
               ? "افحص أي ملف أو رابط أو بصمة ملف باستخدام أكثر من 70 أداة أمنية. النتائج موضّحة بلغة بسيطة، لا تحتاج خبرة تقنية."
               : "Check any suspicious file, link, or file hash against 70+ security tools. Results are explained in plain language, no technical knowledge needed."}
@@ -186,7 +186,7 @@ export default function ScanPage() {
                 {file ? (
                   <>
                     <div style={{ marginBottom:8, display:"flex", justifyContent:"center" }}><FileText size={30} color="#632024" /></div>
-                    <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.75rem", color:"#4a1a1d", fontWeight:700 }}>{file.name}</div>
+                    <div style={{ fontFamily:"var(--ui)", fontSize:"0.75rem", color:"#4a1a1d", fontWeight:700 }}>{file.name}</div>
                     <div style={{ fontSize:11, color:"rgba(99,32,36,0.4)", marginTop:4 }}>
                       {(file.size/1024).toFixed(1)} KB · {isAR ? "انقر للتغيير" : "Click to change"}
                     </div>
@@ -194,7 +194,7 @@ export default function ScanPage() {
                 ) : (
                   <>
                     <div style={{ marginBottom:8, display:"flex", justifyContent:"center" }}><Upload size={32} color="rgba(99,32,36,0.55)" /></div>
-                    <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.68rem", color:"rgba(99,32,36,0.55)", letterSpacing:"0.12em" }}>
+                    <div style={{ fontFamily:"var(--ui)", fontSize:"0.68rem", color:"rgba(99,32,36,0.55)", letterSpacing:"0.12em" }}>
                       {isAR ? "اسحب وأفلت أو انقر للاختيار" : "DRAG & DROP OR CLICK TO SELECT"}
                     </div>
                     <div style={{ fontSize:11, color:"rgba(99,32,36,0.35)", marginTop:6 }}>
@@ -207,17 +207,17 @@ export default function ScanPage() {
               <input value={input} onChange={e=>setInput(e.target.value)}
                 onKeyDown={e=>{if(e.key==="Enter"&&canScan)handleScan();}}
                 placeholder={mode==="url" ? "https://suspicious-link.com/…" : (isAR ? "بصمة MD5, SHA-1, أو SHA-256" : "MD5, SHA-1, or SHA-256 hash")}
-                style={{ width:"100%", padding:"0.85rem 1rem", borderRadius:10, border:"1.5px solid rgba(99,32,36,0.18)", fontFamily:mode==="hash"?"'JetBrains Mono',monospace":"'Crimson Pro',serif", fontSize:mode==="hash"?12:15, color:"#4a1a1d", background:"#faf6f1", outline:"none", marginBottom:"1rem", boxSizing:"border-box", transition:"border-color .2s" }}
+                style={{ width:"100%", padding:"0.85rem 1rem", borderRadius:10, border:"1.5px solid rgba(99,32,36,0.18)", fontFamily:mode==="hash"?"'JetBrains Mono',monospace":"var(--ui)", fontSize:mode==="hash"?12:15, color:"#4a1a1d", background:"#faf6f1", outline:"none", marginBottom:"1rem", boxSizing:"border-box", transition:"border-color .2s" }}
                 onFocus={e=>e.target.style.borderColor="#632024"} onBlur={e=>e.target.style.borderColor="rgba(99,32,36,0.18)"}/>
             )}
 
             <button onClick={handleScan} disabled={!canScan||loading}
-              style={{ width:"100%", padding:"0.95rem", borderRadius:11, border:"none", background:canScan&&!loading?"linear-gradient(135deg,#4a1a1d,#632024)":"rgba(99,32,36,0.1)", color:canScan&&!loading?"#E8D4BC":"rgba(99,32,36,0.3)", fontFamily:"'Cinzel',serif", fontSize:"0.7rem", letterSpacing:"0.18em", textTransform:"uppercase", fontWeight:700, cursor:canScan&&!loading?"pointer":"not-allowed", transition:"all .2s" }}>
+              style={{ width:"100%", padding:"0.95rem", borderRadius:11, border:"none", background:canScan&&!loading?"linear-gradient(135deg,#4a1a1d,#632024)":"rgba(99,32,36,0.1)", color:canScan&&!loading?"#E8D4BC":"rgba(99,32,36,0.3)", fontFamily:"var(--ui)", fontSize:"0.7rem", letterSpacing:"0.18em", textTransform:"uppercase", fontWeight:700, cursor:canScan&&!loading?"pointer":"not-allowed", transition:"all .2s" }}>
               <Search size={14} style={{verticalAlign:"-2px"}} /> {isAR ? "فحص الآن" : "Scan Now"}
             </button>
 
             {error && (
-              <div style={{ marginTop:"1rem", padding:"12px 16px", background:"rgba(220,38,38,0.07)", border:"1px solid rgba(220,38,38,0.2)", borderRadius:10, color:"#dc2626", fontSize:13, lineHeight:1.6, fontFamily:"'Crimson Pro',serif" }}>
+              <div style={{ marginTop:"1rem", padding:"12px 16px", background:"rgba(220,38,38,0.07)", border:"1px solid rgba(220,38,38,0.2)", borderRadius:10, color:"#dc2626", fontSize:13, lineHeight:1.6, fontFamily:"var(--ui)" }}>
                 {error}
               </div>
             )}
@@ -228,7 +228,7 @@ export default function ScanPage() {
                 ? ["مدعوم من VirusTotal", "أكثر من 70 محرك أمني", "النتائج بلغة بسيطة"]
                 : ["Powered by VirusTotal", "70+ security engines", "Results in plain language"]
               ).map((t,i) => (
-                <span key={i} style={{ fontSize:10, color:"rgba(99,32,36,0.35)", fontFamily:"'Cinzel',serif", letterSpacing:"0.1em" }}>
+                <span key={i} style={{ fontSize:10, color:"rgba(99,32,36,0.35)", fontFamily:"var(--ui)", letterSpacing:"0.1em" }}>
                   {i>0&&<span style={{ marginRight:16, opacity:0.3 }}>·</span>}{t}
                 </span>
               ))}
@@ -241,7 +241,7 @@ export default function ScanPage() {
           <div style={{ background:"white", borderRadius:18, padding:"3rem 2rem", textAlign:"center", boxShadow:"0 4px 24px rgba(99,32,36,0.08)", border:"1px solid rgba(99,32,36,0.09)" }}>
             <div style={{ marginBottom:16, display:"inline-block", animation:"spin 2.5s linear infinite" }}><Search size={40} color="#632024" /></div>
             <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
-            <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.72rem", letterSpacing:"0.15em", color:"rgba(99,32,36,0.7)", marginBottom:6 }}>{loadMsg}</div>
+            <div style={{ fontFamily:"var(--ui)", fontSize:"0.72rem", letterSpacing:"0.15em", color:"rgba(99,32,36,0.7)", marginBottom:6 }}>{loadMsg}</div>
             {mode === "file" && <div style={{ fontSize:11, color:"rgba(99,32,36,0.35)", marginTop:4 }}>
               {isAR ? "قد يستغرق فحص الملفات 60-90 ثانية" : "File scans can take 60-90 seconds"}
             </div>}
@@ -259,10 +259,10 @@ export default function ScanPage() {
                 <div style={{ display:"flex", alignItems:"flex-start", gap:16, marginBottom:14 }}>
                   <div style={{ flexShrink:0 }}><s.Icon size={44} color={s.color} /></div>
                   <div style={{ flex:1 }}>
-                    <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.58rem", letterSpacing:"0.25em", color:s.color, textTransform:"uppercase", marginBottom:5 }}>
+                    <div style={{ fontFamily:"var(--ui)", fontSize:"0.58rem", letterSpacing:"0.25em", color:s.color, textTransform:"uppercase", marginBottom:5 }}>
                       {isAR ? "الحكم" : "Verdict"}
                     </div>
-                    <div style={{ fontFamily:"'Cinzel',serif", fontSize:"1.3rem", fontWeight:700, color:"#4a1a1d", marginBottom:8 }}>
+                    <div style={{ fontFamily:"var(--ui)", fontSize:"1.3rem", fontWeight:700, color:"#4a1a1d", marginBottom:8 }}>
                       {isAR ? s.labelAr : s.label}
                     </div>
                     <div style={{ display:"flex", alignItems:"center", gap:8 }}>
@@ -280,14 +280,14 @@ export default function ScanPage() {
                   {result.type === "url" ? <Link2 size={12} style={{verticalAlign:"-2px"}} /> : result.type === "file" ? <FileText size={12} style={{verticalAlign:"-2px"}} /> : <Hash size={12} style={{verticalAlign:"-2px"}} />} {result.target}
                 </div>
 
-                <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"1.05rem", color:"#4a1a1d", lineHeight:1.75, margin:"0 0 16px" }}>
+                <p style={{ fontFamily:"var(--ui)", fontSize:"1.05rem", color:"#4a1a1d", lineHeight:1.75, margin:"0 0 16px" }}>
                   {isAR
                     ? s.summaryAr(result.detected, result.total, TYPE_LABEL_AR[result.type])
                     : s.summary(result.detected, result.total, result.type)}
                 </p>
 
                 <div style={{ background:s.bg, borderRadius:10, padding:"12px 16px", border:`1px solid ${s.border}` }}>
-                  <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.58rem", letterSpacing:"0.2em", color:s.color, textTransform:"uppercase", marginBottom:8 }}>
+                  <div style={{ fontFamily:"var(--ui)", fontSize:"0.58rem", letterSpacing:"0.2em", color:s.color, textTransform:"uppercase", marginBottom:8 }}>
                     {isAR ? "ماذا تفعل" : "What to do"}
                   </div>
                   {(isAR ? ADVICE_AR[result.severity] : ADVICE[result.severity]).map((a,i) => {
@@ -295,7 +295,7 @@ export default function ScanPage() {
                     return (
                       <div key={i} style={{ display:"flex", gap:8, alignItems:"flex-start", marginBottom:i<arr.length-1?6:0 }}>
                         <span style={{ color:s.color, flexShrink:0 }}>{isAR ? "←" : "→"}</span>
-                        <span style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.95rem", color:"#4a1a1d", lineHeight:1.6 }}>{a}</span>
+                        <span style={{ fontFamily:"var(--ui)", fontSize:"0.95rem", color:"#4a1a1d", lineHeight:1.6 }}>{a}</span>
                       </div>
                     );
                   })}
@@ -303,7 +303,7 @@ export default function ScanPage() {
 
                 {result.permalink && (
                   <a href={result.permalink} target="_blank" rel="noreferrer"
-                    style={{ display:"inline-block", marginTop:10, fontSize:11, color:"rgba(99,32,36,0.4)", fontFamily:"'Cinzel',serif", letterSpacing:"0.08em", textDecoration:"none" }}>
+                    style={{ display:"inline-block", marginTop:10, fontSize:11, color:"rgba(99,32,36,0.4)", fontFamily:"var(--ui)", letterSpacing:"0.08em", textDecoration:"none" }}>
                     {isAR ? "التقرير الكامل على VirusTotal ↗" : "Full report on VirusTotal ↗"}
                   </a>
                 )}
@@ -314,11 +314,11 @@ export default function ScanPage() {
             {result.engines.length > 0 && (
               <div style={{ background:"white", borderRadius:18, padding:"1.4rem", boxShadow:"0 4px 24px rgba(99,32,36,0.08)", border:"1px solid rgba(99,32,36,0.09)" }}>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
-                  <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.62rem", letterSpacing:"0.2em", color:"rgba(99,32,36,0.5)", textTransform:"uppercase" }}>
+                  <div style={{ fontFamily:"var(--ui)", fontSize:"0.62rem", letterSpacing:"0.2em", color:"rgba(99,32,36,0.5)", textTransform:"uppercase" }}>
                     {isAR ? "تفاصيل المحركات" : "Engine Details"}
                   </div>
                   <button onClick={()=>setShowAll(!showAll)}
-                    style={{ fontSize:11, color:"rgba(99,32,36,0.45)", background:"none", border:"none", cursor:"pointer", fontFamily:"'Cinzel',serif" }}>
+                    style={{ fontSize:11, color:"rgba(99,32,36,0.45)", background:"none", border:"none", cursor:"pointer", fontFamily:"var(--ui)" }}>
                     {showAll
                       ? (isAR ? "عرض أقل" : "Show less")
                       : (isAR ? `عرض جميع ${result.engines.length} محركاً` : `Show all ${result.engines.length} engines`)}
@@ -342,7 +342,7 @@ export default function ScanPage() {
                 )}
 
                 {flagged.length === 0 && (
-                  <div style={{ padding:"10px 14px", background:"rgba(22,163,74,0.06)", borderRadius:8, border:"1px solid rgba(22,163,74,0.2)", fontSize:13, color:"#16a34a", fontFamily:"'Crimson Pro',serif", marginBottom:10 }}>
+                  <div style={{ padding:"10px 14px", background:"rgba(22,163,74,0.06)", borderRadius:8, border:"1px solid rgba(22,163,74,0.2)", fontSize:13, color:"#16a34a", fontFamily:"var(--ui)", marginBottom:10 }}>
                     {isAR
                       ? `✓ لم يُصنِّف أي محرك هذا كخطير، أعادت جميع ${result.total} أداة نتائج نظيفة.`
                       : `✓ No engines flagged this, all ${result.total} tools returned clean results.`}
@@ -369,16 +369,16 @@ export default function ScanPage() {
               <div style={{ background:"rgba(99,32,36,0.04)", borderRadius:14, padding:"1.2rem 1.4rem", border:"1px solid rgba(99,32,36,0.12)", display:"flex", gap:14, alignItems:"flex-start" }}>
                 <div style={{ flexShrink:0 }}><Shield size={26} color="#632024" /></div>
                 <div>
-                  <div style={{ fontFamily:"'Cinzel',serif", fontSize:"0.68rem", fontWeight:700, color:"#4a1a1d", marginBottom:5 }}>
+                  <div style={{ fontFamily:"var(--ui)", fontSize:"0.68rem", fontWeight:700, color:"#4a1a1d", marginBottom:5 }}>
                     {isAR ? "أبلغ الجهة الوطنية للأمن السيبراني في قطر" : "Report to Qatar's Cybersecurity Authority"}
                   </div>
-                  <p style={{ fontFamily:"'Crimson Pro',serif", fontSize:"0.93rem", color:"#6a4640", lineHeight:1.7, margin:"0 0 8px" }}>
+                  <p style={{ fontFamily:"var(--ui)", fontSize:"0.93rem", color:"#6a4640", lineHeight:1.7, margin:"0 0 8px" }}>
                     {isAR
                       ? "إذا تلقيته عبر رسالة أو بريد إلكتروني، بلّغ عنه لـ CERT.Qatar, الجهة الوطنية للأمن السيبراني."
                       : "If you received this through a message or email, report it to CERT.Qatar, the National Cybersecurity Agency."}
                   </p>
                   <a href="https://www.cert.gov.qa" target="_blank" rel="noreferrer"
-                    style={{ fontFamily:"'Cinzel',serif", fontSize:"0.6rem", letterSpacing:"0.12em", color:"#632024", textDecoration:"none", fontWeight:700 }}>
+                    style={{ fontFamily:"var(--ui)", fontSize:"0.6rem", letterSpacing:"0.12em", color:"#632024", textDecoration:"none", fontWeight:700 }}>
                     CERT.QATAR → www.cert.gov.qa
                   </a>
                 </div>
@@ -386,7 +386,7 @@ export default function ScanPage() {
             )}
 
             <button onClick={reset}
-              style={{ padding:"0.8rem", borderRadius:10, border:"1.5px solid rgba(99,32,36,0.2)", background:"white", color:"rgba(99,32,36,0.6)", fontFamily:"'Cinzel',serif", fontSize:"0.65rem", letterSpacing:"0.15em", textTransform:"uppercase", cursor:"pointer" }}>
+              style={{ padding:"0.8rem", borderRadius:10, border:"1.5px solid rgba(99,32,36,0.2)", background:"white", color:"rgba(99,32,36,0.6)", fontFamily:"var(--ui)", fontSize:"0.65rem", letterSpacing:"0.15em", textTransform:"uppercase", cursor:"pointer" }}>
               {isAR ? "→ فحص شيء آخر" : "← Scan Something Else"}
             </button>
           </div>

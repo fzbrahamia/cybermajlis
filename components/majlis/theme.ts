@@ -10,15 +10,18 @@
    formality and every readable word is Nunito, which is what the rest of the
    platform uses. */
 export const cinzel  = '"Cinzel", "Trajan Pro", Georgia, serif';
-export const nunito  = 'var(--font-nunito), "Nunito", ui-rounded, system-ui, sans-serif';
+export const nunito  = 'var(--ui)';
 export const crimson = nunito;
 export const mono    = '"Geist Mono", "JetBrains Mono", Menlo, monospace';
 
-/** The wordmark only. Arabic has no Cinzel, so it falls back to the brand Naskh. */
-export const wordmark = (isAR: boolean) => (isAR ? "var(--font-arabic), serif" : cinzel);
+/** The wordmark only. Arabic has no Cinzel, so it uses the brand Arabic face. */
+export const wordmark = (isAR: boolean) => (isAR ? "var(--ui)" : cinzel);
 
 /** Everything a person actually reads. */
-export const display = (isAR: boolean) => (isAR ? "var(--font-arabic), sans-serif" : nunito);
+export const display = (_isAR?: boolean) => "var(--ui)";
+
+/** The landing read a size smaller than CyberMajlis. */
+export const BASE = 17.5;
 
 export const M = {
   /** One surface for the whole page. Sections are never separated by colour. */
@@ -117,7 +120,7 @@ export const BRANCHES: Branch[] = [
     id: "quantum",
     enter: "/quantum",
     live: true,
-    name_en: "QuantumMajlis", name_ar: "مجلس الكم",
+    name_en: "QuantumMajlis", name_ar: "مجلس الكوانتم",
     word: ["Quantum", "Majlis"],
     line_en: "The strangest science, told as a story.",
     line_ar: "أغرب العلوم، مرويًّا كقصّة.",

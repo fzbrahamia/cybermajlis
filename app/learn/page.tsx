@@ -5,7 +5,7 @@ import { useLocale } from "next-intl";
 import { motion } from "framer-motion";
 import { ArrowRight, Lock, Play, Layers } from "lucide-react";
 import { InnovationPage } from "@/components/innovation/InnovationChrome";
-import { Stagger, Rise, Lift, RoomHead, Says } from "@/components/innovation/Alive";
+import { Stagger, Rise, Lift, RoomHead, Says, Hint } from "@/components/innovation/Alive";
 import { DOMAINS, casesForDomain } from "@/app/lib/domainData";
 import { conceptsForDomain } from "@/app/lib/conceptData";
 import { VERBS } from "@/app/lib/innovationData";
@@ -21,7 +21,7 @@ export default function LearnPage() {
     <InnovationPage>
       <RoomHead
         hue={gold}
-        eyebrow={isAR ? "مجلس" : "Majlis"}
+        eyebrow={isAR ? "المجلس" : "Majlis"}
         title={isAR ? "اختر شيئاً تنظر فيه" : "Pick something to look into"}
         sub={isAR
           ? "كل مجال فيه أفلام قصيرة، ثم قضية حقيقية حدثت فعلاً."
@@ -111,8 +111,16 @@ export default function LearnPage() {
                   <div style={{ marginTop: "auto", paddingTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
                     {d.live ? (
                       <>
-                        <span style={{ ...quiet, gap: 6 }}><Play size={12} />{cn}</span>
-                        <span style={{ ...quiet, gap: 6 }}><Layers size={12} />{cc}</span>
+                        <Hint say={isAR
+                          ? `${cn} أفلام قصيرة تشرح كيف تعمل الأشياء هنا`
+                          : `${cn} short films explaining how things work here`}>
+                          <span style={{ ...quiet, gap: 6 }}><Play size={13} />{cn}</span>
+                        </Hint>
+                        <Hint say={isAR
+                          ? `${cc} مشكلة حقيقية حدثت، وكل من حاول حلها`
+                          : `${cc} real problem that happened, and everyone who tried to solve it`}>
+                          <span style={{ ...quiet, gap: 6 }}><Layers size={13} />{cc}</span>
+                        </Hint>
                       </>
                     ) : (
                       <span style={quiet}>{isAR ? "قريباً" : "Soon"}</span>

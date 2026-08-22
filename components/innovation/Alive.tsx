@@ -11,7 +11,7 @@
    Motion is the connective tissue, not decoration. */
 
 import { motion, useReducedMotion } from "framer-motion";
-import { M, sans, mono, R, type Hue } from "./theme";
+import { M, sans, mono, R, T, type Hue } from "./theme";
 
 export const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -229,10 +229,10 @@ export function RoomHead({
       )}
       <Rise>
         <h1 style={{
-          margin: "0 0 12px", fontFamily: sans,
-          fontSize: "clamp(26px,4vw,38px)", fontWeight: 900,
-          lineHeight: 1.14, letterSpacing: "-0.02em",
-          color: M.heading, maxWidth: "22ch", textWrap: "balance",
+          margin: "0 0 14px", fontFamily: sans,
+          fontSize: T.h1, fontWeight: 900,
+          lineHeight: 1.1, letterSpacing: "-0.028em",
+          color: M.heading, maxWidth: "20ch", textWrap: "balance",
         }}>
           {title}
         </h1>
@@ -240,13 +240,34 @@ export function RoomHead({
       {sub && (
         <Rise>
           <p style={{
-            margin: "0 0 4px", maxWidth: "40ch",
-            fontSize: 17, lineHeight: 1.65, color: M.body, fontFamily: sans,
+            margin: "0 0 4px", maxWidth: "42ch",
+            fontSize: T.lead, lineHeight: 1.62, color: M.body, fontFamily: sans,
           }}>
             {sub}
           </p>
         </Rise>
       )}
     </Stagger>
+  );
+}
+
+/* A label on hover.
+
+   The browser's own tooltip rather than one we draw: it is positioned by the
+   operating system, so it can never be clipped by a card edge the way a
+   custom popup was, and it is the same thing a person already knows from
+   every other website. */
+export function Hint({
+  children, say,
+}: { children: React.ReactNode; say: string }) {
+  return (
+    <span
+      title={say}
+      aria-label={say}
+      tabIndex={0}
+      style={{ display: "inline-flex", cursor: "help", outline: "none" }}
+    >
+      {children}
+    </span>
   );
 }

@@ -232,7 +232,7 @@ export default function CalmSafeReply({ lang, onBack }: Props) {
           <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
             <button
               onClick={next}
-              style={{ fontFamily: "'Cinzel', Georgia, serif", fontWeight: 700, fontSize: "1rem", background: ACCENT, color: "#FFFFFF", border: "none", borderRadius: 12, padding: "0.8rem 2rem", cursor: "pointer" }}
+              style={{ fontFamily: "var(--ui)", fontWeight: 700, fontSize: "1rem", background: ACCENT, color: "#FFFFFF", border: "none", borderRadius: 12, padding: "0.8rem 2rem", cursor: "pointer" }}
             >
               {idx + 1 >= scenarios.length ? ui.finish : ui.next}
             </button>

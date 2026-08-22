@@ -173,21 +173,21 @@ export default function LessonDetailPage({ lesson }: LessonDetailProps) {
         --cream: #E3DAC9; --cream-light: #f5f0e8; --cream-dark: #cec4b0;
         --heading: #4a1a1d; --body: #6a4640; --sage: #5B7C5C;
       }
-      .ld-root { min-height: 100vh; background: #FDFBF6; font-family: 'Crimson Pro', Georgia, serif; position: relative; overflow-x: hidden; }
+      .ld-root { min-height: 100vh; background: #FDFBF6; font-family: var(--ui); position: relative; overflow-x: hidden; }
       .ld-orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
       .ld-orb-1 { width: 500px; height: 500px; top: -150px; left: -100px; background: radial-gradient(circle, rgba(99,32,36,.09), transparent 70%); }
       .ld-orb-2 { width: 400px; height: 400px; bottom: -100px; right: -80px; background: radial-gradient(circle, rgba(197,165,126,.12), transparent 70%); }
       .ld-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 6rem 2.5rem 4rem; }
       .ld-header { margin-bottom: 2rem; }
-      .ld-back { display: inline-flex; align-items: center; gap: 7px; font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: var(--maroon); background: none; border: 1px solid rgba(99,32,36,.2); padding: 7px 16px; border-radius: 8px; cursor: pointer; margin-bottom: 1.5rem; transition: background .2s, border-color .2s; text-transform: uppercase; }
+      .ld-back { display: inline-flex; align-items: center; gap: 7px; font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; color: var(--maroon); background: none; border: 1px solid rgba(99,32,36,.2); padding: 7px 16px; border-radius: 8px; cursor: pointer; margin-bottom: 1.5rem; transition: background .2s, border-color .2s; text-transform: uppercase; }
       .ld-back:hover { background: rgba(99,32,36,.06); border-color: var(--maroon); }
-      .ld-title { font-family: 'Cinzel', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; color: var(--heading); letter-spacing: -.5px; margin-bottom: .5rem; }
+      .ld-title { font-family: var(--ui); font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 700; color: var(--heading); letter-spacing: -.5px; margin-bottom: .5rem; }
       .ld-progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
       .ld-progress-bar { flex: 1; height: 4px; border-radius: 4px; background: rgba(99,32,36,.1); overflow: hidden; }
       .ld-progress-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--maroon), var(--gold)); transition: width .6s cubic-bezier(.4,0,.2,1); }
-      .ld-progress-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 1.5px; color: rgba(99,32,36,.5); white-space: nowrap; }
+      .ld-progress-label { font-family: var(--ui); font-size: 10px; letter-spacing: 1.5px; color: rgba(99,32,36,.5); white-space: nowrap; }
       .ld-tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; background: rgba(99,32,36,.05); padding: 4px; border-radius: 12px; border: 1px solid rgba(197,165,126,.25); }
-      .ld-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 16px; border-radius: 9px; border: none; font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: all .2s; position: relative; background: transparent; color: rgba(99,32,36,.45); }
+      .ld-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 16px; border-radius: 9px; border: none; font-family: var(--ui); font-size: 11px; font-weight: 600; letter-spacing: 1px; cursor: pointer; transition: all .2s; position: relative; background: transparent; color: rgba(99,32,36,.45); }
       .ld-tab.active { background: var(--maroon); color: var(--cream-light); box-shadow: 0 2px 12px rgba(99,32,36,.25); }
       .ld-tab.unlocked:not(.active):hover { background: rgba(99,32,36,.08); color: var(--maroon); }
       .ld-tab.locked { cursor: not-allowed; opacity: .4; }
@@ -200,9 +200,9 @@ export default function LessonDetailPage({ lesson }: LessonDetailProps) {
       .ld-right > img { width: 100%; display: block; border-radius: 16px; }
       .ld-story-intro { padding: 3rem 2.5rem; text-align: center; max-width: 520px; width: 100%; display: flex; flex-direction: column; align-items: center; }
       .ld-story-icon { font-size: 3rem; margin-bottom: 1rem; }
-      .ld-story-heading { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 700; color: var(--heading); margin-bottom: 1rem; }
+      .ld-story-heading { font-family: var(--ui); font-size: 1.5rem; font-weight: 700; color: var(--heading); margin-bottom: 1rem; }
       .ld-story-desc { font-size: 1.1rem; line-height: 1.8; color: var(--body); font-style: italic; margin-bottom: 2rem; }
-      .ld-watch-btn { padding: 13px 32px; border: none; border-radius: 12px; background: var(--maroon); color: var(--cream-light); font-family: 'Cinzel', serif; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; cursor: pointer; box-shadow: 0 4px 18px rgba(99,32,36,.28); transition: transform .2s, box-shadow .2s, background .2s; }
+      .ld-watch-btn { padding: 13px 32px; border: none; border-radius: 12px; background: var(--maroon); color: var(--cream-light); font-family: var(--ui); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; cursor: pointer; box-shadow: 0 4px 18px rgba(99,32,36,.28); transition: transform .2s, box-shadow .2s, background .2s; }
       .ld-watch-btn:hover { background: var(--maroon-deep); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,32,36,.35); }
       .ld-gem-divider { display: flex; align-items: center; gap: 10px; margin: 1rem 0; width: 100%; }
       .ld-gem-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
@@ -216,7 +216,7 @@ export default function LessonDetailPage({ lesson }: LessonDetailProps) {
 
   if (loading) return (
     <div style={{ minHeight: "100vh", background: "#FDFBF6", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ fontFamily: "'Cinzel', serif", color: "#4a1a1d", fontSize: "1rem", letterSpacing: "2px", opacity: .6 }}>
+      <div style={{ fontFamily: "var(--ui)", color: "#4a1a1d", fontSize: "1rem", letterSpacing: "2px", opacity: .6 }}>
         {t("loading")}
       </div>
     </div>
@@ -271,7 +271,7 @@ export default function LessonDetailPage({ lesson }: LessonDetailProps) {
                 />
               )}
               {selectedTab === "Story" && storyStarted && (
-                <img src="/avatar.png" alt="Hamad" />
+                <img src="/characters/HamadChat.png" alt="Hamad" />
               )}
               {selectedTab === "Poster" && (
                 <video src="/posters/scrolldown.mp4" autoPlay loop muted />

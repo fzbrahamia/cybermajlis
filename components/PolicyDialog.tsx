@@ -101,7 +101,7 @@ export default function PolicyDialog({
             <h2 style={{
               margin: "0 0 4px", fontSize: 20, fontWeight: 800,
               letterSpacing: "-0.01em", color: accent,
-              fontFamily: isAR ? "var(--font-arabic), serif" : "inherit",
+              fontFamily: isAR ? "var(--ui)" : "inherit",
             }}>
               {isAR ? "سياسة الخصوصية" : "Privacy Policy"}
             </h2>
@@ -129,7 +129,7 @@ export default function PolicyDialog({
             <section key={i} style={{ marginBottom: 22 }}>
               <h3 style={{
                 margin: "0 0 8px", fontSize: 15, fontWeight: 800, color: "#2A231C",
-                fontFamily: isAR ? "var(--font-arabic), serif" : "inherit",
+                fontFamily: isAR ? "var(--ui)" : "inherit",
               }}>
                 {isAR ? s.tAr : s.t}
               </h3>

@@ -47,7 +47,7 @@ export const DOMAINS: Domain[] = [
     open_en: "Today's locks assume some arithmetic is slow to undo. What happens when it is not?",
     open_ar: "تفترض أقفال اليوم أن بعض الحساب بطيء في العكس. فماذا يحدث حين لا يعود كذلك؟",
     tone: "#2E9C6E", tint: "rgba(46,156,110,.09)",
-    deeper: { href: "/quantum", en: "QuantumMajlis", ar: "مجلس الكم" },
+    deeper: { href: "/quantum", en: "QuantumMajlis", ar: "مجلس الكوانتم" },
   },
   {
     id: "ai", live: false,

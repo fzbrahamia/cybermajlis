@@ -42,12 +42,12 @@ export const GOLD_DEEP = "#A8804A";
 /* Quantum reads friendlier than the rest of the company. Cinzel is stately and
    right for a majlis; it is the wrong voice for a nine year old meeting
    superposition. Rounded sans throughout, mono kept for instrument readouts. */
-export const headingFont = 'var(--font-nunito), "Nunito", ui-rounded, system-ui, sans-serif';
-export const bodyFont    = 'var(--font-nunito), "Nunito", ui-rounded, system-ui, sans-serif';
+export const headingFont = 'var(--ui)';
+export const bodyFont    = 'var(--ui)';
 export const mono = '"Geist Mono", "JetBrains Mono", Menlo, monospace';
 
-/** Nunito carries no Arabic glyphs, so Arabic falls back to the brand Naskh. */
-export const display = (isAR: boolean) => (isAR ? "var(--font-arabic), sans-serif" : headingFont);
+/** Nunito carries no Arabic glyphs, so Arabic uses the brand Arabic face. */
+export const display = (_isAR?: boolean) => "var(--ui)";
 
 export const EASE = [0.16, 1, 0.3, 1] as const;
 export const SPRING = { type: "spring" as const, stiffness: 200, damping: 20 };

@@ -11,7 +11,7 @@
    ============================================================ */
 
 .lab {
-  font-family: var(--font-nunito), "Nunito", ui-rounded, system-ui, sans-serif;
+  font-family: var(--ui);
   color: var(--lab-text);
 }
 

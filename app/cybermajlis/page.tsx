@@ -12,8 +12,8 @@ import Footer from "@/components/ui/Footer";
 import { GRAIN } from "@/components/majlis/theme";
 
 /* ── Fonts ───────────────────────────────────────────────── */
-const cinzel  = '"Cinzel", "Trajan Pro", Georgia, serif';
-const crimson = '"Crimson Pro", "Crimson Text", Georgia, serif';
+const cinzel  = 'var(--ui)';
+const crimson = 'var(--ui)';
 const mono    = '"Geist Mono", "JetBrains Mono", Menlo, monospace';
 
 /* ── Palette ─────────────────────────────────────────────── */
@@ -327,7 +327,7 @@ function ChatMock() {
   return (
     <>
       <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-        <img src="/avatar.png" alt="Hamad" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover", border: "1.5px solid rgba(197,165,126,.5)" }} />
+        <img src="/characters/HamadChat.png" alt="Hamad" style={{ width: 32, height: 32, borderRadius: "50%", objectFit: "cover", border: "1.5px solid rgba(197,165,126,.5)" }} />
         <div>
           <div style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 700, color: C.goldLight }}>HAMAD</div>
           <div style={{ fontFamily: mono, fontSize: 8, color: "#4a9c6e" }}>● {isAR ? "متصل" : "online"}</div>
@@ -683,7 +683,7 @@ function MobileSection({ isAR }: { isAR: boolean }) {
             <div style={{ width: "100%", height: "100%", borderRadius: 28, overflow: "hidden", background: "linear-gradient(180deg,#2c1010,#1d0708)", display: "flex", flexDirection: "column" }}>
               {/* app header */}
               <div style={{ padding: "26px 16px 12px", display: "flex", alignItems: "center", gap: 9 }}>
-                <img src="/avatar.png" alt="" style={{ width: 30, height: 30, borderRadius: "50%", objectFit: "cover", border: "1.5px solid rgba(197,165,126,.5)" }} />
+                <img src="/characters/HamadChat.png" alt="" style={{ width: 30, height: 30, borderRadius: "50%", objectFit: "cover", border: "1.5px solid rgba(197,165,126,.5)" }} />
                 <div>
                   <div style={{ fontFamily: cinzel, fontSize: 11, fontWeight: 700, color: C.goldLight }}>{isAR ? "أهلاً بك" : "Welcome"}</div>
                   <div style={{ fontFamily: mono, fontSize: 8, color: "#e0a78f", display: "flex", alignItems: "center", gap: 3 }}>

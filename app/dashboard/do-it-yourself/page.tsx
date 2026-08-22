@@ -34,7 +34,7 @@ export default function DoItYourselfPage() {
         inset: 0,
         overflow: "hidden",
         background: "#FCF6EA",
-        fontFamily: "'Crimson Pro', Georgia, serif",
+        fontFamily: "var(--ui)",
         direction: isRtl ? "rtl" : "ltr",
       }}
     >
@@ -74,7 +74,7 @@ export default function DoItYourselfPage() {
           border: 1px solid rgba(197,165,126,0.35);
           z-index: 10;
         }
-        .diy-tooltip span { display: block; font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.04em; }
+        .diy-tooltip span { display: block; font-family: var(--ui); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.04em; }
         .diy-tooltip small { display: block; color: #c5a57e; font-size: 0.68rem; margin-top: 0.12rem; }
         .diy-hotspot:hover .diy-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -101,7 +101,7 @@ export default function DoItYourselfPage() {
           display: inline-flex;
           align-items: center;
           gap: 0.3rem;
-          font-family: 'Cinzel', serif;
+          font-family: var(--ui);
           font-size: 0.7rem;
           letter-spacing: 0.08em;
           text-transform: uppercase;
@@ -126,7 +126,7 @@ export default function DoItYourselfPage() {
           border: 1px solid rgba(197,165,126,0.5);
           border-radius: 14px;
           padding: 0.7rem 0.9rem;
-          font-family: 'Crimson Pro', Georgia, serif;
+          font-family: var(--ui);
           font-size: 0.82rem;
           line-height: 1.45;
           backdrop-filter: blur(6px);

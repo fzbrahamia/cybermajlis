@@ -30,7 +30,7 @@ const CHARS = {
     welcome: "When a real incident hits, every decision has a consequence and there is no undo. I'll walk you through a live ransomware attack, five critical decision points. Your choices determine whether this becomes a minor incident or a catastrophe.",
   },
   hamad: {
-    name: "Hamad", role: "Awareness & Social Engineering", color: "#60a5fa", img: "/avatar.png",
+    name: "Hamad", role: "Awareness & Social Engineering", color: "#60a5fa", img: "/characters/HamadChat.png",
     bg: "linear-gradient(160deg,#020b18,#061525)",
     title: "Social Engineering Lab",
     welcome: "I'm Hamad, I work in the Finance department. I'm not a security expert. But I've learned the hard way that attackers don't just target IT systems, they target people like me. Let's go through what I should have caught before it was too late.",

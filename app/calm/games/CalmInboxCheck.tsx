@@ -283,7 +283,7 @@ export default function CalmInboxCheck({ lang, onBack }: Props) {
             <div style={{ textAlign: "center", marginTop: "1rem" }}>
               <button
                 onClick={next}
-                style={{ fontFamily: "'Cinzel', Georgia, serif", fontWeight: 700, fontSize: "1rem", background: ACCENT, color: "#FFFFFF", border: "none", borderRadius: 12, padding: "0.7rem 1.8rem", cursor: "pointer" }}
+                style={{ fontFamily: "var(--ui)", fontWeight: 700, fontSize: "1rem", background: ACCENT, color: "#FFFFFF", border: "none", borderRadius: 12, padding: "0.7rem 1.8rem", cursor: "pointer" }}
               >
                 {idx + 1 >= emails.length ? ui.finish : ui.next}
               </button>

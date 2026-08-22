@@ -115,7 +115,7 @@ export default function ProfilePage() {
       }
 
       body {
-        font-family: 'Crimson Pro', Georgia, serif;
+        font-family: var(--ui);
         background-color: var(--paper);
         color: var(--body);
         overflow-x: hidden;
@@ -173,7 +173,7 @@ export default function ProfilePage() {
 
       .header-eyebrow {
         display: inline-block;
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.7rem;
         letter-spacing: 0.35em;
         text-transform: uppercase;
@@ -186,7 +186,7 @@ export default function ProfilePage() {
       }
 
       .profile-header h1 {
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: clamp(2rem, 4vw, 3.2rem);
         font-weight: 900;
         line-height: 1.1;
@@ -262,14 +262,14 @@ export default function ProfilePage() {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 2.4rem;
         font-weight: 700;
         color: var(--maroon);
       }
 
       .avatar-name {
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 1.5rem;
         font-weight: 700;
         color: var(--gold-light);
@@ -336,7 +336,7 @@ export default function ProfilePage() {
       }
 
       .section-title {
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.92rem;
         font-weight: 700;
         letter-spacing: 0.14em;
@@ -365,7 +365,7 @@ export default function ProfilePage() {
       }
 
       .stat-tile-value {
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 1.9rem;
         font-weight: 700;
         color: var(--maroon-mid);
@@ -433,7 +433,7 @@ export default function ProfilePage() {
         background: rgba(99,32,36,0.06);
         border: 1px solid rgba(99,32,36,0.2);
         color: var(--maroon-deep);
-        font-family: 'Crimson Pro', serif;
+        font-family: var(--ui);
         font-size: 1rem;
         outline: none;
         transition: border-color 0.2s;
@@ -451,7 +451,7 @@ export default function ProfilePage() {
 
       /* Buttons */
       .btn-primary {
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.65rem;
         letter-spacing: 0.15em;
         text-transform: uppercase;
@@ -476,7 +476,7 @@ export default function ProfilePage() {
       }
 
       .btn-secondary {
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.65rem;
         letter-spacing: 0.15em;
         text-transform: uppercase;
@@ -512,7 +512,7 @@ export default function ProfilePage() {
         display: block;
         width: 100%;
         padding: 1rem;
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 0.72rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
@@ -539,7 +539,7 @@ export default function ProfilePage() {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: 'Cinzel', serif;
+        font-family: var(--ui);
         font-size: 1rem;
         letter-spacing: 0.2em;
         color: var(--maroon);
