@@ -24,11 +24,13 @@ import HamadCorner from "./HamadCorner";
 
 /* Four rooms. The paths avoid /community and /news because those belong to
    CyberMajlis and two brands must never share one route. */
+/* Your own work comes first now. It used to be last, which said the platform
+   was a course you attend rather than a desk you work at. */
 const TABS = [
+  { href: "/mine",   en: "My work",   ar: "شغلي" },
   { href: "/learn",  en: "Learn",     ar: "تعلّم" },
   { href: "/board",  en: "Community", ar: "المجتمع" },
   { href: "/latest", en: "News",      ar: "الأخبار" },
-  { href: "/mine",   en: "Mine",      ar: "أشيائي" },
 ];
 
 export function InnovationHeader({ hue }: { hue: Hue }) {

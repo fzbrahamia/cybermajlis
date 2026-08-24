@@ -27,6 +27,8 @@ import { M, sans, mono, label, card, flat, button, ghostButton, quietPill, pill,
 import { Ask as AskBox } from "@/components/innovation/Ask";
 import { Face } from "@/components/innovation/Alive";
 import VideoSlot from "@/components/innovation/VideoSlot";
+import WaterBench from "@/components/innovation/WaterBench";
+import WaterCup from "@/components/innovation/WaterCup";
 import AskHamad from "@/components/innovation/AskHamad";
 import { BoardSurface, Pinned, Thread } from "@/components/innovation/Board";
 
@@ -65,6 +67,35 @@ const COLS = [
   { k: "breaks", en: "Failure", ar: "الإخفاق" },
 ] as const;
 
+/* Every question in the flow, wherever it sits. The flow is nested four ways
+   deep and nothing until now needed to see all of it at once; the look back
+   does, because it reads the whole case rather than one answer. */
+function allAsks(node: unknown, out: Ask[] = []): Ask[] {
+  if (!node || typeof node !== "object") return out;
+  if (Array.isArray(node)) { for (const n of node) allAsks(n, out); return out; }
+  const o = node as Record<string, unknown>;
+  if (typeof o.id === "string" && typeof o.q_en === "string") out.push(o as unknown as Ask);
+  for (const v of Object.values(o)) allAsks(v, out);
+  return out;
+}
+
+type Review = { moved: string; strong: string; missed: string; carry: string };
+
+/** One line of the look back, spoken by whoever it belongs to. */
+function Read({ tag, body, who, hue }: {
+  tag: string; body: string; who: "hamad" | "rouda"; hue: string;
+}) {
+  return (
+    <div className="mj-in" style={{ ...card, padding: "20px 22px", borderTop: `4px solid ${hue}` }}>
+      <div style={{ ...label, fontSize: 9.5, marginBottom: 9, color: hue }}>{tag}</div>
+      <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+        <Face who={who} size={30} />
+        <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.65, color: M.heading }}>{body}</p>
+      </div>
+    </div>
+  );
+}
+
 const ANIM = `
 @keyframes mjIn { from { opacity:0; transform: translateY(10px) } to { opacity:1; transform:none } }
 @keyframes mjPin { 0% { opacity:0; transform: scale(.9) rotate(-4deg) } 60% { transform: scale(1.04) rotate(1deg) } 100% { opacity:1; transform: none } }
@@ -97,9 +128,19 @@ export default function CasePage() {
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [placed, setPlaced] = useState<Record<string, string>>({});
   const [held, setHeld] = useState<string | null>(null);
+  /** Cards confirmed to be in the right row. Locked so they stop moving. */
+  const [locked, setLocked] = useState<Record<string, boolean>>({});
+  /** How many times each column has been checked. Two, then it is shown. */
+  const [tries, setTries] = useState<Record<string, number>>({});
   const [col, setCol] = useState(0);
   const [faded, setFaded] = useState(false);
   const [verd, setVerd] = useState<Record<string, "answered" | "thin" | "off">>({});
+  /** Hamad's reading of the whole case. Fetched once, then kept. */
+  const [review, setReview] = useState<Review | null>(null);
+  const [revState, setRevState] = useState<"idle" | "busy" | "none">("idle");
+  const [showAll, setShowAll] = useState(false);
+  /** When this case was first opened, so the passport can order them. */
+  const [startedAt, setStartedAt] = useState<number | null>(null);
 
   // load, then save on every change. A school device gets closed mid lesson.
   useEffect(() => {
@@ -110,7 +151,12 @@ export default function CasePage() {
         setStage(s.stage ?? 0); setAns(s.ans ?? {}); setPick(s.pick ?? {});
         setShown(s.shown ?? 1); setTaught(s.taught ?? null);
         setRevealed(s.revealed ?? {}); setPlaced(s.placed ?? {});
+        setLocked(s.locked ?? {}); setTries(s.tries ?? {});
+        if (s.review) setReview(s.review);
         setCol(s.col ?? 0); setFaded(s.faded ?? false); setVerd(s.verd ?? {});
+        setStartedAt(s.startedAt ?? Date.now());
+      } else {
+        setStartedAt(Date.now());
       }
     } catch { /* private mode */ }
     setReady(true);
@@ -119,11 +165,39 @@ export default function CasePage() {
   useEffect(() => {
     if (!ready) return;
     try {
-      localStorage.setItem(KEY, JSON.stringify({ stage, ans, pick, shown, taught, revealed, placed, col, faded, verd }));
+      localStorage.setItem(KEY, JSON.stringify({ stage, ans, pick, shown, taught, revealed, placed, locked, tries, col, faded, verd, review, startedAt }));
     } catch { /* private mode */ }
-  }, [ready, KEY, stage, ans, pick, shown, taught, revealed, placed, col, faded, verd]);
+  }, [ready, KEY, stage, ans, pick, shown, taught, revealed, placed, locked, tries, col, faded, verd, review, startedAt]);
 
   const set = (id: string, v: string) => setAns(a => ({ ...a, [id]: v }));
+
+  /* The look back is fetched once, when they arrive at it, and then kept.
+     Re-reading a finished case should not cost another call, and the child
+     should not have to press anything to be told what they did. */
+  useEffect(() => {
+    if (!ready || stage !== 10 || review || revState !== "idle" || !flow || !cs) return;
+    const turns = allAsks(flow)
+      .filter(a => ans[a.id]?.trim())
+      .map(a => ({ q: isAR ? a.q_ar : a.q_en, a: ans[a.id] }));
+    if (turns.length < 3) { setRevState("none"); return; }
+    setRevState("busy");
+    fetch("/api/review", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        title: isAR ? cs.title_ar : cs.title_en,
+        gap: isAR ? cs.gap_ar : cs.gap_en,
+        turns, first: ans["what"], after: ans["precise"],
+        lang: isAR ? "ar" : "en",
+      }),
+    })
+      .then(r => (r.ok ? r.json() : null))
+      .then(out => {
+        if (out?.ok) { setReview(out as Review); setRevState("idle"); }
+        else setRevState("none");
+      })
+      .catch(() => setRevState("none"));
+  }, [ready, stage, review, revState, flow, cs, ans, isAR]);
 
   if (!cs || !d || !flow) {
     return (
@@ -365,6 +439,14 @@ export default function CasePage() {
             </div>
           )}
 
+          {/* Reading that the pull has a number is not the same as finding the
+              point where it gives. This case earns a bench, so it gets one. */}
+          {taught !== null && cs.domain === "water" && (
+            <div className="mj-in" style={{ marginBottom: 16 }}>
+              <WaterBench />
+            </div>
+          )}
+
           {taught !== null && (
             <div className="mj-in" style={{ padding: "22px 24px", background: ROUDA.tint, border: `1px solid ${ROUDA.line}`, borderRadius: 18 }}>
               <AskBox a={flow.discovery.check} isAR={isAR} value={ans[flow.discovery.check.id] ?? ""} picked={pick[flow.discovery.check.id]} onText={v => set(flow.discovery.check.id, v)} onPick={i => setPick(p => ({ ...p, [flow.discovery.check.id]: i }))} verdict={verd[flow.discovery.check.id]} seen={seenSoFar()} onVerdict={(v) => setVerd(w => ({ ...w, [flow.discovery.check.id]: v }))} />
@@ -516,8 +598,55 @@ export default function CasePage() {
           text: (a as unknown as Record<string, string>)[isAR ? `${active.k}_ar` : `${active.k}_en`],
         }));
         const loose = cards.filter(c => !placed[c.id]);
-        const colDone = loose.length === 0;
+        const allPlaced = loose.length === 0;
+        // Full is not the same as right. The payoff panel below asks them to
+        // read the column, which only means anything if the column is true.
+        const colDone = cards.every(c => locked[c.id]);
         const allDone = col === COLS.length - 1 && colDone;
+        const went = tries[active.k] ?? 0;
+        const rightNow = cards.filter(c => placed[c.id] === c.id).length;
+
+        /* One card per row. Dropping onto a taken row sends the card that was
+           there back to the tray, instead of burying it: two cards used to be
+           able to hold the same row, only the first was ever drawn, and the
+           second was gone for good. */
+        const drop = (cardId: string, rowKey: string) => {
+          if (locked[cardId]) return;
+          setPlaced(p => {
+            const next = { ...p };
+            for (const id of Object.keys(next)) {
+              if (next[id] === rowKey && !locked[id]) delete next[id];
+            }
+            next[cardId] = rowKey;
+            return next;
+          });
+          setHeld(null);
+        };
+
+        const takeBack = (cardId: string) => {
+          if (locked[cardId]) return;
+          setPlaced(p => { const n = { ...p }; delete n[cardId]; return n; });
+          setHeld(null);
+        };
+
+        const check = () => {
+          const n = went + 1;
+          setTries(t => ({ ...t, [active.k]: n }));
+          const good = cards.filter(c => placed[c.id] === c.id);
+          if (n >= 2) {
+            // Second go. Put the rest where they belong and say so, rather
+            // than leaving a child stuck on a table they cannot read.
+            setPlaced(p => ({ ...p, ...Object.fromEntries(cards.map(c => [c.id, c.id])) }));
+            setLocked(l => ({ ...l, ...Object.fromEntries(cards.map(c => [c.id, true])) }));
+            return;
+          }
+          setLocked(l => ({ ...l, ...Object.fromEntries(good.map(c => [c.id, true])) }));
+          setPlaced(p => {
+            const nx = { ...p };
+            for (const c of cards) if (nx[c.id] && nx[c.id] !== c.id) delete nx[c.id];
+            return nx;
+          });
+        };
 
         return (
           <div className="mj-in">
@@ -537,6 +666,7 @@ export default function CasePage() {
               {loose.map(c => (
                 <button key={c.id} draggable className="mj-in"
                   onDragStart={() => setHeld(c.id)}
+                  onDragEnd={() => setHeld(null)}
                   onClick={() => setHeld(held === c.id ? null : c.id)}
                   style={{
                     cursor: "grab", font: "inherit", textAlign: "start",
@@ -547,39 +677,79 @@ export default function CasePage() {
                     border: `1px solid ${held === c.id ? M.action : M.gold}`,
                   }}>{c.text}</button>
               ))}
+              {allPlaced && !colDone && (
+                <span style={{ fontSize: 12.5, color: M.body, alignSelf: "center" }}>
+                  {isAR ? "كلها موضوعة. غيّر ما شئت، ثم تحقق." : "All placed. Move any of them, then check."}
+                </span>
+              )}
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
               {approaches.map(a => {
                 const key = `${a.id}:${active.k}`;
-                const filled = Object.keys(placed).find(id => placed[id] === key);
-                const right = filled === key;
-                const text = cards.find(x => x.id === filled)?.text;
+                const sitting = cards.find(c => placed[c.id] === key);
+                const right = sitting?.id === key;
+                const shut = sitting ? !!locked[sitting.id] : false;
                 return (
                   <div key={a.id} style={{ display: "grid", gridTemplateColumns: "minmax(120px,0.8fr) 1.6fr", gap: 10 }}>
                     <div style={{ ...flat, padding: "13px 15px", display: "flex", alignItems: "center" }}>
                       <span style={{ fontSize: 13.5, fontWeight: 800, color: M.heading }}>{isAR ? a.name_ar : a.name_en}</span>
                     </div>
                     <div
-                      onDragOver={e => e.preventDefault()}
-                      onDrop={() => { if (held) { setPlaced(p => ({ ...p, [held]: key })); setHeld(null); } }}
-                      onClick={() => { if (held) { setPlaced(p => ({ ...p, [held]: key })); setHeld(null); } }}
-                      className={right ? "mj-pop" : undefined}
+                      onDragOver={e => { if (held) e.preventDefault(); }}
+                      onDrop={e => { e.preventDefault(); if (held) drop(held, key); }}
+                      onClick={() => {
+                        if (held) { drop(held, key); return; }
+                        if (sitting && !shut) takeBack(sitting.id);   // put it back to change your mind
+                      }}
+                      title={sitting && !shut ? (isAR ? "اضغط لإعادتها" : "Click to take it back") : undefined}
+                      className={shut && right ? "mj-pop" : undefined}
                       style={{
                         minHeight: 54, padding: "11px 14px", borderRadius: 12,
                         display: "flex", alignItems: "center", gap: 7,
-                        cursor: held ? "pointer" : "default",
-                        background: text ? (right ? M.goldSoft : M.card) : "transparent",
-                        border: text ? `1px solid ${right ? M.gold : "rgba(42,35,28,.16)"}`
-                                     : `1px dashed ${held ? M.action : "rgba(42,35,28,.20)"}`,
+                        cursor: held || (sitting && !shut) ? "pointer" : "default",
+                        background: sitting ? (shut ? M.goldSoft : M.card) : "transparent",
+                        border: sitting
+                          ? `1px solid ${shut ? M.gold : "rgba(42,35,28,.16)"}`
+                          : `1px dashed ${held ? M.action : "rgba(42,35,28,.20)"}`,
                       }}>
-                      {right && <Check size={12} strokeWidth={3} color={M.action} style={{ flex: "none" }} />}
-                      <span style={{ fontSize: 12.5, lineHeight: 1.45, color: M.heading }}>{text}</span>
+                      {shut && right && <Check size={12} strokeWidth={3} color={M.action} style={{ flex: "none" }} />}
+                      <span style={{ fontSize: 12.5, lineHeight: 1.45, color: M.heading }}>{sitting?.text}</span>
                     </div>
                   </div>
                 );
               })}
             </div>
+
+            {/* what the check said, in the plainest words available */}
+            {went > 0 && !colDone && (
+              <div className="mj-in" style={{
+                marginTop: 14, padding: "12px 16px", borderRadius: 12,
+                background: "rgba(42,35,28,.04)", border: "1px solid rgba(42,35,28,.10)",
+                fontSize: 13.5, lineHeight: 1.55, color: M.heading,
+              }}>
+                {isAR
+                  ? `${rightNow} في مكانها الصحيح. البقية رجعت للأعلى، جرّبها مرة أخرى.`
+                  : `${rightNow} of them are in the right place. The rest are back up top, try those again.`}
+              </div>
+            )}
+            {went >= 2 && colDone && (
+              <div className="mj-in" style={{
+                marginTop: 14, padding: "12px 16px", borderRadius: 12,
+                background: HUES.gold.tint, border: `1px solid ${HUES.gold.soft}`,
+                fontSize: 13.5, lineHeight: 1.55, color: M.heading,
+              }}>
+                {isAR
+                  ? "وضعت الباقي في مكانه. اقرأ الصف كاملاً الآن."
+                  : "The rest have been put where they go. Read each row now."}
+              </div>
+            )}
+
+            {allPlaced && !colDone && (
+              <button onClick={check} className="mj-glow" style={{ ...button, marginTop: 18 }}>
+                {isAR ? "تحقق" : "Check these"}
+              </button>
+            )}
 
             {colDone && col < COLS.length - 1 && (
               <button onClick={() => setCol(c => c + 1)} className="mj-glow" style={{ ...button, marginTop: 18 }}>
@@ -684,6 +854,16 @@ export default function CasePage() {
 
           </div>
 
+          {/* Before they are asked what is missing, they get to try to find it.
+              Being told a thing is unsolved is a claim; failing to solve it
+              yourself is evidence. The Cup cannot be beaten because the real
+              one cannot either. */}
+          {faded && cs.domain === "water" && (
+            <div className="mj-in" style={{ marginBottom: 18 }}>
+              <WaterCup />
+            </div>
+          )}
+
           {faded && (
             <div className="mj-in" style={{ ...card, padding: "24px 26px" }}>
               <AskBox a={flow.gap} isAR={isAR} value={ans[flow.gap.id] ?? ""} picked={pick[flow.gap.id]} onText={v => set(flow.gap.id, v)} onPick={i => setPick(p => ({ ...p, [flow.gap.id]: i }))} verdict={verd[flow.gap.id]} seen={seenSoFar()} onVerdict={(v) => setVerd(w => ({ ...w, [flow.gap.id]: v }))} />
@@ -760,46 +940,130 @@ export default function CasePage() {
         );
       })()}
 
-      {/* 10 ── reflection */}
-      {stage === 10 && (
-        <div className="mj-in">
-          <H1>{isAR ? "كيف تغيّر تفكيرك" : "How your thinking moved"}</H1>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 19rem), 1fr))", gap: 14, marginBottom: 18 }}>
-            <div style={{ ...flat, padding: "18px 20px", background: M.page }}>
-              <div style={{ ...label, fontSize: 9.5, marginBottom: 8 }}>{isAR ? "أول مرة" : "First"}</div>
-              <div style={{ fontSize: 14.5, lineHeight: 1.65, color: M.body, fontStyle: "italic" }}>
-                {ans["what"] || (isAR ? "لا شيء." : "Nothing written.")}
+      {/* 10 ── the look back.
+
+             This used to be two boxes and a question. It is now the only place
+             in the whole track where a child is shown their own case read back
+             to them: where they moved, what they saw, what they walked past,
+             and one thing to carry. The point is that they see it, not that we
+             see it. */}
+      {stage === 10 && (() => {
+        const walked = allAsks(flow).filter(a => ans[a.id]?.trim());
+        const moved = ans["what"]?.trim() && ans["precise"]?.trim()
+          && ans["what"].trim() !== ans["precise"].trim();
+
+        return (
+          <div className="mj-in">
+            <H1>{isAR ? "انظر خلفك" : "Look back"}</H1>
+
+            {/* the pair, which is the whole measurement */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 19rem), 1fr))", gap: 14, marginBottom: 10 }}>
+              <div style={{ ...flat, padding: "18px 20px", background: M.page }}>
+                <div style={{ ...label, fontSize: 9.5, marginBottom: 8 }}>{isAR ? "أول مرة" : "First"}</div>
+                <div style={{ fontSize: 14.5, lineHeight: 1.65, color: M.body, fontStyle: "italic" }}>
+                  {ans["what"] || (isAR ? "لا شيء." : "Nothing written.")}
+                </div>
+              </div>
+              <div style={{ ...card, padding: "18px 20px", background: M.goldSoft, borderColor: M.gold }}>
+                <div style={{ ...label, fontSize: 9.5, marginBottom: 8, color: M.action }}>{isAR ? "بعد التحقيق" : "After the investigation"}</div>
+                <div style={{ fontSize: 14.5, lineHeight: 1.65, color: M.heading }}>
+                  {ans["precise"] || (isAR ? "لا شيء." : "Nothing written.")}
+                </div>
               </div>
             </div>
-            <div style={{ ...card, padding: "18px 20px", background: M.goldSoft, borderColor: M.gold }}>
-              <div style={{ ...label, fontSize: 9.5, marginBottom: 8, color: M.action }}>{isAR ? "بعد التحقيق" : "After the investigation"}</div>
-              <div style={{ fontSize: 14.5, lineHeight: 1.65, color: M.heading }}>
-                {ans["precise"] || (isAR ? "لا شيء." : "Nothing written.")}
+            <p style={{ margin: "0 0 22px", fontSize: 13.5, color: M.body, maxWidth: "44rem" }}>
+              {moved
+                ? (isAR ? "نفس السؤال، مرتين. ما بينهما هو ما تعلمته." : "The same question, twice. What sits between them is what you learned.")
+                : (isAR ? "نفس السؤال، مرتين." : "The same question, asked twice.")}
+            </p>
+
+            {/* what he saw */}
+            {revState === "busy" && (
+              <div style={{ ...flat, padding: "18px 20px", marginBottom: 18, display: "flex", gap: 12, alignItems: "center" }}>
+                <Face who="hamad" size={30} />
+                <span style={{ fontSize: 14.5, color: M.body }}>
+                  {isAR ? "أقرأ القضية كلها من أولها..." : "Reading the whole case back..."}
+                </span>
               </div>
+            )}
+
+            {review && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 22 }}>
+                {review.moved && <Read who="hamad" hue={HUES.gold.deep}
+                  tag={isAR ? "أين تحرّك تفكيرك" : "Where your thinking moved"} body={review.moved} />}
+                {review.strong && <Read who="hamad" hue={HUES.blue.deep}
+                  tag={isAR ? "أحدّ ما لاحظته" : "The sharpest thing you noticed"} body={review.strong} />}
+                {review.missed && <Read who="hamad" hue={HUES.maroon.deep}
+                  tag={isAR ? "شيء مررت بجانبه" : "Something you walked past"} body={review.missed} />}
+                {review.carry && <Read who="rouda" hue={HUES.green.deep}
+                  tag={isAR ? "خذ هذا معك" : "Take this with you"} body={review.carry} />}
+              </div>
+            )}
+
+            {revState === "none" && (
+              <div style={{ ...flat, padding: "16px 20px", marginBottom: 18 }}>
+                <span style={{ fontSize: 14, color: M.body, lineHeight: 1.6 }}>
+                  {isAR
+                    ? "القراءة غير متاحة الآن. كل ما كتبته محفوظ بالأسفل."
+                    : "The reading is not available right now. Everything you wrote is still below."}
+                </span>
+              </div>
+            )}
+
+            {/* the whole record, folded away until asked for */}
+            {walked.length > 0 && (
+              <div style={{ ...card, padding: "18px 22px", marginBottom: 18 }}>
+                <button onClick={() => setShowAll(v => !v)} style={{
+                  font: "inherit", fontFamily: sans, cursor: "pointer", background: "none",
+                  border: "none", padding: 0, display: "flex", alignItems: "center", gap: 8,
+                  color: M.heading, fontSize: 14.5, fontWeight: 800,
+                }}>
+                  {showAll ? <FolderOpen size={16} /> : <Folder size={16} />}
+                  {isAR
+                    ? `كل ما كتبته (${walked.length})`
+                    : `Everything you wrote (${walked.length})`}
+                </button>
+                {showAll && (
+                  <div className="mj-in" style={{ marginTop: 16, display: "flex", flexDirection: "column", gap: 14 }}>
+                    {walked.map(a => (
+                      <div key={a.id}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: M.body, marginBottom: 4 }}>
+                          {isAR ? a.q_ar : a.q_en}
+                        </div>
+                        <p style={{
+                          margin: 0, fontSize: 14.5, lineHeight: 1.6, color: M.heading,
+                          paddingInlineStart: 12, borderInlineStart: `2px solid ${M.gold}`,
+                        }}>{ans[a.id]}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {ans["gap"] && (
+              <div style={{ padding: "22px 26px", background: M.goldSoft, border: `1px solid ${M.gold}`, borderRadius: 20, marginBottom: 18 }}>
+                <div style={{ ...label, fontSize: 9.5, marginBottom: 8, color: M.action }}>{isAR ? "ما وجدته ناقصاً" : "What you found missing"}</div>
+                <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, color: M.heading, fontWeight: 700 }}>{ans["gap"]}</p>
+              </div>
+            )}
+
+            <div style={{ ...card, padding: "24px 26px", marginBottom: 18 }}>
+              <AskBox a={flow.reflect} isAR={isAR} value={ans[flow.reflect.id] ?? ""} picked={pick[flow.reflect.id]} onText={v => set(flow.reflect.id, v)} onPick={i => setPick(p => ({ ...p, [flow.reflect.id]: i }))} verdict={verd[flow.reflect.id]} seen={seenSoFar()} onVerdict={(v) => setVerd(w => ({ ...w, [flow.reflect.id]: v }))} />
+            </div>
+
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", paddingTop: 18, borderTop: `1px solid ${M.line}` }}>
+              <Link href="/mine/passport" style={button}>{isAR ? "جوازي" : "My passport"}</Link>
+              <Link href={home} style={ghostButton}>{isAR ? "عودة" : "Back"}</Link>
+              <button onClick={() => { try { localStorage.removeItem(KEY); } catch {} location.reload(); }}
+                style={{ ...ghostButton, border: "none", color: M.body }}>
+                {isAR ? "من البداية" : "Start again"}
+              </button>
             </div>
           </div>
+        );
+      })()}
 
-          <div style={{ ...card, padding: "24px 26px", marginBottom: 18 }}>
-            <AskBox a={flow.reflect} isAR={isAR} value={ans[flow.reflect.id] ?? ""} picked={pick[flow.reflect.id]} onText={v => set(flow.reflect.id, v)} onPick={i => setPick(p => ({ ...p, [flow.reflect.id]: i }))} verdict={verd[flow.reflect.id]} seen={seenSoFar()} onVerdict={(v) => setVerd(w => ({ ...w, [flow.reflect.id]: v }))} />
-          </div>
-
-          {ans["gap"] && (
-            <div style={{ padding: "22px 26px", background: M.goldSoft, border: `1px solid ${M.gold}`, borderRadius: 20, marginBottom: 20 }}>
-              <div style={{ ...label, fontSize: 9.5, marginBottom: 8, color: M.action }}>{isAR ? "ما وجدته ناقصاً" : "What you found missing"}</div>
-              <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, color: M.heading, fontWeight: 700 }}>{ans["gap"]}</p>
-            </div>
-          )}
-
-          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", paddingTop: 18, borderTop: `1px solid ${M.line}` }}>
-            <Link href="/mine" style={button}>{isAR ? "جوازي" : "My passport"}</Link>
-            <Link href={home} style={ghostButton}>{isAR ? "عودة" : "Back"}</Link>
-            <button onClick={() => { try { localStorage.removeItem(KEY); } catch {} location.reload(); }}
-              style={{ ...ghostButton, border: "none", color: M.body }}>
-              {isAR ? "من البداية" : "Start again"}
-            </button>
-          </div>
-        </div>
-      )}
     </InnovationPage>
   );
 }

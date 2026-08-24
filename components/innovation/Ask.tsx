@@ -20,6 +20,19 @@ import { M, sans, R, HUES, type Hue } from "./theme";
 const ROUDA_FACE = { still: "/rouda/still.png", thinking: "/rouda/Thinking.png", smiling: "/rouda/smiling.png" };
 const HAMAD_FACE = "/characters/HamadAvatars/hamad-1.png";
 
+/* What she says when the reply did not arrive.
+
+   She used to say nothing at all: a 429 or a 500 returns a body with no `say`
+   in it, the code read `out?.say ?? ""`, and an empty bubble appeared. An
+   empty bubble is worse than an error, because the learner assumes she read
+   their answer and had nothing to say about it. */
+const BUSY_MSG = {
+  en: "Too many at once. Give me a second, then send it again.",
+  ar: "كثير في وقت واحد. أمهلني لحظة ثم أرسلها مرة أخرى.",
+};
+const GOT_IT = { en: "Got it. Keep going.", ar: "وصلتني. واصل." };
+const WHY = { en: "And why do you think that?", ar: "ولماذا تظن ذلك؟" };
+
 export type Choice = { en: string; ar: string; react_en: string; react_ar: string };
 export type AskShape = {
   id: string;
@@ -72,6 +85,8 @@ export function Ask({
   const [busy, setBusy] = useState(false);
   const [said, setSaid] = useState("");
   const [pushed, setPushed] = useState(false);
+  /** Transport trouble, kept apart from what she actually said. */
+  const [note, setNote] = useState("");
   // she can keep going, if they want to be pushed further
   const [thread, setThread] = useState<{ role: "you" | "rouda"; text: string }[]>([]);
   const [more, setMore] = useState("");
@@ -85,6 +100,7 @@ export function Ask({
   const send = async () => {
     if (!written || busy) return;
     setBusy(true);
+    setNote("");
     try {
       const res = await fetch("/api/rouda", {
         method: "POST",
@@ -96,18 +112,33 @@ export function Ask({
           lang: isAR ? "ar" : "en",
         }),
       });
-      const out = await res.json();
-      const v: Verdict = out?.verdict ?? "answered";
-      setSaid(out?.say ?? "");
+
+      // Rate limited. Nothing read the answer, so nothing may be settled:
+      // marking it answered here would be exactly the theatre she exists to
+      // prevent. Say so plainly and leave the send button live.
+      if (res.status === 429) { setNote(isAR ? BUSY_MSG.ar : BUSY_MSG.en); return; }
+
+      const out = res.ok ? await res.json().catch(() => null) : null;
+      const text = typeof out?.say === "string" && out.say.trim()
+        ? out.say.trim()
+        : (isAR ? GOT_IT.ar : GOT_IT.en);
+      const v: Verdict = out?.verdict === "off" || out?.verdict === "thin" ? out.verdict : "answered";
+
+      setSaid(text);
       if (v === "off" && !pushed) {
         setPushed(true);           // one push back, then she lets you through
-        onVerdict("off", out?.say ?? "");
+        onVerdict("off", text);
       } else {
-        onVerdict(v === "off" ? "thin" : v, out?.say ?? "");
-        setThread([{ role: "you", text: value }, { role: "rouda", text: out?.say ?? "" }]);
+        onVerdict(v === "off" ? "thin" : v, text);
+        setThread([{ role: "you", text: value }, { role: "rouda", text }]);
       }
     } catch {
-      onVerdict("answered", "");
+      // The network went, not the learner. Let them through rather than
+      // trapping them on a question nobody can read.
+      const text = isAR ? GOT_IT.ar : GOT_IT.en;
+      setSaid(text);
+      onVerdict("answered", text);
+      setThread([{ role: "you", text: value }, { role: "rouda", text }]);
     } finally {
       setBusy(false);
     }
@@ -118,7 +149,7 @@ export function Ask({
     const next = mine?.trim()
       ? [...thread, { role: "you" as const, text: mine.trim() }]
       : thread;
-    setThread(next); setMore(""); setBusy(true);
+    setThread(next); setMore(""); setBusy(true); setNote("");
     try {
       const res = await fetch("/api/rouda", {
         method: "POST",
@@ -128,8 +159,14 @@ export function Ask({
           answer: value, thread: next, lang: isAR ? "ar" : "en",
         }),
       });
-      const out = await res.json();
-      setThread(t => [...t, { role: "rouda", text: out?.say ?? "" }]);
+      if (res.status === 429) { setNote(isAR ? BUSY_MSG.ar : BUSY_MSG.en); return; }
+      const out = res.ok ? await res.json().catch(() => null) : null;
+      const text = typeof out?.say === "string" && out.say.trim()
+        ? out.say.trim()
+        : (isAR ? WHY.ar : WHY.en);
+      setThread(t => [...t, { role: "rouda", text }]);
+    } catch {
+      setThread(t => [...t, { role: "rouda", text: isAR ? WHY.ar : WHY.en }]);
     } finally { setBusy(false); }
   };
 
@@ -198,9 +235,20 @@ export function Ask({
         </div>
       )}
 
+      {/* Not her, so not in her bubble: the request never reached her. */}
+      {note && (
+        <div style={{
+          marginTop: 10, padding: "10px 14px", borderRadius: R.panel,
+          background: "rgba(42,35,28,.04)", border: "1px solid rgba(42,35,28,.10)",
+          fontSize: 13.5, lineHeight: 1.55, color: M.body, fontFamily: sans,
+        }}>
+          {note}
+        </div>
+      )}
+
       {/* what comes back: written for a choice, hers for free text */}
       <AnimatePresence>
-        {(chosenReact || said || busy) && (
+        {(busy || (chosenReact ?? said).trim().length > 0) && (
           <motion.div
             initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             transition={{ type: "spring", stiffness: 330, damping: 24 }}

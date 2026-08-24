@@ -8,9 +8,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Lock, PenLine, X, Send } from "lucide-react";
+import { Check, ChevronRight, Lock, PenLine, X, Send } from "lucide-react";
 import { InnovationPage } from "@/components/innovation/InnovationChrome";
 import { Stagger, Rise, Lift, RoomHead, Says } from "@/components/innovation/Alive";
 import { PROBLEMS, type Problem } from "@/app/lib/innovationData";
@@ -24,6 +25,7 @@ type Mine = { posted?: { id: string; what: string; who: string; at: number }[] }
 
 export default function BoardPage() {
   const isAR = useLocale() === "ar";
+  const router = useRouter();
   const featured = PROBLEMS.find(p => p.featured);
   const rest = PROBLEMS.filter(p => !p.featured);
 
@@ -45,6 +47,18 @@ export default function BoardPage() {
     setMine(next);
     try { localStorage.setItem(MINE_KEY, JSON.stringify(next)); } catch { /* private mode */ }
     setWhat(""); setWho(""); setWriting(false);
+  };
+
+  /* "Take it" used to drop you on your own page with the problem sitting there
+     and nothing to do next. It now files the problem and opens the path it
+     goes through, because collecting problems you never work on is a hobby. */
+  const take = (id: string, what_: string, who_: string) => {
+    if (!(mine.posted ?? []).some(p => p.id === id)) {
+      const next: Mine = { ...mine, posted: [{ id, what: what_, who: who_, at: Date.now() }, ...(mine.posted ?? [])] };
+      setMine(next);
+      try { localStorage.setItem(MINE_KEY, JSON.stringify(next)); } catch { /* private mode */ }
+    }
+    router.push(`/mine/problem/${id}`);
   };
 
   const tag = (p: Problem) =>
@@ -117,9 +131,14 @@ export default function BoardPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/mine" style={{ ...chip(H), marginTop: 14, textDecoration: "none" }}>
-                {isAR ? "اعمل عليها" : "Work on it"}
-              </Link>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 14 }}>
+                {(mine.posted ?? []).map(x => (
+                  <Link key={x.id} href={`/mine/problem/${x.id}`} style={{ ...chip(H), textDecoration: "none", alignSelf: "flex-start" }}>
+                    {isAR ? "اعمل عليها" : "Work on it"}
+                    <ChevronRight size={14} />
+                  </Link>
+                ))}
+              </div>
             </div>
           </Rise>
         )}
@@ -142,7 +161,11 @@ export default function BoardPage() {
                 <p style={{ margin: "0 0 20px", fontSize: 15, lineHeight: 1.65, color: M.body, maxWidth: "46ch", fontFamily: sans }}>
                   {isAR ? featured.body_ar : featured.body_en}
                 </p>
-                <Link href="/mine" style={btn(H)}>{isAR ? "خذها" : "Take it"}</Link>
+                <button
+                  onClick={() => take(featured.id, isAR ? featured.title_ar : featured.title_en, isAR ? featured.source_ar : featured.source_en)}
+                  style={btn(H)}>
+                  {isAR ? "خذها" : "Take it"}
+                </button>
               </div>
             </div>
           </Rise>

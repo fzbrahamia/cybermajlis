@@ -75,6 +75,307 @@ export type Flow = {
 };
 
 export const FLOWS: Record<string, Flow> = {
+  "brine-gulf": {
+    scene_en: [
+      "The water in your glass was in the Gulf a few days ago.",
+      "It was pumped ashore, the salt was taken out of it, and it came to your tap. That part works, and it has worked for sixty years.",
+      "The salt that was taken out left the plant through a second pipe, thicker than the first, and went back into the same sea.",
+    ],
+    scene_ar: [
+      "الماء في كأسك كان في الخليج قبل أيام.",
+      "ضُخّ إلى البرّ، وأُخرِج منه الملح، فوصل إلى صنبورك. وهذا الجزء ينجح، وقد نجح ستين عاماً.",
+      "أما الملح المُخرَج فغادر المحطة عبر أنبوب ثانٍ أسمك من الأول، وعاد إلى البحر نفسه.",
+    ],
+    hook_en: "Nothing was spilled and nothing broke. So why is this a problem at all?",
+    hook_ar: "لم يُسكب شيء ولم ينكسر شيء. فلماذا تُعدّ هذه مشكلة أصلاً؟",
+
+    initial: [
+      {
+        id: "what", open: true, by: "hamad",
+        q_en: "What do you think the problem is here?", q_ar: "ما المشكلة هنا في رأيك؟",
+        hint_en: "No right answer yet.", hint_ar: "لا إجابة صحيحة بعد.",
+        react_en: "Saved. You will read this back at the end and see how far you moved.",
+        react_ar: "حُفظت. ستقرؤها في النهاية وترى كم تحركت.",
+      },
+      {
+        id: "guess", by: "hamad",
+        q_en: "Where do you think most of that second pipe goes?", q_ar: "إلى أين يذهب معظم ما في الأنبوب الثاني في ظنك؟",
+        choices: [
+          { en: "Back into the sea", ar: "إلى البحر مرة أخرى",
+            react_en: "Yes. Almost all of it, almost everywhere.", react_ar: "نعم. جلّه تقريباً، في كل مكان تقريباً." },
+          { en: "Into the ground", ar: "إلى باطن الأرض",
+            react_en: "Some places do this. It costs more and there is nowhere near enough room.", react_ar: "بعض الأماكن تفعل هذا. وهو أغلى، ولا مكان يكفي أصلاً." },
+          { en: "It gets dried into salt", ar: "يُجفَّف ليصير ملحاً",
+            react_en: "Drying it would take more energy than making the water did.", react_ar: "تجفيفه يستهلك طاقة أكثر مما استهلكه صنع الماء." },
+        ],
+      },
+    ],
+
+    evidence: [
+      { id: "how-much", tag_en: "How much", tag_ar: "كم",
+        head_en: "Two litres back for every one you drink",
+        head_ar: "لتران يعودان مقابل كل لتر تشربه",
+        body_en: "Across this region, roughly two cubic metres go back to the sea for every cubic metre of drinking water made. It is not a trickle. It is more than what comes out of the tap.",
+        body_ar: "في هذه المنطقة يعود نحو مترين مكعبين إلى البحر مقابل كل متر مكعب من ماء الشرب. وليس هذا رشحاً. بل أكثر مما يخرج من الصنبور." },
+      { id: "method", tag_en: "It depends how", tag_ar: "يعتمد على الطريقة", turn: true,
+        head_en: "Seven to one, or one to one",
+        head_ar: "سبعة إلى واحد، أو واحد إلى واحد",
+        body_en: "Plants that boil the water send back around seven for every one they make. Plants that push it through a membrane send back around one for one. The older and larger plants on this coast are the ones that boil.",
+        body_ar: "المحطات التي تغلي الماء تعيد نحو سبعة مقابل كل واحد تصنعه. والتي تدفعه عبر غشاء تعيد نحو واحد لواحد. والمحطات الأقدم والأكبر على هذا الساحل هي التي تغلي." },
+      { id: "shallow", tag_en: "The sea itself", tag_ar: "البحر نفسه",
+        head_en: "Thirty four metres deep, one narrow way out",
+        head_ar: "أربعة وثلاثون متراً عمقاً، ومخرج ضيق واحد",
+        body_en: "The Gulf is shallow for a sea and opens to the ocean through a single narrow strait. Along this coast the water takes about three years to be exchanged.",
+        body_ar: "الخليج ضحل بمقياس البحار، وينفتح على المحيط عبر مضيق ضيق واحد. وعلى هذا الساحل يستغرق تبديل الماء نحو ثلاث سنوات." },
+      { id: "already", tag_en: "Before anyone added anything", tag_ar: "قبل أن يضيف أحد شيئاً",
+        head_en: "It was already saltier than the ocean",
+        head_ar: "كان أملح من المحيط أصلاً",
+        body_en: "Around forty parts of salt per thousand, against about thirty five in the open ocean, because the sun lifts fresh water off the top faster than rain puts it back.",
+        body_ar: "نحو أربعين جزءاً من الملح في الألف، مقابل خمسة وثلاثين في المحيط المفتوح، لأن الشمس ترفع الماء العذب من السطح أسرع مما يعيده المطر." },
+      { id: "everyone", tag_en: "Who else", tag_ar: "ومن غيرك",
+        head_en: "Every country around it does the same thing",
+        head_ar: "كل دولة حوله تفعل الشيء ذاته",
+        body_en: "Every coast on this sea drinks from it and returns to it. Nobody is doing anything unusual, and that is what makes it hard.",
+        body_ar: "كل ساحل على هذا البحر يشرب منه ويعيد إليه. لا أحد يفعل شيئاً غير معتاد، وهذا بعينه ما يجعلها صعبة." },
+    ],
+
+    reconsider: [
+      {
+        id: "revise", by: "hamad",
+        q_en: "Now that you have read all five, which one changed your mind the most?",
+        q_ar: "بعد أن قرأت الخمسة، أيها غيّر رأيك أكثر؟",
+        choices: [
+          { en: "Seven to one", ar: "سبعة إلى واحد",
+            react_en: "It is the one most people have never heard. The method matters more than the amount of water.", react_ar: "هو ما لم يسمعه معظم الناس. الطريقة أهم من كمية الماء." },
+          { en: "The sea is shallow", ar: "البحر ضحل",
+            react_en: "A deep open coast would forgive most of this. This one does not.", react_ar: "الساحل العميق المفتوح يغفر معظم هذا. وهذا لا يغفر." },
+          { en: "It was already salty", ar: "كان مالحاً أصلاً",
+            react_en: "So you are not starting from zero. You are adding to something already high.", react_ar: "إذن أنت لا تبدأ من صفر. بل تضيف إلى شيء مرتفع أصلاً." },
+          { en: "Everybody does it", ar: "الجميع يفعلها",
+            react_en: "That is what makes it a hard problem rather than a bad company.", react_ar: "هذا ما يجعلها مشكلة صعبة لا شركة سيئة." },
+        ],
+      },
+      {
+        id: "cost", open: true, by: "hamad",
+        q_en: "Somebody says: just recover more water from each batch, then less goes back. What is wrong with that?",
+        q_ar: "يقول أحدهم: استخلص ماء أكثر من كل دفعة، فيعود أقل. ما الخطأ في ذلك؟",
+        hint_en: "Think about what is left behind, not how much of it there is.",
+        hint_ar: "فكّر فيما يتبقّى، لا في كميته.",
+      },
+    ],
+
+    discovery: {
+      open_en: "Before you go any further, there is one thing you have to be able to feel, or none of the rest will make sense.",
+      open_ar: "قبل أن تمضي أبعد، ثمة شيء واحد يجب أن تحسّه، وإلا لن يكون لبقية الأمر معنى.",
+      asks: [
+        {
+          id: "which-way", by: "hamad",
+          q_en: "Fresh water on one side of a wall, salty water on the other, and the holes are too small for salt. Nobody touches it. Which way does the water go?",
+          q_ar: "ماء عذب على جانب من جدار، وماء مالح على الآخر، والثقوب أضيق من أن يمر بها الملح. ولا يلمسه أحد. في أي اتجاه يذهب الماء؟",
+          choices: [
+            { en: "Toward the salt", ar: "نحو الملح",
+              react_en: "Yes. On its own, for free, with nobody pushing.", react_ar: "نعم. وحده، بلا مقابل، ولا أحد يدفعه." },
+            { en: "Away from the salt", ar: "بعيداً عن الملح",
+              react_en: "The other way. It goes toward the salt, which is the surprising part.", react_ar: "بل العكس. يذهب نحو الملح، وهذا هو المدهش." },
+            { en: "It stays still", ar: "يبقى ساكناً",
+              react_en: "It moves. Toward the salt, until both sides pull equally.", react_ar: "بل يتحرك. نحو الملح، حتى يتساوى شدّ الجانبين." },
+          ],
+        },
+        {
+          id: "so-what", open: true, by: "rouda",
+          q_en: "If water goes toward salt for free, what does that tell you about sending it the other way?",
+          q_ar: "إذا كان الماء يذهب نحو الملح بلا مقابل، فماذا يخبرك ذلك عن إرساله في الاتجاه الآخر؟",
+        },
+      ],
+      reveal_en: "You have just worked out why drinking water costs anything at all.",
+      reveal_ar: "لقد استنتجت للتو لماذا يكلّف ماء الشرب أي شيء أصلاً.",
+      concept_en: "Osmosis, and the price of going back",
+      concept_ar: "التناضح، وثمن العودة",
+      body_en: [
+        "Water crosses toward salt by itself. To send it back the other way you have to push harder than the salt pulls, and that pushing is the entire cost.",
+        "The pull has a number. For ordinary seawater it is about twenty seven bar, roughly thirteen times the pressure in a car tyre. Below that, nothing crosses.",
+        "And the saltier the water gets, the higher that number climbs. Hold onto that. It is going to come back.",
+      ],
+      body_ar: [
+        "يعبر الماء نحو الملح وحده. ولإعادته في الاتجاه الآخر عليك أن تدفع أشدّ مما يشدّ الملح، وذلك الدفع هو التكلفة كلها.",
+        "وللشدّ رقم. ففي ماء البحر العادي نحو سبعة وعشرين باراً، أي نحو ثلاثة عشر ضعف الضغط في إطار سيارة. ودون ذلك لا يعبر شيء.",
+        "وكلما ازداد الماء ملوحة ارتفع ذلك الرقم. تمسّك بهذا. فسيعود.",
+      ],
+      check: {
+        id: "check-osmosis", by: "rouda",
+        q_en: "A plant has been running for twenty years and the sea around it has got slightly saltier. What happens to its electricity bill?",
+        q_ar: "محطة تعمل منذ عشرين عاماً وازداد البحر حولها ملوحة قليلاً. ماذا يحدث لفاتورة كهربائها؟",
+        choices: [
+          { en: "It goes up", ar: "ترتفع",
+            react_en: "Right, and that is the loop. Saltier sea, harder push, more electricity, more going back.", react_ar: "صحيح، وهذه هي الحلقة. بحر أملح، دفع أشدّ، كهرباء أكثر، وعائد أكثر." },
+          { en: "It goes down", ar: "تنخفض",
+            react_en: "The other way. More salt means it pulls harder, so the pumps must push harder.", react_ar: "بل العكس. ملح أكثر يعني شدّاً أقوى، فيجب أن تدفع المضخات أشدّ." },
+          { en: "It stays the same", ar: "تبقى كما هي",
+            react_en: "It moves. The pull got stronger, so beating it costs more.", react_ar: "بل تتغير. صار الشدّ أقوى، فصار التغلب عليه أغلى." },
+        ],
+      },
+    },
+
+    precise: {
+      id: "precise", open: true, by: "rouda",
+      q_en: "Say the problem again, as exactly as you can now. Not what is bad about it. What is actually being demanded.",
+      q_ar: "قل المشكلة مرة أخرى، بأدقّ ما تستطيع الآن. لا ما هو سيئ فيها. بل ما هو مطلوب فعلاً.",
+      hint_en: "The one you wrote at the start is still saved. Nobody is comparing them yet.",
+      hint_ar: "ما كتبته في البداية ما زال محفوظاً. ولا أحد يقارن بينهما بعد.",
+    },
+
+    films: {
+      boil: {
+        support: "guided",
+        beats: [
+          { en: "Heat the seawater until it flashes into steam.", ar: "سخّن ماء البحر حتى يتحول فجأة إلى بخار." },
+          { en: "Salt cannot evaporate, so it stays behind.", ar: "الملح لا يتبخر، فيبقى خلفه." },
+          { en: "Catch the steam and cool it. What condenses is fresh.", ar: "التقط البخار وبرّده. فما يتكثف عذب." },
+          { en: "It only makes sense beside a power station that is wasting heat anyway.", ar: "ولا معنى له إلا بجوار محطة كهرباء تهدر حرارتها أصلاً." },
+        ],
+        ask: {
+          id: "film-boil", by: "hamad",
+          q_en: "What does this one need in order to exist at all?",
+          q_ar: "ما الذي يحتاجه هذا كي يوجد أصلاً؟",
+          choices: [
+            { en: "A power station next door", ar: "محطة كهرباء مجاورة",
+              react_en: "Yes. Take that away and the whole idea stops making sense.", react_ar: "نعم. أزلها وتفقد الفكرة كلها معناها." },
+            { en: "Very clean seawater", ar: "ماء بحر نظيف جداً",
+              react_en: "That is the other method. This one does not care how dirty the water is.", react_ar: "تلك هي الطريقة الأخرى. وهذه لا يعنيها كم الماء متسخ." },
+            { en: "A buyer for the salt", ar: "مشترٍ للملح",
+              react_en: "That is a different approach again. This one just returns it.", react_ar: "تلك طريقة أخرى أيضاً. وهذه تعيده فحسب." },
+          ],
+        },
+      },
+      membrane: {
+        support: "guided",
+        beats: [
+          { en: "Push seawater against a wall with holes too small for salt.", ar: "ادفع ماء البحر على جدار بثقوب أضيق من أن يمر بها الملح." },
+          { en: "Push harder than the salt pulls, and water crosses the wrong way.", ar: "ادفع أشدّ مما يشدّ الملح، فيعبر الماء عكس اتجاهه." },
+          { en: "Far less energy than boiling, and it can be built at any size.", ar: "طاقة أقل بكثير من الغلي، ويمكن بناؤه بأي حجم." },
+          { en: "But the water has to be cleaned first, in a whole second plant.", ar: "لكن يجب تنظيف الماء أولاً، في محطة ثانية كاملة." },
+        ],
+        ask: {
+          id: "film-membrane", by: "hamad",
+          q_en: "You met this wall already. Where?",
+          q_ar: "قابلت هذا الجدار من قبل. أين؟",
+          choices: [
+            { en: "The one water crossed by itself", ar: "الذي عبره الماء وحده",
+              react_en: "The same wall, run backwards. That is the whole trick.", react_ar: "الجدار نفسه، معكوساً. وهذه هي الحيلة كلها." },
+            { en: "I have not", ar: "لم أقابله",
+              react_en: "Go back a step. It is the wall the water crossed toward the salt.", react_ar: "ارجع خطوة. إنه الجدار الذي عبره الماء نحو الملح." },
+          ],
+        },
+      },
+      recovery: {
+        support: "questioned",
+        beats: [
+          { en: "The water leaving the membrane is still under almost full pressure.", ar: "الماء الخارج من الغشاء ما زال تحت الضغط الكامل تقريباً." },
+          { en: "For years it was let out through a valve and lost as noise and heat.", ar: "وسنوات طويلة كان يُطلق عبر صمام فيضيع ضجيجاً وحرارة." },
+          { en: "A spinning ceramic wheel lets it push the incoming seawater instead.", ar: "عجلة خزفية دوّارة تدعه يدفع ماء البحر الداخل بدلاً من ذلك." },
+          { en: "It cut the energy roughly in half.", ar: "خفض الطاقة إلى النصف تقريباً." },
+        ],
+        ask: {
+          id: "film-recovery", open: true, by: "rouda",
+          q_en: "This one made the water much cheaper. Does that help the sea, hurt it, or both? Say why.",
+          q_ar: "هذه جعلت الماء أرخص كثيراً. فهل تساعد البحر أم تضرّه أم الاثنين؟ وقل لماذا.",
+        },
+      },
+      mining: {
+        support: "alone",
+        beats: [
+          { en: "What comes back is seawater with everything valuable in it doubled.", ar: "ما يعود هو ماء بحر تضاعف فيه كل ثمين." },
+          { en: "Pull out magnesium, bromine and salt in stages.", ar: "استخرج المغنيسيوم والبروم والملح على مراحل." },
+          { en: "Ideally send nothing liquid back at all.", ar: "والأمثل ألا تعيد سائلاً أبداً." },
+          { en: "Mostly still in pilots, not in service.", ar: "وما زال أغلبه تجارب لا خدمة." },
+        ],
+        ask: {
+          id: "film-mining", open: true, by: "rouda",
+          q_en: "This one has to sell what it takes out. What could go wrong with that, if every plant did it?",
+          q_ar: "هذه عليها أن تبيع ما تستخرجه. فما الذي قد يسوء لو فعلت كل محطة ذلك؟",
+        },
+      },
+    },
+
+    retrieval: {
+      id: "retrieval", by: "rouda",
+      q_en: "You worked something out earlier about a sea getting saltier. Say it again, in your own words.",
+      q_ar: "استنتجت شيئاً سابقاً عن بحر يزداد ملوحة. قله مرة أخرى بكلماتك.",
+      hint_en: "It connects to why every one of these four costs what it costs.",
+      hint_ar: "يرتبط بسبب تكلفة كل واحدة من هذه الأربع.",
+    },
+
+    discussion: [
+      {
+        id: "opposite", by: "hamad",
+        q_en: "Which two of these four are furthest apart in what they believe?",
+        q_ar: "أي اثنتين من هذه الأربع أبعد ما تكونان في ما تؤمنان به؟",
+        choices: [
+          { en: "Boiling and selling the salt", ar: "الغلي وبيع الملح",
+            react_en: "One treats what comes back as waste, the other as the product. That is as far apart as it gets.", react_ar: "إحداهما تعدّ العائد نفاية، والأخرى تعدّه المنتج. وهذا أبعد ما يكون." },
+          { en: "Boiling and membranes", ar: "الغلي والأغشية",
+            react_en: "Different machines, same belief: make water, return the rest.", react_ar: "آلتان مختلفتان، والاعتقاد واحد: اصنع الماء وأعد الباقي." },
+          { en: "Membranes and handing the pressure back", ar: "الأغشية وإعادة الضغط",
+            react_en: "Those two are on the same side. One is a part inside the other.", react_ar: "هاتان في صف واحد. إحداهما جزء داخل الأخرى." },
+        ],
+      },
+      {
+        id: "shared", open: true, by: "rouda",
+        q_en: "Read the last row of all four again. What is the one thing none of them did?",
+        q_ar: "اقرأ الصف الأخير للأربع مرة أخرى. ما الشيء الوحيد الذي لم تفعله أي منها؟",
+      },
+    ],
+
+    gap: {
+      id: "gap", open: true, by: "hamad",
+      q_en: "Write what is still missing. One sentence, and put the hard part at the end of it.",
+      q_ar: "اكتب ما زال ناقصاً. جملة واحدة، وضع الجزء الصعب في آخرها.",
+      hint_en: "A wish has no cost in it. A gap does.",
+      hint_ar: "الأمنية لا تكلفة فيها. أما الفجوة ففيها.",
+    },
+
+    challenge: {
+      parts_en: [
+        "I want to help ", " by ", ". It only works if ", " is true, and I would know I was wrong if ", "." ,
+      ],
+      parts_ar: [
+        "أريد أن أساعد ", " عن طريق ", ". ولا ينجح هذا إلا إذا كان ", " صحيحاً، وسأعرف أنني مخطئ إذا ", ".",
+      ],
+      hints_en: [
+        "who or what",
+        "the smallest thing you would actually do",
+        "the thing that has to be true",
+        "what you would see happen",
+      ],
+      hints_ar: [
+        "من أو ما",
+        "أصغر شيء ستفعله فعلاً",
+        "الشيء الذي يجب أن يكون صحيحاً",
+        "ما الذي سترى حدوثه",
+      ],
+      rule_en: "The last blank is the important one. Anything you cannot be wrong about is not an idea yet.",
+      rule_ar: "الفراغ الأخير هو المهم. فما لا يمكن أن تخطئ فيه ليس فكرة بعد.",
+    },
+
+    next: [
+      {
+        id: "proposal", open: true, by: "hamad",
+        q_en: "What is the smallest thing you could build or measure to test it? Small enough to do in a week.",
+        q_ar: "ما أصغر شيء يمكنك بناؤه أو قياسه لاختبارها؟ صغير بما يكفي لتفعله في أسبوع.",
+      },
+      {
+        id: "hypothesis", open: true, by: "rouda",
+        q_en: "What would you see that would make you drop this idea completely?",
+        q_ar: "ما الذي لو رأيته لتركت هذه الفكرة تماماً؟",
+      },
+    ],
+
+    reflect: {
+      id: "changed", open: true, by: "rouda",
+      q_en: "Look at the two answers above. What do you see now that you did not see at the start?",
+      q_ar: "انظر إلى الجوابين أعلاه. ما الذي تراه الآن ولم تكن تراه في البداية؟",
+    },
+  },
   "ransomware-hospitals": {
     scene_en: [
       "It is Friday morning.",

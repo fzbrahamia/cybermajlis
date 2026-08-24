@@ -79,10 +79,12 @@ export function Pinned({
         position: "relative",
         background: turn ? "#FFF8E6" : "#FFFDF8",
         borderRadius: 4,
-        padding: "30px 20px 20px",
-        boxShadow: turn
-          ? "0 3px 8px rgba(90,66,34,.26), 0 0 0 2px rgba(168,50,63,.35)"
-          : "0 3px 8px rgba(90,66,34,.24)",
+        // A real border rather than a spread shadow. As a shadow the red ring
+        // was drawn outside the box, so a tilted neighbour sitting on top of it
+        // cut it in half and it read as a rendering fault.
+        border: turn ? `2px solid rgba(168,50,63,.35)` : "2px solid transparent",
+        padding: "28px 18px 18px",
+        boxShadow: "0 3px 8px rgba(90,66,34,.24)",
       }}
     >
       <Pin turn={!!turn} />

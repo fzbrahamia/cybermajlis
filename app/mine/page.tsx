@@ -20,10 +20,21 @@ import { M, sans, HUES, R, card, flat, btn, ghost, chip, quiet, label } from "@/
 const H = HUES.blue;
 const KEY = "mj-mine";
 
+const DECIDED_EN: Record<string, string> = {
+  keep: "You decided to keep going", change: "You decided to change it", drop: "You decided to drop it",
+};
+const DECIDED_AR: Record<string, string> = {
+  keep: "قررت أن تكمل", change: "قررت أن تغيّرها", drop: "قررت أن تتركها",
+};
+
 type Entry = { id: string; what: string; who: string; often: string; instead: string };
 type Answer = { id: string; q: string; a: string };
 type Posted = { id: string; what: string; who: string; at: number };
-type Mine = { log?: Entry[]; answers?: Answer[]; posted?: Posted[] };
+/* One sheet per person asked. It used to be one set of answers for the whole
+   account, so interviewing a second person overwrote the first, and asking
+   about two different problems was impossible to tell apart afterwards. */
+type Sheet = { id: string; person?: string; about?: string; at: number; a?: Record<string, string> };
+type Mine = { log?: Entry[]; answers?: Answer[]; sheets?: Sheet[]; posted?: Posted[] };
 
 /* The three that always get asked, and room for whatever else they asked. */
 const FIXED = [
@@ -32,14 +43,16 @@ const FIXED = [
   { en: "What would you never give up?", ar: "ما الذي لن تتخلى عنه أبداً؟" },
 ];
 
-/* The short path every collected problem carries, so collecting leads on. */
-const PATH = [
-  { en: "Watch it happen", ar: "راقبها تحدث" },
-  { en: "Ask the person", ar: "اسأل صاحبها" },
-  { en: "Say what is missing", ar: "قل ما الناقص" },
-  { en: "Make the smallest thing", ar: "اصنع أصغر شيء" },
-  { en: "Give it to them", ar: "أعطه لهم" },
-];
+function Field(p: { v: string; set: (v: string) => void; ph: string; wide?: boolean }) {
+  return (
+    <input value={p.v} onChange={e => p.set(e.target.value)} placeholder={p.ph}
+      style={{
+        flex: p.wide ? 2 : 1, minWidth: p.wide ? 200 : 120, boxSizing: "border-box",
+        padding: "12px 15px", borderRadius: 14, fontFamily: sans, fontSize: 14.5,
+        border: "2px solid rgba(42,35,28,.12)", background: M.page, color: M.heading,
+      }} />
+  );
+}
 
 export default function MinePage() {
   const isAR = useLocale() === "ar";
@@ -48,7 +61,6 @@ export default function MinePage() {
   const [runs, setRuns] = useState<{ id: string; title: string; stage: number; done: boolean; gap?: string; v1?: string; v2?: string }[]>([]);
   const [open, setOpen] = useState<string | null>(null);
   const [draft, setDraft] = useState<Entry>({ id: "", what: "", who: "", often: "", instead: "" });
-  const [extraQ, setExtraQ] = useState("");
 
   useEffect(() => {
     try { setMine(JSON.parse(localStorage.getItem(KEY) ?? "{}")); } catch { /* private mode */ }
@@ -79,30 +91,52 @@ export default function MinePage() {
     setDraft({ id: "", what: "", who: "", often: "", instead: "" });
   };
 
-  const setAnswer = (q: string, a: string) => {
-    const list = (mine.answers ?? []).filter(x => x.q !== q);
-    save({ ...mine, answers: [...list, { id: q, q, a }] });
-  };
+  /* Anything written before sheets existed becomes the first sheet, so nobody
+     loses what they already asked somebody. */
+  const sheets: Sheet[] = mine.sheets ?? ((mine.answers ?? []).length
+    ? [{
+        id: "first", at: 0, person: "",
+        a: Object.fromEntries((mine.answers ?? []).map(x => [x.q, x.a])),
+      }]
+    : []);
 
-  const answerFor = (q: string) => (mine.answers ?? []).find(x => x.q === q)?.a ?? "";
+  const putSheets = (list: Sheet[]) => save({ ...mine, sheets: list, answers: [] });
+  const newSheet = () => {
+    const id = String(Date.now());
+    putSheets([{ id, at: Date.now(), person: "", about: "", a: {} }, ...sheets]);
+    setOpen(id);
+  };
+  const setSheet = (id: string, patch: Partial<Sheet>) =>
+    putSheets(sheets.map(x => (x.id === id ? { ...x, ...patch } : x)));
+  const dropSheet = (id: string) => putSheets(sheets.filter(x => x.id !== id));
 
   const collected: Posted[] = mine.posted ?? [];
+  /* How far each collected problem has actually got. Reading it here is what
+     turns a list of problems into a list of things in progress. */
+  const [work, setWork] = useState<Record<string, { at?: number; decision?: string }>>({});
+  useEffect(() => {
+    const out: Record<string, { at?: number; decision?: string }> = {};
+    for (const c of collected) {
+      try {
+        const raw = localStorage.getItem(`mj-problem-${c.id}`);
+        if (raw) { const p = JSON.parse(raw); out[c.id] = { at: p.at, decision: p.decision }; }
+      } catch { /* private mode */ }
+    }
+    setWork(out);
+  }, [mine.posted]);
   const finished = runs.filter(r => r.done).length;
-
-  const Field = (p: { v: string; set: (v: string) => void; ph: string; wide?: boolean }) => (
-    <input value={p.v} onChange={e => p.set(e.target.value)} placeholder={p.ph}
-      style={{
-        flex: p.wide ? 2 : 1, minWidth: p.wide ? 200 : 120, boxSizing: "border-box",
-        padding: "12px 15px", borderRadius: 14, fontFamily: sans, fontSize: 14.5,
-        border: "2px solid rgba(42,35,28,.12)", background: M.page, color: M.heading,
-      }} />
-  );
 
   return (
     <InnovationPage>
       <RoomHead hue={H}
-        eyebrow={isAR ? "أشيائي" : "Mine"}
-        title={isAR ? "ما لاحظته، وما تعمل عليه" : "What you noticed, and what you are working on"} />
+        eyebrow={isAR ? "شغلي" : "My work"}
+        title={isAR ? "ما تعمل عليه الآن" : "What you are working on"} />
+
+      {/* This room is the desk. The record of what you have been through is a
+          different thing and lives in its own room. */}
+      <Link href="/mine/passport" style={{ ...chip(H), marginTop: 18, textDecoration: "none" }}>
+        {isAR ? "جوازك" : "Your passport"}<ChevronRight size={15} />
+      </Link>
 
       {!ready && <div style={{ marginTop: 26, color: M.body }}>...</div>}
 
@@ -163,50 +197,34 @@ export default function MinePage() {
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {collected.map(c => {
-                    const isOpen = open === c.id;
+                    const w = work[c.id];
+                    const done = w?.decision;
                     return (
-                      <div key={c.id} style={{ ...card, padding: 0, overflow: "hidden" }}>
-                        <button onClick={() => setOpen(isOpen ? null : c.id)} style={{
-                          width: "100%", textAlign: isAR ? "right" : "left", cursor: "pointer",
-                          border: "none", background: isOpen ? H.tint : "transparent",
-                          padding: "20px 22px", font: "inherit", fontFamily: sans,
-                          display: "flex", alignItems: "center", gap: 12,
+                      <Link key={c.id} href={`/mine/problem/${c.id}`} style={{ textDecoration: "none" }}>
+                        <div style={{
+                          ...card, padding: "20px 22px", display: "flex",
+                          alignItems: "center", gap: 14, flexWrap: "wrap",
                         }}>
-                          <span style={{ flex: 1, fontSize: 16, fontWeight: 800, color: M.heading, lineHeight: 1.4 }}>
-                            {c.what}
-                          </span>
-                          {isOpen ? <ChevronDown size={18} color={H.deep} /> : <ChevronRight size={18} color={M.body} />}
-                        </button>
-                        {isOpen && (
-                          <div style={{ padding: "4px 22px 22px" }}>
+                          <div style={{ flex: 1, minWidth: 180 }}>
+                            <div style={{ fontSize: 16, fontWeight: 800, color: M.heading, lineHeight: 1.4, fontFamily: sans }}>
+                              {c.what}
+                            </div>
                             {c.who && (
-                              <div style={{ fontSize: 13.5, color: M.body, marginBottom: 16, fontFamily: sans }}>
+                              <div style={{ fontSize: 13.5, color: M.body, marginTop: 4, fontFamily: sans }}>
                                 {isAR ? "يحدث لـ " : "Happens to "}{c.who}
                               </div>
                             )}
-                            <div style={{ ...label, fontSize: 9.5, marginBottom: 12 }}>
-                              {isAR ? "خمس خطوات" : "Five steps"}
-                            </div>
-                            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                              {PATH.map((step, i) => (
-                                <div key={i} style={{
-                                  display: "flex", alignItems: "center", gap: 12,
-                                  padding: "13px 16px", borderRadius: R.chip, background: M.page,
-                                }}>
-                                  <span style={{
-                                    width: 26, height: 26, borderRadius: "50%", flex: "none",
-                                    background: H.tint, color: H.deep, display: "grid", placeItems: "center",
-                                    fontSize: 12.5, fontWeight: 900, fontFamily: sans,
-                                  }}>{i + 1}</span>
-                                  <span style={{ fontSize: 14.5, fontWeight: 700, color: M.heading, fontFamily: sans }}>
-                                    {isAR ? step.ar : step.en}
-                                  </span>
-                                </div>
-                              ))}
+                            <div style={{ fontSize: 13, color: done ? H.deep : M.body, marginTop: 8, fontFamily: sans, fontWeight: done ? 700 : 400 }}>
+                              {done
+                                ? (isAR ? DECIDED_AR[done] : DECIDED_EN[done])
+                                : w
+                                  ? (isAR ? `توقفت عند الخطوة ${(w.at ?? 0) + 1}` : `You stopped at step ${(w.at ?? 0) + 1}`)
+                                  : (isAR ? "لم تبدأ بعد" : "Not started")}
                             </div>
                           </div>
-                        )}
-                      </div>
+                          <ChevronRight size={18} color={H.deep} />
+                        </div>
+                      </Link>
                     );
                   })}
                 </div>
@@ -279,63 +297,91 @@ export default function MinePage() {
             </div>
           </Rise>
 
-          {/* the interview sheet */}
+          {/* the interview sheet, one sheet per person you asked */}
           <Rise>
             <div style={{ marginTop: 30 }}>
-              <div style={{ ...label, marginBottom: 6 }}>{isAR ? "ورقة المقابلة" : "Your interview sheet"}</div>
+              <div style={{ ...label, marginBottom: 6 }}>{isAR ? "من سألت" : "People you asked"}</div>
               <p style={{ margin: "0 0 14px", fontSize: 14, lineHeight: 1.6, color: M.body, maxWidth: "44ch", fontFamily: sans }}>
-                {isAR ? "ثلاثة أسئلة تُسأل دائماً، وأي سؤال آخر سألته." : "Three that always get asked, plus anything else you asked."}
+                {isAR
+                  ? "ورقة لكل شخص. اسأل عشرة عن المشكلة نفسها وسترى ما يتكرر."
+                  : "One sheet per person. Ask ten people about the same problem and you start to see what repeats."}
               </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {FIXED.map(q => {
-                  const key = q.en;
+
+              {sheets.length === 0 && (
+                <div style={{ ...flat, padding: "20px 22px", marginBottom: 12, fontSize: 14.5, lineHeight: 1.6, color: M.body }}>
+                  {isAR ? "لم تسأل أحداً بعد." : "You have not asked anybody yet."}
+                </div>
+              )}
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {sheets.map(sh => {
+                  const isOpen = open === sh.id;
+                  const filled = FIXED.filter(q => sh.a?.[q.en]?.trim()).length;
                   return (
-                    <div key={key} style={{ ...card, padding: "18px 20px" }}>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: M.heading, marginBottom: 10, fontFamily: sans }}>
-                        {isAR ? q.ar : q.en}
-                      </div>
-                      <textarea
-                        defaultValue={answerFor(key)}
-                        onBlur={e => setAnswer(key, e.target.value)}
-                        rows={2}
-                        placeholder={isAR ? "ماذا قالوا؟" : "What did they say?"}
-                        style={{
-                          width: "100%", boxSizing: "border-box", resize: "vertical",
-                          padding: "12px 15px", borderRadius: 14, fontFamily: sans, fontSize: 14.5, lineHeight: 1.6,
-                          border: "2px solid rgba(42,35,28,.12)", background: M.page, color: M.heading,
-                        }} />
+                    <div key={sh.id} style={{ ...card, padding: 0, overflow: "hidden" }}>
+                      <button onClick={() => setOpen(isOpen ? null : sh.id)} style={{
+                        width: "100%", textAlign: isAR ? "right" : "left", cursor: "pointer",
+                        border: "none", background: isOpen ? H.tint : "transparent",
+                        padding: "18px 20px", font: "inherit", fontFamily: sans,
+                        display: "flex", alignItems: "center", gap: 12,
+                      }}>
+                        <span style={{ flex: 1 }}>
+                          <span style={{ display: "block", fontSize: 15.5, fontWeight: 800, color: M.heading }}>
+                            {sh.person?.trim() || (isAR ? "بدون اسم" : "No name yet")}
+                          </span>
+                          <span style={{ display: "block", fontSize: 13, color: M.body, marginTop: 3 }}>
+                            {sh.about?.trim()
+                              ? sh.about
+                              : (isAR ? "لم تقل عن ماذا" : "You did not say what about")}
+                            {" · "}
+                            {isAR ? `${filled} من ${FIXED.length}` : `${filled} of ${FIXED.length}`}
+                          </span>
+                        </span>
+                        {isOpen ? <ChevronDown size={18} color={H.deep} /> : <ChevronRight size={18} color={M.body} />}
+                      </button>
+
+                      {isOpen && (
+                        <div style={{ padding: "4px 20px 20px", display: "flex", flexDirection: "column", gap: 10 }}>
+                          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                            <Field v={sh.person ?? ""} set={v => setSheet(sh.id, { person: v })}
+                              ph={isAR ? "من سألت" : "Who you asked"} />
+                            <Field v={sh.about ?? ""} set={v => setSheet(sh.id, { about: v })} wide
+                              ph={isAR ? "عن أي مشكلة" : "About which problem"} />
+                          </div>
+                          {FIXED.map(q => (
+                            <div key={q.en}>
+                              <div style={{ fontSize: 14.5, fontWeight: 700, color: M.heading, marginBottom: 7, fontFamily: sans }}>
+                                {isAR ? q.ar : q.en}
+                              </div>
+                              <textarea
+                                value={sh.a?.[q.en] ?? ""}
+                                onChange={e => setSheet(sh.id, { a: { ...(sh.a ?? {}), [q.en]: e.target.value } })}
+                                rows={2}
+                                placeholder={isAR ? "ماذا قالوا؟" : "What did they say?"}
+                                style={{
+                                  width: "100%", boxSizing: "border-box", resize: "vertical",
+                                  padding: "12px 15px", borderRadius: 14, fontFamily: sans,
+                                  fontSize: 14.5, lineHeight: 1.6,
+                                  border: "2px solid rgba(42,35,28,.12)", background: M.page, color: M.heading,
+                                }} />
+                            </div>
+                          ))}
+                          <button onClick={() => dropSheet(sh.id)} style={{
+                            ...quiet, alignSelf: "flex-start", cursor: "pointer",
+                            border: "none", font: "inherit", fontFamily: sans,
+                          }}>
+                            <X size={13} />{isAR ? "احذف الورقة" : "Delete this sheet"}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
-
-                {(mine.answers ?? []).filter(a => !FIXED.some(f => f.en === a.q)).map(a => (
-                  <div key={a.id} style={{ ...card, padding: "18px 20px" }}>
-                    <div style={{ fontSize: 15, fontWeight: 700, color: M.heading, marginBottom: 10, fontFamily: sans }}>
-                      {a.q}
-                    </div>
-                    <textarea defaultValue={a.a} onBlur={e => setAnswer(a.q, e.target.value)} rows={2}
-                      style={{
-                        width: "100%", boxSizing: "border-box", resize: "vertical",
-                        padding: "12px 15px", borderRadius: 14, fontFamily: sans, fontSize: 14.5, lineHeight: 1.6,
-                        border: "2px solid rgba(42,35,28,.12)", background: M.page, color: M.heading,
-                      }} />
-                  </div>
-                ))}
-
-                <div style={{ ...flat, padding: "18px 20px", display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  <input value={extraQ} onChange={e => setExtraQ(e.target.value)}
-                    placeholder={isAR ? "سؤال آخر سألته" : "Another question you asked"}
-                    style={{
-                      flex: 1, minWidth: 200, boxSizing: "border-box", padding: "12px 15px",
-                      borderRadius: 14, fontFamily: sans, fontSize: 14.5,
-                      border: "2px solid rgba(42,35,28,.12)", background: M.page, color: M.heading,
-                    }} />
-                  <button onClick={() => { if (extraQ.trim()) { setAnswer(extraQ.trim(), ""); setExtraQ(""); } }}
-                    disabled={!extraQ.trim()} style={{ ...ghost(H), opacity: extraQ.trim() ? 1 : 0.4 }}>
-                    <Plus size={17} />{isAR ? "أضف سؤالاً" : "Add"}
-                  </button>
-                </div>
               </div>
+
+              <button onClick={newSheet} style={{ ...btn(H), marginTop: 14 }}>
+                <Plus size={16} />{isAR ? "ورقة جديدة" : "New sheet"}
+              </button>
             </div>
           </Rise>
         </Stagger>

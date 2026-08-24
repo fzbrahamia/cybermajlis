@@ -8,8 +8,9 @@
    about where the world is, across domains, so it has its own route. */
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
-import { Clock } from "lucide-react";
+import { ChevronRight, Clock } from "lucide-react";
 import { InnovationPage } from "@/components/innovation/InnovationChrome";
 import { Stagger, Rise, Lift, RoomHead, Says } from "@/components/innovation/Alive";
 import { DOMAINS } from "@/app/lib/domainData";
@@ -86,16 +87,32 @@ const STORIES: {
 
 export default function LatestPage() {
   const isAR = useLocale() === "ar";
+  const router = useRouter();
+
+  /* Reading is only worth anything if something can come out of it. A story
+     that gives you an idea becomes a problem on your own desk, with the same
+     path every other problem goes through. */
+  const take = (id: string, head: string) => {
+    const key = `news-${id}`;
+    try {
+      const mine = JSON.parse(localStorage.getItem("mj-mine") ?? "{}");
+      if (!(mine.posted ?? []).some((p: { id: string }) => p.id === key)) {
+        mine.posted = [{ id: key, what: head, who: "", at: Date.now() }, ...(mine.posted ?? [])];
+        localStorage.setItem("mj-mine", JSON.stringify(mine));
+      }
+    } catch { /* private mode */ }
+    router.push(`/mine/problem/${key}`);
+  };
   const tone = (d: string) => DOMAINS.find(x => x.id === d);
 
   return (
     <InnovationPage>
       <RoomHead hue={H}
         eyebrow={isAR ? "الأخبار" : "News"}
-        title={isAR ? "ما حدث، وما يعلّمه" : "What happened, and what it teaches"}
+        title={isAR ? "ما تغيّر هذا الشهر" : "What changed this month"}
         sub={isAR
-          ? "كل خبر مفكَّك بالطريقة نفسها التي تفكك بها شركة."
-          : "Every story taken apart the same way you take a company apart."} />
+          ? "اقرأ لتعرف ما الذي تغيّر. وإن أعطاك خبر فكرة، خذها إلى شغلك."
+          : "Read to find out what changed. If a story gives you an idea, take it to your work."} />
 
       <Stagger gap={0.08}>
         <div style={{ display: "flex", flexDirection: "column", gap: 16, marginTop: 30 }}>
@@ -155,11 +172,12 @@ export default function LatestPage() {
                     <Says who="rouda" hue={H}>{isAR ? s.ask_ar : s.ask_en}</Says>
                   </div>
 
-                  {s.caseHref && (
-                    <Link href={s.caseHref} style={{ ...chip(H), marginTop: 16, textDecoration: "none" }}>
-                      {isAR ? "افتح القضية كاملة" : "Open the whole case"}
-                    </Link>
-                  )}
+                  <button
+                    onClick={() => take(s.id, isAR ? s.head_ar : s.head_en)}
+                    style={{ ...chip(H), marginTop: 16, cursor: "pointer", border: "none", font: "inherit", fontFamily: sans }}>
+                    {isAR ? "خذها إلى شغلي" : "Take it to my work"}
+                    <ChevronRight size={14} />
+                  </button>
                 </div>
               </Lift>
             );
