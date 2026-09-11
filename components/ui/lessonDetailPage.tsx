@@ -191,7 +191,7 @@ export default function LessonDetailPage({ lesson }: LessonDetailProps) {
       .ld-tab.active { background: var(--maroon); color: var(--cream-light); box-shadow: 0 2px 12px rgba(99,32,36,.25); }
       .ld-tab.unlocked:not(.active):hover { background: rgba(99,32,36,.08); color: var(--maroon); }
       .ld-tab.locked { cursor: not-allowed; opacity: .4; }
-      .ld-tab-lock { position: absolute; top: 6px; right: 8px; width: 12px; height: 12px; opacity: .5; }
+      .ld-tab-lock { position: absolute; top: 50%; transform: translateY(-50%); inset-inline-end: 10px; width: 12px; height: 12px; opacity: .5; }
       .ld-content { display: grid; grid-template-columns: 260px 1fr; gap: 1.5rem; align-items: stretch; height: 480px; }
       .ld-left { border-radius: 18px; overflow: hidden; border: 2px solid rgba(197,165,126,.35); box-shadow: 0 8px 32px rgba(99,32,36,.1); background: var(--gold-light); display: flex; align-items: center; justify-content: center; flex: 1; }
       .ld-left img, .ld-left video { width: 100%; height: 100%; object-fit: cover; display: block; }

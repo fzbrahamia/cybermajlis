@@ -6,6 +6,7 @@
 // holding the concepts will read a fundamental constraint as a design failure,
 // so the films come first and the case says what it expects you to hold.
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useLocale } from "next-intl";
@@ -14,6 +15,8 @@ import { InnovationPage } from "@/components/innovation/InnovationChrome";
 import { domainById, casesForDomain } from "@/app/lib/domainData";
 import { conceptsForDomain, conceptById, categoriesForDomain, conceptsForCategory } from "@/app/lib/conceptData";
 import { M, mono, label, card, flat, button, quietPill } from "@/components/innovation/theme";
+import HoloHouse from "@/components/innovation/HoloHouse";
+import { readDone, type Done } from "@/app/lib/conceptProgress";
 
 const STATE_ICON = { known: Check, open: ArrowRight, loop: RotateCcw, locked: Lock };
 const STATE_TEXT = {
@@ -27,6 +30,8 @@ export default function DomainPage() {
   const isAR = useLocale() === "ar";
   const params = useParams<{ domain: string }>();
   const d = domainById(params.domain);
+  const [done, setDone] = useState<Done>({});
+  useEffect(() => { setDone(readDone()); }, []);
 
   if (!d || !d.live) {
     return (
@@ -41,7 +46,7 @@ export default function DomainPage() {
 
   const concepts = conceptsForDomain(d.id);
   const cases = casesForDomain(d.id);
-  const known = concepts.filter(c => c.state === "known").length;
+  const known = concepts.filter(c => done[c.id]).length;
 
   return (
     <InnovationPage>
@@ -77,6 +82,14 @@ export default function DomainPage() {
         </div>
       </div>
 
+      {/* The house. Only cybersecurity has one, because the metaphor is the
+          one the firewall storybook already built and it does not travel. */}
+      {d.id === "cybersecurity" && (
+        <div style={{ marginBottom: 34 }}>
+          <HoloHouse done={done} />
+        </div>
+      )}
+
       {/* 1. the films */}
       <div style={{ marginBottom: 12, display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
         <span style={{ ...label, fontSize: 10 }}>{isAR ? "أولاً" : "First"}</span>
@@ -110,20 +123,22 @@ export default function DomainPage() {
                 gap: 11,
               }}>
                 {list.map(c => {
-                  const Icon = STATE_ICON[c.state];
-                  const locked = c.state === "locked";
+                  const finished = Boolean(done[c.id]);
+                  const shown = finished ? "known" : c.state === "known" ? "open" : c.state;
+                  const Icon = STATE_ICON[shown as keyof typeof STATE_ICON];
+                  const locked = shown === "locked";
                   const inner = (
                     <div style={{
                       ...card, height: "100%", padding: "17px 19px 18px",
                       display: "flex", flexDirection: "column", gap: 8,
-                      background: c.state === "known" ? M.goldSoft : M.card,
+                      background: finished ? M.goldSoft : M.card,
                       borderTop: `3px solid ${cat.tone}`,
-                      border: c.state === "open" ? `2px solid ${cat.tone}` : undefined,
+                      border: shown === "open" ? `2px solid ${cat.tone}` : undefined,
                       opacity: locked ? 0.55 : 1,
                     }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
                         <span style={{ ...quietPill, color: locked ? M.body : cat.tone }}>
-                          {isAR ? STATE_TEXT[c.state].ar : STATE_TEXT[c.state].en}
+                          {isAR ? STATE_TEXT[shown as keyof typeof STATE_TEXT].ar : STATE_TEXT[shown as keyof typeof STATE_TEXT].en}
                         </span>
                         <Icon size={15} strokeWidth={2.2} color={locked ? M.body : cat.tone} />
                       </div>
@@ -159,14 +174,28 @@ export default function DomainPage() {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {cases.map(cs => (
-          <Link key={cs.id} href={`/learn/${d.id}/case/${cs.id}`} style={{ textDecoration: "none" }}>
-            <div style={{ ...card, padding: "22px 24px", borderTop: `3px solid ${d.tone}` }}>
+        {cases.map(cs => {
+          /* A case read without its concepts teaches the wrong lesson: a
+             fundamental constraint gets read as somebody's design failure.
+             So the case does not open until they are held. */
+          const short = cs.needs.filter(id => !done[id]);
+          const shut = short.length > 0;   // says so, does not bar the door
+
+          const face = (
+            <div style={{
+              ...card, padding: "22px 24px", borderTop: `3px solid ${d.tone}`,
+              opacity: 1,
+            }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
                 <span style={{ ...quietPill }}>{cs.year}</span>
                 <span style={{ ...quietPill }}>
                   {cs.approaches.length} {isAR ? "محاولات" : "attempts"}
                 </span>
+                {shut && (
+                  <span style={{ ...quietPill, gap: 6 }}>
+                    <Lock size={11} />{isAR ? `ينقصك ${short.length}` : `${short.length} to go`}
+                  </span>
+                )}
               </div>
               <div style={{ fontSize: 18.5, fontWeight: 800, color: M.heading, lineHeight: 1.35, marginBottom: 8 }}>
                 {isAR ? cs.title_ar : cs.title_en}
@@ -179,15 +208,17 @@ export default function DomainPage() {
                 paddingTop: 12, borderTop: `1px solid ${M.line}`,
               }}>
                 <span style={{ ...label, fontSize: 9.5 }}>
-                  {isAR ? "تحتاج أن تعرف أولاً" : "You need to know first"}
+                  {shut
+                    ? (isAR ? "أنهِ هذه أولاً" : "Finish these first")
+                    : (isAR ? "أنت تعرفها كلها" : "You know all of these")}
                 </span>
                 {cs.needs.map(id => {
                   const c = conceptById(id);
                   if (!c) return null;
-                  const ok = c.state === "known";
+                  const ok = Boolean(done[id]);
                   return (
-                    <span key={id} style={{
-                      display: "inline-flex", alignItems: "center", gap: 5,
+                    <Link key={id} href={`/learn/${d.id}/concept/${id}`} style={{
+                      display: "inline-flex", alignItems: "center", gap: 5, textDecoration: "none",
                       fontFamily: mono, fontSize: 9.5, letterSpacing: "0.07em",
                       textTransform: "uppercase", borderRadius: 999, padding: "5px 10px",
                       background: ok ? "rgba(197,165,126,.24)" : "rgba(42,35,28,.05)",
@@ -196,13 +227,17 @@ export default function DomainPage() {
                     }}>
                       {ok && <Check size={10} strokeWidth={3} />}
                       {isAR ? c.name_ar : c.name_en}
-                    </span>
+                    </Link>
                   );
                 })}
               </div>
             </div>
-          </Link>
-        ))}
+          );
+
+          return (
+            <Link key={cs.id} href={`/learn/${d.id}/case/${cs.id}`} style={{ textDecoration: "none" }}>{face}</Link>
+          );
+        })}
       </div>
 
       {d.deeper && (

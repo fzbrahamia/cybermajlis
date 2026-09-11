@@ -87,6 +87,20 @@ export const categoriesForDomain = (d: string) => CATEGORIES.filter(c => c.domai
 
 export type ConceptState = "known" | "open" | "loop" | "locked";
 
+/* One question with a right answer, which is the only thing on the whole
+   platform that has one. It exists to be the gate: a concept is not finished
+   because somebody scrolled past it, and a case will not open until the
+   concepts it needs are finished. Watching and reading are both optional; this
+   is not. */
+export type MCQ = {
+  q_en: string; q_ar: string;
+  options_en: string[]; options_ar: string[];
+  /** Index into options. */
+  right: number;
+  /** Said after, whichever way it went. Never scolding. */
+  why_en: string; why_ar: string;
+};
+
 export type Check = {
   q_en: string; q_ar: string;
   /** "explain" cannot be marked by a machine alone; "recall" can. The learner
@@ -114,16 +128,55 @@ export type Concept = {
       boards make, carried here so the whole company teaches one way. */
   caveat_en: string; caveat_ar: string;
   checks: Check[];
+  /** The one question with a right answer. It is the gate. */
+  mcq?: MCQ;
   /** The majlis that goes properly deep on this, if there is one. */
   deeper?: { href: string; en: string; ar: string; tone: string };
 };
 
 export const CONCEPTS: Concept[] = [
   {
+    id: "firewall",
+    domain: "cybersecurity",
+    category: "networks",
+    state: "open",
+    name_en: "The guard at the gate", name_ar: "حارس البوابة",
+    line_en: "Something has to decide what is allowed through.",
+    line_ar: "لا بد لشيء أن يقرر ما الذي يُسمح له بالمرور.",
+    minutes: 5,
+    picture_en: "A neighbourhood gate, a guard, and the things a gate can and cannot see.",
+    picture_ar: "بوابة حيّ، وحارس، والأشياء التي تراها البوابة والتي لا تراها.",
+    body_en: [
+      "A firewall stands where your network meets everything else, and decides what is allowed across.",
+      "It works on rules: this may pass, that may not. Like a guard at the gate of a neighbourhood, checking what comes in.",
+      "And here is the part people miss. A gate controls what goes through the gate. It cannot see what happens between the houses once something is already inside.",
+    ],
+    body_ar: [
+      "يقف جدار الحماية حيث تلتقي شبكتك بكل ما عداها، ويقرر ما الذي يُسمح له بالعبور.",
+      "ويعمل بقواعد: هذا يمر، وهذا لا. كحارس على بوابة حيّ، يفحص ما يدخل.",
+      "وهنا ما يفوت الناس. البوابة تتحكم بما يعبرها هي. ولا ترى ما يحدث بين البيوت متى دخل شيء إلى الداخل.",
+    ],
+    caveat_en: "The story draws one gate on one road. A real network has many ways in, and the most useful ones are the ways you opened on purpose.",
+    caveat_ar: "ترسم القصة بوابة واحدة على طريق واحد. أما الشبكة الحقيقية فلها مداخل كثيرة، وأنفعها هي التي فتحتها أنت عمداً.",
+    checks: [
+      { q_en: "What does a firewall decide?", q_ar: "ماذا يقرر جدار الحماية؟", kind: "recall" },
+      { q_en: "In your own words, why is a gate not enough on its own?", q_ar: "بكلماتك أنت، لماذا لا تكفي البوابة وحدها؟", kind: "explain" },
+    ],
+    mcq: {
+      q_en: "A delivery moves from one house to another inside the neighbourhood. Does it pass the gate?",
+      q_ar: "تنتقل توصيلة من بيت إلى آخر داخل الحي. هل تمر بالبوابة؟",
+      options_en: ["No, it is already inside", "Yes, everything passes the gate", "Only if it is carrying something big"],
+      options_ar: ["لا، فهي في الداخل أصلاً", "نعم، كل شيء يمر بالبوابة", "فقط إن كانت تحمل شيئاً كبيراً"],
+      right: 0,
+      why_en: "That is the whole limit of a gate. It sees what crosses it, and nothing that happens on the other side.",
+      why_ar: "وهذا هو حدّ البوابة كله. ترى ما يعبرها، ولا ترى شيئاً مما يحدث خلفها.",
+    },
+  },
+  {
     id: "internet",
     domain: "cybersecurity",
     category: "networks",
-    state: "known",
+    state: "locked",
     name_en: "How a message crosses the world", name_ar: "كيف تعبر الرسالة العالم",
     line_en: "Nothing travels. It is copied, over and over.",
     line_ar: "لا شيء يسافر. بل يُنسخ، مرة بعد مرة.",
@@ -146,12 +199,19 @@ export const CONCEPTS: Concept[] = [
       { q_en: "If the pieces arrive out of order, how does the other machine know how to put them back?", q_ar: "إذا وصلت الأجزاء غير مرتبة، فكيف يعرف الجهاز الآخر كيف يجمعها؟", kind: "recall" },
       { q_en: "In your own words, why does a weak connection lose part of a photo instead of all of it?", q_ar: "بكلماتك أنت، لماذا يضيع جزء من الصورة عند ضعف الاتصال بدل أن تضيع كلها؟", kind: "explain" },
     ],
+    mcq: {
+      q_en: 'If the pieces of a photo arrive out of order, how does the other machine put them back?', q_ar: "إذا وصلت أجزاء الصورة غير مرتبة، فكيف يعيدها الجهاز الآخر؟",
+      options_en: ['Each piece has a number written on it', 'They always arrive in the right order anyway', 'The photo is sent again from the start'],
+      options_ar: ['كل جزء مكتوب عليه رقم', 'تصل دائماً بالترتيب الصحيح على أي حال', 'تُرسل الصورة من جديد'],
+      right: 0,
+      why_en: 'Nothing travels whole. It is cut up, numbered, copied along, and put back together by those numbers.', why_ar: "لا شيء يسافر كاملاً. بل يُقطَّع ويُرقَّم ويُنسخ في الطريق ثم يُجمع بتلك الأرقام.",
+    },
   },
   {
     id: "malware",
     domain: "cybersecurity",
     category: "malware",
-    state: "known",
+    state: "locked",
     name_en: "Software written to work against you", name_ar: "برمجيات كُتبت ضدك",
     line_en: "It is not magic and it is not alive. Somebody wrote it.",
     line_ar: "ليست سحراً وليست حية. أحدهم كتبها.",
@@ -175,12 +235,19 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Why do we say most malware is invited in rather than breaking in?", q_ar: "لماذا نقول إن معظم البرمجيات الخبيثة تُدعى للدخول بدل أن تقتحم؟", kind: "explain" },
     ],
     deeper: { href: "/dashboard/malware", en: "Four malware lessons in CyberMajlis", ar: "أربعة دروس عن البرمجيات الخبيثة في المجلس السيبراني", tone: "#A8323F" },
+    mcq: {
+      q_en: 'What is malware, really?', q_ar: "ما هي البرمجية الخبيثة حقاً؟",
+      options_en: ['Software somebody wrote to work against you', 'A machine that broke on its own', 'A kind of electricity problem'],
+      options_ar: ['برنامج كتبه أحدهم ليعمل ضدك', 'جهاز تعطّل من تلقاء نفسه', 'نوع من مشاكل الكهرباء'],
+      right: 0,
+      why_en: 'It is not magic and it is not alive. A person sat down and wrote it.', why_ar: "ليست سحراً وليست حية. بل جلس شخص وكتبها.",
+    },
   },
   {
     id: "normal-traffic",
     domain: "cybersecurity",
     category: "networks",
-    state: "known",
+    state: "locked",
     name_en: "What normal looks like", name_ar: "كيف يبدو الوضع الطبيعي",
     line_en: "You cannot notice something strange until you know what ordinary is.",
     line_ar: "لا يمكنك ملاحظة الغريب قبل أن تعرف المألوف.",
@@ -203,12 +270,19 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Give one example of normal behaviour on a school network.", q_ar: "أعط مثالاً واحداً على سلوك طبيعي في شبكة مدرسة.", kind: "recall" },
       { q_en: "Why is has this machine ever done this before a more useful question than is this file dangerous?", q_ar: "لماذا يكون سؤال هل فعل هذا الجهاز ذلك من قبل أنفع من سؤال هل هذا الملف خطير؟", kind: "explain" },
     ],
+    mcq: {
+      q_en: 'Why do you have to know what is ordinary before you can spot what is odd?', q_ar: "لماذا يجب أن تعرف المعتاد قبل أن تلاحظ الغريب؟",
+      options_en: ['Because odd only means different from ordinary', 'Because ordinary things are more dangerous', 'Because you cannot count odd things'],
+      options_ar: ['لأن الغريب معناه مختلف عن المعتاد', 'لأن الأشياء المعتادة أخطر', 'لأنك لا تستطيع عدّ الأشياء الغريبة'],
+      right: 0,
+      why_en: 'Strange is not a thing on its own. It is only ever strange compared to something.', why_ar: "الغرابة ليست شيئاً بذاته. بل هي دائماً غرابة بالمقارنة مع شيء.",
+    },
   },
   {
     id: "behavioural-detection",
     domain: "cybersecurity",
     category: "detection",
-    state: "loop",
+    state: "locked",
     name_en: "Catching what you have never seen", name_ar: "اصطياد ما لم تره قط",
     line_en: "Watch behaviour instead of matching a list.",
     line_ar: "راقب السلوك بدل مطابقة قائمة.",
@@ -232,12 +306,19 @@ export const CONCEPTS: Concept[] = [
       { q_en: "In your own words, why does watching behaviour create a new problem of its own?", q_ar: "بكلماتك أنت، لماذا تصنع مراقبة السلوك مشكلة جديدة خاصة بها؟", kind: "explain" },
       { q_en: "A machine in the library starts sending files to an address in another country at 3am. Which question catches this, and why?", q_ar: "جهاز في المكتبة يبدأ بإرسال ملفات إلى عنوان في بلد آخر عند الثالثة فجراً. أي سؤال يكشف هذا، ولماذا؟", kind: "explain" },
     ],
+    mcq: {
+      q_en: 'What does watching behaviour catch that a list of known bad things misses?', q_ar: "ماذا تلتقط مراقبة السلوك ولا تلتقطه قائمة بالأشياء السيئة المعروفة؟",
+      options_en: ['Something nobody has ever seen before', 'Things that are already on the list', 'Slow computers'],
+      options_ar: ['شيئاً لم يره أحد من قبل', 'أشياء موجودة في القائمة أصلاً', 'الأجهزة البطيئة'],
+      right: 0,
+      why_en: 'A list can only hold what somebody already found. Behaviour does not need the thing to be famous yet.', why_ar: "القائمة لا تحمل إلا ما وجده أحد من قبل. أما السلوك فلا يحتاج أن يكون الشيء معروفاً بعد.",
+    },
   },
   {
     id: "endpoints",
     domain: "cybersecurity",
     category: "detection",
-    state: "open",
+    state: "locked",
     name_en: "The machine on the desk", name_ar: "الجهاز على الطاولة",
     line_en: "The last place a defence can stand, and the place people actually sit.",
     line_ar: "آخر موضع يمكن أن يقف فيه الدفاع، وهو الموضع الذي يجلس فيه الناس فعلاً.",
@@ -261,12 +342,19 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Explain why a guard at the door of a building is a good picture of a firewall, and where the picture stops being true.", q_ar: "اشرح لماذا يصلح حارس باب المبنى صورةً لجدار الحماية، وأين تتوقف الصورة عن الصدق.", kind: "explain" },
     ],
     deeper: { href: "/dashboard/do-it-yourself", en: "Secure your own devices in CyberMajlis", ar: "أمّن أجهزتك أنت في المجلس السيبراني", tone: "#A8323F" },
+    mcq: {
+      q_en: 'Why does the machine on the desk matter so much?', q_ar: "لماذا يهمّ الجهاز الذي على الطاولة كل هذا؟",
+      options_en: ['It is where the person actually is', 'It is the fastest machine', 'It has the most storage'],
+      options_ar: ['لأنه المكان الذي يجلس فيه الإنسان فعلاً', 'لأنه أسرع جهاز', 'لأن فيه أكبر مساحة'],
+      right: 0,
+      why_en: 'It is the last place a defence can stand, and it is the place people actually sit.', why_ar: "إنه آخر مكان يقف فيه الدفاع، وهو المكان الذي يجلس فيه الناس فعلاً.",
+    },
   },
   {
     id: "encryption",
     domain: "cybersecurity",
     category: "encryption",
-    state: "known",
+    state: "locked",
     name_en: "Locking a message", name_ar: "قفل الرسالة",
     line_en: "Scrambling something so only one person can unscramble it.",
     line_ar: "خلط شيء بحيث لا يفكه إلا شخص واحد.",
@@ -290,6 +378,13 @@ export const CONCEPTS: Concept[] = [
       { q_en: "The arithmetic is easy forwards and slow backwards. What would break if a machine arrived that made it fast backwards?", q_ar: "العملية الحسابية سهلة في اتجاه وبطيئة في عكسه. ماذا سينكسر لو ظهر جهاز يجعلها سريعة في العكس؟", kind: "explain" },
     ],
     deeper: { href: "/quantum", en: "Quantum Keys, in QuantumMajlis", ar: "المفاتيح الكمّية، في مجلس الكوانتم", tone: "#2E9C6E" },
+    mcq: {
+      q_en: 'What does locking a message actually do?', q_ar: "ماذا يفعل قفل الرسالة فعلاً؟",
+      options_en: ['Scrambles it so only one person can unscramble it', 'Hides it somewhere nobody looks', 'Makes it smaller'],
+      options_ar: ['يخلطها بحيث لا يفكّها إلا شخص واحد', 'يخفيها في مكان لا ينظر إليه أحد', 'يجعلها أصغر'],
+      right: 0,
+      why_en: 'Not hidden. Scrambled. Anyone can hold it, and it means nothing without the key.', why_ar: "ليست مخفية. بل مخلوطة. أي أحد يستطيع حملها، ولا تعني شيئاً بلا المفتاح.",
+    },
   },
   {
     id: "zero-day",
@@ -318,12 +413,19 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Why is it called a zero day?", q_ar: "لماذا سميت ثغرة اليوم صفر؟", kind: "recall" },
       { q_en: "Give one reason a hospital might not install a repair it knows about.", q_ar: "أعط سبباً واحداً قد يمنع مستشفى من تثبيت إصلاح يعلم به.", kind: "explain" },
     ],
+    mcq: {
+      q_en: 'Why is it called a zero day?', q_ar: "لماذا سميت ثغرة اليوم صفر؟",
+      options_en: ['The people who wrote it have had zero days to fix it', 'It takes zero days to attack', 'It was found on the first day'],
+      options_ar: ['لأن من كتبوه مرّ عليهم صفر من الأيام لإصلاحه', 'لأن الهجوم لا يستغرق أي يوم', 'لأنه اكتُشف في اليوم الأول'],
+      right: 0,
+      why_en: 'And the harder part comes after: a repair can exist for months and still not be installed.', why_ar: "والأصعب يأتي بعدها: قد يوجد الإصلاح شهوراً ولا يُثبَّت.",
+    },
   },
   {
     id: "malware-spread",
     domain: "cybersecurity",
     category: "malware",
-    state: "open",
+    state: "locked",
     name_en: "How malware crosses the world", name_ar: "كيف تعبر البرمجية الخبيثة العالم",
     line_en: "It does not need carrying. It rides on things you already trust.",
     line_ar: "لا تحتاج من يحملها. بل تركب ما تثق به أصلاً.",
@@ -347,6 +449,13 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Why can a piece of malware not move itself from machine to machine?", q_ar: "لماذا لا تستطيع البرمجية الخبيثة نقل نفسها من جهاز إلى جهاز؟", kind: "explain" },
     ],
     deeper: { href: "/dashboard/malware", en: "Four malware lessons in CyberMajlis", ar: "أربعة دروس عن البرمجيات الخبيثة في المجلس السيبراني", tone: "#A8323F" },
+    mcq: {
+      q_en: 'How did the hospital software get in, if nobody clicked anything?', q_ar: "كيف دخلت البرمجية إلى المستشفى إن لم يضغط أحد على شيء؟",
+      options_en: ['It travelled by itself between machines that trusted each other', 'Somebody carried it in on a disk', 'It arrived in an email that got opened'],
+      options_ar: ['انتقلت وحدها بين أجهزة يثق بعضها ببعض', 'حملها أحدهم على قرص', 'وصلت في بريد فُتح'],
+      right: 0,
+      why_en: 'It did not need carrying. It rode on the things those machines already trusted.', why_ar: "لم تحتج من يحملها. بل ركبت على أشياء كانت تلك الأجهزة تثق بها أصلاً.",
+    },
   },
   {
     id: "ransomware",
@@ -376,6 +485,13 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Why is the same maths that keeps your messages private also what makes this so hard to undo?", q_ar: "لماذا تكون الرياضيات نفسها التي تحمي رسائلك هي ما يجعل فك هذا صعباً جداً؟", kind: "explain" },
     ],
     deeper: { href: "/quantum", en: "Quantum Keys, in QuantumMajlis", ar: "المفاتيح الكمّية، في مجلس الكوانتم", tone: "#2E9C6E" },
+    mcq: {
+      q_en: 'Ransomware uses the same trick that protects your messages. Which trick?', q_ar: "تستعمل برمجية الفدية الحيلة نفسها التي تحمي رسائلك. أي حيلة؟",
+      options_en: ['Locking things so only one key opens them', 'Hiding files in a deep folder', 'Copying files very fast'],
+      options_ar: ['قفل الأشياء بحيث لا يفتحها إلا مفتاح واحد', 'إخفاء الملفات في مجلد عميق', 'نسخ الملفات بسرعة كبيرة'],
+      right: 0,
+      why_en: 'The same lock. They just kept the key. A tool is not good or bad; who holds it is.', why_ar: "القفل نفسه. لكنهم احتفظوا بالمفتاح. الأداة ليست خيّرة ولا شريرة؛ من يمسكها هو كذلك.",
+    },
   },
   // ── water ───────────────────────────────────────────────
   {
@@ -405,6 +521,13 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Which way does water move on its own, toward the salt or away from it?", q_ar: "في أي اتجاه يتحرك الماء وحده، نحو الملح أم بعيداً عنه؟", kind: "recall" },
       { q_en: "In your own words, why does taking salt out of seawater cost anything at all?", q_ar: "بكلماتك أنت، لماذا يكلّف إخراج الملح من ماء البحر أي شيء أصلاً؟", kind: "explain" },
     ],
+    mcq: {
+      q_en: 'Which way does water move on its own?', q_ar: "في أي اتجاه يتحرك الماء وحده؟",
+      options_en: ['Toward the salt', 'Away from the salt', 'It does not move'],
+      options_ar: ['نحو الملح', 'بعيداً عن الملح', 'لا يتحرك'],
+      right: 0,
+      why_en: 'Toward it, for free. Which is exactly why sending it back the other way costs.', why_ar: "نحوه، بلا مقابل. ولهذا بالضبط تكلّف إعادته في الاتجاه الآخر.",
+    },
   },
   {
     id: "osmotic-pressure",
@@ -433,6 +556,13 @@ export const CONCEPTS: Concept[] = [
       { q_en: "If you push with less pressure than the salt pulls, what happens?", q_ar: "إذا دفعت بضغط أقل مما يشدّ الملح، فماذا يحدث؟", kind: "recall" },
       { q_en: "A sea gets saltier over many years. What happens to the plant's electricity bill, and why?", q_ar: "بحر يزداد ملوحة عبر سنوات. ماذا يحدث لفاتورة كهرباء المحطة، ولماذا؟", kind: "explain" },
     ],
+    mcq: {
+      q_en: 'You push with less pressure than the salt pulls. What happens?', q_ar: "تدفع بضغط أقل مما يشدّ الملح. ماذا يحدث؟",
+      options_en: ['Nothing crosses', 'A little crosses, slowly', 'The salt crosses instead'],
+      options_ar: ['لا يعبر شيء', 'يعبر قليل ببطء', 'يعبر الملح بدلاً منه'],
+      right: 0,
+      why_en: 'It is a threshold, not a slope. Below it, nothing. And a saltier sea moves it up.', why_ar: "إنها عتبة لا منحدر. دونها لا شيء. والبحر الأملح يرفعها.",
+    },
   },
   {
     id: "what-is-left",
@@ -461,6 +591,13 @@ export const CONCEPTS: Concept[] = [
       { q_en: "You take half the water out. How much saltier is what is left?", q_ar: "تأخذ نصف الماء. كم تزداد ملوحة ما تبقّى؟", kind: "recall" },
       { q_en: "Somebody says recovering more water solves the leftover problem. What is wrong with that?", q_ar: "يقول أحدهم إن استخلاص ماء أكثر يحلّ مشكلة المتبقّي. ما الخطأ في ذلك؟", kind: "explain" },
     ],
+    mcq: {
+      q_en: 'You take half the water out. How salty is what stays?', q_ar: "تأخذ نصف الماء. كم تصير ملوحة ما يبقى؟",
+      options_en: ['Twice as salty', 'The same', 'Half as salty'],
+      options_ar: ['أملح بمرتين', 'كما هي', 'أقل ملوحة بالنصف'],
+      right: 0,
+      why_en: 'The salt did not go anywhere. There is just less water holding it.', why_ar: "الملح لم يذهب إلى أي مكان. فقط صار الماء الحامل له أقل.",
+    },
   },
   {
     id: "closed-sea",
@@ -489,6 +626,13 @@ export const CONCEPTS: Concept[] = [
       { q_en: "Name one reason the Gulf is already saltier than the open ocean.", q_ar: "اذكر سبباً واحداً لكون الخليج أملح أصلاً من المحيط المفتوح.", kind: "recall" },
       { q_en: "Why does it matter that every country around the Gulf both drinks from it and returns to it?", q_ar: "لماذا يهمّ أن كل دولة حول الخليج تشرب منه وتعيد إليه في آن واحد؟", kind: "explain" },
     ],
+    mcq: {
+      q_en: 'Why does it matter that the Gulf is shallow with one narrow way out?', q_ar: "لماذا يهمّ أن الخليج ضحل وله مخرج ضيق واحد؟",
+      options_en: ['What you put in stays a long time', 'It makes the water colder', 'It makes ships slower'],
+      options_ar: ['لأن ما تضعه فيه يبقى طويلاً', 'لأنه يجعل الماء أبرد', 'لأنه يبطئ السفن'],
+      right: 0,
+      why_en: 'Along this coast the water takes about three years to be exchanged. It keeps what you give it.', why_ar: "على هذا الساحل يستغرق تبديل الماء نحو ثلاث سنوات. فهو يحتفظ بما تعطيه.",
+    },
   },
 ];
 

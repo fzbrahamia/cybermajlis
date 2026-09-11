@@ -6,7 +6,9 @@ import Link from "next/link";
 import { useLessonProgress } from "@/hooks/useLessonProgress";
 import { useTranslations, useLocale } from "next-intl";
 import { seedLessonsData } from "@/app/lib/seedLessons";
-import LessonLeaderboard from "@/components/LessonLeaderboard";
+import BeyondPanel from "@/components/BeyondPanel";
+import { CONCEPTS } from "@/app/lib/cyberData";
+import { readDone } from "@/app/lib/conceptProgress";
 import { Award, Medal, Brain, BookOpen, Swords, MonitorDot, Wrench, ScanSearch, Globe, Trophy, Target, ShieldCheck, TrendingUp, ArrowRight, type LucideIcon, Users, Lock } from "lucide-react";
 
 type Track = { nameKey: string; descKey: string; href: string; Icon: LucideIcon; progress: string; fill: number; soon?: boolean };
@@ -49,9 +51,17 @@ export default function DashboardPage() {
   // single Malware track holding all four lessons plus their simulations.
   const malwareCompleted = completedLessons;
 
+  /* CyberMajlis concepts keep their progress under a cm- prefix so they never
+     collide with the Majlis ones, which are a different track entirely. */
+  const [conceptsDone, setConceptsDone] = useState(0);
+  useEffect(() => {
+    const d = readDone();
+    setConceptsDone(CONCEPTS.filter(c => d[`cm-${c.slug}`]).length);
+  }, []);
+
   const tracks: Track[] = [
     { nameKey: "malware.name",            descKey: "malware.description",            href: "/dashboard/malware",            Icon: ShieldCheck, progress: `${malwareCompleted}/${totalLessons}`, fill: Math.round((malwareCompleted / totalLessons) * 100) },
-    { nameKey: "social-engineering.name", descKey: "social-engineering.description", href: "/dashboard/social-engineering", Icon: Users,       progress: t("social-engineering.badge"),        fill: 0, soon: true },
+    { nameKey: "concepts.name",           descKey: "concepts.description",           href: "/dashboard/concepts",           Icon: Users,       progress: `${conceptsDone}/${CONCEPTS.length}`, fill: Math.round((conceptsDone / CONCEPTS.length) * 100) },
     { nameKey: "why-you.name",            descKey: "why-you.description",            href: "/dashboard/why-you",            Icon: TrendingUp,  progress: t("why-you.badge"),                   fill: 0, soon: true },
   ];
 
@@ -303,7 +313,7 @@ export default function DashboardPage() {
           </section>
 
           <aside>
-            <LessonLeaderboard youXP={totalXP} listLimit={4} />
+            <BeyondPanel />
           </aside>
         </div>
 

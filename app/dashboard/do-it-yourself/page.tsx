@@ -29,6 +29,7 @@ export default function DoItYourselfPage() {
 
   return (
     <main
+      className="diy-wrap"
       style={{
         position: "fixed",
         inset: 0,
@@ -78,25 +79,36 @@ export default function DoItYourselfPage() {
         .diy-tooltip small { display: block; color: #c5a57e; font-size: 0.68rem; margin-top: 0.12rem; }
         .diy-hotspot:hover .diy-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+        /* The back button and the note used to be fixed on top of the room,
+           which put them over the picture. They now live in a column of their
+           own and the room gives up exactly that much width. */
+        .diy-wrap {
+          display: flex; flex-direction: column; gap: .8rem;
+          padding: 5.4rem 1.2rem 1rem;
+        }
+
+
         .diy-stage {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+          position: relative;
+          flex: 1 1 auto;
+          min-width: 0;
+          margin-inline: auto;
           box-sizing: border-box;
           aspect-ratio: 1672 / 941;
-          /* min() picks whichever limit binds. On most screens that is the height
-             one, so keeping its subtraction small is what actually widens the room. */
-          width: min(calc(100vw - 12px), calc((100vh - 64px) * 1672 / 941));
+          /* Whichever limit binds first: the page width, or the height left
+             under the header. */
+          width: min(100%, calc((100vh - 10rem) * 1672 / 941));
           border: 10px solid #4a1a1d;
           border-radius: 24px;
           overflow: hidden;
           box-shadow: 0 24px 60px rgba(74,26,29,0.28), inset 0 0 0 2px rgba(197,165,126,0.55);
         }
+        .diy-side {
+          flex: none;
+          display: flex; align-items: center; gap: .9rem; flex-wrap: wrap;
+          width: 100%; max-width: 1180px; margin-inline: auto;
+        }
         .diy-back {
-          position: fixed;
-          top: 3rem;
-          ${isRtl ? "right" : "left"}: 6rem;
           z-index: 50;
           display: inline-flex;
           align-items: center;
@@ -116,11 +128,9 @@ export default function DoItYourselfPage() {
           white-space: nowrap;
         }
         .diy-hint {
-          position: fixed;
-          top: 5.7rem;
-          ${isRtl ? "right" : "left"}: 6rem;
           z-index: 50;
-          max-width: 235px;
+          flex: 1 1 18rem;
+          max-width: 42rem;
           background: linear-gradient(155deg, rgba(255,253,249,0.98) 0%, rgba(247,238,225,0.95) 100%);
           color: #6a4640;
           border: 1px solid rgba(197,165,126,0.5);
@@ -143,12 +153,13 @@ export default function DoItYourselfPage() {
         }
       `}</style>
 
-      <Link href="/dashboard" className="diy-back">
-        {t("backToDashboard")}
-      </Link>
-
-      <div className="diy-hint">
-        {t("roomIntro")}
+      <div className="diy-side">
+        <Link href="/dashboard" className="diy-back">
+          {t("backToDashboard")}
+        </Link>
+        <div className="diy-hint">
+          {t("roomIntro")}
+        </div>
       </div>
 
       <div className="diy-stage">

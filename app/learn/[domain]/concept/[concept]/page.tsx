@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 // One concept: the film, the mechanism, where the simple version stops being
 // true, and a check that is not a multiple choice question.
 //
@@ -17,12 +19,22 @@ import { domainById } from "@/app/lib/domainData";
 import { M, sans, mono, label, card, flat, button, quietPill, ROUDA } from "@/components/innovation/theme";
 import { Face } from "@/components/innovation/Alive";
 import VideoSlot from "@/components/innovation/VideoSlot";
+import ConceptGate from "@/components/innovation/ConceptGate";
+import { readDone } from "@/app/lib/conceptProgress";
+
+/* Films that exist. Everything else still shows its brief, which is the note
+   to whoever is making it. */
+const FILMS: Record<string, string> = {
+  "zero-day": "/concepts/Hole.mp4",
+};
 import AskHamad from "@/components/innovation/AskHamad";
 
 export default function ConceptPage() {
   const isAR = useLocale() === "ar";
   const params = useParams<{ domain: string; concept: string }>();
   const c = conceptById(params.concept);
+  const [done, setDone] = useState(false);
+  useEffect(() => { setDone(Boolean(readDone()[params.concept])); }, [params.concept]);
   const d = domainById(params.domain);
   const home = `/learn/${params.domain}`;
 
@@ -95,7 +107,7 @@ export default function ConceptPage() {
       {/* the film */}
       <div style={{ ...card, padding: "22px 24px", marginBottom: 16 }}>
         <div style={{ marginBottom: 18 }}>
-          <VideoSlot minutes={c.minutes} brief_en={c.picture_en} brief_ar={c.picture_ar} />
+          <VideoSlot minutes={c.minutes} brief_en={c.picture_en} brief_ar={c.picture_ar} ready={FILMS[c.id]} />
         </div>
 
         {/* he sits under the film, inside the lesson, not off in a corner */}
@@ -167,8 +179,14 @@ export default function ConceptPage() {
             </span>
           </div>
         ))}
-
       </div>
+
+      {/* The gate. Nothing above this is required; this is. */}
+      {c.mcq && (
+        <div style={{ marginTop: 22 }}>
+          <ConceptGate id={c.id} mcq={c.mcq} done={done} onDone={() => setDone(true)} />
+        </div>
+      )}
 
       <div style={{
         display: "grid",

@@ -1,9 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import FirewallBook from "@/components/innovation/FirewallBook";
+import ConceptGate from "@/components/innovation/ConceptGate";
+import { conceptById } from "@/app/lib/conceptData";
+import { readDone } from "@/app/lib/conceptProgress";
 
 const FIREWALL = {
   name_en: "The Guard at the Gate",
@@ -26,6 +31,9 @@ const FIREWALL = {
 
 export default function FirewallStandalonePage() {
   const isAR = useLocale() === "ar";
+  const c = conceptById("firewall");
+  const [done, setDone] = useState(false);
+  useEffect(() => { setDone(Boolean(readDone()["firewall"])); }, []);
 
   return (
     <main
@@ -85,6 +93,23 @@ export default function FirewallStandalonePage() {
           titleEn={FIREWALL.name_en}
           titleAr={FIREWALL.name_ar}
         />
+
+        {/* The gate. The book can be read or skipped; this is what marks it. */}
+        {c?.mcq && (
+          <div style={{ maxWidth: 720, margin: "30px auto 0" }}>
+            <ConceptGate id="firewall" mcq={c.mcq} done={done} onDone={() => setDone(true)} />
+          </div>
+        )}
+
+        <div style={{ maxWidth: 720, margin: "18px auto 0" }}>
+          <Link href={FIREWALL.back.href} style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            fontSize: 14, fontWeight: 800, color: "#76532D", textDecoration: "none",
+          }}>
+            {isAR ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
+            {isAR ? "عودة إلى المفاهيم" : "Back to the concepts"}
+          </Link>
+        </div>
       </div>
     </main>
   );

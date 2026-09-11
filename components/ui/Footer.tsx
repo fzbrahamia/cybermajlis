@@ -15,9 +15,11 @@ const COLUMNS: { title_en: string; title_ar: string; links: Link[] }[] = [
     // Three different ways to learn: read it, try it, do the real job.
     title_en: "Learn", title_ar: "تعلّم",
     links: [
-      { href: "/dashboard",   en: "Lessons",     ar: "الدروس" },
-      { href: "/simulations", en: "Simulations", ar: "المحاكاة" },
-      { href: "/soc",         en: "Live SOC",    ar: "مركز العمليات" },
+      { href: "/dashboard",          en: "Lessons",     ar: "الدروس" },
+      { href: "/dashboard/concepts", en: "Concepts",    ar: "المفاهيم" },
+      { href: "/dashboard/cases",    en: "Real Cases",  ar: "حالات حقيقية" },
+      { href: "/simulations",        en: "Simulations", ar: "المحاكاة" },
+      { href: "/soc",                en: "Live SOC",    ar: "مركز العمليات" },
     ],
   },
   {
@@ -34,8 +36,9 @@ const COLUMNS: { title_en: string; title_ar: string; links: Link[] }[] = [
     // Self-directed, hands-on: prove your skill and secure your own devices.
     title_en: "Practice", title_ar: "تدرّب",
     links: [
-      { href: "/ctf",                      en: "Capture the Flag", ar: "التقط العلم" },
-      { href: "/dashboard/do-it-yourself", en: "Do It Yourself",   ar: "افعلها بنفسك" },
+      { href: "/ctf",                          en: "Capture the Flag", ar: "التقط العلم" },
+      { href: "/dashboard/do-it-yourself",     en: "Do It Yourself",   ar: "افعلها بنفسك" },
+      { href: "/dashboard/beyond/quantum",     en: "Quantum",          ar: "الكوانتم" },
     ],
   },
 ];

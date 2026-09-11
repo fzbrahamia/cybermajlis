@@ -406,7 +406,7 @@
     "basic": "Basic",
     "advanced": "Advanced",
     "malware": "Malware",
-    "social-engineering": "Social Engineering",
+    "concepts": "Concepts",
     "why-you": "Why You"
   },
   "LessonDetail": {
@@ -643,10 +643,10 @@
       "description": "Meet the software built to attack you, from everyday viruses to the tricky kinds that hide. Watch, then run each one safely yourself.",
       "badge": "Start Here"
     },
-    "social-engineering": {
-      "name": "Social Engineering",
-      "description": "The attacks that target the person, not the computer. Phishing, pretexting and the tricks that make people hand over the keys.",
-      "badge": "Coming Soon"
+    "concepts": {
+      "name": "Concepts",
+      "description": "Cybersecurity concepts. Know how they work, and what they are for.",
+      "badge": ""
     },
     "why-you": {
       "name": "Why You",

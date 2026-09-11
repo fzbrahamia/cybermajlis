@@ -325,8 +325,8 @@ export default function FirewallBook({ titleEn, titleAr }: Props) {
 
         .stage {
           position: relative;
-          width: min(96vw, 1280px);
-          height: clamp(500px, 72dvh, 700px);
+          width: min(100%, 96vw, 1280px);
+          height: clamp(calc(400px * var(--fb-fit, 1)), calc(72dvh * var(--fb-fit, 1)), calc(700px * var(--fb-fit, 1)));
           margin: 0 auto 26px;
           display: grid;
           place-items: center;
@@ -423,7 +423,7 @@ export default function FirewallBook({ titleEn, titleAr }: Props) {
         @media (max-width: 820px) {
           .stage {
             width: 98vw;
-            height: clamp(360px, 62dvh, 520px);
+            height: clamp(calc(290px * var(--fb-fit, 1)), calc(62dvh * var(--fb-fit, 1)), calc(520px * var(--fb-fit, 1)));
           }
         }
       `}</style>
@@ -474,7 +474,7 @@ function ClosedBook({
       <style jsx>{`
         .closedBook {
           position: relative;
-          width: min(60vw, calc(61dvh * 1.36), 600px);
+          width: min(60vw, calc(61dvh * 1.36 * var(--fb-fit, 1)), calc(600px * var(--fb-fit, 1)));
           aspect-ratio: 1.36 / 1;
           border: 0;
           padding: 0;
@@ -654,7 +654,7 @@ function ClosedBook({
 
         @media (max-width: 820px) {
           .closedBook {
-            width: min(82vw, calc(58dvh * 1.36), 570px);
+            width: min(82vw, calc(58dvh * 1.36 * var(--fb-fit, 1)), calc(570px * var(--fb-fit, 1)));
           }
         }
       `}</style>
@@ -765,7 +765,7 @@ function OpenBook({
       <style jsx>{`
         .openBook {
           position: relative;
-          width: min(94vw, calc(69dvh * 1.72), 1210px);
+          width: min(94vw, calc(69dvh * 1.72 * var(--fb-fit, 1)), calc(1210px * var(--fb-fit, 1)));
           aspect-ratio: 1.72 / 1;
           transform-style: preserve-3d;
           transform: rotateX(6deg);
@@ -1369,7 +1369,7 @@ function BackCoverBook({
 
         .backBook {
           position: relative;
-          width: min(60vw, calc(61dvh * 1.36), 600px);
+          width: min(60vw, calc(61dvh * 1.36 * var(--fb-fit, 1)), calc(600px * var(--fb-fit, 1)));
           aspect-ratio: 1.36 / 1;
           background: transparent;
           transform-style: preserve-3d;

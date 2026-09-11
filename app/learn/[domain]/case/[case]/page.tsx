@@ -22,6 +22,7 @@ import { ArrowLeft, ArrowRight, Check, Lock, Play, Plus, Eye, FolderOpen, Folder
 import { InnovationPage } from "@/components/innovation/InnovationChrome";
 import { caseById, domainById, type Approach } from "@/app/lib/domainData";
 import { conceptById } from "@/app/lib/conceptData";
+import { readDone } from "@/app/lib/conceptProgress";
 import { flowFor, type Ask } from "@/app/lib/caseFlow";
 import { M, sans, mono, label, card, flat, button, ghostButton, quietPill, pill, ROUDA, HUES, R } from "@/components/innovation/theme";
 import { Ask as AskBox } from "@/components/innovation/Ask";
@@ -141,6 +142,16 @@ export default function CasePage() {
   const [showAll, setShowAll] = useState(false);
   /** When this case was first opened, so the passport can order them. */
   const [startedAt, setStartedAt] = useState<number | null>(null);
+  /* The case is reachable, and it does not begin until the concepts it needs
+     are held: read without them, a fundamental constraint gets mistaken for
+     somebody's design failure. There is a way past it for demonstrating. */
+  const [shortOf, setShortOf] = useState<string[] | null>(null);
+  const [anyway, setAnyway] = useState(false);
+  useEffect(() => {
+    if (!cs) return;
+    const d0 = readDone();
+    setShortOf((cs.needs ?? []).filter(id => !d0[id]));
+  }, [cs]);
 
   // load, then save on every change. A school device gets closed mid lesson.
   useEffect(() => {
@@ -300,8 +311,55 @@ export default function CasePage() {
         })()}
       </div>
 
+      {/* the concepts this rests on, before it starts */}
+      {shortOf !== null && shortOf.length > 0 && !anyway && stage === 0 && (
+        <div className="mj-in" style={{ ...card, padding: "28px 30px" }}>
+          <div style={{ ...label, marginBottom: 10 }}>
+            {isAR ? "قبل أن تبدأ" : "Before you start"}
+          </div>
+          <p style={{ margin: "0 0 6px", fontSize: 18, fontWeight: 800, color: M.heading, lineHeight: 1.4, maxWidth: "36ch" }}>
+            {isAR
+              ? "هذه القضية تقف على أشياء لم تنهها بعد."
+              : "This case stands on things you have not finished yet."}
+          </p>
+          <p style={{ margin: "0 0 20px", fontSize: 14.5, lineHeight: 1.65, color: M.body, maxWidth: "44ch" }}>
+            {isAR
+              ? "من دونها ستقرأ حداً أساسياً على أنه خطأ من أحدهم، وهو ليس كذلك."
+              : "Without them you will read a hard limit as somebody's mistake, and it is not one."}
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 22 }}>
+            {(shortOf ?? []).map(id => {
+              const c = conceptById(id);
+              if (!c) return null;
+              return (
+                <Link key={id} href={`/learn/${params.domain}/concept/${id}`} style={{
+                  ...flat, padding: "15px 18px", textDecoration: "none",
+                  display: "flex", alignItems: "center", gap: 12,
+                }}>
+                  <span style={{ flex: 1 }}>
+                    <span style={{ display: "block", fontSize: 15.5, fontWeight: 800, color: M.heading }}>
+                      {isAR ? c.name_ar : c.name_en}
+                    </span>
+                    <span style={{ display: "block", fontSize: 13.5, color: M.body, marginTop: 3 }}>
+                      {isAR ? c.line_ar : c.line_en}
+                    </span>
+                  </span>
+                  {isAR ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
+                </Link>
+              );
+            })}
+          </div>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+            <Link href={home} style={button}>{isAR ? "اذهب وأنهها" : "Go and finish them"}</Link>
+            <button onClick={() => setAnyway(true)} style={{ ...ghostButton, border: "none", color: M.body }}>
+              {isAR ? "افتحها على أي حال" : "Open it anyway"}
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* 0 ── the case */}
-      {stage === 0 && (
+      {stage === 0 && shortOf !== null && (shortOf.length === 0 || anyway) && (
         <div className="mj-in">
           {missing.length > 0 && (
             <div style={{
