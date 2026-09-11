@@ -27,13 +27,19 @@ export default function DoItYourselfPage() {
   const locale = useLocale();
   const isRtl = locale === "ar";
 
+  /* The arrow is pulled out of the label so it can sit in a box of a known
+     width. The description is then indented by that same width, which lands
+     it exactly under the B of Back whatever the font does with the glyph. */
+  const backLabel = t("backToDashboard");
+  const arrowMatch = backLabel.match(/^([←→]\s*)(.+)$/);
+  const backArrow = arrowMatch ? arrowMatch[1].trim() : "";
+  const backText = arrowMatch ? arrowMatch[2] : backLabel;
+
   return (
     <main
       className="diy-wrap"
       style={{
-        position: "fixed",
-        inset: 0,
-        overflow: "hidden",
+        minHeight: "100vh",
         background: "#FCF6EA",
         fontFamily: "var(--ui)",
         direction: isRtl ? "rtl" : "ltr",
@@ -79,83 +85,76 @@ export default function DoItYourselfPage() {
         .diy-tooltip small { display: block; color: #c5a57e; font-size: 0.68rem; margin-top: 0.12rem; }
         .diy-hotspot:hover .diy-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* The back button and the note used to be fixed on top of the room,
-           which put them over the picture. They now live in a column of their
-           own and the room gives up exactly that much width. */
+        /* A title and a line under it, then the room stretched full width
+           beneath them. No frames on the words: the only framed thing on the
+           page is the picture. */
         .diy-wrap {
-          display: flex; flex-direction: column; gap: .8rem;
-          padding: 5.4rem 1.2rem 1rem;
+          display: flex; flex-direction: column; gap: .5rem;
+          /* ClientLayout hides the navbar on this route, so there is nothing
+             overhead to clear. The top margin just matches the sides. */
+          padding: 1.4rem 1.2rem 2.4rem;
+          /* how far in the B of "Back" sits, and so the description too */
+          --indent: 1.6rem;
+          /* The room and the words are the same width, so their edges line up. */
+          --room: min(100%, 1600px);
         }
 
 
         .diy-stage {
           position: relative;
-          flex: 1 1 auto;
+          flex: none;
           min-width: 0;
           margin-inline: auto;
           box-sizing: border-box;
-          aspect-ratio: 1672 / 941;
-          /* Whichever limit binds first: the page width, or the height left
-             under the header. */
-          width: min(100%, calc((100vh - 10rem) * 1672 / 941));
+          /* The picture is 1672 x 941. The box is 829 tall instead of 941,
+             which is an inch shorter at a normal window width. The height is
+             taken off the box and the picture compresses into it rather than
+             being cropped: the four hotspots are percentages of this box, and
+             cropping would slide them off their devices. */
+          aspect-ratio: 1672 / 829;
+          width: var(--room);
           border: 10px solid #4a1a1d;
           border-radius: 24px;
           overflow: hidden;
           box-shadow: 0 24px 60px rgba(74,26,29,0.28), inset 0 0 0 2px rgba(197,165,126,0.55);
         }
         .diy-side {
-          flex: none;
-          display: flex; align-items: center; gap: .9rem; flex-wrap: wrap;
-          width: 100%; max-width: 1180px; margin-inline: auto;
+          width: var(--room); margin-inline: auto;
+          text-align: start;
         }
         .diy-back {
-          z-index: 50;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.3rem;
+          display: inline-block;
           font-family: var(--ui);
-          font-size: 0.7rem;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: #E8D4BC;
-          background: linear-gradient(135deg, #4a1a1d, #632024);
-          border: 1px solid rgba(197,165,126,0.45);
-          padding: 0.55rem 1rem;
-          border-radius: 999px;
+          font-size: 1.2rem;
+          font-weight: 800;
+          letter-spacing: -0.01em;
+          color: #4a1a1d;
           text-decoration: none;
-          font-weight: 700;
-          box-shadow: 0 6px 20px rgba(0,0,0,0.45);
-          white-space: nowrap;
+          transition: color .2s;
         }
+        .diy-back:hover { color: #8B2635; }
+        .diy-arrow { display: inline-block; width: var(--indent); }
         .diy-hint {
-          z-index: 50;
-          flex: 1 1 18rem;
-          max-width: 42rem;
-          background: linear-gradient(155deg, rgba(255,253,249,0.98) 0%, rgba(247,238,225,0.95) 100%);
           color: #6a4640;
-          border: 1px solid rgba(197,165,126,0.5);
-          border-radius: 14px;
-          padding: 0.7rem 0.9rem;
           font-family: var(--ui);
-          font-size: 0.82rem;
-          line-height: 1.45;
-          backdrop-filter: blur(6px);
-          box-shadow:
-            0 10px 22px rgba(62,19,22,0.30),
-            0 20px 44px rgba(62,19,22,0.16),
-            inset 0 1px 0 rgba(255,255,255,0.75),
-            inset 0 -1px 0 rgba(99,32,36,0.08);
+          font-size: 0.88rem;
+          font-weight: 300;
+          line-height: 1.5;
+          margin: 0.15rem 0 0;
+          margin-inline-start: var(--indent);
         }
 
         @media (max-width: 700px) {
           .diy-tooltip { font-size: 0.72rem; }
-          .diy-hint { max-width: 210px; font-size: 0.75rem; }
+          .diy-back { font-size: 1.05rem; }
+          .diy-hint { font-size: 0.82rem; }
         }
       `}</style>
 
       <div className="diy-side">
         <Link href="/dashboard" className="diy-back">
-          {t("backToDashboard")}
+          {backArrow && <span className="diy-arrow">{backArrow}</span>}
+          {backText}
         </Link>
         <div className="diy-hint">
           {t("roomIntro")}
@@ -166,7 +165,7 @@ export default function DoItYourselfPage() {
         <img
           src="/cybermajlis-room.png"
           alt="Interactive CyberMajlis room"
-          style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
+          style={{ width: "100%", height: "100%", display: "block", objectFit: "fill" }}
         />
 
         {devices.map((device) => (

@@ -67,7 +67,7 @@ export default function SecureHouse() {
       </div>
 
       {/* ── the house, and whatever has been earned on top of it ── */}
-      <div style={{ padding: "0 1.6rem" }}>
+      <div className="hs-body">
         <div style={{
           position: "relative", aspectRatio: "16 / 9", borderRadius: 14, overflow: "hidden",
           border: `4px solid ${C.head}`,
@@ -115,13 +115,9 @@ export default function SecureHouse() {
             </motion.div>
           )}
         </div>
-      </div>
 
       {/* ── what is on, and what opens the rest ── */}
-      <div style={{
-        padding: "1.2rem 1.6rem 1.5rem", display: "grid", gap: ".7rem",
-        gridTemplateColumns: "repeat(auto-fit, minmax(min(100%,16rem), 1fr))",
-      }}>
+      <div className="hs-rows">
         {LAYERS.map(l => {
           const lit = has(l.needs);
           const c = conceptBySlug(l.needs);
@@ -160,7 +156,15 @@ export default function SecureHouse() {
             ? <div key={l.needs}>{body}</div>
             : <Link key={l.needs} href={`/dashboard/concepts/${l.needs}`} style={{ textDecoration: "none" }}>{body}</Link>;
         })}
+        </div>
       </div>
+
+      <style>{`
+        .hs-body { display: grid; gap: 1.2rem 1.4rem; padding: 0 1.6rem 1.5rem;
+          grid-template-columns: minmax(0, 1.35fr) minmax(14rem, 1fr); align-items: center; }
+        .hs-rows { display: grid; gap: .7rem; align-content: center; }
+        @media (max-width: 760px) { .hs-body { grid-template-columns: 1fr; } }
+      `}</style>
     </div>
   );
 }

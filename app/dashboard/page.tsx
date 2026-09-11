@@ -169,8 +169,13 @@ export default function DashboardPage() {
       /* Middle: lessons | leaderboard */
       .dash-mid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.6rem; align-items: stretch; margin-bottom: 1.6rem; }
       @media (max-width: 980px){ .dash-mid { grid-template-columns: 1fr; } }
-      .panel { background: rgba(236,224,202,0.8); border: 1px solid rgba(99,32,36,0.12); border-radius: 24px; padding: 1.7rem; backdrop-filter: blur(4px); }
-      .panel.panel-light { background: rgba(253,248,240,0.55); }
+      /* Your Lessons is a card, the same card as the ranking above it. */
+      .panel { background: linear-gradient(135deg, #FBF4E8 0%, #F1E8D6 100%);
+        border: 1px solid rgba(99,32,36,0.12); border-radius: 24px; padding: 1.7rem;
+        box-shadow: 0 18px 46px rgba(99,32,36,0.10); }
+      /* Emerging technologies and the badges stay glass, behind it. */
+      .panel.panel-light { background: rgba(253,248,240,0.55); box-shadow: none;
+        backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
       .panel-head h2 { font-family: var(--ui); font-size: 1.15rem; font-weight: 700; color: var(--heading); margin: 0; }
       .panel-head p { font-size: 0.84rem; color: var(--body); font-style: italic; margin: 0.25rem 0 1.3rem; }
 
