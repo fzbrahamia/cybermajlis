@@ -241,18 +241,35 @@ export function Film({ src, poster, onError }: {
     missing cover is never a broken image. */
 export function CardArt({ slug, src, alt, fallback, style }: {
   slug: string;
-  /** Overrides the slug convention when a lesson ships its own art. */
   src?: string;
-  alt: string; fallback?: React.ReactNode; style?: React.CSSProperties;
+  alt: string;
+  fallback?: React.ReactNode;
+  style?: React.CSSProperties;
 }) {
   const [missing, setMissing] = useState(false);
+
+  const coverImages: Record<string, string> = {
+    firewall: "/lessons/covers/cover_firewall.png",
+    "zero-day": "/lessons/covers/cover_zeroday.png",
+  };
+
   if (missing) {
-    return <div className="cy-art cy-art-empty" style={style}>{fallback}</div>;
+    return (
+      <div className="cy-art cy-art-empty" style={style}>
+        {fallback}
+      </div>
+    );
   }
+
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img className="cy-art" src={src ?? `/lessons/covers/${slug}.jpg`} alt={alt}
-      loading="lazy" onError={() => setMissing(true)} style={style} />
+    <img
+      className="cy-art"
+      src={src ?? coverImages[slug] ?? `/lessons/covers/${slug}.jpg`}
+      alt={alt}
+      loading="lazy"
+      onError={() => setMissing(true)}
+      style={style}
+    />
   );
 }
 
