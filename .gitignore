@@ -3,8 +3,15 @@ node_modules/
 
 # Next.js
 .next/
-.next-verify/
 out/
+# A second dev server or a build run alongside one MUST use its own dist dir,
+# or the two processes corrupt .next/cache/webpack between them. See
+# NEXT_DIST_DIR in next.config.ts.
+.next-*/
+
+# TypeScript incremental build cache. Regenerated on every build; it only ever
+# creates commit noise.
+*.tsbuildinfo
 
 # production build
 build/
@@ -36,3 +43,21 @@ Thumbs.db
 # editor
 .vscode/
 .idea/
+
+# ── Large media ────────────────────────────────────────────────
+# Video is not kept in git. The repository already carries ~1.8GB of history
+# from films committed earlier, and the ones sitting on disk now would add
+# another ~760MB that could never be taken out again without rewriting
+# history for everybody.
+#
+# This rule does NOT untrack the films already committed: git leaves tracked
+# files tracked, so nothing that works today stops working. It only stops the
+# next one going in.
+#
+# What is deliberately absent from a fresh clone is listed in public/MEDIA.md.
+# Add to that file whenever you add a film, or a clone will lose a lesson and
+# nobody will know which one.
+*.mp4
+*.mov
+*.webm
+*.m4v
