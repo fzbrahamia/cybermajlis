@@ -1,15 +1,64 @@
-:root {
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* THESE LIVE ON body, NOT :root.
+ *
+ * next/font puts --font-nunito, --font-cinzel and the rest on <body> (that is
+ * where layout.tsx spreads the generated classNames). A custom property whose
+ * value contains var(--font-cinzel) is evaluated where it is DECLARED, so
+ * declaring these on :root made them reference variables that do not exist
+ * there: the whole declaration went invalid, computed to nothing, and every
+ * element inheriting it fell back to the browser's default sans.
+ *
+ * That is why --ui never actually delivered Nunito or Tajawal. Declared here,
+ * both stacks resolve. The literal family names are kept as var() fallbacks so
+ * a missing next/font variable degrades to the installed face instead of
+ * invalidating the line again. */
+body {
   /* One stack for the whole site.
 
      Font fallback in CSS is per glyph, not per element: Latin letters find
      Nunito, Arabic letters skip past it (Nunito has no Arabic glyphs) and land
      on Tajawal. Naming only Nunito is why Arabic kept rendering in whatever
      traditional face the operating system happened to supply. */
-  --ui: var(--font-nunito), "Nunito", var(--font-arabic), "Tajawal", ui-rounded, system-ui, sans-serif;
+  --ui: var(--font-nunito, "Nunito"), var(--font-arabic, "Tajawal"), ui-rounded, system-ui, sans-serif;
+
+  /* TITLES ONLY. Same per-glyph trick: Latin finds Cinzel, Arabic skips past
+     it (Cinzel has no Arabic) and lands on Amiri. Body copy, labels and
+     buttons stay on --ui; a display serif at 0.8rem is unreadable and this
+     face is not for running text. */
+  --title: var(--font-cinzel, "Cinzel"), var(--font-amiri, "Amiri"), Georgia, serif;
 }
 
-@import "tailwindcss";
-@import "tw-animate-css";
+/* CyberMajlis headings. Majlis and Quantum set their heading font inline, and
+   an inline style beats an element selector, so neither majlis is touched by
+   this: they keep their own faces on purpose.
+
+   Tracking is reset to normal. The old titles carried letter-spacing: -.02em,
+   tuned for Nunito; negative tracking crushes an inscriptional serif, and on
+   Arabic it does real damage by pulling joined letters apart. */
+h1, h2 {
+  font-family: var(--title);
+  letter-spacing: normal;
+}
+
+/* The explicit "reduce motion" choice, stamped on <html> by MotionProvider.
+   framer-motion handles its own components; this is for the CSS animations it
+   knows nothing about — card lifts, the dashboard orbs, marquees.
+   !important because most of them are declared inline or in injected <style>. */
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  animation-duration: .001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .001ms !important;
+  scroll-behavior: auto !important;
+}
+:root[data-motion="reduced"] .cy-card:hover,
+:root[data-motion="reduced"] a.cy-card:hover,
+:root[data-motion="reduced"] .lc:hover {
+  transform: none !important;
+}
 
 @custom-variant dark (&:is(.dark *));
 

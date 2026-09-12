@@ -3,6 +3,7 @@
 import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useEffect, useCallback } from "react";
 import { useLocale } from "next-intl";
+import Guide from "@/components/cyber/Guide";
 import { Shield } from "lucide-react";
 import {
   collection, addDoc, setDoc, getDocs, query,
@@ -262,6 +263,12 @@ export default function NewsPage() {
         {/* ── Sidebar ─────────────────────────────────────────────────────── */}
         <div style={{ position:"sticky", top:"80px", display:"flex", flexDirection:"column", gap:"1rem" }}>
 
+          <Guide lines={[
+            { who: "rouda",
+              en: "Real attacks, taken apart while they are still in the news. Read one and you will start recognising the pattern in the next one.",
+              ar: "هجمات حقيقية، تُفكَّك وهي ما تزال في الأخبار. اقرأ واحدة تبدأ بتمييز النمط في التالية." },
+          ]} />
+
           {/* Header card */}
           <div style={{ background:"white", borderRadius:16, padding:"1.3rem",
             boxShadow:"0 2px 16px rgba(99,32,36,0.07)", border:"1px solid rgba(99,32,36,0.08)" }}>
@@ -269,7 +276,7 @@ export default function NewsPage() {
               color:"rgba(99,32,36,0.4)", textTransform:"uppercase", marginBottom:6 }}>
               CyberMajlis
             </div>
-            <h1 style={{ fontFamily:"var(--ui)", fontSize:"1.1rem", fontWeight:700,
+            <h1 style={{ fontFamily:"var(--title)", fontSize:"1.15rem", fontWeight:700,
               color:"#4a1a1d", margin:"0 0 8px", borderLeft:"3px solid #632024", paddingLeft:10 }}>
               {isAr ? "نشرات الأمن" : "Security Briefings"}
             </h1>

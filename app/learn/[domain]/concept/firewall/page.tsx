@@ -8,7 +8,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import FirewallBook from "@/components/innovation/FirewallBook";
 import ConceptGate from "@/components/innovation/ConceptGate";
 import { conceptById } from "@/app/lib/conceptData";
-import { readDone } from "@/app/lib/conceptProgress";
+import { subscribeDone } from "@/app/lib/conceptProgress";
 
 const FIREWALL = {
   name_en: "The Guard at the Gate",
@@ -33,7 +33,7 @@ export default function FirewallStandalonePage() {
   const isAR = useLocale() === "ar";
   const c = conceptById("firewall");
   const [done, setDone] = useState(false);
-  useEffect(() => { setDone(Boolean(readDone()["firewall"])); }, []);
+  useEffect(() => subscribeDone(d => setDone(Boolean(d["firewall"]))), []);
 
   return (
     <main

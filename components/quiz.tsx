@@ -151,7 +151,7 @@ export default function Quiz({ questions, onAnswerResult, onAnswerFeedback, onQu
         <div style={{ fontFamily: "var(--ui)", fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(99,32,36,0.5)", marginBottom: "1rem" }}>
           {t("knowledge_check")}
         </div>
-        <h2 style={{ fontFamily: "var(--ui)", fontSize: "1.4rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.6rem" }}>
+        <h2 style={{ fontFamily: "var(--title)", fontSize: "1.4rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.6rem" }}>
           {t("ready_heading")}
         </h2>
         <div style={{ height: 1, width: 40, background: "linear-gradient(90deg, transparent, #c5a57e, transparent)", margin: "0.8rem auto 1.4rem" }} />

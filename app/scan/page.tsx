@@ -3,6 +3,7 @@
 import { useTrackView } from "@/hooks/useTrackView";
 import { useState, useRef } from "react";
 import { useLocale } from "next-intl";
+import Guide from "@/components/cyber/Guide";
 import { CircleCheck, TriangleAlert, ShieldAlert, CircleHelp, Link2, Upload, FileText, Search, Hash, Shield, type LucideIcon } from "lucide-react";
 
 type ScanType = "url" | "file" | "hash";
@@ -150,7 +151,7 @@ export default function ScanPage() {
           <div style={{ fontFamily:"var(--ui)", fontSize:"0.58rem", letterSpacing:"0.35em", color:"rgba(99,32,36,0.5)", textTransform:"uppercase", marginBottom:8 }}>
             {isAR ? "المجلس السيبراني · ماسح التهديدات" : "CyberMajlis · Threat Scanner"}
           </div>
-          <h1 style={{ fontFamily:"var(--ui)", fontSize:"clamp(1.6rem,4vw,2.1rem)", color:"#4a1a1d", fontWeight:700, margin:"0 0 10px" }}>
+          <h1 style={{ fontFamily:"var(--title)", fontSize:"clamp(1.55rem,3.8vw,2rem)", color:"#4a1a1d", fontWeight:700, margin:"0 0 10px" }}>
             {isAR ? "ماسح الملفات والروابط" : "File & Link Scanner"}
           </h1>
           <div style={{ width:44, height:2, background:"linear-gradient(90deg,#632024,transparent)", marginBottom:12 }}/>
@@ -159,6 +160,17 @@ export default function ScanPage() {
               ? "افحص أي ملف أو رابط أو بصمة ملف باستخدام أكثر من 70 أداة أمنية. النتائج موضّحة بلغة بسيطة، لا تحتاج خبرة تقنية."
               : "Check any suspicious file, link, or file hash against 70+ security tools. Results are explained in plain language, no technical knowledge needed."}
           </p>
+        </div>
+
+        <div style={{ marginBottom:"1.6rem" }}>
+          <Guide lines={[
+            { who: "hamad",
+              en: "This checks a file or a link against a lot of security tools at once and explains what they said.",
+              ar: "هذا يفحص ملفاً أو رابطاً لدى كثير من أدوات الأمن دفعة واحدة، ثم يشرح ما قالته." },
+            { who: "rouda",
+              en: "A clean result means nobody has caught it yet. It does not mean it is safe. Keep your own judgement.",
+              ar: "والنتيجة النظيفة تعني أن أحداً لم يمسكه بعد. ولا تعني أنه آمن. فاحتفظ بحكمك أنت." },
+          ]} />
         </div>
 
         {/* Scanner card */}

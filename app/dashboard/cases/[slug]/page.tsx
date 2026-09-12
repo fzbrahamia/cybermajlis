@@ -1,11 +1,13 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight, ArrowLeft, Clapperboard } from "lucide-react";
 import { CyberPage, Head, SectionHead, Rise, Item, Grid, Rule, Film, C, ACCENT } from "@/components/cyber/shell";
 import { caseBySlug } from "@/app/lib/cyberData";
+import Guide from "@/components/cyber/Guide";
+import { Conversation, type Pose } from "@/components/cyber/Character";
 
 const TONE = ACCENT.cases;
 const over: React.CSSProperties = {
@@ -16,6 +18,9 @@ const over: React.CSSProperties = {
 export default function CasePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const isAR = useLocale() === "ar";
+  /* A case can be written before its film is finished. The slot stays where
+     the film will go and says so, rather than showing a broken player. */
+  const [noFilm, setNoFilm] = useState(false);
   const k = caseBySlug(slug);
 
   if (!k) {
@@ -40,7 +45,28 @@ export default function CasePage({ params }: { params: Promise<{ slug: string }>
           <div className="cy-panel" style={{ overflow: "hidden" }}>
             <div className="cy-stripe" style={{ ["--tone" as string]: TONE }} />
             <div style={{ padding: "1rem" }}>
-              <Film src={k.video} poster={`/lessons/covers/${k.slug}.jpg`} />
+              {noFilm || k.videoPending ? (
+                <div className="cy-film" style={{ display: "grid", placeItems: "center" }}>
+                  {k.cover && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={k.cover} alt="" aria-hidden
+                      style={{ position: "absolute", inset: 0, width: "100%", height: "100%",
+                        objectFit: "cover", opacity: .34 }} />
+                  )}
+                  <div style={{ textAlign: "center", padding: "1.5rem", color: C.light, position: "relative" }}>
+                    <Clapperboard size={26} strokeWidth={1.5} style={{ opacity: .75 }} />
+                    <p style={{ margin: ".7rem 0 .2rem", fontWeight: 700, fontSize: "1rem" }}>
+                      {isAR ? "الفيلم قيد الإعداد" : "The film is being made"}
+                    </p>
+                    <p style={{ margin: 0, fontSize: ".88rem", opacity: .72, fontWeight: 300 }}>
+                      {isAR ? "والقصة كاملة مكتوبة تحته" : "The whole story is written out below"}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <Film src={k.video} poster={k.cover ?? `/lessons/covers/${k.slug}.jpg`}
+                  onError={() => setNoFilm(true)} />
+              )}
             </div>
           </div>
         </Rise>
@@ -58,7 +84,7 @@ export default function CasePage({ params }: { params: Promise<{ slug: string }>
             <p style={{
               margin: "0 auto", maxWidth: "34ch", textAlign: "center",
               fontSize: "clamp(1.2rem, 2.4vw, 1.55rem)", lineHeight: 1.5,
-              color: C.head, fontWeight: 800, letterSpacing: "-.015em",
+              color: C.head, fontWeight: 800,
             }}>
               {(isAR ? k.story_ar : k.story_en)[0]}
             </p>
@@ -115,7 +141,9 @@ export default function CasePage({ params }: { params: Promise<{ slug: string }>
             <div style={{ padding: "1.3rem 1.6rem 1.4rem", display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
               <span style={{ flex: 1, minWidth: 200 }}>
                 <span style={{ display: "block", ...over, marginBottom: ".35rem" }}>
-                  {isAR ? "لفهم القفل نفسه" : "To understand the lock itself"}
+                  {isAR
+                    ? (k.lesson.why_ar ?? "لفهم القفل نفسه")
+                    : (k.lesson.why_en ?? "To understand the lock itself")}
                 </span>
                 <span style={{ display: "block", fontSize: "1.1rem", fontWeight: 800, color: C.head }}>
                   {isAR ? k.lesson.ar : k.lesson.en}
@@ -140,6 +168,14 @@ export default function CasePage({ params }: { params: Promise<{ slug: string }>
         </div>
       </Rise>
 
+      <Rise style={{ marginBottom: "2.2rem" }}>
+        <Guide lines={[
+          { who: "rouda",
+            en: "This next part is the reason the case is here. Not the computers, and not the attacker.",
+            ar: "هذا الجزء التالي هو سبب وجود الحالة. لا الحواسيب ولا المهاجم." },
+        ]} />
+      </Rise>
+
       <SectionHead
         title={isAR ? "ماذا كلّف الناس" : "What It Cost People"}
         sub={isAR ? "خارج الشاشة، حيث يعيش الناس" : "Off the screen, where people live"}
@@ -162,6 +198,15 @@ export default function CasePage({ params }: { params: Promise<{ slug: string }>
         ))}
       </Grid>
 
+      {k.react && k.react.length > 0 && (
+        <Rise delay={.05} style={{ marginBottom: "2.6rem" }}>
+          <Conversation
+            turns={k.react.map(r => ({ ...r, pose: r.pose as Pose | undefined }))}
+            width={128}
+          />
+        </Rise>
+      )}
+
       <Rise delay={.08} style={{ marginBottom: "3rem" }}>
         <div className="cy-panel" style={{
           overflow: "hidden",
@@ -174,7 +219,7 @@ export default function CasePage({ params }: { params: Promise<{ slug: string }>
             <Rule width={36} />
             <p style={{
               margin: "0 auto", fontSize: "clamp(1.08rem,2vw,1.32rem)", lineHeight: 1.68,
-              color: C.head, fontWeight: 500, maxWidth: "44ch", letterSpacing: "-.008em",
+              color: C.head, fontWeight: 500, maxWidth: "44ch",
             }}>
               {isAR ? k.point_ar : k.point_en}
             </p>

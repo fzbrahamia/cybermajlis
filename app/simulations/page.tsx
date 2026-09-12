@@ -9,6 +9,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import Guide from "@/components/cyber/Guide";
 import { useTrackView } from "@/hooks/useTrackView";
 import SimGrid from "@/components/SimGrid";
 
@@ -36,6 +37,17 @@ export default function SimulationsPage() {
           <p className="text-[#6a4640]/80 text-sm mt-3 max-w-xl mx-auto">
             {t("simulations.subtitle")}
           </p>
+        </div>
+
+        <div className="mb-7">
+          <Guide lines={[
+            { who: "rouda",
+              en: "Everything below is a safe copy. Nothing here can reach your files, your phone, or anybody else's computer.",
+              ar: "كل ما تحته نسخة آمنة. ولا شيء هنا يصل إلى ملفاتك ولا هاتفك ولا حاسوب أحد آخر." },
+            { who: "hamad",
+              en: "So try the wrong thing on purpose. That is the fastest way to learn what the wrong thing does.",
+              ar: "فجرّب الخطأ عمداً. فهذا أسرع طريق لتعرف ما يفعله الخطأ." },
+          ]} />
         </div>
 
         <SimGrid initialSim={searchParams.get("sim")} />

@@ -16,7 +16,7 @@ import { domainById, casesForDomain } from "@/app/lib/domainData";
 import { conceptsForDomain, conceptById, categoriesForDomain, conceptsForCategory } from "@/app/lib/conceptData";
 import { M, mono, label, card, flat, button, quietPill } from "@/components/innovation/theme";
 import HoloHouse from "@/components/innovation/HoloHouse";
-import { readDone, type Done } from "@/app/lib/conceptProgress";
+import { subscribeDone, type Done } from "@/app/lib/conceptProgress";
 
 const STATE_ICON = { known: Check, open: ArrowRight, loop: RotateCcw, locked: Lock };
 const STATE_TEXT = {
@@ -31,7 +31,7 @@ export default function DomainPage() {
   const params = useParams<{ domain: string }>();
   const d = domainById(params.domain);
   const [done, setDone] = useState<Done>({});
-  useEffect(() => { setDone(readDone()); }, []);
+  useEffect(() => subscribeDone(setDone), []);
 
   if (!d || !d.live) {
     return (

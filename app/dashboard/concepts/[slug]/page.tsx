@@ -16,10 +16,12 @@ import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, RotateCcw, ArrowRight, ArrowLeft } from "lucide-react";
+import { Check, RotateCcw } from "lucide-react";
 import { CyberPage, Head, SectionHead, Rise, Item, Grid, Rule, Film, C, ACCENT } from "@/components/cyber/shell";
 import { conceptBySlug, caseBySlug } from "@/app/lib/cyberData";
-import { markDone, readDone } from "@/app/lib/conceptProgress";
+import { markDone, readDone, subscribeDone } from "@/app/lib/conceptProgress";
+import { PARTS, houseScene } from "@/components/cyber/SecureHouse";
+import HouseChange from "@/components/cyber/HouseChange";
 import FirewallBook from "@/components/innovation/FirewallBook";
 
 const TONE = ACCENT.concepts;
@@ -37,7 +39,11 @@ export default function ConceptPage({ params }: { params: Promise<{ slug: string
   const [done, setDone] = useState(false);
   const [picked, setPicked] = useState<number | null>(null);
   const [filmMissing, setFilmMissing] = useState(false);
-  useEffect(() => { setDone(Boolean(readDone()[`cm-${slug}`])); }, [slug]);
+  /* The house before and after this concept. Only set when the quiz is
+     answered right AND the two pictures actually differ, so a concept that
+     changes nothing does not promise a change. */
+  const [change, setChange] = useState<{ before: string; after: string } | null>(null);
+  useEffect(() => subscribeDone(d => setDone(Boolean(d[`cm-${slug}`]))), [slug]);
 
   if (!c) {
     return <CyberPage><Head section="Cyber Majlis" title="Not" tail="Found"
@@ -50,8 +56,24 @@ export default function ConceptPage({ params }: { params: Promise<{ slug: string
 
   const choose = (i: number) => {
     setPicked(i);
-    if (i === c.quiz.right) { markDone(`cm-${slug}`); setDone(true); }
+    if (i !== c.quiz.right) return;
+
+    /* Read the house before writing, so the two pictures can be compared. */
+    const finished = new Set<string>(
+      PARTS.map(p => p.needs as string).filter(id => readDone()[`cm-${id}`])
+    );
+    const before = houseScene(finished);
+    markDone(`cm-${slug}`);
+    setDone(true);
+
+    finished.add(slug);
+    const after = houseScene(finished);
+    if (after !== before) setChange({ before, after });
   };
+
+  /* What the house gained, said as a change to the house rather than as the
+     name of a lesson. */
+  const part = PARTS.find(p => p.needs === slug);
 
   /* The three paragraphs of the board, used by both shapes. */
   const Words = () => (
@@ -242,6 +264,17 @@ export default function ConceptPage({ params }: { params: Promise<{ slug: string
           </div>
         </div>
       </Rise>
+
+      {change && part && (
+        <Rise style={{ marginBottom: "3rem" }}>
+          <HouseChange
+            before={change.before}
+            after={change.after}
+            en={part.does_en}
+            ar={part.does_ar}
+          />
+        </Rise>
+      )}
 
       {/* ── why it mattered ── */}
       {c.cases.length > 0 && (

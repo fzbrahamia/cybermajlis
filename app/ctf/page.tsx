@@ -9,6 +9,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
+import Guide from "@/components/cyber/Guide";
 import {
   KeyRound, Search, Eye, Code2, EyeOff,
   Flag, Lightbulb, CheckCircle2, Lock, Trophy, LogIn,
@@ -246,6 +247,17 @@ function Hub({
             <Sparkles size={16} /> {isAR ? "أتممت كل التجارب، أنت بطل المجلس!" : "All trials complete, you are a Majlis champion!"}
           </div>
         )}
+      </div>
+
+      <div style={{ marginBottom: "1.5rem" }}>
+        <Guide lines={[
+          { who: "hamad",
+            en: "A flag is a short piece of text hidden inside a challenge. Find it and you have proved you understood how the thing works.",
+            ar: "العلَم نصّ قصير مخبّأ داخل التحدي. إن وجدته فقد أثبتّ أنك فهمت كيف يعمل ذلك الشيء." },
+          { who: "rouda",
+            en: "You are meant to get stuck. Getting stuck and then seeing it is the whole point, so take your time.",
+            ar: "من المفترض أن تتعثّر. فالتعثّر ثم الانتباه هو المقصود كله، فلا تستعجل." },
+        ]} />
       </div>
 
       {/* Section grid */}

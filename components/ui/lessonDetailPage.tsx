@@ -9,6 +9,7 @@ import { Lock, BookOpen, Monitor, Image, HelpCircle } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { addDoc, collection, serverTimestamp, doc, setDoc, increment } from "firebase/firestore";
 import { auth, db } from "@/app/lib/firebase";
+import Character from "@/components/cyber/Character";
 
 interface LessonDetailProps {
   lesson: {
@@ -195,6 +196,12 @@ export default function LessonDetailPage({ lesson }: LessonDetailProps) {
       .ld-content { display: grid; grid-template-columns: 260px 1fr; gap: 1.5rem; align-items: stretch; height: 480px; }
       .ld-left { border-radius: 18px; overflow: hidden; border: 2px solid rgba(197,165,126,.35); box-shadow: 0 8px 32px rgba(99,32,36,.1); background: var(--gold-light); display: flex; align-items: center; justify-content: center; flex: 1; }
       .ld-left img, .ld-left video { width: 100%; height: 100%; object-fit: cover; display: block; }
+      /* A character is not wallpaper: it keeps its own shape and is centred on
+         the panel rather than being stretched to fill it. */
+      .ld-char { width: 100%; height: 100%; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: .8rem; padding: 1.4rem; }
+      .ld-char-cap { font-family: var(--ui); font-size: .78rem; font-weight: 600;
+        letter-spacing: .04em; color: var(--body); text-align: center; }
       .ld-right { border-radius: 18px; border: 1.5px solid rgba(197,165,126,.3); background: rgba(255,255,255,.55); backdrop-filter: blur(8px); box-shadow: 0 8px 32px rgba(99,32,36,.07); overflow: hidden; height: 414px; display: flex; align-items: center; justify-content: center; }
       .ld-right video { width: 100%; height: auto; max-height: 480px; display: block; border-radius: 12px; object-fit: contain; }
       .ld-right > img { width: 100%; display: block; border-radius: 16px; }
@@ -270,8 +277,16 @@ export default function LessonDetailPage({ lesson }: LessonDetailProps) {
                   autoPlay className="rounded-lg w-full" onEnded={() => setFeedback(null)}
                 />
               )}
+              {/* Was a portrait PNG under `.ld-left img { object-fit: cover }`,
+                  which cropped and stretched a head into a tall column. A
+                  figure keeps its own 5:6 and sits centred instead. */}
               {selectedTab === "Story" && storyStarted && (
-                <img src="/characters/HamadChat.png" alt="Hamad" />
+                <div className="ld-char">
+                  <Character who="hamad" pose="monitoring" width={210} />
+                  <span className="ld-char-cap">
+                    {isRtl ? "حمد يشاهد معك" : "Hamad is watching with you"}
+                  </span>
+                </div>
               )}
               {selectedTab === "Poster" && (
                 <video src="/posters/scrolldown.mp4" autoPlay loop muted />

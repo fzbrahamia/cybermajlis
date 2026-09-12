@@ -22,7 +22,7 @@ import { ArrowLeft, ArrowRight, Check, Lock, Play, Plus, Eye, FolderOpen, Folder
 import { InnovationPage } from "@/components/innovation/InnovationChrome";
 import { caseById, domainById, type Approach } from "@/app/lib/domainData";
 import { conceptById } from "@/app/lib/conceptData";
-import { readDone } from "@/app/lib/conceptProgress";
+import { subscribeDone } from "@/app/lib/conceptProgress";
 import { flowFor, type Ask } from "@/app/lib/caseFlow";
 import { M, sans, mono, label, card, flat, button, ghostButton, quietPill, pill, ROUDA, HUES, R } from "@/components/innovation/theme";
 import { Ask as AskBox } from "@/components/innovation/Ask";
@@ -149,8 +149,7 @@ export default function CasePage() {
   const [anyway, setAnyway] = useState(false);
   useEffect(() => {
     if (!cs) return;
-    const d0 = readDone();
-    setShortOf((cs.needs ?? []).filter(id => !d0[id]));
+    return subscribeDone(d0 => setShortOf((cs.needs ?? []).filter(id => !d0[id])));
   }, [cs]);
 
   // load, then save on every change. A school device gets closed mid lesson.

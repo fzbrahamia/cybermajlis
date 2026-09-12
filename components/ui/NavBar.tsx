@@ -193,21 +193,24 @@ export default function Navbar() {
         >
           <MajlisMark size={20} here="cyber" />
 
-          {isLanding ? (
-            <span style={{ fontFamily: "var(--ui)", fontWeight: 900, fontSize: isArabic ? 21 : 23, letterSpacing: 0.5, whiteSpace: "nowrap" }}>
-              {isArabic ? (
-                <span style={{ fontFamily: "var(--font-arabic), var(--ui)", color: "#7a1e22" }}>المجلس السيبراني</span>
-              ) : (
-                <><span style={{ color: "#3e1316" }}>Cyber</span><span style={{ color: "#8B2635" }}> Majlis</span></>
-              )}
-            </span>
-          ) : (
-            <img
-              src={isArabic ? "/logoAr.png" : "/logoEn.png"}
-              alt="CyberMajlis"
-              style={{ height: 40, width: "auto" }}
-            />
-          )}
+          {/* The wordmark is type, not a picture. The other branch pointed at
+              /logoEn.png, which is not in public/ and had been 404ing; and a
+              PNG cannot follow the title face the rest of the site now uses.
+              --title carries Cinzel for Latin and Amiri for Arabic. */}
+          <span style={{
+            fontFamily: "var(--title)", fontWeight: 700,
+            fontSize: isArabic ? 21 : 22, letterSpacing: isArabic ? "normal" : ".01em",
+            whiteSpace: "nowrap",
+          }}>
+            {isArabic ? (
+              <span style={{ color: isLanding ? "#7a1e22" : "#E8D4BC" }}>المجلس السيبراني</span>
+            ) : (
+              <>
+                <span style={{ color: isLanding ? "#3e1316" : "#E8D4BC" }}>Cyber</span>
+                <span style={{ color: isLanding ? "#8B2635" : "#c5a57e" }}> Majlis</span>
+              </>
+            )}
+          </span>
         </a>
 
         {/* Nav links */}

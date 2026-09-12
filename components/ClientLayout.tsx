@@ -8,6 +8,7 @@ import Footer from "@/components/ui/Footer";
 import Modal from "@/components/Modal";
 import { useSessionTimeout } from "@/hooks/useSessionTimeout";
 import { useTranslations } from "next-intl";
+import { MotionProvider } from "@/components/MotionPref";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -67,7 +68,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   }, [hideChatbot]);
 
   return (
-    <>
+    <MotionProvider>
       {!isSocPage && !isCalmPage && !isDiyRoom && !isMajlisRoot && !isQuantum && <Navbar />}
       {!hideChatbot && <Chatbot isLoggedIn={isLoggedIn} />}
       <div>{children}</div>
@@ -81,6 +82,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         confirmText={t("logout_btn")}
         closeText={t("stay_btn")}
       />
-    </>
+    </MotionProvider>
   );
 }

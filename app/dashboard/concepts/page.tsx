@@ -6,15 +6,16 @@ import { useLocale } from "next-intl";
 import { Check, Play, BookOpen } from "lucide-react";
 import { CyberPage, Head, SectionHead, Rise, Item, Grid, CardArt, C, ACCENT } from "@/components/cyber/shell";
 import { CONCEPTS } from "@/app/lib/cyberData";
-import { readDone } from "@/app/lib/conceptProgress";
+import { subscribeDone } from "@/app/lib/conceptProgress";
 import SecureHouse from "@/components/cyber/SecureHouse";
+import Guide from "@/components/cyber/Guide";
 
 const TONE = ACCENT.concepts;
 
 export default function ConceptsPage() {
   const isAR = useLocale() === "ar";
   const [done, setDone] = useState<Record<string, unknown>>({});
-  useEffect(() => { setDone(readDone()); }, []);
+  useEffect(() => subscribeDone(setDone), []);
 
   return (
     <CyberPage>
@@ -28,6 +29,17 @@ export default function ConceptsPage() {
         back="/dashboard"
         backLabel={isAR ? "← العودة إلى اللوحة" : "← Back to Dashboard"}
       />
+
+      <Rise style={{ marginBottom: "1.6rem" }}>
+        <Guide lines={[
+          { who: "hamad",
+            en: "This is your house. It starts with gaps in the wall and no gate, because that is what a computer looks like before anyone protects it.",
+            ar: "هذا بيتك. يبدأ بفجوات في الجدار وبلا بوابة، فهكذا يبدو الحاسوب قبل أن يحميه أحد." },
+          { who: "rouda",
+            en: "Finish a lesson and the house changes. Nothing here is decoration: each part is the thing that lesson taught you.",
+            ar: "أنهِ درساً يتغيّر البيت. ولا شيء هنا زينة: كل جزء هو ما علّمك إياه ذلك الدرس." },
+        ]} />
+      </Rise>
 
       <Rise style={{ marginBottom: "3rem" }}>
         <SecureHouse />
@@ -53,8 +65,9 @@ export default function ConceptsPage() {
                   />
 
                   <h2 style={{
-                    fontSize: "1.35rem", fontWeight: 800, color: C.head,
-                    margin: "0 0 .5rem", lineHeight: 1.3, letterSpacing: "-.015em",
+                    fontFamily: "var(--title)",
+                    fontSize: "1.28rem", fontWeight: 700, color: C.head,
+                    margin: "0 0 .5rem", lineHeight: 1.38,
                   }}>
                     {isAR ? c.name_ar : c.name_en}
                   </h2>

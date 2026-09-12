@@ -16,7 +16,7 @@
  */
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLocale } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -57,6 +57,14 @@ a.cy-card:hover, button.cy-card:hover {
   transform: translateY(-8px) scale(1.01);
   box-shadow: 0 24px 60px rgba(99,32,36,.18), 0 0 0 1px rgba(197,165,126,.3);
 }
+/* Press. A card that does not move under the finger feels dead on a phone,
+   where there is no hover to tell you the thing is live. */
+a.cy-card:active, button.cy-card:active {
+  transform: translateY(-2px) scale(.988);
+  transition-duration: .09s;
+}
+:root[data-motion="reduced"] a.cy-card:active,
+:root[data-motion="reduced"] button.cy-card:active { transform: none !important; }
 a.cy-card:focus-visible { outline: 2px solid var(--tone, ${C.gold}); outline-offset: 3px; }
 .cy-stripe { height: 3px; flex-shrink: 0;
   background: linear-gradient(90deg, var(--tone, ${C.maroon}), ${C.gold}); }
@@ -172,8 +180,9 @@ export function Head({ section, title, tail, sub, back, backLabel }: {
         </div>
 
         <h1 style={{
-          fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 900,
-          color: C.head, margin: "0 0 .8rem", lineHeight: 1.1, letterSpacing: "-.02em",
+          fontFamily: "var(--title)",
+          fontSize: "clamp(1.9rem, 3.8vw, 3rem)", fontWeight: 700,
+          color: C.head, margin: "0 0 .8rem", lineHeight: 1.18,
         }}>
           {title}{tail && <> <span style={{ color: C.mid }}>{tail}</span></>}
         </h1>
@@ -201,8 +210,9 @@ export function SectionHead({ title, sub }: { title: string; sub?: string }) {
   return (
     <div style={{ textAlign: "center", marginBottom: "1.8rem" }}>
       <h2 style={{
-        fontSize: "clamp(1.4rem, 2.4vw, 1.9rem)", fontWeight: 900,
-        color: C.head, margin: "0 0 .5rem", letterSpacing: "-.015em",
+        fontFamily: "var(--title)",
+        fontSize: "clamp(1.35rem, 2.3vw, 1.8rem)", fontWeight: 700,
+        color: C.head, margin: "0 0 .5rem",
       }}>{title}</h2>
       <Rule width={36} />
       {sub && (
@@ -228,8 +238,11 @@ export function Film({ src, poster, onError }: {
 /** The lesson’s own picture, carried the way the Malware cards carry one.
     A slug with no file yet falls back to whatever the card showed before, so a
     missing cover is never a broken image. */
-export function CardArt({ slug, alt, fallback, style }: {
-  slug: string; alt: string; fallback?: React.ReactNode; style?: React.CSSProperties;
+export function CardArt({ slug, src, alt, fallback, style }: {
+  slug: string;
+  /** Overrides the slug convention when a lesson ships its own art. */
+  src?: string;
+  alt: string; fallback?: React.ReactNode; style?: React.CSSProperties;
 }) {
   const [missing, setMissing] = useState(false);
   if (missing) {
@@ -237,18 +250,77 @@ export function CardArt({ slug, alt, fallback, style }: {
   }
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img className="cy-art" src={`/lessons/covers/${slug}.jpg`} alt={alt}
+    <img className="cy-art" src={src ?? `/lessons/covers/${slug}.jpg`} alt={alt}
       loading="lazy" onError={() => setMissing(true)} style={style} />
   );
 }
 
 /* ── entrances ───────────────────────────────────────────── */
 
+/* WHY THIS IS NOT JUST whileInView.
+ *
+ * Scroll-reveal has one failure mode that matters more than the effect does:
+ * content that is never revealed. framer's whileInView fires when an element
+ * ENTERS the viewport, and an element that is already above the viewport never
+ * enters it. Two ordinary things put content there:
+ *
+ *   the browser restores your scroll position when you go back, so everything
+ *   above where you were mounts already scrolled past, and stays at opacity 0
+ *   until you reload
+ *
+ *   a page taller than the window mounts with most of itself below the fold,
+ *   which is fine, but combined with the above you get a page of blank cards
+ *
+ * So the rule here is not "is it intersecting" but "is it strictly below the
+ * fold". Anything at or above the fold is either visible now or was scrolled
+ * past, and either way it is shown immediately. Only what is genuinely still
+ * coming waits for the observer. The rechecks cover scroll restoration, which
+ * lands a frame or two after mount, and bfcache restores, which skip mount
+ * altogether. Once shown, always shown. */
+const useIsoLayout = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
+export function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [shown, setShown] = useState(false);
+  const done = useRef(false);
+
+  useIsoLayout(() => {
+    const el = ref.current;
+    if (!el) return;
+    const show = () => { if (!done.current) { done.current = true; setShown(true); } };
+    const belowFold = () => el.getBoundingClientRect().top >= window.innerHeight;
+
+    if (!belowFold()) { show(); return; }
+
+    const io = new IntersectionObserver(
+      es => { if (es.some(e => e.isIntersecting)) show(); },
+      { rootMargin: "0px 0px -40px 0px" },
+    );
+    io.observe(el);
+
+    const recheck = () => { if (!belowFold()) show(); };
+    const r1 = requestAnimationFrame(recheck);
+    const r2 = requestAnimationFrame(() => requestAnimationFrame(recheck));
+    window.addEventListener("pageshow", recheck);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(r1); cancelAnimationFrame(r2);
+      window.removeEventListener("pageshow", recheck);
+    };
+  }, []);
+
+  return [ref, shown] as const;
+}
+
+/* Reveals as it comes into view rather than all at once on mount, so a long
+   page arrives in the order you read it. `once` means it never replays, and
+   the negative margin starts it just before the row reaches the fold. */
 export function Stagger({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   const reduce = useReducedMotion();
+  const [ref, shown] = useReveal<HTMLDivElement>();
   return (
-    <motion.div initial="off" animate="on" style={style}
-      variants={{ on: { transition: { staggerChildren: reduce ? 0 : .08 } } }}
+    <motion.div ref={ref} initial="off" animate={shown ? "on" : "off"} style={style}
+      variants={{ on: { transition: { staggerChildren: reduce ? 0 : .07 } } }}
     >{children}</motion.div>
   );
 }
@@ -260,8 +332,11 @@ export function Item({ children, style, className }: {
   return (
     <motion.div className={className}
       variants={{
-        off: reduce ? {} : { opacity: 0, y: 22 },
-        on:  { opacity: 1, y: 0, transition: { duration: .6, ease: [0.16, 1, 0.3, 1] } },
+        off: reduce ? {} : { opacity: 0, y: 20 },
+        on:  { opacity: 1, y: 0,
+               transition: reduce
+                 ? { duration: .2 }
+                 : { type: "spring", stiffness: 170, damping: 24, mass: .9 } },
       }}
       style={style}
     >{children}</motion.div>
@@ -272,11 +347,15 @@ export function Rise({ children, delay = 0, style }: {
   children: React.ReactNode; delay?: number; style?: React.CSSProperties;
 }) {
   const reduce = useReducedMotion();
+  const [ref, shown] = useReveal<HTMLDivElement>();
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: .6, delay, ease: [0.16, 1, 0.3, 1] }}
+      ref={ref}
+      initial={reduce ? false : { opacity: 0, y: 16 }}
+      animate={shown || reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+      transition={reduce
+        ? { duration: .2, delay }
+        : { type: "spring", stiffness: 180, damping: 25, mass: .9, delay }}
       style={style}
     >{children}</motion.div>
   );

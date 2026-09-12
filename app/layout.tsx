@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Cinzel, Crimson_Pro, Tajawal, Nunito } from "next/font/google";
+import { Cinzel, Crimson_Pro, Tajawal, Nunito, Amiri } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/ui/NavBar";
 import ClientLayout from "@/components/ClientLayout";
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 
-// EN brand fonts: Cinzel (headings) + Crimson Pro (body)
+// TITLES. Cinzel carries the Latin and Amiri carries the Arabic, the same
+// per-glyph fallback trick --ui uses: Arabic letters find no glyph in Cinzel
+// and land on Amiri. A Roman inscriptional face beside a classical Naskh, so
+// the two languages read as one voice at title size.
 const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],
@@ -26,6 +29,13 @@ const nunito = Nunito({
   variable: "--font-nunito",
   subsets: ["latin"],
   weight: ["400", "600", "700", "800"],
+});
+
+// AR title face, paired with Cinzel above. Body Arabic stays Tajawal.
+const amiri = Amiri({
+  variable: "--font-amiri",
+  subsets: ["arabic", "latin"],
+  weight: ["400", "700"],
 });
 
 // AR brand font: Tajawal. Rounded and modern, so Arabic and English read as
@@ -54,7 +64,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
-      <body className={`${cinzel.variable} ${crimsonPro.variable} ${tajawal.variable} ${nunito.variable} antialiased`}
+      <body className={`${cinzel.variable} ${crimsonPro.variable} ${tajawal.variable} ${nunito.variable} ${amiri.variable} antialiased`}
         style={{ fontFamily: "var(--ui)" }}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ClientLayout>{children}</ClientLayout>

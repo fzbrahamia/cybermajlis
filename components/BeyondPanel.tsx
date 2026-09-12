@@ -7,18 +7,16 @@
 
 import Link from "next/link";
 import { useLocale } from "next-intl";
-import { ArrowRight, Lock, Layers, Cpu, Radio, Rocket, Factory } from "lucide-react";
+import { ArrowRight, Lock, Cpu, Radio, Rocket, Factory } from "lucide-react";
 import { QUANTUM_PATH } from "@/app/lib/quantumData";
-import { CASES } from "@/app/lib/cyberData";
 
 export default function BeyondPanel() {
   const isAR = useLocale() === "ar";
   const isRtl = isAR;
 
   const rows = [
-    { Icon: Layers,  en: "Real life cases", ar: "حالات حقيقية",
-      m_en: `${CASES.length} ${CASES.length === 1 ? "case" : "cases"}`, m_ar: `${CASES.length} حالة`,
-      href: "/dashboard/cases" },
+    /* Real cases moved to Your Lessons. This panel is emerging technology,
+       and a case about a therapy clinic in 2020 is not that. */
     { Icon: Cpu,     en: "Quantum computing", ar: "الحوسبة الكمّية",
       m_en: `${QUANTUM_PATH.length} lessons`, m_ar: `${QUANTUM_PATH.length} دروس`,
       href: "/dashboard/beyond/quantum" },

@@ -45,7 +45,7 @@ export default function Modal({
         <div style={{ position: "absolute", top: -50, right: -50, width: 140, height: 140, borderRadius: "50%", background: "rgba(99,32,36,0.03)", border: "1px solid rgba(99,32,36,0.06)", pointerEvents: "none" }} />
 
         {/* Title */}
-        <h2 style={{ fontFamily: "var(--ui)", fontSize: "1rem", fontWeight: 700, color: "#4a1a1d", letterSpacing: "0.05em", marginBottom: "0.8rem", position: "relative", zIndex: 1 }}>
+        <h2 style={{ fontFamily: "var(--title)", fontSize: "1.08rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.8rem", position: "relative", zIndex: 1 }}>
           {title}
         </h2>
 

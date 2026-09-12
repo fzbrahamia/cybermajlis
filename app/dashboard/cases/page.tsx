@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { Play } from "lucide-react";
-import { CyberPage, Head, Item, Grid, CardArt, C, ACCENT } from "@/components/cyber/shell";
+import { CyberPage, Head, Rise, Item, Grid, CardArt, C, ACCENT } from "@/components/cyber/shell";
 import { CASES } from "@/app/lib/cyberData";
+import Guide from "@/components/cyber/Guide";
 
 const TONE = ACCENT.cases;
 
@@ -23,6 +24,17 @@ export default function CasesPage() {
         backLabel={isAR ? "← العودة إلى اللوحة" : "← Back to Dashboard"}
       />
 
+      <Rise style={{ marginBottom: "2.4rem" }}>
+        <Guide lines={[
+          { who: "rouda",
+            en: "Every case here really happened to real people. We do not tell them to frighten you.",
+            ar: "كل حالة هنا وقعت فعلاً لأناس حقيقيين. ولا نرويها لنخيفك." },
+          { who: "hamad",
+            en: "We tell them so you can see what one small mistake actually costs somebody, long after the computers are fixed.",
+            ar: "بل نرويها لترى ما يكلّفه خطأ صغير إنساناً، بعد إصلاح الحواسيب بزمن طويل." },
+        ]} />
+      </Rise>
+
       <Grid min={320}>
         {CASES.map(k => (
           <Item key={k.slug} style={{ height: "100%" }}>
@@ -32,6 +44,7 @@ export default function CasesPage() {
               <div style={{ padding: "1.4rem 1.6rem 1.8rem", display: "flex", flexDirection: "column", flex: 1, alignItems: "center", textAlign: "center" }}>
                 <CardArt
                   slug={k.slug}
+                  src={k.cover}
                   alt={isAR ? k.name_ar : k.name_en}
                   fallback={<Play size={30} strokeWidth={1.6} />}
                   style={{ marginBottom: "1.1rem" }}

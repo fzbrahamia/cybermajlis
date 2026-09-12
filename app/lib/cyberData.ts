@@ -93,7 +93,7 @@ export const CONCEPTS: Concept[] = [
       why_en: "That is the whole limit of a gate, and it is exactly how one infected machine can reach a hundred others.",
       why_ar: "وهذا هو حدّ البوابة كله، وهو بعينه كيف يصل جهاز واحد مصاب إلى مئة غيره.",
     },
-    cases: ["hospital"],
+    cases: ["hospital", "therapy-notes"],
   },
   {
     slug: "zero-day",
@@ -162,7 +162,14 @@ export type RealCase = {
   name_en: string; name_ar: string;
   when_en: string; when_ar: string;
   line_en: string; line_ar: string;
+  /** Card art and film poster. Falls back to /lessons/covers/<slug>.jpg. */
+  cover?: string;
   video?: string;
+  /** The film is written but not made yet. The case page holds the slot open
+      and says so, instead of rendering an empty player. Delete this line when
+      the file lands. (The player's own error fallback stays as a safety net,
+      but a media `error` event is not something to depend on.) */
+  videoPending?: boolean;
   minutes: number;
   /** The attack's own name, because a child who hears it on the news should
       be able to connect it to what they watched. */
@@ -175,13 +182,19 @@ export type RealCase = {
   how_ar: { head_ar: string; body_ar: string }[];
   /** How it ended. */
   stopped_en: string; stopped_ar: string;
-  /** The lesson that teaches the thing this attack used. */
-  lesson?: { href: string; en: string; ar: string };
+  /** The lesson that teaches the thing this attack used. `why` is the line
+      above it: a case pointing at a mechanism lesson and a case pointing at a
+      Why You lesson are not there for the same reason, so neither can share
+      one hardcoded label. */
+  lesson?: { href: string; en: string; ar: string; why_en?: string; why_ar?: string };
   /** The reason this case is here: what it cost people, off the screen. */
   cost_en: { head_en: string; body_en: string }[];
   cost_ar: { head_ar: string; body_ar: string }[];
   /** The sentence the whole case exists for. */
   point_en: string; point_ar: string;
+  /** What Hamad and Rouda say once the cost is on the screen. They react to
+      this case in particular, so the poses are named per case. */
+  react?: { who: "hamad" | "rouda"; pose?: string; en: string; ar: string }[];
   concepts: string[];
 };
 
@@ -251,9 +264,99 @@ export const CASES: RealCase[] = [
       { head_ar: "تأجلت عمليات",
         body_ar: "لم تُلغَ إلى الأبد. بل أُجّلت، وهي كلمة ليست صغيرة على من ينتظر نتيجة." },
     ],
+    react: [
+      { who: "hamad", pose: "thinking",
+        en: "Nobody clicked anything. That is the part people find hardest to believe.",
+        ar: "لم يضغط أحد على شيء. وهذا أصعب ما يصدّقه الناس." },
+      { who: "rouda", pose: "curious",
+        en: "And the repair had been sitting there for two months. Having a fix and installing it are two different things.",
+        ar: "وكان الإصلاح موجوداً منذ شهرين. فوجود الإصلاح وتثبيته شيئان مختلفان." },
+    ],
     point_en: "When people hear about an attack they think of stolen files. This one stole time from people who had none to spare. It walked out of the computer and into a hospital corridor.",
     point_ar: "حين يسمع الناس بهجوم يفكرون في ملفات مسروقة. أما هذا فسرق وقتاً من أناس لا فائض لديهم منه. خرج من الحاسوب ودخل ممرّ مستشفى.",
     concepts: ["zero-day", "firewall"],
+  },
+  {
+    slug: "therapy-notes",
+    name_en: "The notes that were sent back to the people who said them",
+    name_ar: "الملاحظات التي أُعيدت إلى من قالوها",
+    called_en: "The Vastaamo breach", called_ar: "اختراق فاستامو",
+    when_en: "Finland · 2018 to 2024", when_ar: "فنلندا · ٢٠١٨ إلى ٢٠٢٤",
+    line_en: "A therapy company was robbed. The demand for money went to the patients.",
+    line_ar: "سُرقت شركة علاج نفسي. فذهب طلب المال إلى المرضى.",
+    cover: "/cases/vastaamo.jpeg",
+    video: "/cases/vastaamo.mp4",
+    videoPending: true,
+    minutes: 3,
+    story_en: [
+      "In 2020, tens of thousands of people in Finland opened their email and found a stranger quoting their own therapy sessions back at them.",
+      "Vastaamo was the largest private therapy company in the country. It ran 25 clinics, and it also treated patients sent to it by the public health service. Every session note went from the clinic computer into one central database.",
+      "That database had been left open on the internet two years earlier. Nobody told the patients until the stranger did.",
+    ],
+    story_ar: [
+      "في سنة ٢٠٢٠ فتح عشرات الآلاف في فنلندا بريدهم، فوجدوا غريباً يقتبس عليهم جلساتهم النفسية هم.",
+      "كانت فاستامو أكبر شركة علاج نفسي خاصة في البلاد. تدير ٢٥ عيادة، وتعالج أيضاً مرضى ترسلهم إليها الخدمة الصحية العامة. وكانت كل ملاحظة جلسة تنتقل من حاسوب العيادة إلى قاعدة بيانات مركزية واحدة.",
+      "وكانت تلك القاعدة قد تُركت مفتوحة على الإنترنت قبل ذلك بسنتين. ولم يخبر أحد المرضى حتى أخبرهم الغريب.",
+    ],
+    how_en: [
+      { head_en: "Everything was kept in one place",
+        body_en: "A therapist wrote a note on the clinic computer, and the note went into a single central database run by the company. One database held the records of every patient in every clinic. Reaching that one place meant reaching all of them." },
+      { head_en: "The database had no password",
+        body_en: "In 2018 it was connected straight to the internet, and the account that controlled all of it had no password on it. The attacker did not have to break anything open. The door was already open." },
+      { head_en: "The records were not encrypted",
+        body_en: "Names, ID numbers and the session notes were saved as ordinary readable text, with nothing removed to hide who was who. So whatever was copied could be read immediately. Around 33,000 people's records were taken." },
+      { head_en: "Nobody noticed for almost two years",
+        body_en: "There was not enough record-keeping to say exactly when the data left. The company knew about the security problem in 2019. The patients found out in 2020, when the extortion emails arrived." },
+      { head_en: "The demand moved from the company to the patients",
+        body_en: "The attacker asked the company for 40 bitcoin, around 450,000 euros. The company did not pay, and records began being released. He then emailed patients one at a time, asking each of them for about 200 euros, rising if they waited. Around 24,000 people went to the police." },
+    ],
+    how_ar: [
+      { head_ar: "كان كل شيء محفوظاً في مكان واحد",
+        body_ar: "يكتب المعالج ملاحظة على حاسوب العيادة، فتذهب الملاحظة إلى قاعدة بيانات مركزية واحدة تديرها الشركة. قاعدة واحدة فيها سجلات كل مريض في كل عيادة. فالوصول إلى ذلك المكان الواحد وصول إليهم جميعاً." },
+      { head_ar: "ولم يكن على القاعدة كلمة سر",
+        body_ar: "في سنة ٢٠١٨ كانت موصولة بالإنترنت مباشرة، والحساب المتحكم بها كلها بلا كلمة سر. فلم يحتج المهاجم إلى كسر شيء. كان الباب مفتوحاً أصلاً." },
+      { head_ar: "ولم تكن السجلات مشفّرة",
+        body_ar: "كانت الأسماء وأرقام الهوية وملاحظات الجلسات محفوظة نصاً عادياً مقروءاً، ولم يُحذف منها ما يخفي هوية أصحابها. فما نُسخ منها قُرئ فوراً. وأُخذت سجلات نحو ٣٣ ألف إنسان." },
+      { head_ar: "ولم ينتبه أحد قرابة سنتين",
+        body_ar: "لم يكن التدوين كافياً لمعرفة وقت خروج البيانات بالضبط. عرفت الشركة بالمشكلة الأمنية سنة ٢٠١٩. وعرف المرضى سنة ٢٠٢٠، حين وصلت رسائل الابتزاز." },
+      { head_ar: "وانتقل الطلب من الشركة إلى المرضى",
+        body_ar: "طلب المهاجم من الشركة أربعين بتكوين، نحو أربعمئة وخمسين ألف يورو. فلم تدفع، وبدأ نشر السجلات. ثم راسل المرضى واحداً واحداً، وطلب من كل واحد نحو مئتي يورو، تزيد إن تأخر. وذهب نحو ٢٤ ألف شخص إلى الشرطة." },
+    ],
+    stopped_en: "The company did not survive. Vastaamo went bankrupt in 2021, and Finland's data protection authority fined it 608,000 euros. The attacker, Aleksanteri Kivimäki, was arrested in France in 2023 and convicted by a Finnish court in 2024, and went to prison for more than six years. None of that put the notes back.",
+    stopped_ar: "لم تنجُ الشركة. أفلست فاستامو سنة ٢٠٢١، وغرّمتها هيئة حماية البيانات الفنلندية ستمئة وثمانية آلاف يورو. أما المهاجم، أليكسانتيري كيفيماكي، فاعتُقل في فرنسا سنة ٢٠٢٣، وأدانته محكمة فنلندية سنة ٢٠٢٤، ودخل السجن أكثر من ست سنوات. ولم يُعِد شيء من ذلك الملاحظات.",
+    lesson: {
+      href: "/dashboard/why-you/therapist",
+      en: "Why You: the people who keep other people's secrets",
+      ar: "لماذا أنت: من يحفظون أسرار الناس",
+      why_en: "If this is your work", why_ar: "إن كان هذا عملك",
+    },
+    cost_en: [
+      { head_en: "About 33,000 people",
+        body_en: "Every one of them had told somebody something they had told nobody else. Written down, that was the file." },
+      { head_en: "About 24,000 went to the police",
+        body_en: "One of the largest numbers of criminal complaints ever filed over a single case in Finland." },
+      { head_en: "Finland changed the law",
+        body_en: "An ID number normally stays with a person for life and cannot be changed. Thousands of them were now public, so the country made it possible to be given a new one." },
+    ],
+    cost_ar: [
+      { head_ar: "نحو ٣٣ ألف إنسان",
+        body_ar: "كل واحد منهم قال لأحد شيئاً لم يقله لغيره. وذلك، مكتوباً، هو الملف." },
+      { head_ar: "ونحو ٢٤ ألفاً ذهبوا إلى الشرطة",
+        body_ar: "من أكبر أعداد البلاغات الجنائية التي قُدّمت في قضية واحدة في فنلندا." },
+      { head_ar: "وغيّرت فنلندا القانون",
+        body_ar: "رقم الهوية يبقى مع صاحبه مدى العمر ولا يُغيَّر عادة. وصارت آلاف منها علنية، فأتاحت البلاد إعطاء رقم جديد." },
+    ],
+    react: [
+      { who: "rouda", pose: "scared",
+        en: "The part I cannot get past is that they were asked to pay to keep their own words private.",
+        ar: "ما لا أستطيع تجاوزه أنهم طُلب منهم أن يدفعوا ليبقى كلامهم هم سرّاً." },
+      { who: "hamad", pose: "explaining",
+        en: "And none of the four things that went wrong needed a clever attacker. They needed somebody to check.",
+        ar: "ولم يحتج أي من الأخطاء الأربعة إلى مهاجم ذكي. بل احتاجت إلى من يتفقّد." },
+    ],
+    point_en: "There was no single mistake here, and no single fix. One password, or encryption, or someone watching the records, or telling the patients in 2019 would each have made this smaller. All four were missing at once. The door of the therapy room was closed the whole time. The question is who was supposed to be checking the other doors.",
+    point_ar: "لم يكن هنا خطأ واحد، ولا إصلاح واحد. كلمة سر، أو تشفير، أو من يراقب السجلات، أو إخبار المرضى سنة ٢٠١٩: كل واحد منها كان سيصغّر ما حدث. وقد غابت الأربعة معاً. أما باب غرفة العلاج فكان مغلقاً طوال الوقت. والسؤال: من كان عليه أن يتفقد الأبواب الأخرى؟",
+    concepts: ["firewall"],
   },
 ];
 

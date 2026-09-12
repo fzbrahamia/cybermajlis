@@ -9,6 +9,7 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "@/app/lib/firebase";
 import { useLocale } from "next-intl";
+import Guide from "@/components/cyber/Guide";
 import { Fish, Phone, Mail, MessageCircle, BookText, Link2, Shield, Star, Award, Search, X, Lock, TriangleAlert, Printer, type LucideIcon } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -211,7 +212,7 @@ function SubmitModal({userId,userTier,approvedCount,onClose,onSubmitted,isAR}:{u
               <div style={{fontSize:9,letterSpacing:"0.3em",color:"#8B2635",textTransform:"uppercase",marginBottom:5}}>
                 {isAR ? "تقديم بلاغ" : "File a Report"}
               </div>
-              <h2 style={{fontFamily:"var(--ui)",fontSize:"1.1rem",color:"#4a1a1d",fontWeight:700,margin:0}}>
+              <h2 style={{fontFamily:"var(--title)",fontSize:"1.14rem",color:"#4a1a1d",fontWeight:700,margin:0}}>
                 {isAR ? "بلاغ أمني مجتمعي" : "Community Security Report"}
               </h2>
             </div>
@@ -446,7 +447,7 @@ export default function CommunityPage() {
               <div style={{width:3,height:28,background:"linear-gradient(to bottom,#632024,#c5a57e)",borderRadius:2}}/>
               <div>
                 <div style={{fontFamily:"var(--ui)",fontSize:"0.55rem",letterSpacing:"0.25em",color:"rgba(99,32,36,0.45)",textTransform:"uppercase"}}>CyberMajlis</div>
-                <h1 style={{fontFamily:"var(--ui)",fontSize:"1.05rem",fontWeight:700,color:"#4a1a1d",margin:0,lineHeight:1.2}}>
+                <h1 style={{fontFamily:"var(--title)",fontSize:"1.1rem",fontWeight:700,color:"#4a1a1d",margin:0,lineHeight:1.3}}>
                   {isAR ? "التقارير الأمنية" : "Security Reports"}
                 </h1>
               </div>
@@ -517,6 +518,16 @@ export default function CommunityPage() {
 
         {/* ── RIGHT: REPORTS FEED ──────────────────────────────────── */}
         <main>
+          <div style={{ marginBottom: "1.4rem" }}>
+            <Guide lines={[
+              { who: "hamad",
+                en: "These are scams and suspicious messages that people in Qatar actually received, posted by them.",
+                ar: "هذه عمليات احتيال ورسائل مريبة وصلت فعلاً إلى أناس في قطر، ونشروها بأنفسهم." },
+              { who: "rouda",
+                en: "If something reaches you and it feels wrong, report it. The next person who gets the same message will recognise it because you did.",
+                ar: "وإن وصلك شيء أحسست بخطئه، فأبلغ عنه. فمن يصله المثل بعدك سيعرفه لأنك أنت عرفته." },
+            ]} />
+          </div>
           {loading?(
             <div style={{textAlign:"center",padding:"4rem",color:"rgba(99,32,36,0.35)",fontFamily:"var(--ui)",fontSize:"0.7rem",letterSpacing:"0.2em"}}>
               {isAR ? "جارٍ تحميل التقارير..." : "Loading reports…"}

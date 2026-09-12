@@ -3,15 +3,18 @@ import { useTrackView } from "@/hooks/useTrackView";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useLessonProgress } from "@/hooks/useLessonProgress";
+import { useLessonProgress, type LessonProgress } from "@/hooks/useLessonProgress";
 import { useTranslations, useLocale } from "next-intl";
 import { seedLessonsData } from "@/app/lib/seedLessons";
+import { lessonsData } from "@/app/lib/lessonsData";
 import BeyondPanel from "@/components/BeyondPanel";
-import { CONCEPTS } from "@/app/lib/cyberData";
-import { readDone } from "@/app/lib/conceptProgress";
-import { Award, Medal, Brain, BookOpen, Swords, MonitorDot, Wrench, ScanSearch, Globe, Trophy, Target, ShieldCheck, TrendingUp, ArrowRight, type LucideIcon, Users, Lock } from "lucide-react";
+import Guide from "@/components/cyber/Guide";
+import { CONCEPTS, CASES } from "@/app/lib/cyberData";
+import { WHY_YOU } from "@/app/lib/whyYouData";
+import { subscribeDone } from "@/app/lib/conceptProgress";
+import { Award, Medal, Brain, BookOpen, Swords, MonitorDot, Wrench, ScanSearch, Globe, Trophy, Target, ShieldCheck, TrendingUp, ArrowRight, type LucideIcon, Users, Lock, Layers } from "lucide-react";
 
-type Track = { nameKey: string; descKey: string; href: string; Icon: LucideIcon; progress: string; fill: number; soon?: boolean };
+type Track = { nameKey: string; descKey: string; href: string; Icon: LucideIcon; progress: string; fill: number; soon?: boolean; browse?: boolean };
 
 export default function DashboardPage() {
   useTrackView("dashboard");
@@ -41,28 +44,39 @@ export default function DashboardPage() {
   const { progress: ransomwareProgress } = useLessonProgress("ransomware");
   const { progress: polyProgress } = useLessonProgress("polymorphic-metamorphic");
 
-  const isLessonComplete = (p: any) => p.storyDone && p.demoDone && p.posterDone && p.quizDone;
-  const completedLessons = [virusProgress, wormProgress, ransomwareProgress, polyProgress].filter(isLessonComplete).length;
-  const totalLessons = 4;
-  const totalXP = completedLessons * 100;
-  const overallPct = Math.round((completedLessons / totalLessons) * 100);
+  const isLessonComplete = (p: LessonProgress) => p.storyDone && p.demoDone && p.posterDone && p.quizDone;
+  const malwareTotal = lessonsData.malware.length;
+  const malwareCompleted = [virusProgress, wormProgress, ransomwareProgress, polyProgress].filter(isLessonComplete).length;
 
-  // Basic and advanced were difficulty tiers of one subject, so they are now a
-  // single Malware track holding all four lessons plus their simulations.
-  const malwareCompleted = completedLessons;
-
-  /* CyberMajlis concepts keep their progress under a cm- prefix so they never
-     collide with the Majlis ones, which are a different track entirely. */
+  /* Concepts and Why You share one store, each under its own prefix so neither
+     track reads the other's keys. Both are per account: see conceptProgress. */
   const [conceptsDone, setConceptsDone] = useState(0);
-  useEffect(() => {
-    const d = readDone();
+  const [whyDone, setWhyDone] = useState(0);
+  useEffect(() => subscribeDone(d => {
     setConceptsDone(CONCEPTS.filter(c => d[`cm-${c.slug}`]).length);
-  }, []);
+    setWhyDone(WHY_YOU.filter(w => d[`wy-${w.slug}`]).length);
+  }), []);
 
+  /* THE COUNT IS DERIVED, NEVER TYPED.
+     It used to read `totalLessons = 4` and measure the whole dashboard against
+     the four Malware lessons, so finishing a Concept moved nothing and the ring
+     was wrong the day a fifth lesson was written. Every finishable thing on the
+     site is counted here, straight from the data, so adding a concept or a Why
+     You lesson updates the ring, the XP and the percentage on its own. */
+  const totalLessons = malwareTotal + CONCEPTS.length + WHY_YOU.length;
+  const completedLessons = malwareCompleted + conceptsDone + whyDone;
+  const totalXP = completedLessons * 100;
+  const overallPct = totalLessons ? Math.round((completedLessons / totalLessons) * 100) : 0;
+
+  const pct = (a: number, b: number) => (b ? Math.round((a / b) * 100) : 0);
   const tracks: Track[] = [
-    { nameKey: "malware.name",            descKey: "malware.description",            href: "/dashboard/malware",            Icon: ShieldCheck, progress: `${malwareCompleted}/${totalLessons}`, fill: Math.round((malwareCompleted / totalLessons) * 100) },
-    { nameKey: "concepts.name",           descKey: "concepts.description",           href: "/dashboard/concepts",           Icon: Users,       progress: `${conceptsDone}/${CONCEPTS.length}`, fill: Math.round((conceptsDone / CONCEPTS.length) * 100) },
-    { nameKey: "why-you.name",            descKey: "why-you.description",            href: "/dashboard/why-you",            Icon: TrendingUp,  progress: t("why-you.badge"),                   fill: 0, soon: true },
+    { nameKey: "malware.name",  descKey: "malware.description",  href: "/dashboard/malware",  Icon: ShieldCheck, progress: `${malwareCompleted}/${malwareTotal}`,   fill: pct(malwareCompleted, malwareTotal) },
+    { nameKey: "concepts.name", descKey: "concepts.description", href: "/dashboard/concepts", Icon: Users,       progress: `${conceptsDone}/${CONCEPTS.length}`,   fill: pct(conceptsDone, CONCEPTS.length) },
+    { nameKey: "why-you.name",  descKey: "why-you.description",  href: "/dashboard/why-you",  Icon: TrendingUp,  progress: `${whyDone}/${WHY_YOU.length}`,         fill: pct(whyDone, WHY_YOU.length) },
+    /* Cases are read, not completed, so this row reports a count rather than a
+       fraction and draws no bar. It lives here rather than in BeyondPanel
+       because that panel is emerging technology and a case is not. */
+    { nameKey: "cases.name",    descKey: "cases.description",    href: "/dashboard/cases",    Icon: Layers,      progress: `${CASES.length}`, fill: 0, browse: true },
   ];
 
   // ── Badge conditions ──
@@ -133,7 +147,7 @@ export default function DashboardPage() {
       /* Centered header */
       .dash-header { text-align: center; padding: 6.5rem 0 2.4rem; }
       .dash-eyebrow { display: inline-block; font-family: var(--ui); font-size: 0.66rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--maroon-mid); background: linear-gradient(135deg, rgba(99,32,36,0.08), rgba(197,165,126,0.18)); border: 1px solid rgba(99,32,36,0.2); padding: 0.4rem 1.3rem; border-radius: 999px; margin-bottom: 0.9rem; }
-      .dash-header h1 { font-family: var(--ui); font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 900; line-height: 1.08; color: var(--heading); margin: 0 0 0.7rem; }
+      .dash-header h1 { font-family: var(--title); font-size: clamp(2rem, 4.2vw, 3rem); font-weight: 700; line-height: 1.16; letter-spacing: normal; color: var(--heading); margin: 0 0 0.7rem; }
       .dash-header h1 span { color: var(--maroon-mid); }
       .dash-header p { font-size: 1.08rem; color: var(--body); font-style: italic; font-weight: 300; margin: 0; }
 
@@ -176,12 +190,13 @@ export default function DashboardPage() {
       /* Emerging technologies and the badges stay glass, behind it. */
       .panel.panel-light { background: rgba(253,248,240,0.55); box-shadow: none;
         backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
-      .panel-head h2 { font-family: var(--ui); font-size: 1.15rem; font-weight: 700; color: var(--heading); margin: 0; }
+      .panel-head h2 { font-family: var(--title); font-size: 1.22rem; font-weight: 700; letter-spacing: normal; color: var(--heading); margin: 0; }
       .panel-head p { font-size: 0.84rem; color: var(--body); font-style: italic; margin: 0.25rem 0 1.3rem; }
 
       .lc { display: flex; align-items: center; gap: 14px; text-decoration: none; background: rgba(255,255,255,0.6); border: 1px solid rgba(99,32,36,0.1); border-radius: 16px; padding: 1rem 1.1rem; margin-bottom: 0.9rem; transition: transform .25s, box-shadow .25s, border-color .25s; }
       .lc:last-child { margin-bottom: 0; }
       .lc:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(99,32,36,0.14); border-color: rgba(197,165,126,0.6); }
+      .lc:active { transform: scale(0.991); transition-duration: .09s; }
       /* Tracks being written: visible, so people know what is coming, but inert. */
       .lc-soon { opacity: 0.58; cursor: default; }
       .lc-soon:hover { transform: none; box-shadow: none; border-color: rgba(99,32,36,0.1); }
@@ -235,6 +250,17 @@ export default function DashboardPage() {
           <h1>{t("brand")} <span>{t("headerTitle")}</span></h1>
           <p>{t("headerSubtitle")}</p>
         </header>
+
+        <div style={{ marginBottom: "1.6rem" }}>
+          <Guide lines={[
+            { who: "hamad",
+              en: "This is everything you have finished so far. The ring counts every lesson on the site, not just one track.",
+              ar: "هذا كل ما أنهيته حتى الآن. والحلقة تحسب كل درس في الموقع، لا مساراً واحداً." },
+            { who: "rouda",
+              en: "Nothing here is a race. Pick whichever track you are curious about and the numbers follow you.",
+              ar: "لا شيء هنا سباق. اختر المسار الذي يثير فضولك، والأرقام تتبعك." },
+          ]} />
+        </div>
 
         {/* ── Hero: progress overview ── */}
         <section className="hero">
@@ -298,7 +324,7 @@ export default function DashboardPage() {
                   <div className="lc-main">
                     <div className="lc-name">{t(tr.nameKey)}</div>
                     <div className="lc-sub">{t(tr.descKey)}</div>
-                    {!tr.soon && <div className="lc-track"><div className="lc-fill" style={{ width: `${tr.fill}%` }} /></div>}
+                    {!tr.soon && !tr.browse && <div className="lc-track"><div className="lc-fill" style={{ width: `${tr.fill}%` }} /></div>}
                   </div>
                   <div className="lc-meta">
                     <span className="lc-prog">{tr.progress}</span>

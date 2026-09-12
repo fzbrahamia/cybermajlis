@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import PolicyDialog from "@/components/PolicyDialog";
+import { MotionToggle } from "@/components/MotionPref";
 
 const cinzel  = 'var(--ui)';
 const crimson = 'var(--ui)';
@@ -193,6 +194,17 @@ export default function Footer() {
                 </div>
               </a>
             ))}
+
+            {/* Not a mode you go to, a setting that applies here. It sits in
+                this column because it belongs with the accessibility choices,
+                and in the footer rather than Settings because Settings is
+                behind a sign-in. */}
+            <div style={{ paddingTop: ".2rem" }}>
+              <div style={{ fontFamily: cinzel, fontSize: 11.5, fontWeight: 700, color: th.specialIdle, letterSpacing: "0.06em", marginBottom: "0.45rem" }}>
+                {isAR ? "الحركة" : "Motion"}
+              </div>
+              <MotionToggle style={{ color: th.specialDesc, borderColor: th.bottomBorder }} />
+            </div>
           </div>
         </div>
       </div>

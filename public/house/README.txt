@@ -1,11 +1,14 @@
-The house is one photograph with transparent layers on top of it.
+The house is THREE WHOLE PICTURES, one per state. They are not transparent
+layers: the framing and zoom differ between them, so they cross-fade rather
+than stack.
 
-  base.jpg      the house as it starts: no gate, holes in the walls
-  gate.png      ONLY the gate, transparent everywhere else   (firewall lesson)
-  patched.png   ONLY the filled holes, transparent elsewhere (zero-day lesson)
+  base.jpeg     nothing finished yet: cracks and gaps in the wall, no gate
+  gated.jpeg    after the Firewall lesson: a closed gate on the way in
+  patched.jpeg  after the Zero Day lesson: the gaps in the wall filled
 
-Every file must be the same size and framing as base.jpg, so the layers line up
-when they are stacked. 16:9 looks best.
+Same aspect ratio for all of them (16:9 looks best) so the cross-fade does not
+jump. The state table lives in components/cyber/SecureHouse.tsx.
 
-Layers are independent: finishing any lesson adds its layer, in any order.
-Adding a new one is a new PNG plus one row in components/cyber/SecureHouse.tsx.
+NOTE: gated.jpeg already shows an intact wall, so it currently doubles as the
+"both finished" picture. If you draw a gate-with-cracked-wall version, add it
+as gate-only.jpeg and give "both" its own picture in the table.

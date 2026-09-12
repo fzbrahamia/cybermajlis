@@ -650,8 +650,13 @@
     },
     "why-you": {
       "name": "Why You",
-      "description": "“Who would want my data?” Find out exactly what you hold, and why it is worth more than you think.",
-      "badge": "Coming Soon"
+      "description": "“Who would ever want my data?” Two answers: what you are really holding, and who you are a door into.",
+      "badge": "Open"
+    },
+    "cases": {
+          "name": "Real Cases",
+          "description": "Attacks that already happened, and what they cost the people who were there.",
+          "badge": ""
     }
   },
   "SOC": {

@@ -44,21 +44,35 @@ export default function QuantumField({ height = 220 }: { height?: number }) {
             <stop offset="100%" stopColor={Q.mid} stopOpacity="0" />
           </linearGradient>
         </defs>
-        {[0, 1, 2].map(k => (
-          <motion.path
-            key={k}
-            d={`M0 ${26 + k * 3} Q 12 ${14 + k * 4}, 25 ${24 + k * 2} T 50 ${24 + k * 2} T 75 ${24 + k * 2} T 100 ${24 + k * 2}`}
-            fill="none"
-            stroke="url(#qf-fade)"
-            strokeWidth={0.55}
-            animate={reduce ? undefined : { d: [
-              `M0 ${26 + k * 3} Q 12 ${14 + k * 4}, 25 ${24 + k * 2} T 50 ${24 + k * 2} T 75 ${24 + k * 2} T 100 ${24 + k * 2}`,
-              `M0 ${24 + k * 3} Q 12 ${30 + k * 2}, 25 ${20 + k * 2} T 50 ${28 + k * 2} T 75 ${20 + k * 2} T 100 ${26 + k * 2}`,
-              `M0 ${26 + k * 3} Q 12 ${14 + k * 4}, 25 ${24 + k * 2} T 50 ${24 + k * 2} T 75 ${24 + k * 2} T 100 ${24 + k * 2}`,
-            ] }}
-            transition={{ duration: 9 + k * 2.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-        ))}
+        {[0, 1, 2].map(k => {
+          const rest = `M0 ${26 + k * 3} Q 12 ${14 + k * 4}, 25 ${24 + k * 2} T 50 ${24 + k * 2} T 75 ${24 + k * 2} T 100 ${24 + k * 2}`;
+          const crest = `M0 ${24 + k * 3} Q 12 ${30 + k * 2}, 25 ${20 + k * 2} T 50 ${28 + k * 2} T 75 ${20 + k * 2} T 100 ${26 + k * 2}`;
+          return (
+            <motion.path
+              key={k}
+              d={rest}
+              /* framer takes ownership of `d` the moment it appears in
+                 animate, and with no initial it writes the string "undefined"
+                 for a frame before the keyframes resolve, which the browser
+                 rejects three times on every mount. Naming the start value
+                 fixes it. */
+              initial={{ d: rest }}
+              fill="none"
+              stroke="url(#qf-fade)"
+              strokeWidth={0.55}
+              /* Hold the resting shape rather than passing animate={undefined}.
+                 An undefined animate makes framer drop the values it owns, and
+                 `d` is one of them: the attribute is written out as the string
+                 "undefined" and the browser rejects the path. Harmless until
+                 reduce-motion was reachable by a switch rather than only by an
+                 OS setting nobody had turned on. */
+              animate={reduce ? { d: rest } : { d: [rest, crest, rest] }}
+              transition={reduce
+                ? { duration: 0 }
+                : { duration: 9 + k * 2.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+          );
+        })}
       </svg>
 
       {/* particles, each one still undecided */}

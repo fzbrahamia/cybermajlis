@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { use, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import Guide from "@/components/cyber/Guide";
 import SimGrid from "@/components/SimGrid";
 
 export default function CategoryPage({
@@ -76,7 +77,7 @@ export default function CategoryPage({
       .lesson-card-stripe { height: 3px; background: linear-gradient(90deg, var(--maroon), var(--gold)); flex-shrink: 0; }
       .lesson-card-body { padding: 1.4rem 1.6rem 1.8rem; display: flex; flex-direction: column; flex: 1; }
       .lesson-card-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 10px; border: 1px solid rgba(99,32,36,0.12); margin-bottom: 1.2rem; }
-      .lesson-card-title { font-family: var(--ui); font-size: 1.1rem; font-weight: 700; color: var(--heading); margin-bottom: 0.6rem; line-height: 1.3; text-align: center; }
+      .lesson-card-title { font-family: var(--title); font-size: 1.14rem; font-weight: 700; letter-spacing: normal; color: var(--heading); margin-bottom: 0.6rem; line-height: 1.3; text-align: center; }
       .lesson-card-desc { font-family: var(--ui); font-size: 0.95rem; line-height: 1.65; color: var(--body); font-weight: 300; text-align: center; flex: 1; }
       .lesson-card-arrow { display: flex; align-items: center; justify-content: center; margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid rgba(99,32,36,0.1); font-family: var(--ui); font-size: 0.65rem; letter-spacing: 0.15em; color: var(--maroon-mid); opacity: 0; transition: opacity 0.25s, transform 0.25s; transform: translateY(4px); }
       .lesson-card:hover .lesson-card-arrow { opacity: 1; transform: translateY(0); }
@@ -107,7 +108,7 @@ export default function CategoryPage({
             {t1("eyebrow", { category: formattedCategory })}
           </div>
 
-          <h1 style={{ fontFamily: "var(--ui)", fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 900, color: "#4a1a1d", marginBottom: "0.8rem", lineHeight: 1.1 }}>
+          <h1 style={{ fontFamily: "var(--title)", fontSize: "clamp(1.9rem, 3.8vw, 3rem)", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.8rem", lineHeight: 1.18 }}>
             {formattedCategory} <span style={{ color: "#8B2635" }}>{t1("title_suffix")}</span>
           </h1>
 
@@ -120,6 +121,17 @@ export default function CategoryPage({
           <p style={{ fontFamily: "var(--ui)", fontSize: "1.05rem", fontStyle: "italic", color: "#6a4640", fontWeight: 300 }}>
             {t1("subtitle")}
           </p>
+        </div>
+
+        <div style={{ marginBottom: "1.6rem" }}>
+          <Guide lines={[
+            { who: "hamad",
+              en: "Each lesson here has four parts: a story, a demo you can watch, a poster, and a short quiz. Finishing all four marks the lesson done.",
+              ar: "لكل درس هنا أربعة أجزاء: قصة، وعرض تشاهده، وملصق، واختبار قصير. وبإتمام الأربعة يُحتسب الدرس." },
+            { who: "rouda",
+              en: "Watch in any order. The quiz is the only part that has a right answer.",
+              ar: "شاهدها بأي ترتيب. والاختبار وحده هو ما له إجابة صحيحة." },
+          ]} />
         </div>
 
         {/* Back button */}
@@ -150,7 +162,7 @@ export default function CategoryPage({
         {/* Nothing written yet: say so rather than showing an empty grid. */}
         {lessons.length === 0 && (
           <div className="soon-panel">
-            <h2 style={{ fontFamily: "var(--ui)", fontSize: "1.3rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.7rem" }}>
+            <h2 style={{ fontFamily: "var(--title)", fontSize: "1.3rem", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.7rem" }}>
               {t1("soon_title")}
             </h2>
             <p style={{ fontFamily: "var(--ui)", fontSize: "1rem", lineHeight: 1.65, color: "#6a4640", fontWeight: 300, margin: 0 }}>
@@ -163,7 +175,7 @@ export default function CategoryPage({
         {sims.length > 0 && (
           <section style={{ marginTop: "3.5rem" }}>
             <div style={{ textAlign: "center", marginBottom: "1.8rem" }}>
-              <h2 style={{ fontFamily: "var(--ui)", fontSize: "clamp(1.4rem, 2.4vw, 1.9rem)", fontWeight: 900, color: "#4a1a1d", marginBottom: "0.5rem" }}>
+              <h2 style={{ fontFamily: "var(--title)", fontSize: "clamp(1.35rem, 2.3vw, 1.8rem)", fontWeight: 700, color: "#4a1a1d", marginBottom: "0.5rem" }}>
                 {t1("sims_title")}
               </h2>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: "0.7rem" }}>

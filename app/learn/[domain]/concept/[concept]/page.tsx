@@ -20,7 +20,7 @@ import { M, sans, mono, label, card, flat, button, quietPill, ROUDA } from "@/co
 import { Face } from "@/components/innovation/Alive";
 import VideoSlot from "@/components/innovation/VideoSlot";
 import ConceptGate from "@/components/innovation/ConceptGate";
-import { readDone } from "@/app/lib/conceptProgress";
+import { subscribeDone } from "@/app/lib/conceptProgress";
 
 /* Films that exist. Everything else still shows its brief, which is the note
    to whoever is making it. */
@@ -34,7 +34,7 @@ export default function ConceptPage() {
   const params = useParams<{ domain: string; concept: string }>();
   const c = conceptById(params.concept);
   const [done, setDone] = useState(false);
-  useEffect(() => { setDone(Boolean(readDone()[params.concept])); }, [params.concept]);
+  useEffect(() => subscribeDone(d => setDone(Boolean(d[params.concept]))), [params.concept]);
   const d = domainById(params.domain);
   const home = `/learn/${params.domain}`;
 

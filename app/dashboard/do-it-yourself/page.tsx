@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
+import Guide from "@/components/cyber/Guide";
 
 type Device = {
   id: string;
@@ -122,32 +123,24 @@ export default function DoItYourselfPage() {
           width: var(--room); margin-inline: auto;
           text-align: start;
         }
+        /* Small, because it is a way out and not a heading. It got its size
+           from being the only text up here; Hamad and Rouda carry that now. */
         .diy-back {
           display: inline-block;
           font-family: var(--ui);
-          font-size: 1.2rem;
-          font-weight: 800;
-          letter-spacing: -0.01em;
+          font-size: 0.78rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
           color: #4a1a1d;
           text-decoration: none;
           transition: color .2s;
         }
         .diy-back:hover { color: #8B2635; }
         .diy-arrow { display: inline-block; width: var(--indent); }
-        .diy-hint {
-          color: #6a4640;
-          font-family: var(--ui);
-          font-size: 0.88rem;
-          font-weight: 300;
-          line-height: 1.5;
-          margin: 0.15rem 0 0;
-          margin-inline-start: var(--indent);
-        }
-
         @media (max-width: 700px) {
           .diy-tooltip { font-size: 0.72rem; }
-          .diy-back { font-size: 1.05rem; }
-          .diy-hint { font-size: 0.82rem; }
+          .diy-back { font-size: 0.72rem; }
         }
       `}</style>
 
@@ -156,9 +149,17 @@ export default function DoItYourselfPage() {
           {backArrow && <span className="diy-arrow">{backArrow}</span>}
           {backText}
         </Link>
-        <div className="diy-hint">
-          {t("roomIntro")}
-        </div>
+      </div>
+
+      <div style={{ maxWidth: 900, margin: "0 auto 1.4rem", padding: "0 1.5rem" }}>
+        <Guide lines={[
+          { who: "rouda",
+            en: "This is an ordinary room. Every device in it is one you probably own, and every one of them can be set up more safely than it came out of the box.",
+            ar: "هذه غرفة عادية. وكل جهاز فيها جهاز تملكه على الأرجح، وكل واحد منها يمكن ضبطه أأمن مما خرج به من علبته." },
+          { who: "hamad",
+            en: "Tap anything you recognise and I will walk you through your own settings, step by step.",
+            ar: "المس أي شيء تعرفه، وسأمشي معك في إعداداتك أنت، خطوة خطوة." },
+        ]} />
       </div>
 
       <div className="diy-stage">
