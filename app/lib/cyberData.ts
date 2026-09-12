@@ -165,11 +165,6 @@ export type RealCase = {
   /** Card art and film poster. Falls back to /lessons/covers/<slug>.jpg. */
   cover?: string;
   video?: string;
-  /** The film is written but not made yet. The case page holds the slot open
-      and says so, instead of rendering an empty player. Delete this line when
-      the file lands. (The player's own error fallback stays as a safety net,
-      but a media `error` event is not something to depend on.) */
-  videoPending?: boolean;
   minutes: number;
   /** The attack's own name, because a child who hears it on the news should
       be able to connect it to what they watched. */
@@ -286,7 +281,6 @@ export const CASES: RealCase[] = [
     line_ar: "سُرقت شركة علاج نفسي. فذهب طلب المال إلى المرضى.",
     cover: "/cases/vastaamo.jpeg",
     video: "/cases/vastaamo.mp4",
-    videoPending: true,
     minutes: 3,
     story_en: [
       "In 2020, tens of thousands of people in Finland opened their email and found a stranger quoting their own therapy sessions back at them.",

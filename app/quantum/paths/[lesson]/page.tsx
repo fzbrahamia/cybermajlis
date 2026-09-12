@@ -36,6 +36,7 @@ import {
   Q, INK, BODY, LINE, PAPER, PAGE, GOLD, GOLD_DEEP,
   display, bodyFont, mono, EASE, CARD_SHADOW,
 } from "@/components/quantum/theme";
+import { useMediaExists } from "@/hooks/useMediaExists";
 
 /* ══════════════ board widgets ══════════════ */
 
@@ -247,6 +248,11 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
 
   const { loaded, isUnlocked, isStepDone, isLessonDone, markStep } = useQuantumProgress();
   const [step, setStep] = useState<StepId>("video");
+  /* onError does not fire for a 404 video, so the file is checked. Nothing is
+     rendered into the frame until the answer is in, so a page that is behaving
+     correctly never puts a 404 in the console. */
+  const film = useMediaExists(lesson?.video.src);
+  const filmMissing = film === "missing";
 
   // No auto-advance. Finishing a beat used to jump you to the first one you
   // had not done, which threw you off the lab before you could read the
@@ -453,8 +459,9 @@ export default function QuantumLessonPage({ params }: { params: Promise<{ lesson
                   }}>
                     {/* The ambient field belongs behind the empty-state only.
                         Over a playing film it just looks like dirt on the lens. */}
-                    {!lesson.video.src && <QuantumField height={560} />}
-                    {lesson.video.src ? (
+                    {(!lesson.video.src || filmMissing) && <QuantumField height={560} />}
+                    {film === "checking" && lesson.video.src && <span />}
+                    {lesson.video.src && film === "present" ? (
                       <video
                         src={lesson.video.src}
                         poster={lesson.video.poster ?? undefined}

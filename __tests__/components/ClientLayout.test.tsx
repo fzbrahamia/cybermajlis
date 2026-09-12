@@ -8,10 +8,19 @@ let mockPathname = "/dashboard";
 
 jest.mock("next/navigation", () => ({
   usePathname: () => mockPathname,
+  // ClientLayout renders Footer, and Footer calls useRouter. A partial mock of
+  // this module means the whole tree throws before a single assertion runs.
+  useRouter: () => ({
+    push: jest.fn(), replace: jest.fn(), back: jest.fn(),
+    forward: jest.fn(), refresh: jest.fn(), prefetch: jest.fn(),
+  }),
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
+  // Footer and the motion toggle inside it both read the locale.
+  useLocale: () => "en",
 }));
 
 jest.mock("@/components/ui/NavBar", () => ({
@@ -108,9 +117,13 @@ describe("ClientLayout — Chatbot", () => {
     expect(screen.queryByTestId("chatbot")).not.toBeInTheDocument();
   });
 
-  it("marks chatbot isLoggedIn=false on / (main page)", () => {
+  it("hides the chatbot on / (Majlis root, which carries its own chrome)", () => {
+    // "/" stopped being the CyberMajlis landing at the Majlis rebrand: it is
+    // the parent brand now and supplies its own header, footer and assistant,
+    // so ClientLayout suppresses ours. The old expectation of a logged-out
+    // chatbot here described the site as it was two rebrands ago.
     renderLayout("/");
-    expect(screen.getByTestId("chatbot")).toHaveAttribute("data-logged-in", "false");
+    expect(screen.queryByTestId("chatbot")).not.toBeInTheDocument();
   });
 
   it("marks chatbot isLoggedIn=false on /auth", () => {

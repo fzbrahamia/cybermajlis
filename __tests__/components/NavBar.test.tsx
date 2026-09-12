@@ -41,9 +41,13 @@ jest.mock("@/components/Modal", () => ({
 
 // ── Tests ────────────────────────────────────────────────────
 describe("Navbar", () => {
-  it("renders the logo image", () => {
+  it("renders the wordmark", () => {
     render(<Navbar />);
-    expect(screen.getByAltText("Logo")).toBeInTheDocument();
+    // The wordmark is type, not a picture: it used to be an <img alt="Logo">
+    // pointing at a file that no longer exists, and it now follows the site's
+    // title face. Split across two spans so the two halves can be coloured.
+    expect(screen.getByText("Cyber")).toBeInTheDocument();
+    expect(screen.getByText("Majlis")).toBeInTheDocument();
   });
 
   it("shows the login button when user is not logged in", () => {

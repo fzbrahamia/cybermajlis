@@ -1,9 +1,11 @@
 import { renderHook, act } from "@testing-library/react";
-import { useSessionTimeout } from "@/hooks/useSessionTimeout";
+import { useSessionTimeout, WARNING_MS, CHECK_INTERVAL } from "@/hooks/useSessionTimeout";
 
-// @ts-ignore
+// The hook navigates via window.location.href on logout, so it has to be
+// replaceable. jsdom's location is read-only, hence the delete-and-reassign.
+// @ts-expect-error jsdom location is not optional in the DOM lib types
 delete window.location;
-// @ts-ignore
+// @ts-expect-error a bare { href } is enough for what the hook touches
 window.location = { href: "" };
 
 jest.mock("@/app/lib/firebase", () => ({
@@ -40,10 +42,10 @@ describe("useSessionTimeout", () => {
     expect(typeof result.current.logOutNow).toBe("function");
   });
 
-  it("shows warning after 14+ minutes of inactivity", async () => {
+  it("shows warning once the idle time passes the warning threshold", async () => {
     const { result } = renderHook(() => useSessionTimeout());
     await act(async () => {
-      jest.advanceTimersByTime(14 * 60 * 1000 + 30 * 1000);
+      jest.advanceTimersByTime(WARNING_MS + CHECK_INTERVAL);
       await Promise.resolve();
     });
     expect(result.current.showWarning).toBe(true);
@@ -52,7 +54,7 @@ describe("useSessionTimeout", () => {
   it("stayLoggedIn hides the warning", async () => {
     const { result } = renderHook(() => useSessionTimeout());
     await act(async () => {
-      jest.advanceTimersByTime(14 * 60 * 1000 + 30 * 1000);
+      jest.advanceTimersByTime(WARNING_MS + CHECK_INTERVAL);
       await Promise.resolve();
     });
     expect(result.current.showWarning).toBe(true);

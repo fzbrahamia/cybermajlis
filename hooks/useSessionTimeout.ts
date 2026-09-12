@@ -3,9 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 
-const TIMEOUT_MS = 6 * 60 * 60 * 1000;      // 6 hours idle before auto-logout
-const WARNING_MS = TIMEOUT_MS - 60 * 1000;  // warn 1 minute before
-const CHECK_INTERVAL = 30 * 1000;
+/* Exported so the tests measure against the real thresholds. They were
+   hardcoded to 14 minutes in the test, which was right when the timeout was
+   15 minutes and silently wrong from the day it became 6 hours. */
+export const TIMEOUT_MS = 6 * 60 * 60 * 1000;      // 6 hours idle before auto-logout
+export const WARNING_MS = TIMEOUT_MS - 60 * 1000;  // warn 1 minute before
+export const CHECK_INTERVAL = 30 * 1000;
 
 const ACTIVITY_EVENTS = ["mousemove", "mousedown", "keydown", "scroll", "touchstart"] as const;
 

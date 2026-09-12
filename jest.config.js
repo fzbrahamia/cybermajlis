@@ -2,6 +2,10 @@
 const config = {
   testEnvironment: "jsdom",
 
+  // jest.setup.ts existed but was never referenced here, so its polyfills did
+  // nothing and every suite hand-imported @testing-library/jest-dom instead.
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+
   transform: {
     "^.+\\.(ts|tsx)$": ["ts-jest", { tsconfig: { jsx: "react-jsx" } }],
   },

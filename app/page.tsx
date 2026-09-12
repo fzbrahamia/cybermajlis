@@ -15,6 +15,8 @@ import {
   EASE, EASE_SLOW, SPRING, SHADOW, RADIUS, GRAIN,
 } from "@/components/majlis/theme";
 import { MajlisHeader, MajlisFooter, MajlisMark } from "@/components/majlis/MajlisChrome";
+import { useReveal } from "@/hooks/useReveal";
+import Reveal from "@/components/Reveal";
 
 /* One background colour runs the whole page, so structure comes from rhythm:
    an airy hero, a thin strip, big cards, a picker, a quiet tail. Depth and
@@ -48,12 +50,13 @@ function ScrollRule() {
 
 function Divider() {
   const reduce = useReducedMotion();
+  const [revealRef, shown] = useReveal<HTMLDivElement>();
   return (
     <div aria-hidden style={{ display: "flex", justifyContent: "center", padding: "clamp(38px,6vw,72px) 0" }}>
       <motion.div
+        ref={revealRef}
         initial={reduce ? false : { opacity: 0, scaleX: 0.3 }}
-        whileInView={{ opacity: 1, scaleX: 1 }}
-        viewport={{ once: true, amount: 0.6 }}
+        animate={shown || reduce ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0.3 }}
         transition={{ duration: 1.1, ease: EASE_SLOW }}
         style={{ display: "flex", alignItems: "center", gap: 14, width: "min(340px, 62vw)" }}
       >
@@ -408,11 +411,9 @@ export default function MajlisLanding() {
             {PROMISE.map((p, i) => {
               const Icon = p.icon;
               return (
-                <motion.div
+                <Reveal
                   key={p.en}
-                  initial={reduce ? false : { opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.5 }}
+                  from={{ opacity: 0, y: 14 }}
                   transition={{ duration: 0.8, delay: 0.1 * i, ease: EASE_SLOW }}
                   whileHover="hover"
                   style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "0 clamp(14px,2.4vw,30px)" }}
@@ -437,7 +438,7 @@ export default function MajlisLanding() {
                       width: 1, height: 26, background: M.line, marginInlineStart: "clamp(14px,2.4vw,30px)",
                     }} />
                   )}
-                </motion.div>
+                </Reveal>
               );
             })}
           </div>
@@ -623,11 +624,9 @@ export default function MajlisLanding() {
 
             <div style={{ display: "grid", gap: 18, gridTemplateColumns: "repeat(auto-fit, minmax(255px, 1fr))" }}>
               {MODES.map((m, i) => (
-                <motion.div
+                <Reveal
                   key={m.href}
-                  initial={reduce ? false : { opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
+                  from={{ opacity: 0, y: 16 }}
                   transition={{ duration: 0.75, delay: 0.09 * i, ease: EASE_SLOW }}
                   style={{
                     padding: "24px 22px", borderRadius: RADIUS.panel,
@@ -658,7 +657,7 @@ export default function MajlisLanding() {
                   <p style={{ fontFamily: crimson, fontSize: 15.5, lineHeight: 1.6, color: M.body, margin: 0 }}>
                     {isAR ? m.desc_ar : m.desc_en}
                   </p>
-                </motion.div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -682,13 +681,14 @@ function MajlisCard({
   const tilt = open && !reduce;
   const { ref, onMove, onLeave, sheen, rotateX, rotateY } = useTiltCard(b.mid, tilt);
   const Tag = open ? motion.a : motion.div;
+  const [revealRef, shown] = useReveal<HTMLDivElement>();
 
   return (
     /* perspective has to sit on the parent for the child rotation to read as depth */
     <motion.div
+      ref={revealRef}
       initial={reduce ? false : { opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
+      animate={shown || reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.9, delay: 0.11 * i, ease: EASE_SLOW }}
       style={{ perspective: 1100, display: "flex" }}
     >

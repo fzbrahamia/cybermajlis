@@ -6,6 +6,15 @@ jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
 }));
 
+// quiz.tsx imports the analytics tracker, which pulls in app/lib/firebase and
+// with it the whole Firebase SDK — whose Node auth build wants Response and
+// fetch at module load. A quiz unit test has no business booting any of that.
+jest.mock("@/app/lib/analytics", () => ({
+  trackQuizComplete: jest.fn(),
+  trackFeatureView: jest.fn(),
+  trackLessonView: jest.fn(),
+}));
+
 const mockQuestions = [
   {
     question: "What is 2+2?",

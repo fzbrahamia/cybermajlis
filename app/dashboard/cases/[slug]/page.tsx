@@ -1,11 +1,12 @@
 "use client";
 
-import { use, useState } from "react";
+import { use } from "react";
 import Link from "next/link";
 import { useLocale } from "next-intl";
 import { ArrowRight, ArrowLeft, Clapperboard } from "lucide-react";
 import { CyberPage, Head, SectionHead, Rise, Item, Grid, Rule, Film, C, ACCENT } from "@/components/cyber/shell";
 import { caseBySlug } from "@/app/lib/cyberData";
+import { useMediaExists } from "@/hooks/useMediaExists";
 import Guide from "@/components/cyber/Guide";
 import { Conversation, type Pose } from "@/components/cyber/Character";
 
@@ -18,10 +19,13 @@ const over: React.CSSProperties = {
 export default function CasePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const isAR = useLocale() === "ar";
-  /* A case can be written before its film is finished. The slot stays where
-     the film will go and says so, rather than showing a broken player. */
-  const [noFilm, setNoFilm] = useState(false);
   const k = caseBySlug(slug);
+  /* A case can be written before its film is finished. The slot stays where
+     the film will go and says so, rather than showing a broken player.
+     Detected, not declared: drop the .mp4 into public/ and the player appears
+     on the next load with no code change. A <video> onError never fires for a
+     404, so this is a real HEAD check. */
+  const film = useMediaExists(k?.video);
 
   if (!k) {
     return <CyberPage><Head section="Cyber Majlis" title="Not" tail="Found"
@@ -45,7 +49,12 @@ export default function CasePage({ params }: { params: Promise<{ slug: string }>
           <div className="cy-panel" style={{ overflow: "hidden" }}>
             <div className="cy-stripe" style={{ ["--tone" as string]: TONE }} />
             <div style={{ padding: "1rem" }}>
-              {noFilm || k.videoPending ? (
+              {film === "checking" ? (
+                /* Neither yet. Rendering the player before the check would
+                   fire a request for a file that may not be there, and put a
+                   404 in the console of a page that is behaving correctly. */
+                <div className="cy-film" />
+              ) : film === "missing" ? (
                 <div className="cy-film" style={{ display: "grid", placeItems: "center" }}>
                   {k.cover && (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -64,8 +73,7 @@ export default function CasePage({ params }: { params: Promise<{ slug: string }>
                   </div>
                 </div>
               ) : (
-                <Film src={k.video} poster={k.cover ?? `/lessons/covers/${k.slug}.jpg`}
-                  onError={() => setNoFilm(true)} />
+                <Film src={k.video} poster={k.cover ?? `/lessons/covers/${k.slug}.jpg`} />
               )}
             </div>
           </div>

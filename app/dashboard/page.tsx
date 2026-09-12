@@ -116,7 +116,9 @@ export default function DashboardPage() {
     if (!localStorage.getItem("lessonsSeeded")) {
       seedLessonsData()
         .then(() => localStorage.setItem("lessonsSeeded", "1"))
-        .catch((err) => console.error("Lesson seed failed:", err));
+        /* Not an error worth shouting about: nothing on the site reads this
+           collection, and the seed is skipped entirely for guests. */
+        .catch((err) => console.warn("Lesson seed skipped:", err?.code ?? err));
     }
   }, []);
 

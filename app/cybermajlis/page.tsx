@@ -10,6 +10,7 @@ import { useLocale } from "next-intl";
 import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import Footer from "@/components/ui/Footer";
 import { GRAIN } from "@/components/majlis/theme";
+import { useReveal } from "@/hooks/useReveal";
 
 /* ── Fonts ───────────────────────────────────────────────── */
 const cinzel  = 'var(--ui)';
@@ -450,6 +451,8 @@ function useActiveSection(ids: string[]) {
 
 /* ── Feature section ─────────────────────────────────────── */
 function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; isAR: boolean; onCTA: () => void }) {
+  const [copyRef, copyIn] = useReveal<HTMLDivElement>();
+  const [artRef, artIn] = useReveal<HTMLDivElement>();
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -494,7 +497,8 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
       }}>
         {/* copy */}
         <motion.div
-          variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.35 }}
+          ref={copyRef}
+          variants={container} initial="hidden" animate={copyIn ? "show" : "hidden"}
           style={{ flex: "1 1 380px", maxWidth: 520 }}
         >
           <motion.div variants={item} style={{ display: "inline-flex", alignItems: "center", gap: 9, marginBottom: 22 }}>
@@ -558,9 +562,9 @@ function FeatureSection({ f, index, isAR, onCTA }: { f: Feature; index: number; 
 
         {/* visual */}
         <motion.div
+          ref={artRef}
           initial={{ opacity: 0, scale: 0.92 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, amount: 0.3 }}
+          animate={artIn ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.92 }}
           transition={{ duration: 0.8, ease: EASE }}
           style={{ flex: "0 0 auto", marginInline: "auto", position: "relative" }}
         >
@@ -615,6 +619,8 @@ function StoreBadge({ kind, isAR }: { kind: "apple" | "play"; isAR: boolean }) {
 
 /* ── Mobile-app section ──────────────────────────────────── */
 function MobileSection({ isAR }: { isAR: boolean }) {
+  const [copyRef, copyIn] = useReveal<HTMLDivElement>();
+  const [phoneRef, phoneIn] = useReveal<HTMLDivElement>();
   const tabs: { Icon: React.ElementType; en: string; ar: string }[] = [
     { Icon: Gamepad2,      en: "Games",     ar: "ألعاب" },
     { Icon: Newspaper,     en: "News",      ar: "أخبار" },
@@ -635,7 +641,7 @@ function MobileSection({ isAR }: { isAR: boolean }) {
     }}>
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto", display: "flex", gap: "clamp(40px,6vw,90px)", alignItems: "center", flexWrap: "wrap" }}>
         {/* copy */}
-        <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.35 }} style={{ flex: "1 1 380px", maxWidth: 540 }}>
+        <motion.div ref={copyRef} variants={container} initial="hidden" animate={copyIn ? "show" : "hidden"} style={{ flex: "1 1 380px", maxWidth: 540 }}>
           <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, fontWeight: 700, letterSpacing: 3, color: C.crimson, marginBottom: 18 }}>
             {isAR ? "سايبر مجلس على الجوال" : "CYBERMAJLIS ON MOBILE"}
           </motion.div>
@@ -670,7 +676,7 @@ function MobileSection({ isAR }: { isAR: boolean }) {
         </motion.div>
 
         {/* phone mockup */}
-        <motion.div initial={{ opacity: 0, y: 30, scale: 0.94 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.8, ease: EASE }} style={{ flex: "0 0 auto", marginInline: "auto", position: "relative" }}>
+        <motion.div ref={phoneRef} initial={{ opacity: 0, y: 30, scale: 0.94 }} animate={phoneIn ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 30, scale: 0.94 }} transition={{ duration: 0.8, ease: EASE }} style={{ flex: "0 0 auto", marginInline: "auto", position: "relative" }}>
           <div aria-hidden style={{ position: "absolute", inset: -40, borderRadius: 40, background: "radial-gradient(circle, rgba(197,165,126,.16), transparent 68%)", filter: "blur(20px)" }} />
           <div style={{
             position: "relative", width: 248, height: 506, borderRadius: 38, padding: 11,
@@ -767,6 +773,7 @@ function SideRail({ ids, labels, active, isAR }: { ids: string[]; labels: string
    Page
    ════════════════════════════════════════════════════════════ */
 export default function HomePage() {
+  const [bandRef, bandIn] = useReveal<HTMLDivElement>();
   const router = useRouter();
   const isAR = useLocale() === "ar";
 
@@ -995,7 +1002,8 @@ export default function HomePage() {
       }}>
         <div aria-hidden style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(170,100,115,.10), transparent 62%)", filter: "blur(60px)" }} />
         <motion.div
-          variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.4 }}
+          ref={bandRef}
+          variants={container} initial="hidden" animate={bandIn ? "show" : "hidden"}
           style={{ position: "relative", maxWidth: 760, margin: "0 auto" }}
         >
           <motion.div variants={item} style={{ fontFamily: cinzel, fontSize: 10, letterSpacing: 4, color: C.gold, fontWeight: 700, marginBottom: 18 }}>
